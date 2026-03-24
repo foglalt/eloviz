@@ -11,6 +11,7 @@ eloviz
 - [x] **REQ-03**: Migrate the project to Next.js App Router and document React 19 / Next.js working rules.
 - [x] **REQ-04**: Create a fully Hungarian `husvet.eloviz.hu` landing page with title, quiz CTA, and a draft Easter timeline.
 - [ ] **REQ-05**: Implement the detailed Easter quiz flow and finalize the timeline content.
+- [x] **REQ-06**: Override stale Vercel build settings so the Next.js app deploys without expecting a `dist` directory.
 
 ## Out of Scope (for now)
 
@@ -26,6 +27,7 @@ eloviz
 | REQ-03 | Phase 02 | Completed |
 | REQ-04 | Phase 02 | Completed |
 | REQ-05 | Future phase | Planned |
+| REQ-06 | Phase 02 | Completed |
 
 ---
 *Last updated: 2026-03-24*

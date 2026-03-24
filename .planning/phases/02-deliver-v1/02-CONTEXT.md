@@ -28,5 +28,9 @@ Establish the Next.js 16 App Router foundation and deliver the first Hungarian `
 - Detailed quiz logic, scoring, and results experience.
 - Final Easter event wording and verse-by-verse study content.
 
+## Additional Notes
+
+- Vercel still carried a stale `dist` Output Directory from the old Vite setup, so repo-level deployment overrides may be needed while the dashboard catches up.
+
 ---
 *Phase: 02-deliver-v1*
