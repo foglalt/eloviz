@@ -41,22 +41,22 @@ export const husvetSite = {
   eyebrow: "husvet.eloviz.hu | élő víz",
   title: "Húsvét, amelyből élet fakad",
   intro:
-    "Ez a kezdőoldal a betániai megkenéstől a mennybemenetelig vezeti végig Jézus húsvéti történetét. A részletes tanulmányok, a teljes idővonal és a kvíz a következő iterációkban bővülnek tovább.",
+    "Ez a kezdőoldal a betániai megkenéstől a mennybemenetelig vezeti végig Jézus húsvéti történetét. A kvíz már elérhető, az idővonal és a részletes tanulmányok pedig tovább bővülnek.",
   note:
-    "A mostani idővonal szándékosan vázlatos: később pontosítható igehelyekkel, részletes magyarázatokkal és gazdagabb médiatartalommal.",
+    "Az idővonal most is szándékosan vázlatos, hogy később pontosabb igehelyekkel, részletes magyarázatokkal és gazdagabb médiatartalommal mélyülhessen tovább.",
   quiz: {
     href: "/kviz",
-    ctaLabel: "Kvíz indítása",
-    secondaryLabel: "Ugrás az idővonalhoz",
+    ctaLabel: "Kvíz megnyitása",
+    secondaryLabel: "Idővonal megnyitása",
   },
   spotlight: {
-    title: "Az élő víz húsvéti íve",
+    title: "Csendesebb tónus, élőbb figyelem",
     description:
-      "A húsvéti történet itt nemcsak eseménysor, hanem meghívás: Krisztusban megnyílik az élet forrása, amely a szenvedésen, a kereszten és a feltámadáson át vezet reménységre.",
+      "A húsvéti történet itt nemcsak eseménysor, hanem meghívás: Krisztusban megnyílik az élet forrása, amely a szenvedésen, a kereszten és a feltámadáson át vezet reménységre és békességre.",
     highlights: [
       {
         label: "Fókusz",
-        value: "magyar nyelvű húsvéti áttekintés",
+        value: "magyar nyelvű húsvéti áttekintés és kvíz",
       },
       {
         label: "Szerkezet",
@@ -64,7 +64,7 @@ export const husvetSite = {
       },
       {
         label: "Következő lépés",
-        value: "kvíz, tanulmányok és részletes igehelyek",
+        value: "mélyebb tanulmányok és részletes igehelyek",
       },
     ],
   },
@@ -140,6 +140,6 @@ export const husvetSite = {
   seo: {
     title: "Húsvét az Élő Víz oldalán",
     description:
-      "Magyar nyelvű húsvéti kezdőoldal kvízindítóval és a betániai megkenéstől a mennybemenetelig tartó idővonallal.",
+      "Magyar nyelvű húsvéti kezdőoldal valódi kvízzel és a betániai megkenéstől a mennybemenetelig tartó idővonallal.",
   },
 } satisfies HusvetSiteContent;

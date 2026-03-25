@@ -27,6 +27,8 @@ Project owner, contributors, and Hungarian readers looking for Bible-study and C
 | Use Next.js 16 App Router with React 19 | Server-first rendering, metadata support, and future subdomain organization | active |
 | Use route groups and private folders for site-specific slices | Keeps URLs clean while allowing subdomain-oriented feature colocation | active |
 | Keep public copy Hungarian | Matches the intended audience and content surface | active |
+| Store editable quiz content in Neon | Admin changes need durable persistence beyond a local file or deploy cycle | active |
+| Protect `/admin` with `ADMIN_PASSWORD` and a signed cookie session | Keeps the admin flow simple without exposing the password to the client | active |
 | Use `scripts/gtd.ps1` as the memory workflow entrypoint | Keeps plan, state, and verification consistent | active |
 
 ---

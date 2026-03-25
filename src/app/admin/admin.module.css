@@ -1,0 +1,348 @@
+.page {
+  width: min(1240px, calc(100% - 1.5rem));
+  margin: 0 auto;
+  padding: 28px 0 72px;
+}
+
+.shell {
+  display: grid;
+  gap: 22px;
+}
+
+.loginShell {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.7fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.noticePanel,
+.loginPanel,
+.editorForm {
+  padding: clamp(24px, 4vw, 38px);
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  background:
+    linear-gradient(180deg, rgba(255, 251, 246, 0.94), rgba(247, 234, 221, 0.82)),
+    linear-gradient(150deg, rgba(201, 109, 66, 0.08), transparent 56%);
+  box-shadow: var(--shadow);
+}
+
+.noticePanel h1,
+.loginCopy h1,
+.workspaceHeader h1,
+.sectionHeading h2,
+.questionCard h3 {
+  font-family: var(--font-heading), serif;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+.noticePanel {
+  display: grid;
+  gap: 14px;
+}
+
+.loginPanel,
+.editorForm {
+  display: grid;
+  gap: 18px;
+}
+
+.loginCopy,
+.workspaceHeader,
+.sectionHeading {
+  display: grid;
+  gap: 10px;
+}
+
+.kicker {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.loginCopy h1,
+.workspaceHeader h1 {
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  line-height: 0.94;
+}
+
+.workspaceIntro,
+.noticePanel p,
+.loginCopy p,
+.sectionHeading p,
+.storageNote {
+  color: var(--text-soft);
+  line-height: 1.75;
+}
+
+.workspaceHeader {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 16px;
+}
+
+.statusStack {
+  display: grid;
+  gap: 10px;
+}
+
+.statusBadge {
+  display: grid;
+  gap: 4px;
+  min-width: 220px;
+  padding: 0.95rem 1rem;
+  border: 1px solid rgba(137, 84, 43, 0.14);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.statusBadge span,
+.questionIndex {
+  color: var(--text-soft);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.statusBadge strong {
+  font-size: 0.98rem;
+}
+
+.section {
+  display: grid;
+  gap: 18px;
+  padding-top: 8px;
+}
+
+.fieldGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.field,
+.answerField {
+  display: grid;
+  gap: 8px;
+}
+
+.field span,
+.answerField span {
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.fieldWide {
+  grid-column: 1 / -1;
+}
+
+.field input,
+.field textarea,
+.answerField input {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border: 1px solid rgba(137, 84, 43, 0.16);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.questionList {
+  display: grid;
+  gap: 18px;
+}
+
+.questionCard {
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+  border: 1px solid rgba(137, 84, 43, 0.14);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(250, 241, 231, 0.72)),
+    linear-gradient(150deg, rgba(209, 164, 90, 0.08), transparent 55%);
+}
+
+.questionToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.questionToolbar h3 {
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  line-height: 0.98;
+}
+
+.questionActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: start;
+}
+
+.questionActions button,
+.secondaryButton,
+.logoutButton {
+  padding: 0.82rem 1rem;
+  border: 1px solid rgba(137, 84, 43, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.questionActions button:hover,
+.secondaryButton:hover,
+.logoutButton:hover {
+  transform: translateY(-1px);
+  border-color: rgba(137, 84, 43, 0.28);
+}
+
+.answerGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.answerField {
+  padding: 1rem;
+  border: 1px solid rgba(137, 84, 43, 0.12);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.radioRow {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--text-soft);
+}
+
+.radioRow input {
+  width: auto;
+  margin: 0;
+}
+
+.footerActions,
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+}
+
+.topbar {
+  justify-content: flex-end;
+}
+
+.primaryButton,
+.ghostLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0.9rem 1.4rem;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.primaryButton {
+  border: 0;
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  color: #fff8f2;
+  box-shadow: 0 18px 34px rgba(167, 76, 37, 0.26);
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    opacity 160ms ease;
+}
+
+.primaryButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.primaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.ghostLink {
+  border: 1px solid rgba(137, 84, 43, 0.16);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.errorMessage,
+.successMessage {
+  padding: 0.95rem 1rem;
+  border-radius: 18px;
+  font-weight: 600;
+}
+
+.errorMessage {
+  border: 1px solid rgba(173, 72, 58, 0.22);
+  background: rgba(255, 236, 232, 0.88);
+  color: #8f3526;
+}
+
+.successMessage {
+  border: 1px solid rgba(91, 132, 86, 0.22);
+  background: rgba(238, 248, 232, 0.88);
+  color: #315f2d;
+}
+
+@media (max-width: 980px) {
+  .loginShell,
+  .workspaceHeader,
+  .fieldGrid,
+  .answerGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statusStack {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    width: min(100%, calc(100% - 1rem));
+    padding: 16px 0 48px;
+  }
+
+  .footerActions,
+  .questionActions,
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primaryButton,
+  .ghostLink,
+  .secondaryButton,
+  .logoutButton {
+    width: 100%;
+  }
+}

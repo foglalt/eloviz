@@ -14,8 +14,8 @@
   border: 1px solid var(--line);
   border-radius: 36px;
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(233, 246, 249, 0.82)),
-    linear-gradient(180deg, rgba(11, 139, 165, 0.05), transparent);
+    linear-gradient(145deg, rgba(255, 251, 246, 0.94), rgba(248, 235, 219, 0.82)),
+    linear-gradient(180deg, rgba(201, 109, 66, 0.06), transparent);
   box-shadow: var(--shadow);
   overflow: hidden;
 }
@@ -27,7 +27,7 @@
   width: 460px;
   height: 460px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(11, 139, 165, 0.18), transparent 68%);
+  background: radial-gradient(circle, rgba(209, 164, 90, 0.2), transparent 68%);
 }
 
 .hero::after {
@@ -37,7 +37,7 @@
   width: 380px;
   height: 380px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(200, 148, 73, 0.14), transparent 68%);
+  background: radial-gradient(circle, rgba(201, 109, 66, 0.16), transparent 68%);
 }
 
 .copy,
@@ -111,12 +111,12 @@
 
 .primaryAction {
   background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-  color: #f6feff;
-  box-shadow: 0 18px 34px rgba(11, 109, 134, 0.24);
+  color: #fff8f2;
+  box-shadow: 0 18px 34px rgba(167, 76, 37, 0.24);
 }
 
 .secondaryAction {
-  border: 1px solid rgba(15, 88, 109, 0.18);
+  border: 1px solid rgba(137, 84, 43, 0.18);
   background: rgba(255, 255, 255, 0.72);
 }
 
@@ -140,9 +140,9 @@
   padding: clamp(22px, 4vw, 30px);
   border-radius: 30px;
   background:
-    linear-gradient(180deg, rgba(8, 40, 56, 0.96), rgba(10, 52, 73, 0.9)),
-    linear-gradient(135deg, rgba(11, 139, 165, 0.12), transparent);
-  color: #effbfd;
+    linear-gradient(180deg, rgba(96, 57, 35, 0.96), rgba(125, 71, 41, 0.92)),
+    linear-gradient(135deg, rgba(255, 213, 183, 0.12), transparent);
+  color: #fff8f1;
   overflow: hidden;
   animation: drift 8s ease-in-out infinite;
 }
@@ -154,14 +154,14 @@
   width: 260px;
   height: 260px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(113, 219, 235, 0.28), transparent 68%);
+  background: radial-gradient(circle, rgba(255, 214, 183, 0.28), transparent 68%);
 }
 
 .spotlightLabel {
   position: relative;
   z-index: 1;
-  background: rgba(239, 251, 253, 0.12);
-  color: #dff8fb;
+  background: rgba(255, 248, 241, 0.12);
+  color: rgba(255, 248, 241, 0.88);
 }
 
 .spotlight h2 {
@@ -176,7 +176,7 @@
 .spotlightCopy {
   position: relative;
   z-index: 1;
-  color: rgba(239, 251, 253, 0.84);
+  color: rgba(255, 248, 241, 0.84);
   line-height: 1.8;
 }
 
@@ -193,13 +193,13 @@
   display: grid;
   gap: 4px;
   padding: 0.95rem 1rem;
-  border: 1px solid rgba(223, 248, 251, 0.14);
+  border: 1px solid rgba(255, 248, 241, 0.14);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.04);
 }
 
 .highlightList span {
-  color: rgba(223, 248, 251, 0.72);
+  color: rgba(255, 248, 241, 0.72);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -254,7 +254,7 @@
   bottom: 24px;
   left: 23px;
   width: 1px;
-  background: linear-gradient(180deg, rgba(11, 139, 165, 0.34), rgba(11, 139, 165, 0.04));
+  background: linear-gradient(180deg, rgba(201, 109, 66, 0.34), rgba(201, 109, 66, 0.04));
 }
 
 .timelineItem {
@@ -274,19 +274,19 @@
   height: 48px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-  color: #f5feff;
+  color: #fff8f2;
   font-family: var(--font-mono), monospace;
   font-size: 0.92rem;
-  box-shadow: 0 16px 24px rgba(11, 109, 134, 0.18);
+  box-shadow: 0 16px 24px rgba(167, 76, 37, 0.18);
 }
 
 .timelineCard {
   padding: 22px 22px 20px;
-  border: 1px solid rgba(15, 88, 109, 0.12);
+  border: 1px solid rgba(137, 84, 43, 0.12);
   border-radius: 24px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(240, 248, 250, 0.9)),
-    linear-gradient(160deg, rgba(11, 139, 165, 0.04), transparent);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(250, 241, 231, 0.9)),
+    linear-gradient(160deg, rgba(201, 109, 66, 0.04), transparent);
 }
 
 .timelineMeta {
