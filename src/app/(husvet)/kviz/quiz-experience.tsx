@@ -1,10 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import type { HusvetQuizContent, QuizOptionId } from "@/lib/husvet-quiz";
 import { LearnMoreContactCta } from "../_components/learn-more-contact-cta";
-import { husvetSite } from "../_content/husvet-site";
 import styles from "./quiz-page.module.css";
 
 type QuizExperienceProps = {
@@ -73,22 +71,8 @@ export function QuizExperience({ content }: QuizExperienceProps) {
     }));
   }
 
-  function handleReset() {
-    setAnswers({});
-    setRevealedHints({});
-    setCurrentIndex(0);
-  }
-
   return (
     <main className={styles.page}>
-      <section className={styles.intro}>
-        <p className={styles.eyebrow}>{husvetSite.domain} / kvíz</p>
-        <div className={styles.introCopy}>
-          <h1>{content.title}</h1>
-          <p className={styles.lead}>{content.intro}</p>
-        </div>
-      </section>
-
       {!isComplete && currentQuestion ? (
         <section className={styles.questionStage}>
           <div className={styles.stageSummary}>
@@ -97,11 +81,15 @@ export function QuizExperience({ content }: QuizExperienceProps) {
                 Kérdés {(currentIndex + 1).toString().padStart(2, "0")} /{" "}
                 {totalQuestions.toString().padStart(2, "0")}
               </span>
-              <span className={styles.stageNote}>
-                {currentIndex === totalQuestions - 1
-                  ? "Utolsó lépés"
-                  : "Válassz, és haladj tovább."}
-              </span>
+              <button
+                aria-controls={hintPanelId}
+                aria-expanded={hintVisible}
+                className={styles.hintButton}
+                onClick={handleHintToggle}
+                type="button"
+              >
+                {hintVisible ? "Igehely elrejtése" : "Igehely megmutatása"}
+              </button>
             </div>
 
             <div className={styles.progressTrack} aria-hidden="true">
@@ -114,18 +102,6 @@ export function QuizExperience({ content }: QuizExperienceProps) {
 
           <article className={styles.questionCard}>
             <h2>{currentQuestion.prompt}</h2>
-
-            <div className={styles.hintRow}>
-              <button
-                aria-controls={hintPanelId}
-                aria-expanded={hintVisible}
-                className={styles.hintButton}
-                onClick={handleHintToggle}
-                type="button"
-              >
-                {hintVisible ? "Igehely elrejtése" : "Igehely megmutatása"}
-              </button>
-            </div>
 
             {hintVisible ? (
               <div className={styles.hintPanel} id={hintPanelId}>
@@ -165,7 +141,15 @@ export function QuizExperience({ content }: QuizExperienceProps) {
               })}
             </div>
 
-            <div className={styles.primaryActionRow}>
+            <div className={styles.navigationRow}>
+              <button
+                className={styles.previousAction}
+                disabled={currentIndex === 0}
+                onClick={handleBack}
+                type="button"
+              >
+                Előző
+              </button>
               <button
                 className={styles.primaryAction}
                 disabled={!selectedAnswer}
@@ -178,28 +162,6 @@ export function QuizExperience({ content }: QuizExperienceProps) {
               </button>
             </div>
           </article>
-
-          <div className={styles.supportingLinks}>
-            {currentIndex > 0 ? (
-              <button
-                className={styles.inlineAction}
-                onClick={handleBack}
-                type="button"
-              >
-                Előző kérdés
-              </button>
-            ) : null}
-            <button
-              className={styles.inlineAction}
-              onClick={handleReset}
-              type="button"
-            >
-              Újrakezdés
-            </button>
-            <Link className={styles.inlineAction} href="/">
-              Vissza a kezdőoldalra
-            </Link>
-          </div>
         </section>
       ) : (
         <section className={styles.resultPanel}>
@@ -213,20 +175,6 @@ export function QuizExperience({ content }: QuizExperienceProps) {
             source="quiz"
             title="Menj tovább egy következő lépéssel"
           />
-          <div className={styles.primaryActionRow}>
-            <button
-              className={styles.primaryAction}
-              onClick={handleReset}
-              type="button"
-            >
-              Újrakezdés
-            </button>
-          </div>
-          <div className={styles.supportingLinks}>
-            <Link className={styles.tertiaryAction} href="/">
-              Vissza a kezdőoldalra
-            </Link>
-          </div>
         </section>
       )}
     </main>

@@ -1,107 +1,70 @@
 .page {
   position: relative;
-  width: min(860px, calc(100% - 1.25rem));
+  width: min(760px, calc(100% - 1rem));
+  min-height: 100svh;
   margin: 0 auto;
-  padding: 20px 0 72px;
-}
-
-.intro,
-.resultPanel {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(137, 84, 43, 0.14);
-  border-radius: 30px;
-  background:
-    linear-gradient(180deg, rgba(255, 251, 246, 0.94), rgba(247, 234, 218, 0.84)),
-    linear-gradient(150deg, rgba(201, 109, 66, 0.05), transparent 58%);
-  box-shadow: var(--shadow);
-}
-
-.intro {
-  display: grid;
-  gap: 14px;
-  padding: clamp(22px, 5vw, 36px);
-  animation: rise 420ms ease both;
-}
-
-.eyebrow,
-.resultLabel,
-.stageLabel {
-  display: inline-flex;
-  width: fit-content;
-  padding: 0.45rem 0.9rem;
-  border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--accent-strong);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.introCopy {
-  display: grid;
-  gap: 12px;
-  max-width: 42rem;
-}
-
-.intro h1,
-.questionCard h2,
-.resultPanel h2 {
-  margin: 0;
-  font-family: var(--font-heading), serif;
-  font-weight: 600;
-  letter-spacing: -0.04em;
-}
-
-.intro h1 {
-  font-size: clamp(2.5rem, 9vw, 4.5rem);
-  line-height: 0.95;
-}
-
-.lead,
-.stageNote,
-.hintPanel p,
-.resultSummary {
-  color: var(--text-soft);
-  line-height: 1.72;
-}
-
-.lead {
-  font-size: 1rem;
+  padding: 12px 0 24px;
 }
 
 .questionStage {
   display: grid;
-  gap: 18px;
-  margin-top: 20px;
+  gap: 10px;
+  align-content: start;
 }
 
 .stageSummary {
   display: grid;
-  gap: 10px;
+  gap: 8px;
   padding: 0 4px;
 }
 
 .stageMeta {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 10px;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.stageLabel {
-  background: rgba(255, 247, 237, 0.94);
+.stageLabel,
+.resultLabel {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.28rem 0.72rem;
+  border-radius: 999px;
+  background: rgba(255, 245, 234, 0.94);
+  color: var(--accent-strong);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
-.stageNote {
-  font-size: 0.95rem;
+.hintButton,
+.previousAction,
+.primaryAction {
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    opacity 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.hintButton {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-soft);
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
 }
 
 .progressTrack {
   overflow: hidden;
-  height: 0.4rem;
+  height: 0.34rem;
   border-radius: 999px;
   background: rgba(137, 84, 43, 0.1);
 }
@@ -113,89 +76,76 @@
   background: linear-gradient(90deg, var(--accent), var(--accent-strong));
 }
 
-.questionCard {
-  display: grid;
-  gap: 18px;
-  padding: clamp(20px, 4vw, 30px);
+.questionCard,
+.resultPanel {
+  position: relative;
+  overflow: hidden;
   border: 1px solid rgba(137, 84, 43, 0.14);
   border-radius: 28px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(251, 243, 233, 0.84)),
-    linear-gradient(150deg, rgba(209, 164, 90, 0.06), transparent 58%);
-  box-shadow: 0 18px 44px rgba(97, 60, 41, 0.08);
+    linear-gradient(180deg, rgba(255, 251, 246, 0.96), rgba(248, 236, 221, 0.88)),
+    linear-gradient(150deg, rgba(201, 109, 66, 0.05), transparent 58%);
+  box-shadow: var(--shadow);
+}
+
+.questionCard {
+  display: grid;
+  gap: 12px;
+  padding: 18px 16px 16px;
+}
+
+.questionCard h2,
+.resultPanel h2 {
+  margin: 0;
+  font-family: var(--font-heading), serif;
+  font-weight: 600;
+  letter-spacing: -0.04em;
 }
 
 .questionCard h2 {
-  font-size: clamp(1.85rem, 6vw, 2.6rem);
-  line-height: 1.06;
-}
-
-.hintRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.hintButton,
-.primaryAction,
-.tertiaryAction,
-.inlineAction {
-  transition:
-    transform 160ms ease,
-    box-shadow 160ms ease,
-    opacity 160ms ease,
-    border-color 160ms ease;
-}
-
-.hintButton {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--accent-strong);
-  font-weight: 700;
-  text-decoration: underline;
-  text-decoration-thickness: 0.08em;
-  text-underline-offset: 0.18em;
-}
-
-.hintButton:hover,
-.inlineAction:hover,
-.tertiaryAction:hover {
-  color: var(--accent-strong);
+  font-size: clamp(1.55rem, 5.8vw, 2.1rem);
+  line-height: 1.05;
 }
 
 .hintPanel {
   display: grid;
-  gap: 6px;
-  padding: 0.95rem 1rem;
+  gap: 4px;
+  padding: 0.75rem 0.85rem;
   border-left: 3px solid rgba(167, 76, 37, 0.24);
-  border-radius: 0 18px 18px 0;
-  background: rgba(252, 243, 233, 0.72);
+  border-radius: 0 16px 16px 0;
+  background: rgba(252, 243, 233, 0.76);
 }
 
 .hintPanel strong {
   color: var(--text-soft);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
+.hintPanel p,
+.resultSummary {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+
 .options {
   display: grid;
-  gap: 12px;
+  gap: 10px;
 }
 
 .option {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 14px;
+  gap: 12px;
   align-items: center;
-  padding: 1rem 1.05rem;
+  padding: 0.85rem 0.9rem;
   border: 1px solid rgba(137, 84, 43, 0.12);
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.86);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.88);
   cursor: pointer;
   transition:
     transform 160ms ease,
@@ -217,12 +167,13 @@
 }
 
 .optionText {
-  line-height: 1.62;
+  font-size: 0.97rem;
+  line-height: 1.45;
 }
 
 .optionIndicator {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.1rem;
+  height: 1.1rem;
   border: 1.5px solid rgba(137, 84, 43, 0.24);
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.92);
@@ -235,8 +186,8 @@
 
 .optionSelected {
   border-color: rgba(167, 76, 37, 0.24);
-  background: rgba(255, 246, 238, 0.96);
-  box-shadow: 0 14px 28px rgba(201, 109, 66, 0.1);
+  background: rgba(255, 246, 238, 0.98);
+  box-shadow: 0 12px 24px rgba(201, 109, 66, 0.1);
 }
 
 .optionSelected .optionIndicator {
@@ -245,78 +196,64 @@
   box-shadow: inset 0 0 0 4px rgba(167, 76, 37, 0.92);
 }
 
-.primaryActionRow {
+.navigationRow {
   display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
 }
 
-.primaryAction,
-.tertiaryAction {
+.previousAction,
+.primaryAction {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 54px;
-  padding: 0.95rem 1.45rem;
+  min-height: 48px;
+  padding: 0.85rem 1.1rem;
   border-radius: 999px;
   font-weight: 700;
+}
+
+.previousAction {
+  border: 1px solid rgba(137, 84, 43, 0.16);
+  background: rgba(255, 255, 255, 0.84);
+  color: var(--text);
 }
 
 .primaryAction {
   border: 0;
   background: linear-gradient(135deg, var(--accent), var(--accent-strong));
   color: #fff8f2;
-  box-shadow: 0 18px 34px rgba(167, 76, 37, 0.22);
+  box-shadow: 0 18px 34px rgba(167, 76, 37, 0.2);
 }
 
+.previousAction:hover:not(:disabled),
 .primaryAction:hover:not(:disabled) {
   transform: translateY(-1px);
 }
 
+.previousAction:disabled,
 .primaryAction:disabled {
   cursor: not-allowed;
-  opacity: 0.55;
-}
-
-.supportingLinks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  justify-content: center;
-  align-items: center;
-}
-
-.inlineAction,
-.tertiaryAction {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--text-soft);
-  font-weight: 600;
-  text-decoration: underline;
-  text-decoration-thickness: 0.08em;
-  text-underline-offset: 0.18em;
+  opacity: 0.5;
 }
 
 .resultPanel {
   display: grid;
   gap: 16px;
-  margin-top: 20px;
-  padding: clamp(24px, 5vw, 40px);
-  animation: rise 420ms ease both;
+  padding: clamp(22px, 5vw, 34px);
+  animation: rise 360ms ease both;
 }
 
 .resultPanel h2 {
-  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-size: clamp(2.2rem, 8vw, 3.6rem);
   line-height: 0.94;
-}
-
-.resultSummary {
-  max-width: 38rem;
 }
 
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(12px);
   }
 
   to {
@@ -327,56 +264,39 @@
 
 @media (max-width: 640px) {
   .page {
-    width: min(100%, calc(100% - 1rem));
-    padding: 14px 0 48px;
-  }
-
-  .intro {
-    padding: 20px 18px 22px;
-  }
-
-  .intro h1 {
-    font-size: clamp(2.15rem, 10vw, 3rem);
-  }
-
-  .lead {
-    font-size: 0.96rem;
-    line-height: 1.64;
-  }
-
-  .questionStage {
-    gap: 14px;
-    margin-top: 16px;
+    width: min(100%, calc(100% - 0.9rem));
+    padding: 10px 0 18px;
   }
 
   .stageMeta {
-    align-items: start;
-    flex-direction: column;
+    gap: 10px;
   }
 
-  .stageNote {
-    font-size: 0.92rem;
+  .hintButton {
+    font-size: 0.8rem;
   }
 
   .questionCard {
-    padding: 18px 16px 20px;
-    gap: 16px;
+    gap: 10px;
+    padding: 16px 14px 14px;
   }
 
   .questionCard h2 {
-    font-size: clamp(1.7rem, 8vw, 2.2rem);
+    font-size: clamp(1.45rem, 7vw, 1.85rem);
   }
 
   .option {
-    padding: 0.95rem 0.95rem;
+    padding: 0.78rem 0.82rem;
   }
 
+  .optionText {
+    font-size: 0.94rem;
+    line-height: 1.38;
+  }
+
+  .previousAction,
   .primaryAction {
-    width: 100%;
-  }
-
-  .supportingLinks {
-    gap: 10px 16px;
-    justify-content: flex-start;
+    min-height: 46px;
+    padding: 0.8rem 1rem;
   }
 }
