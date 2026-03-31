@@ -18,6 +18,7 @@ eloviz
 - [x] **REQ-10**: Replace the generic favicon with a brand-appropriate site icon.
 - [x] **REQ-11**: Add a `/studies` page with collapsible Bible-study topics and print-to-PDF export.
 - [x] **REQ-12**: Add a reusable Easter learn-more contact dialog at the end of the quiz and the bottom of the timeline.
+- [ ] **REQ-13**: Add a public Adventist church badge that opens a Baja visit invitation modal with a simple map.
 
 ## Out of Scope (for now)
 
@@ -40,6 +41,7 @@ eloviz
 | REQ-10 | Phase 02 | Completed |
 | REQ-11 | Phase 02 | Completed |
 | REQ-12 | Phase 02 | Completed |
+| REQ-13 | Phase 02 | Planned |
 
 ---
 *Last updated: 2026-03-31*
