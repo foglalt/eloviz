@@ -16,8 +16,12 @@ type HusvetSiteContent = {
   quiz: {
     href: string;
     ctaLabel: string;
-    secondaryLabel: string;
   };
+  studies: {
+    href: string;
+    ctaLabel: string;
+  };
+  timelineCtaLabel: string;
   spotlight: {
     title: string;
     description: string;
@@ -41,14 +45,18 @@ export const husvetSite = {
   eyebrow: "husvet.eloviz.hu | élő víz",
   title: "Húsvét, amelyből élet fakad",
   intro:
-    "Ez a kezdőoldal a betániai megkenéstől a mennybemenetelig vezeti végig Jézus húsvéti történetét. A kvíz már elérhető, az idővonal és a részletes tanulmányok pedig tovább bővülnek.",
+    "Ez a kezdőoldal a betániai megkenéstől a mennybemenetelig vezeti végig Jézus húsvéti történetét. A kvíz és a tanulmányi témák már elérhetők, az idővonal pedig tovább bővül.",
   note:
     "Az idővonal most is szándékosan vázlatos, hogy később pontosabb igehelyekkel, részletes magyarázatokkal és gazdagabb médiatartalommal mélyülhessen tovább.",
   quiz: {
     href: "/kviz",
     ctaLabel: "Kvíz megnyitása",
-    secondaryLabel: "Idővonal megnyitása",
   },
+  studies: {
+    href: "/studies",
+    ctaLabel: "Tanulmányok megnyitása",
+  },
+  timelineCtaLabel: "Idővonal megnyitása",
   spotlight: {
     title: "Csendesebb tónus, élőbb figyelem",
     description:
@@ -56,7 +64,7 @@ export const husvetSite = {
     highlights: [
       {
         label: "Fókusz",
-        value: "magyar nyelvű húsvéti áttekintés és kvíz",
+        value: "magyar nyelvű húsvéti áttekintés, kvíz és tanulmányok",
       },
       {
         label: "Szerkezet",
@@ -64,7 +72,7 @@ export const husvetSite = {
       },
       {
         label: "Következő lépés",
-        value: "mélyebb tanulmányok és részletes igehelyek",
+        value: "részletesebb idővonal és bővülő tanulmányi anyagok",
       },
     ],
   },

@@ -15,8 +15,11 @@ export function HusvetLandingPage() {
             <Link className={styles.primaryAction} href={husvetSite.quiz.href}>
               {husvetSite.quiz.ctaLabel}
             </Link>
-            <a className={styles.secondaryAction} href="#idovonal">
-              {husvetSite.quiz.secondaryLabel}
+            <Link className={styles.secondaryAction} href={husvetSite.studies.href}>
+              {husvetSite.studies.ctaLabel}
+            </Link>
+            <a className={styles.tertiaryAction} href="#idovonal">
+              {husvetSite.timelineCtaLabel}
             </a>
           </div>
 

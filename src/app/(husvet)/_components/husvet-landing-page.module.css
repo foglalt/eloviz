@@ -95,7 +95,8 @@
 }
 
 .primaryAction,
-.secondaryAction {
+.secondaryAction,
+.tertiaryAction {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -120,8 +121,14 @@
   background: rgba(255, 255, 255, 0.72);
 }
 
+.tertiaryAction {
+  border: 1px solid rgba(137, 84, 43, 0.12);
+  background: rgba(255, 248, 241, 0.52);
+}
+
 .primaryAction:hover,
-.secondaryAction:hover {
+.secondaryAction:hover,
+.tertiaryAction:hover {
   transform: translateY(-2px);
 }
 
@@ -350,7 +357,8 @@
   }
 
   .primaryAction,
-  .secondaryAction {
+  .secondaryAction,
+  .tertiaryAction {
     width: 100%;
   }
 
