@@ -19,7 +19,7 @@ eloviz
 - [x] **REQ-11**: Add a `/studies` page with collapsible Bible-study topics and print-to-PDF export.
 - [x] **REQ-12**: Add a reusable Easter learn-more contact dialog at the end of the quiz and the bottom of the timeline.
 - [x] **REQ-13**: Add a public Adventist church badge that opens a Baja visit invitation modal with a simple map.
-- [ ] **REQ-14**: Refine the public Easter UI with a calmer, mobile-first quiz experience and less redundant visual chrome.
+- [x] **REQ-14**: Refine the public Easter UI with a calmer, mobile-first quiz experience and less redundant visual chrome.
 
 ## Out of Scope (for now)
 
@@ -43,7 +43,7 @@ eloviz
 | REQ-11 | Phase 02 | Completed |
 | REQ-12 | Phase 02 | Completed |
 | REQ-13 | Phase 02 | Completed |
-| REQ-14 | Phase 02 | Planned |
+| REQ-14 | Phase 02 | Completed |
 
 ---
 *Last updated: 2026-03-31*

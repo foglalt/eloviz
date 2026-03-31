@@ -35,7 +35,7 @@ Plans:
 - [x] 02-06: Add studies route and print export
 - [x] 02-07: Add learn more contact dialog
 - [x] 02-08: Add Adventist church invite modal
-- [ ] 02-09: Refine public mobile-first UI
+- [x] 02-09: Refine public mobile-first UI
 - [ ] 02-10: Finalize timeline content and extended study detail
 
 ## Progress
@@ -43,7 +43,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |---|---|---|---|
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
-| 02 Deliver V1 | 8/10 | In progress | - |
+| 02 Deliver V1 | 9/10 | In progress | - |
 
 ---
 *Last updated: 2026-03-31*
