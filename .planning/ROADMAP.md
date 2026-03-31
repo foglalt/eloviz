@@ -33,7 +33,7 @@ Plans:
 - [x] 02-04: Refine quiz progression UX
 - [x] 02-05: Create brand favicon
 - [x] 02-06: Add studies route and print export
-- [ ] 02-07: Add learn more contact dialog
+- [x] 02-07: Add learn more contact dialog
 - [ ] 02-08: Finalize timeline content and extended study detail
 
 ## Progress
@@ -41,7 +41,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |---|---|---|---|
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
-| 02 Deliver V1 | 6/8 | In progress | - |
+| 02 Deliver V1 | 7/8 | In progress | - |
 
 ---
 *Last updated: 2026-03-31*
