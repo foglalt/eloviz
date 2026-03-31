@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import { useEffect, useEffectEvent, useState } from "react";
@@ -21,12 +21,12 @@ function AdventistInviteDialog({ onClose }: { onClose: () => void }) {
     >
       <div className={styles.dialog}>
         <button
-          aria-label="Meghívó bezárása"
+          aria-label="MeghĂ­vĂł bezĂˇrĂˇsa"
           className={styles.closeButton}
           onClick={onClose}
           type="button"
         >
-          Bezárás
+          BezĂˇrĂˇs
         </button>
 
         <div className={styles.dialogHero}>
@@ -37,14 +37,14 @@ function AdventistInviteDialog({ onClose }: { onClose: () => void }) {
                 aria-hidden="true"
                 height={80}
                 priority
-                src="/adventist-corner-mark.svg"
+                src="/adventist-hu-centered--black.svg"
                 width={80}
               />
             </span>
 
             <div className={styles.heroCopy}>
               <p className={styles.kicker}>
-                {bajaAdventistChurch.city} • {bajaAdventistChurch.churchName}
+                {bajaAdventistChurch.city} â€˘ {bajaAdventistChurch.churchName}
               </p>
               <h2 id="adventist-invite-title">
                 {bajaAdventistChurch.invitationTitle}
@@ -58,7 +58,7 @@ function AdventistInviteDialog({ onClose }: { onClose: () => void }) {
         <div className={styles.contentGrid}>
           <section className={styles.detailsPanel}>
             <div className={styles.infoBlock}>
-              <span className={styles.infoLabel}>Cím</span>
+              <span className={styles.infoLabel}>CĂ­m</span>
               <strong>{bajaAdventistChurch.address}</strong>
             </div>
 
@@ -83,7 +83,7 @@ function AdventistInviteDialog({ onClose }: { onClose: () => void }) {
                 rel="noreferrer"
                 target="_blank"
               >
-                Útvonal megnyitása
+                Ăštvonal megnyitĂˇsa
               </a>
               <a
                 className={styles.secondaryAction}
@@ -91,15 +91,15 @@ function AdventistInviteDialog({ onClose }: { onClose: () => void }) {
                 rel="noreferrer"
                 target="_blank"
               >
-                Gyülekezet oldala
+                GyĂĽlekezet oldala
               </a>
             </div>
           </section>
 
           <section className={styles.mapPanel}>
             <div className={styles.mapHeader}>
-              <span className={styles.infoLabel}>Térkép</span>
-              <p>Egyszerű útbaigazítás a bajai gyülekezethez.</p>
+              <span className={styles.infoLabel}>TĂ©rkĂ©p</span>
+              <p>EgyszerĹ± ĂştbaigazĂ­tĂˇs a bajai gyĂĽlekezethez.</p>
             </div>
             <BajaChurchMap className={styles.mapFrame} />
           </section>
@@ -150,7 +150,7 @@ export function AdventistChurchInvite() {
             aria-hidden="true"
             height={52}
             priority
-            src="/adventist-corner-mark.svg"
+            src="/adventist-hu-centered--black.svg"
             width={52}
           />
         </span>
@@ -168,3 +168,4 @@ export function AdventistChurchInvite() {
     </>
   );
 }
+
