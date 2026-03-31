@@ -24,20 +24,21 @@ Plans:
 **Goal:** Establish the Next.js app foundation and deliver the first `husvet.eloviz.hu` experience.
 **Depends on:** Phase 01
 **Requirements:** REQ-03, REQ-04, REQ-05, REQ-06, REQ-07, REQ-08, REQ-09
-**Plans:** 4 plans
+**Plans:** 5 plans
 
 Plans:
 - [x] 02-01: Bootstrap Next.js husvet landing
 - [x] 02-02: Fix Vercel deployment configuration
 - [x] 02-03: Implement quiz flow, Neon-backed admin editing, and warmer theme
-- [ ] 02-04: Finalize timeline content and extended study detail
+- [x] 02-04: Refine quiz progression UX
+- [ ] 02-05: Finalize timeline content and extended study detail
 
 ## Progress
 
 | Phase | Plans Complete | Status | Completed |
 |---|---|---|---|
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
-| 02 Deliver V1 | 3/4 | In progress | - |
+| 02 Deliver V1 | 4/5 | In progress | - |
 
 ---
-*Last updated: 2026-03-24*
+*Last updated: 2026-03-31*

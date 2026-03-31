@@ -101,26 +101,29 @@
   line-height: 0.92;
 }
 
+.progressTrack {
+  overflow: hidden;
+  height: 0.65rem;
+  border-radius: 999px;
+  background: rgba(255, 247, 241, 0.14);
+}
+
+.progressFill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(244, 210, 154, 0.92), #fff4dd);
+}
+
 .progressPanel p:last-child {
   color: rgba(255, 247, 241, 0.82);
   line-height: 1.75;
 }
 
-.quizForm {
+.questionStage {
   display: grid;
   gap: 24px;
   margin-top: 28px;
-}
-
-.questionList {
-  display: grid;
-  gap: 18px;
-  padding: 0;
-  list-style: none;
-}
-
-.questionItem {
-  animation: rise 520ms ease both;
 }
 
 .questionCard {
@@ -149,7 +152,70 @@
 
 .questionCard h2 {
   font-size: clamp(1.9rem, 4vw, 2.6rem);
-  line-height: 1;
+  line-height: 1.06;
+}
+
+.questionStatus {
+  color: var(--text-soft);
+  line-height: 1.72;
+}
+
+.hintRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.hintButton,
+.primaryAction,
+.secondaryAction,
+.tertiaryAction {
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    opacity 160ms ease,
+    border-color 160ms ease;
+}
+
+.hintButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.82rem 1.2rem;
+  border: 1px solid rgba(137, 84, 43, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 250, 244, 0.9);
+  color: var(--accent-strong);
+  font-weight: 700;
+}
+
+.hintButton:hover {
+  transform: translateY(-1px);
+}
+
+.hintNote {
+  color: var(--text-soft);
+  font-size: 0.94rem;
+  line-height: 1.65;
+}
+
+.hintPanel {
+  display: grid;
+  gap: 6px;
+  padding: 1rem 1.1rem;
+  border: 1px dashed rgba(137, 84, 43, 0.24);
+  border-radius: 20px;
+  background: rgba(250, 239, 224, 0.72);
+}
+
+.hintPanel strong {
+  color: var(--text-soft);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .options {
@@ -202,24 +268,11 @@
   font-weight: 700;
 }
 
-.feedback {
-  display: grid;
-  gap: 8px;
-  padding: 1rem 1.1rem;
-  border-radius: 20px;
-  line-height: 1.72;
-}
-
-.feedbackCorrect {
-  border: 1px solid rgba(91, 132, 86, 0.22);
-  background: rgba(238, 248, 232, 0.88);
-  color: #315f2d;
-}
-
-.feedbackWrong {
-  border: 1px solid rgba(173, 72, 58, 0.22);
-  background: rgba(255, 238, 232, 0.88);
-  color: #8f3526;
+.navigationRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
 }
 
 .actions {
@@ -239,11 +292,6 @@
   padding: 0.92rem 1.45rem;
   border-radius: 999px;
   font-weight: 700;
-  transition:
-    transform 160ms ease,
-    box-shadow 160ms ease,
-    opacity 160ms ease,
-    border-color 160ms ease;
 }
 
 .primaryAction {
@@ -260,6 +308,13 @@
 }
 
 .primaryAction:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.secondaryAction:disabled,
+.tertiaryAction:disabled,
+.hintButton:disabled {
   cursor: not-allowed;
   opacity: 0.55;
 }
@@ -320,11 +375,17 @@
     padding: 16px 0 52px;
   }
 
+  .navigationRow,
   .actions {
     flex-direction: column;
     align-items: stretch;
   }
 
+  .hintRow {
+    align-items: stretch;
+  }
+
+  .hintButton,
   .primaryAction,
   .secondaryAction,
   .tertiaryAction {
