@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AdventistChurchInvite } from "./_components/adventist-church-invite";
 import { husvetSite } from "./_content/husvet-site";
 
 export const metadata: Metadata = {
@@ -25,5 +26,10 @@ export default function HusvetLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return children;
+  return (
+    <>
+      {children}
+      <AdventistChurchInvite />
+    </>
+  );
 }
