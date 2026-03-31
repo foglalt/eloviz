@@ -345,7 +345,7 @@
   line-height: 0.92;
 }
 
-.resultPanel p:last-child {
+.resultSummary {
   max-width: 38rem;
   color: var(--text-soft);
   line-height: 1.82;

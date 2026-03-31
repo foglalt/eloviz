@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LearnMoreContactCta } from "./learn-more-contact-cta";
 import { husvetSite } from "../_content/husvet-site";
 import styles from "./husvet-landing-page.module.css";
 
@@ -68,6 +69,11 @@ export function HusvetLandingPage() {
             </li>
           ))}
         </ol>
+        <LearnMoreContactCta
+          description="Ha szeretnél személyesebb útmutatást vagy további húsvéti tartalmakat, küldd el az elérhetőségedet, és később fel tudjuk venni veled a kapcsolatot."
+          source="timeline"
+          title="Szeretnél mélyebbre menni a húsvét témájában?"
+        />
       </section>
     </main>
   );

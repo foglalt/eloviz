@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { HusvetQuizContent, QuizOptionId } from "@/lib/husvet-quiz";
+import { LearnMoreContactCta } from "../_components/learn-more-contact-cta";
 import { husvetSite } from "../_content/husvet-site";
 import styles from "./quiz-page.module.css";
 
@@ -211,7 +212,14 @@ export function QuizExperience({ content }: QuizExperienceProps) {
         <section className={styles.resultPanel}>
           <p className={styles.resultLabel}>Kész</p>
           <h2>Végigértél a kérdéseken</h2>
-          <p>{getCompletionMessage(totalQuestions)}</p>
+          <p className={styles.resultSummary}>
+            {getCompletionMessage(totalQuestions)}
+          </p>
+          <LearnMoreContactCta
+            description="Ha szeretnél személyesebb segítséget, további húsvéti anyagokat vagy egy későbbi beszélgetést, küldd el az elérhetőségedet."
+            source="quiz"
+            title="Menj tovább egy következő lépéssel"
+          />
           <div className={styles.actions}>
             <button
               className={styles.primaryAction}
