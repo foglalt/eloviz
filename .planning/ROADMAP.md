@@ -23,8 +23,8 @@ Plans:
 ### Phase 02: Deliver V1
 **Goal:** Establish the Next.js app foundation and deliver the first `husvet.eloviz.hu` experience.
 **Depends on:** Phase 01
-**Requirements:** REQ-03, REQ-04, REQ-05, REQ-06, REQ-07, REQ-08, REQ-09, REQ-10, REQ-11, REQ-12, REQ-13
-**Plans:** 9 plans
+**Requirements:** REQ-03, REQ-04, REQ-05, REQ-06, REQ-07, REQ-08, REQ-09, REQ-10, REQ-11, REQ-12, REQ-13, REQ-14
+**Plans:** 10 plans
 
 Plans:
 - [x] 02-01: Bootstrap Next.js husvet landing
@@ -35,14 +35,15 @@ Plans:
 - [x] 02-06: Add studies route and print export
 - [x] 02-07: Add learn more contact dialog
 - [x] 02-08: Add Adventist church invite modal
-- [ ] 02-09: Finalize timeline content and extended study detail
+- [ ] 02-09: Refine public mobile-first UI
+- [ ] 02-10: Finalize timeline content and extended study detail
 
 ## Progress
 
 | Phase | Plans Complete | Status | Completed |
 |---|---|---|---|
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
-| 02 Deliver V1 | 8/9 | In progress | - |
+| 02 Deliver V1 | 8/10 | In progress | - |
 
 ---
 *Last updated: 2026-03-31*
