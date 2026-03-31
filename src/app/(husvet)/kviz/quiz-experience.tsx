@@ -26,7 +26,6 @@ export function QuizExperience({ content }: QuizExperienceProps) {
   );
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const answeredCount = Object.keys(answers).length;
   const totalQuestions = content.questions.length;
   const isComplete = currentIndex >= totalQuestions;
   const currentQuestion = isComplete ? null : content.questions[currentIndex];
@@ -38,7 +37,11 @@ export function QuizExperience({ content }: QuizExperienceProps) {
     : false;
   const hintPanelId = currentQuestion ? `igehely-${currentQuestion.id}` : undefined;
   const progressPercent =
-    totalQuestions > 0 ? Math.round((answeredCount / totalQuestions) * 100) : 0;
+    totalQuestions > 0
+      ? Math.round(
+          ((isComplete ? totalQuestions : currentIndex + 1) / totalQuestions) * 100,
+        )
+      : 0;
 
   function handleAnswerChange(questionId: string, optionId: QuizOptionId) {
     setAnswers((currentAnswers) => ({
@@ -78,49 +81,39 @@ export function QuizExperience({ content }: QuizExperienceProps) {
 
   return (
     <main className={styles.page}>
-      <section className={styles.hero}>
-        <div className={styles.heroCopy}>
-          <p className={styles.eyebrow}>{husvetSite.domain} / kvíz</p>
+      <section className={styles.intro}>
+        <p className={styles.eyebrow}>{husvetSite.domain} / kvíz</p>
+        <div className={styles.introCopy}>
           <h1>{content.title}</h1>
           <p className={styles.lead}>{content.intro}</p>
         </div>
-
-        <aside className={styles.progressPanel}>
-          <p className={styles.progressLabel}>Állapot</p>
-          <strong>
-            {answeredCount}/{totalQuestions}
-          </strong>
-          <div className={styles.progressTrack} aria-hidden="true">
-            <span
-              className={styles.progressFill}
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
-          <p>
-            {isComplete
-              ? "Végigértél a kérdéseken. A válaszok helyességét most nem mutatjuk meg."
-              : "Egyszerre egy kérdés látszik. Válassz, majd lépj tovább a következőre."}
-          </p>
-        </aside>
       </section>
 
       {!isComplete && currentQuestion ? (
         <section className={styles.questionStage}>
-          <article className={styles.questionCard}>
-            <div className={styles.questionMeta}>
-              <span>{(currentIndex + 1).toString().padStart(2, "0")}</span>
-              <span>
+          <div className={styles.stageSummary}>
+            <div className={styles.stageMeta}>
+              <span className={styles.stageLabel}>
+                Kérdés {(currentIndex + 1).toString().padStart(2, "0")} /{" "}
+                {totalQuestions.toString().padStart(2, "0")}
+              </span>
+              <span className={styles.stageNote}>
                 {currentIndex === totalQuestions - 1
-                  ? "Utolsó kérdés"
-                  : "Következő állomás"}
+                  ? "Utolsó lépés"
+                  : "Válassz, és haladj tovább."}
               </span>
             </div>
 
+            <div className={styles.progressTrack} aria-hidden="true">
+              <span
+                className={styles.progressFill}
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+          </div>
+
+          <article className={styles.questionCard}>
             <h2>{currentQuestion.prompt}</h2>
-            <p className={styles.questionStatus}>
-              Jelöld meg a szerinted helyes választ. A helyességet most nem
-              jelezzük vissza azonnal.
-            </p>
 
             <div className={styles.hintRow}>
               <button
@@ -132,9 +125,6 @@ export function QuizExperience({ content }: QuizExperienceProps) {
               >
                 {hintVisible ? "Igehely elrejtése" : "Igehely megmutatása"}
               </button>
-              <span className={styles.hintNote}>
-                A súgó csak a kapcsolódó bibliai helyet mutatja meg.
-              </span>
             </div>
 
             {hintVisible ? (
@@ -157,6 +147,7 @@ export function QuizExperience({ content }: QuizExperienceProps) {
                   >
                     <input
                       checked={isSelected}
+                      className={styles.optionInput}
                       name={currentQuestion.id}
                       onChange={() =>
                         handleAnswerChange(currentQuestion.id, option.id)
@@ -164,24 +155,17 @@ export function QuizExperience({ content }: QuizExperienceProps) {
                       type="radio"
                       value={option.id}
                     />
-                    <span className={styles.optionKey}>
-                      {option.id.toUpperCase()}
-                    </span>
-                    <span>{option.text}</span>
+                    <span className={styles.optionText}>{option.text}</span>
+                    <span
+                      aria-hidden="true"
+                      className={styles.optionIndicator}
+                    />
                   </label>
                 );
               })}
             </div>
 
-            <div className={styles.navigationRow}>
-              <button
-                className={styles.secondaryAction}
-                disabled={currentIndex === 0}
-                onClick={handleBack}
-                type="button"
-              >
-                Előző kérdés
-              </button>
+            <div className={styles.primaryActionRow}>
               <button
                 className={styles.primaryAction}
                 disabled={!selectedAnswer}
@@ -195,15 +179,24 @@ export function QuizExperience({ content }: QuizExperienceProps) {
             </div>
           </article>
 
-          <div className={styles.actions}>
+          <div className={styles.supportingLinks}>
+            {currentIndex > 0 ? (
+              <button
+                className={styles.inlineAction}
+                onClick={handleBack}
+                type="button"
+              >
+                Előző kérdés
+              </button>
+            ) : null}
             <button
-              className={styles.tertiaryAction}
+              className={styles.inlineAction}
               onClick={handleReset}
               type="button"
             >
               Újrakezdés
             </button>
-            <Link className={styles.tertiaryAction} href="/">
+            <Link className={styles.inlineAction} href="/">
               Vissza a kezdőoldalra
             </Link>
           </div>
@@ -220,7 +213,7 @@ export function QuizExperience({ content }: QuizExperienceProps) {
             source="quiz"
             title="Menj tovább egy következő lépéssel"
           />
-          <div className={styles.actions}>
+          <div className={styles.primaryActionRow}>
             <button
               className={styles.primaryAction}
               onClick={handleReset}
@@ -228,6 +221,8 @@ export function QuizExperience({ content }: QuizExperienceProps) {
             >
               Újrakezdés
             </button>
+          </div>
+          <div className={styles.supportingLinks}>
             <Link className={styles.tertiaryAction} href="/">
               Vissza a kezdőoldalra
             </Link>

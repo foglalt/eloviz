@@ -1,49 +1,32 @@
 .page {
   position: relative;
-  width: min(1100px, calc(100% - 1.5rem));
+  width: min(860px, calc(100% - 1.25rem));
   margin: 0 auto;
-  padding: 28px 0 88px;
+  padding: 20px 0 72px;
 }
 
-.hero,
+.intro,
 .resultPanel {
   position: relative;
   overflow: hidden;
-}
-
-.hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.75fr);
-  gap: 20px;
-  padding: clamp(28px, 5vw, 52px);
-  border: 1px solid var(--line);
-  border-radius: 34px;
+  border: 1px solid rgba(137, 84, 43, 0.14);
+  border-radius: 30px;
   background:
-    linear-gradient(160deg, rgba(255, 251, 246, 0.94), rgba(248, 234, 217, 0.82)),
-    linear-gradient(180deg, rgba(201, 109, 66, 0.08), transparent 58%);
+    linear-gradient(180deg, rgba(255, 251, 246, 0.94), rgba(247, 234, 218, 0.84)),
+    linear-gradient(150deg, rgba(201, 109, 66, 0.05), transparent 58%);
   box-shadow: var(--shadow);
-  animation: rise 520ms ease both;
 }
 
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: auto -8% -38% auto;
-  width: 340px;
-  height: 340px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(209, 164, 90, 0.24), transparent 68%);
-}
-
-.heroCopy,
-.progressPanel {
-  position: relative;
-  z-index: 1;
+.intro {
+  display: grid;
+  gap: 14px;
+  padding: clamp(22px, 5vw, 36px);
+  animation: rise 420ms ease both;
 }
 
 .eyebrow,
 .resultLabel,
-.progressLabel {
+.stageLabel {
   display: inline-flex;
   width: fit-content;
   padding: 0.45rem 0.9rem;
@@ -56,121 +39,107 @@
   text-transform: uppercase;
 }
 
-.hero h1,
+.introCopy {
+  display: grid;
+  gap: 12px;
+  max-width: 42rem;
+}
+
+.intro h1,
 .questionCard h2,
 .resultPanel h2 {
+  margin: 0;
   font-family: var(--font-heading), serif;
   font-weight: 600;
   letter-spacing: -0.04em;
 }
 
-.hero h1 {
-  margin-top: 18px;
-  font-size: clamp(3rem, 8vw, 5rem);
-  line-height: 0.94;
+.intro h1 {
+  font-size: clamp(2.5rem, 9vw, 4.5rem);
+  line-height: 0.95;
+}
+
+.lead,
+.stageNote,
+.hintPanel p,
+.resultSummary {
+  color: var(--text-soft);
+  line-height: 1.72;
 }
 
 .lead {
-  max-width: 42rem;
-  margin-top: 18px;
-  color: var(--text-soft);
-  font-size: 1.02rem;
-  line-height: 1.82;
+  font-size: 1rem;
 }
 
-.progressPanel {
+.questionStage {
   display: grid;
-  align-content: start;
-  gap: 12px;
-  padding: 22px;
-  border-radius: 26px;
-  background:
-    linear-gradient(180deg, rgba(98, 58, 34, 0.95), rgba(132, 75, 42, 0.92)),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent);
-  color: #fff7f1;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  gap: 18px;
+  margin-top: 20px;
 }
 
-.progressLabel {
-  background: rgba(255, 247, 241, 0.12);
-  color: rgba(255, 247, 241, 0.86);
+.stageSummary {
+  display: grid;
+  gap: 10px;
+  padding: 0 4px;
 }
 
-.progressPanel strong {
-  font-size: clamp(2.2rem, 5vw, 3.4rem);
-  line-height: 0.92;
+.stageMeta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.stageLabel {
+  background: rgba(255, 247, 237, 0.94);
+}
+
+.stageNote {
+  font-size: 0.95rem;
 }
 
 .progressTrack {
   overflow: hidden;
-  height: 0.65rem;
+  height: 0.4rem;
   border-radius: 999px;
-  background: rgba(255, 247, 241, 0.14);
+  background: rgba(137, 84, 43, 0.1);
 }
 
 .progressFill {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, rgba(244, 210, 154, 0.92), #fff4dd);
-}
-
-.progressPanel p:last-child {
-  color: rgba(255, 247, 241, 0.82);
-  line-height: 1.75;
-}
-
-.questionStage {
-  display: grid;
-  gap: 24px;
-  margin-top: 28px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-strong));
 }
 
 .questionCard {
   display: grid;
   gap: 18px;
-  padding: 24px;
+  padding: clamp(20px, 4vw, 30px);
   border: 1px solid rgba(137, 84, 43, 0.14);
   border-radius: 28px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(252, 243, 233, 0.82)),
-    linear-gradient(150deg, rgba(209, 164, 90, 0.08), transparent 58%);
-  box-shadow: 0 18px 48px rgba(97, 60, 41, 0.08);
-}
-
-.questionMeta {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 12px;
-  color: var(--text-soft);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(251, 243, 233, 0.84)),
+    linear-gradient(150deg, rgba(209, 164, 90, 0.06), transparent 58%);
+  box-shadow: 0 18px 44px rgba(97, 60, 41, 0.08);
 }
 
 .questionCard h2 {
-  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  font-size: clamp(1.85rem, 6vw, 2.6rem);
   line-height: 1.06;
-}
-
-.questionStatus {
-  color: var(--text-soft);
-  line-height: 1.72;
 }
 
 .hintRow {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
+  gap: 10px;
 }
 
 .hintButton,
 .primaryAction,
-.secondaryAction,
-.tertiaryAction {
+.tertiaryAction,
+.inlineAction {
   transition:
     transform 160ms ease,
     box-shadow 160ms ease,
@@ -179,35 +148,29 @@
 }
 
 .hintButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: 0.82rem 1.2rem;
-  border: 1px solid rgba(137, 84, 43, 0.16);
-  border-radius: 999px;
-  background: rgba(255, 250, 244, 0.9);
+  padding: 0;
+  border: 0;
+  background: none;
   color: var(--accent-strong);
   font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
 }
 
-.hintButton:hover {
-  transform: translateY(-1px);
-}
-
-.hintNote {
-  color: var(--text-soft);
-  font-size: 0.94rem;
-  line-height: 1.65;
+.hintButton:hover,
+.inlineAction:hover,
+.tertiaryAction:hover {
+  color: var(--accent-strong);
 }
 
 .hintPanel {
   display: grid;
   gap: 6px;
-  padding: 1rem 1.1rem;
-  border: 1px dashed rgba(137, 84, 43, 0.24);
-  border-radius: 20px;
-  background: rgba(250, 239, 224, 0.72);
+  padding: 0.95rem 1rem;
+  border-left: 3px solid rgba(167, 76, 37, 0.24);
+  border-radius: 0 18px 18px 0;
+  background: rgba(252, 243, 233, 0.72);
 }
 
 .hintPanel strong {
@@ -224,14 +187,15 @@
 }
 
 .option {
+  position: relative;
   display: grid;
-  grid-template-columns: auto auto 1fr;
-  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
   align-items: center;
-  padding: 1rem 1.1rem;
+  padding: 1rem 1.05rem;
   border: 1px solid rgba(137, 84, 43, 0.12);
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.78);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.86);
   cursor: pointer;
   transition:
     transform 160ms ease,
@@ -242,54 +206,56 @@
 
 .option:hover {
   transform: translateY(-1px);
-  border-color: rgba(137, 84, 43, 0.24);
+  border-color: rgba(137, 84, 43, 0.22);
 }
 
-.option input {
-  margin: 0;
+.optionInput {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.optionText {
+  line-height: 1.62;
+}
+
+.optionIndicator {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 1.5px solid rgba(137, 84, 43, 0.24);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: inset 0 0 0 4px transparent;
+  transition:
+    box-shadow 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease;
 }
 
 .optionSelected {
-  border-color: rgba(167, 76, 37, 0.28);
-  background: rgba(255, 245, 237, 0.96);
-  box-shadow: 0 12px 24px rgba(201, 109, 66, 0.12);
+  border-color: rgba(167, 76, 37, 0.24);
+  background: rgba(255, 246, 238, 0.96);
+  box-shadow: 0 14px 28px rgba(201, 109, 66, 0.1);
 }
 
-.optionKey {
+.optionSelected .optionIndicator {
+  border-color: rgba(167, 76, 37, 0.9);
+  background: rgba(255, 250, 246, 0.98);
+  box-shadow: inset 0 0 0 4px rgba(167, 76, 37, 0.92);
+}
+
+.primaryActionRow {
   display: grid;
-  place-items: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 999px;
-  background: var(--gold-soft);
-  color: var(--accent-strong);
-  font-family: var(--font-mono), monospace;
-  font-size: 0.86rem;
-  font-weight: 700;
-}
-
-.navigationRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  align-items: center;
-}
-
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  align-items: center;
 }
 
 .primaryAction,
-.secondaryAction,
 .tertiaryAction {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 54px;
-  padding: 0.92rem 1.45rem;
+  padding: 0.95rem 1.45rem;
   border-radius: 999px;
   font-weight: 700;
 }
@@ -298,12 +264,10 @@
   border: 0;
   background: linear-gradient(135deg, var(--accent), var(--accent-strong));
   color: #fff8f2;
-  box-shadow: 0 18px 34px rgba(167, 76, 37, 0.24);
+  box-shadow: 0 18px 34px rgba(167, 76, 37, 0.22);
 }
 
-.primaryAction:hover:not(:disabled),
-.secondaryAction:hover,
-.tertiaryAction:hover {
+.primaryAction:hover:not(:disabled) {
   transform: translateY(-1px);
 }
 
@@ -312,43 +276,41 @@
   opacity: 0.55;
 }
 
-.secondaryAction:disabled,
-.tertiaryAction:disabled,
-.hintButton:disabled {
-  cursor: not-allowed;
-  opacity: 0.55;
+.supportingLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  align-items: center;
 }
 
-.secondaryAction,
+.inlineAction,
 .tertiaryAction {
-  border: 1px solid rgba(137, 84, 43, 0.16);
-  background: rgba(255, 255, 255, 0.76);
-  color: var(--text);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-soft);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
 }
 
 .resultPanel {
   display: grid;
-  gap: 14px;
-  margin-top: 24px;
+  gap: 16px;
+  margin-top: 20px;
   padding: clamp(24px, 5vw, 40px);
-  border: 1px solid rgba(137, 84, 43, 0.14);
-  border-radius: 30px;
-  background:
-    linear-gradient(180deg, rgba(255, 248, 241, 0.94), rgba(247, 232, 215, 0.84)),
-    linear-gradient(150deg, rgba(201, 109, 66, 0.06), transparent 55%);
-  box-shadow: var(--shadow);
-  animation: rise 440ms ease both;
+  animation: rise 420ms ease both;
 }
 
 .resultPanel h2 {
-  font-size: clamp(3rem, 8vw, 4.6rem);
-  line-height: 0.92;
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  line-height: 0.94;
 }
 
 .resultSummary {
   max-width: 38rem;
-  color: var(--text-soft);
-  line-height: 1.82;
 }
 
 @keyframes rise {
@@ -363,32 +325,58 @@
   }
 }
 
-@media (max-width: 860px) {
-  .hero {
-    grid-template-columns: 1fr;
-  }
-}
-
 @media (max-width: 640px) {
   .page {
     width: min(100%, calc(100% - 1rem));
-    padding: 16px 0 52px;
+    padding: 14px 0 48px;
   }
 
-  .navigationRow,
-  .actions {
+  .intro {
+    padding: 20px 18px 22px;
+  }
+
+  .intro h1 {
+    font-size: clamp(2.15rem, 10vw, 3rem);
+  }
+
+  .lead {
+    font-size: 0.96rem;
+    line-height: 1.64;
+  }
+
+  .questionStage {
+    gap: 14px;
+    margin-top: 16px;
+  }
+
+  .stageMeta {
+    align-items: start;
     flex-direction: column;
-    align-items: stretch;
   }
 
-  .hintRow {
-    align-items: stretch;
+  .stageNote {
+    font-size: 0.92rem;
   }
 
-  .hintButton,
-  .primaryAction,
-  .secondaryAction,
-  .tertiaryAction {
+  .questionCard {
+    padding: 18px 16px 20px;
+    gap: 16px;
+  }
+
+  .questionCard h2 {
+    font-size: clamp(1.7rem, 8vw, 2.2rem);
+  }
+
+  .option {
+    padding: 0.95rem 0.95rem;
+  }
+
+  .primaryAction {
     width: 100%;
+  }
+
+  .supportingLinks {
+    gap: 10px 16px;
+    justify-content: flex-start;
   }
 }

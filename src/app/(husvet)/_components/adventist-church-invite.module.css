@@ -292,6 +292,10 @@
 }
 
 @media (max-width: 640px) {
+  .badgeButtonQuiz {
+    display: none;
+  }
+
   .badgeButton {
     right: 14px;
     bottom: 14px;
