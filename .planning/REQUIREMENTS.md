@@ -17,6 +17,7 @@ eloviz
 - [ ] **REQ-09**: Finalize the Easter timeline wording and extended study content.
 - [x] **REQ-10**: Replace the generic favicon with a brand-appropriate site icon.
 - [x] **REQ-11**: Add a `/studies` page with collapsible Bible-study topics and print-to-PDF export.
+- [ ] **REQ-12**: Add a reusable Easter learn-more contact dialog at the end of the quiz and the bottom of the timeline.
 
 ## Out of Scope (for now)
 
@@ -38,6 +39,7 @@ eloviz
 | REQ-09 | Future phase | Planned |
 | REQ-10 | Phase 02 | Completed |
 | REQ-11 | Phase 02 | Completed |
+| REQ-12 | Phase 02 | Planned |
 
 ---
 *Last updated: 2026-03-31*
