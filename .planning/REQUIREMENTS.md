@@ -15,6 +15,7 @@ eloviz
 - [x] **REQ-07**: Add a password-protected admin editor that stores quiz content in Neon using `ADMIN_PASSWORD`.
 - [x] **REQ-08**: Shift the site toward a warmer, friendlier visual theme across the public and admin surfaces.
 - [ ] **REQ-09**: Finalize the Easter timeline wording and extended study content.
+- [x] **REQ-10**: Replace the generic favicon with a brand-appropriate site icon.
 
 ## Out of Scope (for now)
 
@@ -34,6 +35,7 @@ eloviz
 | REQ-07 | Phase 02 | Completed |
 | REQ-08 | Phase 02 | Completed |
 | REQ-09 | Future phase | Planned |
+| REQ-10 | Phase 02 | Completed |
 
 ---
-*Last updated: 2026-03-24*
+*Last updated: 2026-03-31*
