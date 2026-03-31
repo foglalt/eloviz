@@ -1,4 +1,4 @@
-# Project State
+﻿# Project State
 
 **Project:** eloviz
 **Current Phase:** 02
@@ -8,7 +8,7 @@
 **Status:** Ready to plan 02-09
 **Progress:** 89%
 **Last Activity:** 2026-03-31
-**Last Activity Description:** Completed Phase 02 Plan 08 Adventist church invite modal with verification
+**Last Activity Description:** Refined the Adventist invite to use the provided SVG logo with verification
 **Paused At:** None
 
 ## Recent Decisions
@@ -20,7 +20,7 @@
 - The site favicon now uses a custom open-Bible and living-water mark instead of the generic placeholder.
 - The site now includes a `/studies` route with collapsible topics and browser-based PDF export.
 - The Easter surface now includes a reusable learn-more contact dialog at the end of the quiz and below the timeline.
-- The public Easter surface now includes a floating Adventist church invite badge with a Baja visit modal and simple map.
+- The public Easter surface now includes a floating Adventist church invite badge with a Baja visit modal, simple map, and the provided Hungarian Adventist SVG mark cropped to the symbol.
 - Timeline detail finalization remains separate follow-up work after the Adventist invite work.
 
 ## Blockers
@@ -29,6 +29,7 @@
 
 ## Session
 
-**Last Date:** 2026-03-31T09:27:55+02:00
-**Stopped At:** Phase 02 Plan 08 completed, ready to scope remaining timeline content
+**Last Date:** 2026-03-31T19:09:02+02:00
+**Stopped At:** Adventist logo asset refinement verified
 **Resume File:** .planning/phases/02-deliver-v1/02-08-SUMMARY.md
+
