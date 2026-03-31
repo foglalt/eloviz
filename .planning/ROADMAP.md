@@ -32,7 +32,7 @@ Plans:
 - [x] 02-03: Implement quiz flow, Neon-backed admin editing, and warmer theme
 - [x] 02-04: Refine quiz progression UX
 - [x] 02-05: Create brand favicon
-- [ ] 02-06: Add studies route and print export
+- [x] 02-06: Add studies route and print export
 - [ ] 02-07: Finalize timeline content and extended study detail
 
 ## Progress
@@ -40,7 +40,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |---|---|---|---|
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
-| 02 Deliver V1 | 5/7 | In progress | - |
+| 02 Deliver V1 | 6/7 | In progress | - |
 
 ---
 *Last updated: 2026-03-31*

@@ -16,7 +16,7 @@ eloviz
 - [x] **REQ-08**: Shift the site toward a warmer, friendlier visual theme across the public and admin surfaces.
 - [ ] **REQ-09**: Finalize the Easter timeline wording and extended study content.
 - [x] **REQ-10**: Replace the generic favicon with a brand-appropriate site icon.
-- [ ] **REQ-11**: Add a `/studies` page with collapsible Bible-study topics and print-to-PDF export.
+- [x] **REQ-11**: Add a `/studies` page with collapsible Bible-study topics and print-to-PDF export.
 
 ## Out of Scope (for now)
 
@@ -37,7 +37,7 @@ eloviz
 | REQ-08 | Phase 02 | Completed |
 | REQ-09 | Future phase | Planned |
 | REQ-10 | Phase 02 | Completed |
-| REQ-11 | Phase 02 | Planned |
+| REQ-11 | Phase 02 | Completed |
 
 ---
 *Last updated: 2026-03-31*
