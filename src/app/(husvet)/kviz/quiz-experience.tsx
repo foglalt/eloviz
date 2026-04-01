@@ -282,6 +282,14 @@ export function QuizExperience({ content }: QuizExperienceProps) {
     };
   }, [answers, content.questions, content.slug, currentIndex, isComplete, totalQuestions]);
 
+  useEffect(() => {
+    document.body.dataset.husvetQuizComplete = isComplete ? "true" : "false";
+
+    return () => {
+      delete document.body.dataset.husvetQuizComplete;
+    };
+  }, [isComplete]);
+
   function handleAnswerChange(questionId: string, optionId: QuizOptionId) {
     setAnswers((currentAnswers) => ({
       ...currentAnswers,
