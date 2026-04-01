@@ -1,5 +1,5 @@
 ---
-generated: 2026-03-31T20:33:35+02:00
+generated: 2026-04-01T10:31:11+02:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-03-31T20:33:35+02:00
+- Timestamp: 2026-04-01T10:31:11+02:00
 
 ## Checks
 
@@ -39,15 +39,15 @@ Exit code: 0
 ▲ Next.js 16.2.1 (Turbopack)
 
   Creating an optimized production build ...
-✓ Compiled successfully in 16.1s
+✓ Compiled successfully in 3.1s
   Running TypeScript ...
-  Finished TypeScript in 4.8s ...
+  Finished TypeScript in 2.4s ...
   Collecting page data using 7 workers ...
   Generating static pages using 7 workers (0/4) ...
   Generating static pages using 7 workers (1/4) 
   Generating static pages using 7 workers (2/4) 
   Generating static pages using 7 workers (3/4) 
-✓ Generating static pages using 7 workers (4/4) in 841ms
+✓ Generating static pages using 7 workers (4/4) in 544ms
   Finalizing page optimization ...
 
 Route (app)

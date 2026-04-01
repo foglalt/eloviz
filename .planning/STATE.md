@@ -7,8 +7,8 @@
 **Total Plans in Phase:** 10
 **Status:** Ready to plan 02-10
 **Progress:** 90%
-**Last Activity:** 2026-03-31
-**Last Activity Description:** Tightened the quiz above-the-fold mobile layout with verification
+**Last Activity:** 2026-04-01
+**Last Activity Description:** Refined the quiz answer-card tap highlight to respect rounded corners with verification
 **Paused At:** None
 
 ## Recent Decisions
@@ -21,7 +21,7 @@
 - The site now includes a `/studies` route with collapsible topics and browser-based PDF export.
 - The Easter surface now includes a reusable learn-more contact dialog at the end of the quiz and below the timeline.
 - The public Easter surface now includes a floating Adventist church invite badge with a Baja visit modal, simple map, and the provided Hungarian Adventist SVG mark cropped to the symbol.
-- The public quiz now removes the hero, uses only a compact progress bar, keeps a small previous-next navigation row, and hides the mobile quiz badge.
+- The public quiz now removes the hero, uses only a compact progress bar, keeps a small previous-next navigation row, hides the mobile quiz badge, and clips answer-card tap feedback to the rounded option shape.
 - Timeline detail finalization remains separate follow-up work after the Adventist invite work.
 
 ## Blockers
@@ -30,7 +30,7 @@
 
 ## Session
 
-**Last Date:** 2026-03-31T20:33:35+02:00
-**Stopped At:** Above-the-fold mobile quiz refinement verified
+**Last Date:** 2026-04-01T10:31:11+02:00
+**Stopped At:** Quiz tap-highlight refinement verified
 **Resume File:** .planning/phases/02-deliver-v1/02-09-SUMMARY.md
 
