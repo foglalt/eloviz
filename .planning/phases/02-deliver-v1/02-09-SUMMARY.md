@@ -27,6 +27,7 @@ The public Easter UI now has a calmer, mobile-first quiz experience with much le
 - Added admin-facing visibility into saved contacts plus device-level quiz progress and correctness by reporting quiz state snapshots to a server-side analytics store.
 - Tightened the Adventist invite dialog logo framing so the symbol sits centered inside the circular mark on phones.
 - Fixed the mobile root background so browser overscroll and toolbar resize no longer reveal a white bar at the bottom of the screen.
+- Fixed the remaining rounded public buttons so Android tap highlights no longer flash as full rectangles outside the pill or circular shape.
 - Reworked the Adventist invite modal into a compact mobile sheet with condensed visit details, no map on phones, and less visual chrome.
 
 ## Files Touched
@@ -43,6 +44,10 @@ The public Easter UI now has a calmer, mobile-first quiz experience with much le
 - `src/app/globals.css` - aligned the `html` background with the site gradient and switched the body minimum height baseline to dynamic viewport sizing so mobile overscroll does not show a white bottom strip.
 - `src/app/(husvet)/_components/adventist-church-invite.tsx` - simplified the floating church badge trigger and kept it available on mobile with an accessible round-button treatment.
 - `src/app/(husvet)/_components/adventist-church-invite.module.css` - reduced the floating badge to a compact circular button on small screens, re-centered its mark, rebuilt the modal as a smaller mobile sheet, removed the map section on phones, and centered the modal logo framing on mobile.
+- `src/app/(husvet)/_components/husvet-landing-page.module.css` - clipped tap feedback to the rounded landing-page CTA shapes and suppressed the default mobile tap highlight.
+- `src/app/(husvet)/_components/learn-more-contact-cta.module.css` - clipped tap feedback for the contact CTA and dialog controls to their rounded shapes.
+- `src/app/(husvet)/studies/studies-page.module.css` - clipped pill-button tap feedback on the studies page.
+- `src/app/(husvet)/kviz/quiz-page.module.css` - extended the rounded tap-highlight fix from answer cards to the quiz action buttons and completed-screen invite controls.
 - `src/app/(husvet)/_components/learn-more-contact-cta.tsx` - tightened the contact dialog behavior, copy, and optional field flow for mobile use.
 - `src/app/(husvet)/_components/learn-more-contact-cta.module.css` - restyled the contact dialog as a compact sheet with fewer stacked controls and less modal chrome.
 - `.planning/phases/02-deliver-v1/02-VERIFICATION.md` - recorded the passing verification snapshot.
@@ -61,6 +66,7 @@ The public Easter UI now has a calmer, mobile-first quiz experience with much le
 - Keep the Adventist mark visually centered inside the floating badge instead of letting the raw SVG box define its placement.
 - Give the Adventist modal logo its own centered sizing inside the circular frame instead of relying on the raw image dimensions.
 - Keep the `html` root background aligned with the site background and use dynamic viewport height on `body` so mobile browser chrome changes do not expose a white strip.
+- Apply the rounded tap-highlight fix consistently to the public pill and circular controls, not only to the quiz answer cards.
 - Keep public modals on phones as compact sheets with one job each, avoiding tall internal panels and optional content by default.
 - Drop the Adventist modal map entirely on phones so the mobile dialog stays focused on the invitation and actions.
 
