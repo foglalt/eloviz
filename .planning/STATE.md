@@ -8,7 +8,7 @@
 **Status:** Ready to plan 02-10
 **Progress:** 90%
 **Last Activity:** 2026-04-01
-**Last Activity Description:** Added admin contact and device quiz analytics views with verification
+**Last Activity Description:** Re-centered the Adventist modal logo on phones with verification
 **Paused At:** None
 
 ## Recent Decisions
@@ -25,6 +25,7 @@
 - The public quiz now restores quiz progress on the same device, and the learn-more contact dialog reloads unfinished draft fields from local browser storage until successful submission.
 - The completed quiz screen now includes a restart button that clears the saved same-device quiz progress and returns the visitor to the first question.
 - The public quiz now reports device-level progress and correctness snapshots to a server-side store, and the admin page lists saved contacts plus per-device quiz progress and success when `DATABASE_URL` is configured.
+- The Adventist invite dialog now uses its own centered modal-logo sizing so the symbol sits correctly inside the circular frame on phones.
 - Timeline detail finalization remains separate follow-up work after the Adventist invite work.
 
 ## Blockers
@@ -33,7 +34,7 @@
 
 ## Session
 
-**Last Date:** 2026-04-01T18:17:40+02:00
-**Stopped At:** Admin contact and analytics dashboard verified
+**Last Date:** 2026-04-01T19:52:21+02:00
+**Stopped At:** Adventist modal logo centering verified
 **Resume File:** .planning/phases/02-deliver-v1/02-09-SUMMARY.md
 
