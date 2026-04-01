@@ -531,6 +531,11 @@
   margin: 0;
 }
 
+.reviewReference {
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
 .reviewExplanation {
   color: var(--text-soft);
   line-height: 1.55;

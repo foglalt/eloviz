@@ -120,24 +120,6 @@ function getOrCreateStoredQuizDeviceId() {
   }
 }
 
-function getResultInsight(correctAnswers: number, totalQuestions: number) {
-  const incorrectAnswers = Math.max(totalQuestions - correctAnswers, 0);
-
-  if (totalQuestions === 0) {
-    return "Még nincs értékelhető kérdés.";
-  }
-
-  if (incorrectAnswers === 0) {
-    return "Minden kérdésnél jó választ jelöltél.";
-  }
-
-  if (incorrectAnswers === 1) {
-    return "Egy kérdésnél más választ jelöltél.";
-  }
-
-  return `${incorrectAnswers} kérdésnél más választ jelöltél.`;
-}
-
 function getReviewSummaryMeta(correctAnswers: number, totalQuestions: number) {
   const incorrectAnswers = Math.max(totalQuestions - correctAnswers, 0);
 
@@ -544,6 +526,15 @@ export function QuizExperience({ content }: QuizExperienceProps) {
                   <div className={styles.reviewAnswerBlock}>
                     <span className={styles.reviewAnswerLabel}>A válaszod</span>
                     <p>{item.selectedOptionText}</p>
+                  </div>
+
+                  <div className={styles.reviewAnswerBlock}>
+                    <span className={styles.reviewAnswerLabel}>
+                      Kapcsolódó igehely
+                    </span>
+                    <p className={styles.reviewReference}>
+                      {item.question.reference}
+                    </p>
                   </div>
 
                   {!item.isCorrect ? (
