@@ -25,8 +25,7 @@
   gap: 12px;
 }
 
-.stageLabel,
-.resultLabel {
+.stageLabel {
   display: inline-flex;
   width: fit-content;
   padding: 0.28rem 0.72rem;
@@ -129,17 +128,6 @@
   margin: 0;
   color: var(--text-soft);
   line-height: 1.6;
-}
-
-.resultScoreLabel,
-.reviewAnswerLabel,
-.reviewItemStep,
-.reviewItemStatus {
-  color: var(--text-soft);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 .options {
@@ -264,11 +252,62 @@
   line-height: 0.94;
 }
 
-.resultScoreCard {
+.inviteChurch,
+.inviteFactLabel,
+.reviewAnswerLabel,
+.reviewItemStep,
+.reviewItemStatus {
+  color: var(--text-soft);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.inviteHero {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: 16px;
   align-items: center;
+}
+
+.inviteLogoFrame {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 16px 34px rgba(71, 98, 73, 0.16);
+}
+
+.inviteLogo {
+  width: 72%;
+  height: 72%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.inviteCopy {
+  display: grid;
+  gap: 10px;
+}
+
+.inviteLead {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.62;
+}
+
+.inviteFacts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.inviteFact {
+  display: grid;
+  gap: 8px;
   padding: 1rem 1.05rem;
   border: 1px solid rgba(137, 84, 43, 0.12);
   border-radius: 24px;
@@ -277,36 +316,82 @@
     linear-gradient(150deg, rgba(201, 109, 66, 0.04), transparent 58%);
 }
 
-.resultScoreValue,
-.resultScoreCopy {
-  display: grid;
-}
-
-.resultScoreValue {
-  gap: 2px;
-  min-width: 98px;
-}
-
-.resultScoreValue strong {
+.inviteFact strong {
   font-family: var(--font-heading), serif;
-  font-size: clamp(2.2rem, 8vw, 3rem);
+  font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 600;
   letter-spacing: -0.05em;
-  line-height: 0.88;
+  line-height: 0.96;
 }
 
-.resultScoreValue span,
-.resultScoreCopy p {
+.inviteFact p,
+.inviteSchedule p {
   margin: 0;
 }
 
-.resultScoreValue span {
+.inviteFact p {
   color: var(--text-soft);
-  font-size: 0.95rem;
+  line-height: 1.55;
 }
 
-.resultScoreCopy {
+.inviteSchedule {
   gap: 6px;
+  display: grid;
+}
+
+.inviteSchedule p {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--text-soft);
+  line-height: 1.45;
+}
+
+.inviteSchedule strong {
+  color: var(--text);
+  font-size: 0.96rem;
+  text-align: right;
+}
+
+.inviteActions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.invitePrimaryAction,
+.inviteSecondaryAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.82rem 1.2rem;
+  border-radius: 999px;
+  font-weight: 700;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    opacity 160ms ease,
+    border-color 160ms ease;
+}
+
+.invitePrimaryAction {
+  border: 0;
+  background: linear-gradient(135deg, #557356, #36533b);
+  color: #f8f8f1;
+  box-shadow: 0 18px 30px rgba(54, 83, 59, 0.22);
+}
+
+.inviteSecondaryAction {
+  border: 1px solid rgba(137, 84, 43, 0.16);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--text);
+}
+
+.invitePrimaryAction:hover,
+.inviteSecondaryAction:hover {
+  transform: translateY(-1px);
 }
 
 .reviewPanel {
@@ -341,7 +426,7 @@
 }
 
 .reviewPanel[open] .reviewSummary::after {
-  content: "−";
+  content: "-";
 }
 
 .reviewSummaryCopy {
@@ -483,16 +568,23 @@
     padding: 18px 16px;
   }
 
-  .resultScoreCard {
+  .inviteHero {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .inviteLogoFrame {
+    width: 72px;
+    height: 72px;
+  }
+
+  .inviteFacts {
     grid-template-columns: 1fr;
     gap: 10px;
   }
 
-  .resultScoreValue {
-    grid-auto-flow: column;
-    justify-content: start;
-    align-items: end;
-    gap: 8px;
+  .inviteActions {
+    grid-template-columns: 1fr;
   }
 
   .reviewSummary {

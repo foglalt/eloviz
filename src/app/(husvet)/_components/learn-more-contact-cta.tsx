@@ -13,6 +13,7 @@ type LearnMoreContactCtaProps = {
   source: "quiz" | "timeline";
   title: string;
   description: string;
+  kicker?: string | null;
 };
 
 type InterestDialogProps = {
@@ -169,6 +170,7 @@ export function LearnMoreContactCta({
   source,
   title,
   description,
+  kicker = "Továbblépés",
 }: LearnMoreContactCtaProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [dialogKey, setDialogKey] = useState(0);
@@ -181,7 +183,7 @@ export function LearnMoreContactCta({
   return (
     <div className={styles.ctaPanel}>
       <div className={styles.copy}>
-        <p className={styles.kicker}>Továbblépés</p>
+        {kicker ? <p className={styles.kicker}>{kicker}</p> : null}
         <h3>{title}</h3>
         <p>{description}</p>
       </div>

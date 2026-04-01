@@ -1,11 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import type {
   HusvetQuizContent,
   HusvetQuizQuestion,
   QuizOptionId,
 } from "@/lib/husvet-quiz";
+import { bajaAdventistChurch } from "../_content/baja-adventist-church";
 import { LearnMoreContactCta } from "../_components/learn-more-contact-cta";
 import styles from "./quiz-page.module.css";
 
@@ -22,10 +24,10 @@ type QuizReviewItem = {
 
 function getCompletionMessage(totalQuestions: number) {
   if (totalQuestions === 1) {
-    return "A válaszod rögzült. Lent látod a rövid eredményt, és megnyithatod a részletes áttekintést is.";
+    return "Köszönjük, hogy végigvitted ezt a kérdést. Ha szeretnéd személyesen is folytatni a beszélgetést, örömmel látunk Baján.";
   }
 
-  return "Végigértél az összes kérdésen. Lent egy rövid összesítést látsz, és megnyithatod a válaszaid részletes áttekintését is.";
+  return "Köszönjük, hogy végigjártad velünk a húsvéti történetet. Ha szeretnéd személyesen is továbbvinni a kérdéseidet, örömmel látunk a bajai adventista gyülekezetben.";
 }
 
 function getResultInsight(correctAnswers: number, totalQuestions: number) {
@@ -54,10 +56,10 @@ function getReviewSummaryMeta(correctAnswers: number, totalQuestions: number) {
   }
 
   if (incorrectAnswers === 1) {
-    return "1 kérdésnél volt eltérés";
+    return "1 eltérés, ennél mutatjuk a helyes választ és a magyarázatot";
   }
 
-  return `${incorrectAnswers} kérdésnél volt eltérés`;
+  return `${incorrectAnswers} eltérés, csak ezeknél mutatjuk a helyes választ és a magyarázatot`;
 }
 
 function getOptionText(
@@ -232,29 +234,91 @@ export function QuizExperience({ content }: QuizExperienceProps) {
         </section>
       ) : (
         <section className={styles.resultPanel}>
-          <p className={styles.resultLabel}>Eredmény</p>
-          <h2>Végigértél a kérdéseken</h2>
-          <p className={styles.resultSummary}>
-            {getCompletionMessage(totalQuestions)}
-          </p>
+          <div className={styles.inviteHero}>
+            <span className={styles.inviteLogoFrame}>
+              <Image
+                alt=""
+                aria-hidden="true"
+                className={styles.inviteLogo}
+                height={96}
+                priority
+                src="/adventist-hu-centered--black.svg"
+                width={96}
+              />
+            </span>
 
-          <div className={styles.resultScoreCard}>
-            <p className={styles.resultScoreValue}>
-              <strong>{correctAnswers}</strong>
-              <span>/ {totalQuestions}</span>
-            </p>
-
-            <div className={styles.resultScoreCopy}>
-              <p className={styles.resultScoreLabel}>Helyes válasz</p>
-              <p>{getResultInsight(correctAnswers, totalQuestions)}</p>
+            <div className={styles.inviteCopy}>
+              <p className={styles.inviteChurch}>
+                {bajaAdventistChurch.city} • {bajaAdventistChurch.churchName}
+              </p>
+              <h2>{bajaAdventistChurch.invitationTitle}</h2>
+              <p className={styles.resultSummary}>
+                {getCompletionMessage(totalQuestions)}
+              </p>
+              <p className={styles.inviteLead}>
+                {bajaAdventistChurch.invitationCopy}
+              </p>
             </div>
           </div>
+
+          <div className={styles.inviteFacts}>
+            <section className={styles.inviteFact}>
+              <span className={styles.inviteFactLabel}>Kvíz eredmény</span>
+              <strong>
+                {correctAnswers} / {totalQuestions}
+              </strong>
+              <p>{getResultInsight(correctAnswers, totalQuestions)}</p>
+            </section>
+
+            <section className={styles.inviteFact}>
+              <span className={styles.inviteFactLabel}>Cím</span>
+              <strong>{bajaAdventistChurch.address}</strong>
+            </section>
+
+            <section className={styles.inviteFact}>
+              <span className={styles.inviteFactLabel}>Szombati alkalmak</span>
+              <div className={styles.inviteSchedule}>
+                {bajaAdventistChurch.serviceTimes.map((service) => (
+                  <p key={service.label}>
+                    <span>{service.label}</span>
+                    <strong>{service.value}</strong>
+                  </p>
+                ))}
+              </div>
+            </section>
+          </div>
+
+          <div className={styles.inviteActions}>
+            <a
+              className={styles.invitePrimaryAction}
+              href={bajaAdventistChurch.directionsHref}
+              rel="noreferrer"
+              target="_blank"
+            >
+              Útvonal megnyitása
+            </a>
+            <a
+              className={styles.inviteSecondaryAction}
+              href={bajaAdventistChurch.websiteHref}
+              rel="noreferrer"
+              target="_blank"
+            >
+              Gyülekezet oldala
+            </a>
+          </div>
+
+          <LearnMoreContactCta
+            description="Ha szeretnéd, hogy felvegyük veled a kapcsolatot a húsvétról, egy bibliakörről vagy a bajai gyülekezetről, küldd el az elérhetőségedet."
+            kicker={null}
+            source="quiz"
+            title="Ha szeretnél, szívesen keresünk"
+          />
 
           <details className={styles.reviewPanel}>
             <summary className={styles.reviewSummary}>
               <span className={styles.reviewSummaryCopy}>
                 <span className={styles.reviewSummaryTitle}>
-                  Válaszaid részletesen
+                  Megnézem a válaszaimat
                 </span>
                 <span className={styles.reviewSummaryMeta}>
                   {getReviewSummaryMeta(correctAnswers, totalQuestions)}
@@ -305,12 +369,6 @@ export function QuizExperience({ content }: QuizExperienceProps) {
               ))}
             </div>
           </details>
-
-          <LearnMoreContactCta
-            description="Ha szeretnél személyesebb segítséget, további húsvéti anyagokat vagy egy későbbi beszélgetést, küldd el az elérhetőségedet."
-            source="quiz"
-            title="Menj tovább egy következő lépéssel"
-          />
         </section>
       )}
     </main>
