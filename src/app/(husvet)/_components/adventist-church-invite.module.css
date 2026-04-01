@@ -355,6 +355,7 @@
   .logoFrame {
     width: 72px;
     height: 72px;
+    justify-self: center;
   }
 
   .logoMark {
