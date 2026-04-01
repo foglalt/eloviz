@@ -142,6 +142,7 @@ export function AdventistChurchInvite() {
           <Image
             alt=""
             aria-hidden="true"
+            className={styles.badgeMark}
             height={52}
             priority
             src="/adventist-hu-centered--black.svg"

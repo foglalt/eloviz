@@ -41,9 +41,18 @@
 }
 
 .badgeLogo {
+  overflow: hidden;
   width: 58px;
   height: 58px;
   box-shadow: 0 10px 24px rgba(71, 98, 73, 0.18);
+}
+
+.badgeMark {
+  display: block;
+  width: 78%;
+  height: 78%;
+  object-fit: contain;
+  object-position: center;
 }
 
 .badgeCopy {
@@ -301,6 +310,11 @@
     width: 46px;
     height: 46px;
     box-shadow: 0 8px 18px rgba(71, 98, 73, 0.16);
+  }
+
+  .badgeMark {
+    width: 74%;
+    height: 74%;
   }
 
   .overlay {
