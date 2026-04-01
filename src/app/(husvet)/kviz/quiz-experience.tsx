@@ -452,12 +452,12 @@ export function QuizExperience({ content }: QuizExperienceProps) {
               <p className={styles.inviteChurch}>
                 {bajaAdventistChurch.city} • {bajaAdventistChurch.churchName}
               </p>
-              <h2>{bajaAdventistChurch.invitationTitle}</h2>
+              <h2>{bajaAdventistChurch.completionTitle}</h2>
               <p className={styles.resultSummary}>
                 {"Köszönjük, hogy végigjártad velünk a húsvéti történetet, reméljük hasznos volt számodra!"}
               </p>
               <p className={styles.inviteLead}>
-                {bajaAdventistChurch.invitationCopy}
+                {bajaAdventistChurch.completionCopy}
               </p>
             </div>
           </div>

@@ -9,6 +9,9 @@ export const bajaAdventistChurch = {
   invitationTitle: "Szeretettel várunk a bajai adventista gyülekezetbe",
   invitationCopy:
     "Ha szeretnéd személyesen is továbbvinni a húsvéttal kapcsolatos kérdéseidet, gyere el hozzánk Bajára egy barátságos bibliaköri alkalomra vagy istentiszteletre.",
+  completionTitle: "Folytassuk személyesen is",
+  completionCopy:
+    "Ha szeretnél tovább beszélgetni a húsvét üzenetéről, a hitről vagy a Biblia reménységéről, örömmel látunk Baján egy barátságos szombati alkalmon.",
   note:
     "Nyugodtan érkezhetsz első alkalommal is. Segítünk eligazodni, és szívesen beszélgetünk veled a hitről, a feltámadás reménységéről és a Biblia üzenetéről.",
   serviceTimes: [
