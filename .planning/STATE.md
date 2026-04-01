@@ -8,7 +8,7 @@
 **Status:** Ready to plan 02-10
 **Progress:** 90%
 **Last Activity:** 2026-04-01
-**Last Activity Description:** Split the Baja invite title and text between the modal and the completed quiz screen with verification
+**Last Activity Description:** Added Bible verse references to the completed quiz review and verified it
 **Paused At:** None
 
 ## Recent Decisions
@@ -29,6 +29,7 @@
 - The rounded public pill and circular controls now suppress the browser's rectangular tap highlight and clip feedback to their real shape on mobile.
 - The completed quiz invitation now uses the same address and Saturday-service card styling as the Adventist modal instead of a separate oversized variant.
 - The Baja church content now keeps separate title and lead-copy entries for the modal and the completed quiz screen while continuing to share the address and service details.
+- The completed quiz review now shows each question's related Bible verse reference, and the stale unused helper warning in the quiz client component has been removed.
 - Timeline detail finalization remains separate follow-up work after the Adventist invite work.
 
 ## Blockers
@@ -37,7 +38,7 @@
 
 ## Session
 
-**Last Date:** 2026-04-01T20:56:15+02:00
-**Stopped At:** Split Baja invite modal/completion copy verified
+**Last Date:** 2026-04-01T20:58:49+02:00
+**Stopped At:** Final review verse-reference refinement verified
 **Resume File:** .planning/phases/02-deliver-v1/02-09-SUMMARY.md
 
