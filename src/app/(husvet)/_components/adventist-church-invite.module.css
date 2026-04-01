@@ -292,18 +292,25 @@
 }
 
 @media (max-width: 640px) {
-  .badgeButtonQuiz {
-    display: none;
-  }
-
   .badgeButton {
-    right: 14px;
-    bottom: 14px;
-    padding: 0.65rem;
+    right: max(14px, env(safe-area-inset-right));
+    bottom: max(14px, env(safe-area-inset-bottom));
+    width: 62px;
+    height: 62px;
+    justify-content: center;
+    padding: 0;
+    border-radius: 50%;
+    gap: 0;
   }
 
   .badgeCopy {
     display: none;
+  }
+
+  .badgeLogo {
+    width: 46px;
+    height: 46px;
+    box-shadow: 0 8px 18px rgba(71, 98, 73, 0.16);
   }
 
   .lockup {

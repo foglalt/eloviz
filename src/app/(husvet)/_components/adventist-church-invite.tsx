@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { useEffect, useEffectEvent, useState } from "react";
 import { bajaAdventistChurch } from "../_content/baja-adventist-church";
 import { BajaChurchMap } from "./baja-church-map";
@@ -112,9 +111,7 @@ function AdventistInviteDialog({ onClose }: { onClose: () => void }) {
 
 export function AdventistChurchInvite() {
   const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname();
   const handleEscape = useEffectEvent(() => setIsOpen(false));
-  const isQuizRoute = pathname === "/kviz";
 
   useEffect(() => {
     if (!isOpen) {
@@ -142,10 +139,9 @@ export function AdventistChurchInvite() {
   return (
     <>
       <button
+        aria-label={`${bajaAdventistChurch.badgeEyebrow} ${bajaAdventistChurch.badgeLabel}`}
         aria-haspopup="dialog"
-        className={`${styles.badgeButton} ${
-          isQuizRoute ? styles.badgeButtonQuiz : ""
-        }`}
+        className={styles.badgeButton}
         onClick={() => setIsOpen(true)}
         type="button"
       >
