@@ -89,14 +89,6 @@ function AdventistInviteDialog({ onClose }: { onClose: () => void }) {
           >
             Útvonal megnyitása
           </a>
-          <a
-            className={styles.secondaryAction}
-            href={bajaAdventistChurch.websiteHref}
-            rel="noreferrer"
-            target="_blank"
-          >
-            Gyülekezet oldala
-          </a>
         </div>
       </div>
     </div>
