@@ -105,6 +105,7 @@
 .secondaryAction,
 .tertiaryAction,
 .toggleButton {
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -117,6 +118,7 @@
     box-shadow 160ms ease,
     opacity 160ms ease,
     border-color 160ms ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .primaryAction {

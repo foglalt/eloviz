@@ -41,12 +41,14 @@
 .hintButton,
 .previousAction,
 .primaryAction {
+  overflow: hidden;
   transition:
     transform 160ms ease,
     box-shadow 160ms ease,
     opacity 160ms ease,
     border-color 160ms ease,
     background-color 160ms ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .hintButton {
@@ -363,6 +365,7 @@
 .invitePrimaryAction,
 .inviteSecondaryAction,
 .restartAction {
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -375,6 +378,7 @@
     box-shadow 160ms ease,
     opacity 160ms ease,
     border-color 160ms ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .invitePrimaryAction {

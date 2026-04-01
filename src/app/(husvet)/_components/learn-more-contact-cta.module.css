@@ -54,6 +54,7 @@
 .triggerButton,
 .submitButton,
 .closeButton {
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -66,6 +67,7 @@
     box-shadow 160ms ease,
     opacity 160ms ease,
     border-color 160ms ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .triggerButton,
@@ -125,6 +127,7 @@
 
 .dismissButton,
 .cancelButton {
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -133,6 +136,7 @@
     opacity 160ms ease,
     border-color 160ms ease,
     background-color 160ms ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .dismissButton {
