@@ -266,6 +266,17 @@ export function QuizExperience({ content }: QuizExperienceProps) {
     }));
   }
 
+  function handleRestart() {
+    try {
+      window.localStorage.removeItem(QUIZ_PROGRESS_STORAGE_KEY);
+    } catch {}
+
+    setAnswers({});
+    setRevealedHints({});
+    setCurrentIndex(0);
+    window.scrollTo({ top: 0, left: 0 });
+  }
+
   return (
     <main className={styles.page}>
       {!isComplete && currentQuestion ? (
@@ -432,6 +443,14 @@ export function QuizExperience({ content }: QuizExperienceProps) {
               Gyülekezet oldala
             </a>
           </div>
+
+          <button
+            className={styles.restartAction}
+            onClick={handleRestart}
+            type="button"
+          >
+            Kvíz újrakezdése
+          </button>
 
           <LearnMoreContactCta
             description="Ha szeretnéd, hogy felvegyük veled a kapcsolatot a húsvétról, egy bibliakörről vagy a bajai gyülekezetről, küldd el az elérhetőségedet."

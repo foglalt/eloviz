@@ -361,7 +361,8 @@
 }
 
 .invitePrimaryAction,
-.inviteSecondaryAction {
+.inviteSecondaryAction,
+.restartAction {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -389,8 +390,16 @@
   color: var(--text);
 }
 
+.restartAction {
+  justify-self: start;
+  border: 1px solid rgba(137, 84, 43, 0.14);
+  background: rgba(255, 250, 245, 0.86);
+  color: var(--text-soft);
+}
+
 .invitePrimaryAction:hover,
-.inviteSecondaryAction:hover {
+.inviteSecondaryAction:hover,
+.restartAction:hover {
   transform: translateY(-1px);
 }
 
@@ -585,6 +594,11 @@
 
   .inviteActions {
     grid-template-columns: 1fr;
+  }
+
+  .restartAction {
+    width: 100%;
+    justify-self: stretch;
   }
 
   .reviewSummary {
