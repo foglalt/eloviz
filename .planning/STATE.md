@@ -8,7 +8,7 @@
 **Status:** Ready to plan 02-10
 **Progress:** 90%
 **Last Activity:** 2026-04-01
-**Last Activity Description:** Added Bible verse references to the completed quiz review and verified it
+**Last Activity Description:** Hid the floating Adventist badge on the completed quiz screen and verified it
 **Paused At:** None
 
 ## Recent Decisions
@@ -30,6 +30,7 @@
 - The completed quiz invitation now uses the same address and Saturday-service card styling as the Adventist modal instead of a separate oversized variant.
 - The Baja church content now keeps separate title and lead-copy entries for the modal and the completed quiz screen while continuing to share the address and service details.
 - The completed quiz review now shows each question's related Bible verse reference, and the stale unused helper warning in the quiz client component has been removed.
+- The floating Adventist badge now disappears on the completed quiz screen only, and returns on the active quiz flow and elsewhere in the public site.
 - Timeline detail finalization remains separate follow-up work after the Adventist invite work.
 
 ## Blockers
@@ -38,7 +39,7 @@
 
 ## Session
 
-**Last Date:** 2026-04-01T20:58:49+02:00
-**Stopped At:** Final review verse-reference refinement verified
+**Last Date:** 2026-04-01T21:02:07+02:00
+**Stopped At:** Completed-quiz Adventist badge hide verified
 **Resume File:** .planning/phases/02-deliver-v1/02-09-SUMMARY.md
 
