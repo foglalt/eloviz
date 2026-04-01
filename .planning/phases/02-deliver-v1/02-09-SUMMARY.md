@@ -30,12 +30,14 @@ The public Easter UI now has a calmer, mobile-first quiz experience with much le
 - Fixed the remaining rounded public buttons so Android tap highlights no longer flash as full rectangles outside the pill or circular shape.
 - Reworked the Adventist invite modal into a compact mobile sheet with condensed visit details, no map on phones, and less visual chrome.
 - Centered the Adventist modal logo frame in the mobile header so the round mark no longer sits against the left edge of the sheet.
+- Matched the completed quiz invitation's address and `Szombati alkalmak` cards to the Adventist modal styling so both surfaces use the same calmer fact-card treatment.
 
 ## Files Touched
 
 - `src/app/(husvet)/kviz/quiz-experience.tsx` - removed the hero, tightened progress and hint placement, reduced quiz navigation to the essential controls, turned the completed state into a Baja invitation layout with answer review, and restored quiz progress from the same device.
 - `src/app/(husvet)/kviz/quiz-experience.tsx` - also assigns a stable local device id and reports quiz progress/correctness snapshots to the server for admin analytics.
 - `src/app/(husvet)/kviz/quiz-page.module.css` - rebuilt the quiz styling for a stricter above-the-fold mobile layout, cleaner answer cards, rounded touch feedback on mobile, the church-invitation completion layout, and the final-screen restart button.
+- `src/app/(husvet)/kviz/quiz-page.module.css` - also aligns the completed-screen church fact cards with the Adventist modal by using the same two-card grid, sizing, and calmer typography.
 - `src/app/(husvet)/_components/learn-more-contact-cta.tsx` - made the section kicker optional so the quiz completion page can avoid status-style labels, and restored unfinished contact drafts from the same device until successful submission.
 - `src/app/admin/page.tsx` - expanded the authenticated admin view with contact and device-analytics panels alongside the quiz editor.
 - `src/app/admin/admin.module.css` - added dashboard panel, metric-card, and analytics/contact list styling for the admin overview.
@@ -68,6 +70,7 @@ The public Easter UI now has a calmer, mobile-first quiz experience with much le
 - Keep the Adventist mark visually centered inside the floating badge instead of letting the raw SVG box define its placement.
 - Give the Adventist modal logo its own centered sizing inside the circular frame instead of relying on the raw image dimensions.
 - Center the Adventist modal logo frame itself in the one-column mobile header instead of leaving it aligned to the dialog's left edge.
+- Treat the Adventist modal as the visual source of truth for the address and Saturday-service cards, and style the completed quiz invitation to match it instead of maintaining a separate larger variant.
 - Keep the `html` root background aligned with the site background and use dynamic viewport height on `body` so mobile browser chrome changes do not expose a white strip.
 - Apply the rounded tap-highlight fix consistently to the public pill and circular controls, not only to the quiz answer cards.
 - Keep public modals on phones as compact sheets with one job each, avoiding tall internal panels and optional content by default.

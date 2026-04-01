@@ -8,7 +8,7 @@
 **Status:** Ready to plan 02-10
 **Progress:** 90%
 **Last Activity:** 2026-04-01
-**Last Activity Description:** Re-centered the Adventist modal logo frame on mobile with verification
+**Last Activity Description:** Unified the completed quiz church fact cards with the modal style and verified it
 **Paused At:** None
 
 ## Recent Decisions
@@ -27,6 +27,7 @@
 - The public quiz now reports device-level progress and correctness snapshots to a server-side store, and the admin page lists saved contacts plus per-device quiz progress and success when `DATABASE_URL` is configured.
 - The Adventist invite dialog now uses its own centered modal-logo sizing so the symbol sits correctly inside the circular frame on phones, and the round logo frame itself is centered in the mobile modal header.
 - The rounded public pill and circular controls now suppress the browser's rectangular tap highlight and clip feedback to their real shape on mobile.
+- The completed quiz invitation now uses the same address and Saturday-service card styling as the Adventist modal instead of a separate oversized variant.
 - Timeline detail finalization remains separate follow-up work after the Adventist invite work.
 
 ## Blockers
@@ -35,7 +36,7 @@
 
 ## Session
 
-**Last Date:** 2026-04-01T21:20:00+02:00
-**Stopped At:** Adventist modal logo centering refinement verified
+**Last Date:** 2026-04-01T20:53:36+02:00
+**Stopped At:** Quiz completion church-facts styling verified
 **Resume File:** .planning/phases/02-deliver-v1/02-09-SUMMARY.md
 
