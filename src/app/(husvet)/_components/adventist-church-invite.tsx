@@ -34,6 +34,7 @@ function AdventistInviteDialog({ onClose }: { onClose: () => void }) {
             <Image
               alt=""
               aria-hidden="true"
+              className={styles.logoMark}
               height={80}
               priority
               src="/adventist-hu-centered--black.svg"
