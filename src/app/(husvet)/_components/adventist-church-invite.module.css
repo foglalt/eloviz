@@ -337,14 +337,13 @@
     grid-template-columns: 1fr;
   }
 
+  .mapSection {
+    display: none;
+  }
+
   .scheduleCompact p {
     gap: 8px;
     font-size: 0.94rem;
-  }
-
-  .mapFrame,
-  .mapFrame iframe {
-    min-height: 160px;
   }
 
   .actions {
