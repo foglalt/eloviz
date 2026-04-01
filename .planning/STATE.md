@@ -8,7 +8,7 @@
 **Status:** Ready to plan 02-10
 **Progress:** 90%
 **Last Activity:** 2026-04-01
-**Last Activity Description:** Re-centered the Adventist modal logo on phones with verification
+**Last Activity Description:** Fixed the mobile root background to remove the white bottom strip with verification
 **Paused At:** None
 
 ## Recent Decisions
@@ -34,7 +34,7 @@
 
 ## Session
 
-**Last Date:** 2026-04-01T19:52:21+02:00
-**Stopped At:** Adventist modal logo centering verified
+**Last Date:** 2026-04-01T19:55:18+02:00
+**Stopped At:** Mobile root background fix verified
 **Resume File:** .planning/phases/02-deliver-v1/02-09-SUMMARY.md
 

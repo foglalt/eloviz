@@ -26,6 +26,7 @@ The public Easter UI now has a calmer, mobile-first quiz experience with much le
 - Added a restart button on the completed quiz screen that clears the saved quiz state and returns the visitor to the first question.
 - Added admin-facing visibility into saved contacts plus device-level quiz progress and correctness by reporting quiz state snapshots to a server-side analytics store.
 - Tightened the Adventist invite dialog logo framing so the symbol sits centered inside the circular mark on phones.
+- Fixed the mobile root background so browser overscroll and toolbar resize no longer reveal a white bar at the bottom of the screen.
 - Reworked the Adventist invite modal into a compact mobile sheet with condensed visit details, no map on phones, and less visual chrome.
 
 ## Files Touched
@@ -39,6 +40,7 @@ The public Easter UI now has a calmer, mobile-first quiz experience with much le
 - `src/app/api/quiz-progress/route.ts` - accepts device progress snapshots from the public quiz and records them server-side.
 - `src/lib/husvet-quiz-analytics-store.ts` - provisions the analytics table and exposes device progress save/list helpers plus admin storage status.
 - `src/lib/husvet-interest-store.ts` - now exposes interest-contact list and storage-status helpers for the admin dashboard.
+- `src/app/globals.css` - aligned the `html` background with the site gradient and switched the body minimum height baseline to dynamic viewport sizing so mobile overscroll does not show a white bottom strip.
 - `src/app/(husvet)/_components/adventist-church-invite.tsx` - simplified the floating church badge trigger and kept it available on mobile with an accessible round-button treatment.
 - `src/app/(husvet)/_components/adventist-church-invite.module.css` - reduced the floating badge to a compact circular button on small screens, re-centered its mark, rebuilt the modal as a smaller mobile sheet, removed the map section on phones, and centered the modal logo framing on mobile.
 - `src/app/(husvet)/_components/learn-more-contact-cta.tsx` - tightened the contact dialog behavior, copy, and optional field flow for mobile use.
@@ -58,6 +60,7 @@ The public Easter UI now has a calmer, mobile-first quiz experience with much le
 - Preserve the Adventist invite across the public Easter surface, but collapse it into a compact round logo button on phones instead of hiding it.
 - Keep the Adventist mark visually centered inside the floating badge instead of letting the raw SVG box define its placement.
 - Give the Adventist modal logo its own centered sizing inside the circular frame instead of relying on the raw image dimensions.
+- Keep the `html` root background aligned with the site background and use dynamic viewport height on `body` so mobile browser chrome changes do not expose a white strip.
 - Keep public modals on phones as compact sheets with one job each, avoiding tall internal panels and optional content by default.
 - Drop the Adventist modal map entirely on phones so the mobile dialog stays focused on the invitation and actions.
 
