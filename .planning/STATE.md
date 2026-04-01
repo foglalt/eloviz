@@ -8,7 +8,7 @@
 **Status:** Ready to plan 02-10
 **Progress:** 90%
 **Last Activity:** 2026-04-01
-**Last Activity Description:** Added a completed-screen restart button that resets quiz state with verification
+**Last Activity Description:** Added admin contact and device quiz analytics views with verification
 **Paused At:** None
 
 ## Recent Decisions
@@ -24,6 +24,7 @@
 - The public quiz now removes the hero, uses only a compact progress bar, keeps a small previous-next navigation row, keeps the Adventist badge as a compact round button on phones, clips answer-card tap feedback to the rounded option shape, and ends with a Baja church invitation plus a secondary expandable answer review.
 - The public quiz now restores quiz progress on the same device, and the learn-more contact dialog reloads unfinished draft fields from local browser storage until successful submission.
 - The completed quiz screen now includes a restart button that clears the saved same-device quiz progress and returns the visitor to the first question.
+- The public quiz now reports device-level progress and correctness snapshots to a server-side store, and the admin page lists saved contacts plus per-device quiz progress and success when `DATABASE_URL` is configured.
 - Timeline detail finalization remains separate follow-up work after the Adventist invite work.
 
 ## Blockers
@@ -32,7 +33,7 @@
 
 ## Session
 
-**Last Date:** 2026-04-01T18:05:30+02:00
-**Stopped At:** Quiz restart reset verified
+**Last Date:** 2026-04-01T18:17:40+02:00
+**Stopped At:** Admin contact and analytics dashboard verified
 **Resume File:** .planning/phases/02-deliver-v1/02-09-SUMMARY.md
 
