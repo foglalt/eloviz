@@ -8,7 +8,7 @@
 **Status:** Ready to plan 02-10
 **Progress:** 90%
 **Last Activity:** 2026-04-01
-**Last Activity Description:** Simplified the public mobile modal sheets with verification
+**Last Activity Description:** Removed the Adventist modal map from the phone layout with verification
 **Paused At:** None
 
 ## Recent Decisions
@@ -20,7 +20,7 @@
 - The site favicon now uses a custom open-Bible and living-water mark instead of the generic placeholder.
 - The site now includes a `/studies` route with collapsible topics and browser-based PDF export.
 - The Easter surface now includes a reusable learn-more contact dialog at the end of the quiz and below the timeline, now simplified on phones with two essential fields plus an optional message.
-- The public Easter surface now includes a floating Adventist church invite badge with a Baja visit modal, simple map, the provided Hungarian Adventist SVG mark cropped to the symbol, and a tighter mobile sheet layout.
+- The public Easter surface now includes a floating Adventist church invite badge with a Baja visit modal, simple map on larger screens, the provided Hungarian Adventist SVG mark cropped to the symbol, and a tighter mobile sheet layout without the map.
 - The public quiz now removes the hero, uses only a compact progress bar, keeps a small previous-next navigation row, keeps the Adventist badge as a compact round button on phones, and clips answer-card tap feedback to the rounded option shape.
 - Timeline detail finalization remains separate follow-up work after the Adventist invite work.
 
@@ -30,7 +30,7 @@
 
 ## Session
 
-**Last Date:** 2026-04-01T10:52:39+02:00
-**Stopped At:** Mobile modal refinement verified
+**Last Date:** 2026-04-01T17:18:19+02:00
+**Stopped At:** Mobile Adventist map removal verified
 **Resume File:** .planning/phases/02-deliver-v1/02-09-SUMMARY.md
 
