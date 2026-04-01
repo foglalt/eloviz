@@ -31,11 +31,13 @@ The public Easter UI now has a calmer, mobile-first quiz experience with much le
 - Reworked the Adventist invite modal into a compact mobile sheet with condensed visit details, no map on phones, and less visual chrome.
 - Centered the Adventist modal logo frame in the mobile header so the round mark no longer sits against the left edge of the sheet.
 - Matched the completed quiz invitation's address and `Szombati alkalmak` cards to the Adventist modal styling so both surfaces use the same calmer fact-card treatment.
+- Split the Baja church invitation copy so the modal and the completed quiz screen can use different titles and lead text while still sharing the rest of the church details.
 
 ## Files Touched
 
 - `src/app/(husvet)/kviz/quiz-experience.tsx` - removed the hero, tightened progress and hint placement, reduced quiz navigation to the essential controls, turned the completed state into a Baja invitation layout with answer review, and restored quiz progress from the same device.
 - `src/app/(husvet)/kviz/quiz-experience.tsx` - also assigns a stable local device id and reports quiz progress/correctness snapshots to the server for admin analytics.
+- `src/app/(husvet)/kviz/quiz-experience.tsx` - now reads dedicated completed-screen invitation copy from the Baja church content instead of reusing the modal title and lead text.
 - `src/app/(husvet)/kviz/quiz-page.module.css` - rebuilt the quiz styling for a stricter above-the-fold mobile layout, cleaner answer cards, rounded touch feedback on mobile, the church-invitation completion layout, and the final-screen restart button.
 - `src/app/(husvet)/kviz/quiz-page.module.css` - also aligns the completed-screen church fact cards with the Adventist modal by using the same two-card grid, sizing, and calmer typography.
 - `src/app/(husvet)/_components/learn-more-contact-cta.tsx` - made the section kicker optional so the quiz completion page can avoid status-style labels, and restored unfinished contact drafts from the same device until successful submission.
@@ -46,6 +48,7 @@ The public Easter UI now has a calmer, mobile-first quiz experience with much le
 - `src/lib/husvet-interest-store.ts` - now exposes interest-contact list and storage-status helpers for the admin dashboard.
 - `src/app/globals.css` - aligned the `html` background with the site gradient and switched the body minimum height baseline to dynamic viewport sizing so mobile overscroll does not show a white bottom strip.
 - `src/app/(husvet)/_components/adventist-church-invite.tsx` - simplified the floating church badge trigger and kept it available on mobile with an accessible round-button treatment.
+- `src/app/(husvet)/_content/baja-adventist-church.ts` - now stores separate modal and completed-screen invitation title/copy entries alongside the shared church facts and links.
 - `src/app/(husvet)/_components/adventist-church-invite.module.css` - reduced the floating badge to a compact circular button on small screens, re-centered its mark, rebuilt the modal as a smaller mobile sheet, removed the map section on phones, and centered the modal logo framing on mobile.
 - `src/app/(husvet)/_components/adventist-church-invite.module.css` - also centers the modal logo frame within the mobile dialog header so the round mark reads as a proper top accent instead of a left-aligned block.
 - `src/app/(husvet)/_components/husvet-landing-page.module.css` - clipped tap feedback to the rounded landing-page CTA shapes and suppressed the default mobile tap highlight.
@@ -71,6 +74,7 @@ The public Easter UI now has a calmer, mobile-first quiz experience with much le
 - Give the Adventist modal logo its own centered sizing inside the circular frame instead of relying on the raw image dimensions.
 - Center the Adventist modal logo frame itself in the one-column mobile header instead of leaving it aligned to the dialog's left edge.
 - Treat the Adventist modal as the visual source of truth for the address and Saturday-service cards, and style the completed quiz invitation to match it instead of maintaining a separate larger variant.
+- Keep the Baja church address, service times, and links shared, but split the invitation title and lead text by surface so the modal and completed quiz can speak in different tones.
 - Keep the `html` root background aligned with the site background and use dynamic viewport height on `body` so mobile browser chrome changes do not expose a white strip.
 - Apply the rounded tap-highlight fix consistently to the public pill and circular controls, not only to the quiz answer cards.
 - Keep public modals on phones as compact sheets with one job each, avoiding tall internal panels and optional content by default.
