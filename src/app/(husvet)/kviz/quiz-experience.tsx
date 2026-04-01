@@ -28,6 +28,7 @@ type StoredQuizProgress = {
   revealedHints: Record<string, boolean>;
 };
 
+const QUIZ_DEVICE_ID_STORAGE_KEY = "husvet-quiz-device-id-v1";
 const QUIZ_PROGRESS_STORAGE_KEY = "husvet-quiz-progress-v1";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -95,6 +96,30 @@ function getStoredQuizProgress(
   }
 }
 
+function createQuizDeviceId() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+
+  return `device-${Date.now()}-${Math.random().toString(16).slice(2, 10)}`;
+}
+
+function getOrCreateStoredQuizDeviceId() {
+  try {
+    const storedDeviceId = window.localStorage.getItem(QUIZ_DEVICE_ID_STORAGE_KEY);
+
+    if (storedDeviceId) {
+      return storedDeviceId;
+    }
+
+    const nextDeviceId = createQuizDeviceId();
+    window.localStorage.setItem(QUIZ_DEVICE_ID_STORAGE_KEY, nextDeviceId);
+    return nextDeviceId;
+  } catch {
+    return null;
+  }
+}
+
 function getCompletionMessage(totalQuestions: number) {
   if (totalQuestions === 1) {
     return "Köszönjük, hogy végigvitted ezt a kérdést. Ha szeretnéd személyesen is folytatni a beszélgetést, örömmel látunk Baján.";
@@ -151,6 +176,7 @@ export function QuizExperience({ content }: QuizExperienceProps) {
     {},
   );
   const [currentIndex, setCurrentIndex] = useState(0);
+  const deviceIdRef = useRef<string | null>(null);
   const hasRestoredStoredProgress = useRef(false);
 
   const totalQuestions = content.questions.length;
@@ -235,6 +261,52 @@ export function QuizExperience({ content }: QuizExperienceProps) {
       );
     } catch {}
   }, [answers, currentIndex, revealedHints]);
+
+  useEffect(() => {
+    if (!hasRestoredStoredProgress.current) {
+      return;
+    }
+
+    if (!deviceIdRef.current) {
+      deviceIdRef.current = getOrCreateStoredQuizDeviceId();
+    }
+
+    const deviceId = deviceIdRef.current;
+
+    if (!deviceId) {
+      return;
+    }
+
+    const answeredCount = content.questions.reduce((count, question) => {
+      return answers[question.id] ? count + 1 : count;
+    }, 0);
+    const correctAnswers = content.questions.reduce((count, question) => {
+      return answers[question.id] === question.correctOptionId ? count + 1 : count;
+    }, 0);
+    const abortController = new AbortController();
+
+    void fetch("/api/quiz-progress", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        answeredCount,
+        correctAnswers,
+        currentIndex,
+        deviceId,
+        isComplete,
+        quizSlug: content.slug,
+        totalQuestions,
+      }),
+      keepalive: true,
+      signal: abortController.signal,
+    }).catch(() => {});
+
+    return () => {
+      abortController.abort();
+    };
+  }, [answers, content.questions, content.slug, currentIndex, isComplete, totalQuestions]);
 
   function handleAnswerChange(questionId: string, optionId: QuizOptionId) {
     setAnswers((currentAnswers) => ({

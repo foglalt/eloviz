@@ -18,7 +18,8 @@
 
 .noticePanel,
 .loginPanel,
-.editorForm {
+.editorForm,
+.dataPanel {
   padding: clamp(24px, 4vw, 38px);
   border: 1px solid var(--line);
   border-radius: 30px;
@@ -44,9 +45,16 @@
 }
 
 .loginPanel,
-.editorForm {
+.editorForm,
+.dataPanel {
   display: grid;
   gap: 18px;
+}
+
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
 }
 
 .loginCopy,
@@ -116,6 +124,123 @@
 
 .statusBadge strong {
   font-size: 0.98rem;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.metricCard,
+.insightCard {
+  display: grid;
+  gap: 8px;
+  padding: 1rem 1.05rem;
+  border: 1px solid rgba(137, 84, 43, 0.12);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(250, 242, 231, 0.74)),
+    linear-gradient(150deg, rgba(201, 109, 66, 0.04), transparent 58%);
+}
+
+.metricLabel,
+.insightMeta,
+.insightStats span,
+.sourceBadge {
+  color: var(--text-soft);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.metricValue {
+  font-family: var(--font-heading), serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+}
+
+.insightList {
+  display: grid;
+  gap: 14px;
+}
+
+.insightHeader,
+.insightStats {
+  display: grid;
+  gap: 12px;
+}
+
+.insightHeader {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+}
+
+.insightTitleBlock {
+  display: grid;
+  gap: 6px;
+}
+
+.insightTitleBlock h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.2;
+}
+
+.sourceBadge {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0.5rem 0.82rem;
+  border-radius: 999px;
+  background: rgba(255, 245, 234, 0.94);
+  color: var(--accent-strong);
+  letter-spacing: 0.12em;
+}
+
+.insightStats {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.insightStats p,
+.contactStack,
+.deviceNote,
+.emptyState {
+  margin: 0;
+}
+
+.insightStats p {
+  display: grid;
+  gap: 6px;
+}
+
+.insightStats strong,
+.contactValue {
+  font-size: 0.98rem;
+}
+
+.contactValue {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.deviceNote,
+.contactNote,
+.emptyState {
+  color: var(--text-soft);
+  line-height: 1.7;
+}
+
+.contactStack {
+  display: grid;
+  gap: 8px;
 }
 
 .section {
@@ -315,9 +440,12 @@
 
 @media (max-width: 980px) {
   .loginShell,
+  .dashboardGrid,
   .workspaceHeader,
   .fieldGrid,
-  .answerGrid {
+  .answerGrid,
+  .metricsGrid,
+  .insightStats {
     grid-template-columns: 1fr;
   }
 
@@ -337,6 +465,10 @@
   .topbar {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .insightHeader {
+    grid-template-columns: 1fr;
   }
 
   .primaryButton,
