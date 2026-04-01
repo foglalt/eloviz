@@ -21,6 +21,54 @@ type InterestDialogProps = {
   source: "quiz" | "timeline";
 };
 
+type InterestDraft = {
+  contact: string;
+  name: string;
+  note: string;
+  showNoteField: boolean;
+};
+
+const emptyInterestDraft: InterestDraft = {
+  contact: "",
+  name: "",
+  note: "",
+  showNoteField: false,
+};
+
+function getInterestDraftStorageKey(source: "quiz" | "timeline") {
+  return `husvet-interest-draft-v1:${source}`;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function getStoredInterestDraft(rawValue: string | null): InterestDraft | null {
+  if (!rawValue) {
+    return null;
+  }
+
+  try {
+    const parsedValue = JSON.parse(rawValue) as unknown;
+
+    if (!isRecord(parsedValue)) {
+      return null;
+    }
+
+    return {
+      contact:
+        typeof parsedValue.contact === "string" ? parsedValue.contact : "",
+      name: typeof parsedValue.name === "string" ? parsedValue.name : "",
+      note: typeof parsedValue.note === "string" ? parsedValue.note : "",
+      showNoteField:
+        parsedValue.showNoteField === true ||
+        (typeof parsedValue.note === "string" && parsedValue.note.length > 0),
+    };
+  } catch {
+    return null;
+  }
+}
+
 function SubmitButton() {
   const { pending } = useFormStatus();
 
@@ -36,7 +84,21 @@ function InterestDialog({ onClose, source }: InterestDialogProps) {
     submitHusvetInterestAction,
     idleInterestActionState,
   );
-  const [showNoteField, setShowNoteField] = useState(false);
+  const [draft, setDraft] = useState<InterestDraft>(() => {
+    if (typeof window === "undefined") {
+      return emptyInterestDraft;
+    }
+
+    try {
+      return (
+        getStoredInterestDraft(
+          window.localStorage.getItem(getInterestDraftStorageKey(source)),
+        ) ?? emptyInterestDraft
+      );
+    } catch {
+      return emptyInterestDraft;
+    }
+  });
   const handleEscape = useEffectEvent(() => onClose());
 
   useEffect(() => {
@@ -57,6 +119,36 @@ function InterestDialog({ onClose, source }: InterestDialogProps) {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
+  useEffect(() => {
+    const hasDraftContent =
+      draft.name.trim() ||
+      draft.contact.trim() ||
+      draft.note.trim() ||
+      draft.showNoteField;
+
+    try {
+      if (!hasDraftContent) {
+        window.localStorage.removeItem(getInterestDraftStorageKey(source));
+        return;
+      }
+
+      window.localStorage.setItem(
+        getInterestDraftStorageKey(source),
+        JSON.stringify(draft),
+      );
+    } catch {}
+  }, [draft, source]);
+
+  useEffect(() => {
+    if (state.status !== "success") {
+      return;
+    }
+
+    try {
+      window.localStorage.removeItem(getInterestDraftStorageKey(source));
+    } catch {}
+  }, [source, state.status]);
 
   return (
     <div
@@ -104,34 +196,65 @@ function InterestDialog({ onClose, source }: InterestDialogProps) {
             <div className={styles.fieldGrid}>
               <label className={styles.field}>
                 <span>Név</span>
-                <input name="name" placeholder="Hogyan szólíthatunk?" />
+                <input
+                  name="name"
+                  onChange={(event) =>
+                    setDraft((currentDraft) => ({
+                      ...currentDraft,
+                      name: event.target.value,
+                    }))
+                  }
+                  placeholder="Hogyan szólíthatunk?"
+                  value={draft.name}
+                />
               </label>
 
               <label className={styles.field}>
                 <span>E-mail vagy telefonszám</span>
                 <input
                   name="contact"
+                  onChange={(event) =>
+                    setDraft((currentDraft) => ({
+                      ...currentDraft,
+                      contact: event.target.value,
+                    }))
+                  }
                   placeholder="pelda@email.hu vagy +36..."
                   required
+                  value={draft.contact}
                 />
               </label>
             </div>
 
             <button
               className={styles.noteToggle}
-              onClick={() => setShowNoteField((currentValue) => !currentValue)}
+              onClick={() =>
+                setDraft((currentDraft) => ({
+                  ...currentDraft,
+                  showNoteField: !currentDraft.showNoteField,
+                }))
+              }
               type="button"
             >
-              {showNoteField ? "Üzenet elrejtése" : "Üzenet hozzáadása"}
+              {draft.showNoteField
+                ? "Üzenet elrejtése"
+                : "Üzenet hozzáadása"}
             </button>
 
-            {showNoteField ? (
+            {draft.showNoteField ? (
               <label className={`${styles.field} ${styles.fieldWide}`}>
                 <span>Üzenet</span>
                 <textarea
                   name="note"
+                  onChange={(event) =>
+                    setDraft((currentDraft) => ({
+                      ...currentDraft,
+                      note: event.target.value,
+                    }))
+                  }
                   placeholder="Mi érdekel jobban, vagy mikor keressünk?"
                   rows={3}
+                  value={draft.note}
                 />
               </label>
             ) : null}

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type {
   HusvetQuizContent,
   HusvetQuizQuestion,
@@ -21,6 +21,79 @@ type QuizReviewItem = {
   correctOptionText: string;
   isCorrect: boolean;
 };
+
+type StoredQuizProgress = {
+  answers: Record<string, QuizOptionId>;
+  currentIndex: number;
+  revealedHints: Record<string, boolean>;
+};
+
+const QUIZ_PROGRESS_STORAGE_KEY = "husvet-quiz-progress-v1";
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function getStoredQuizProgress(
+  rawValue: string | null,
+  questions: HusvetQuizQuestion[],
+): StoredQuizProgress | null {
+  if (!rawValue) {
+    return null;
+  }
+
+  try {
+    const parsedValue = JSON.parse(rawValue) as unknown;
+
+    if (!isRecord(parsedValue)) {
+      return null;
+    }
+
+    const validQuestionIds = new Set(questions.map((question) => question.id));
+    const validOptionIdsByQuestion = new Map(
+      questions.map((question) => [
+        question.id,
+        new Set(question.options.map((option) => option.id)),
+      ]),
+    );
+
+    const normalizedAnswers = isRecord(parsedValue.answers)
+      ? Object.fromEntries(
+          Object.entries(parsedValue.answers).filter(([questionId, optionId]) => {
+            const validOptionIds = validOptionIdsByQuestion.get(questionId);
+            return (
+              validOptionIds?.has(optionId as QuizOptionId) ?? false
+            );
+          }),
+        ) as Record<string, QuizOptionId>
+      : {};
+
+    const normalizedHints = isRecord(parsedValue.revealedHints)
+      ? Object.fromEntries(
+          Object.entries(parsedValue.revealedHints).filter(([questionId, value]) => {
+            return validQuestionIds.has(questionId) && value === true;
+          }),
+        ) as Record<string, boolean>
+      : {};
+
+    const currentIndex =
+      typeof parsedValue.currentIndex === "number" &&
+      Number.isFinite(parsedValue.currentIndex)
+        ? Math.min(
+            Math.max(Math.trunc(parsedValue.currentIndex), 0),
+            questions.length,
+          )
+        : 0;
+
+    return {
+      answers: normalizedAnswers,
+      currentIndex,
+      revealedHints: normalizedHints,
+    };
+  } catch {
+    return null;
+  }
+}
 
 function getCompletionMessage(totalQuestions: number) {
   if (totalQuestions === 1) {
@@ -78,6 +151,7 @@ export function QuizExperience({ content }: QuizExperienceProps) {
     {},
   );
   const [currentIndex, setCurrentIndex] = useState(0);
+  const hasRestoredStoredProgress = useRef(false);
 
   const totalQuestions = content.questions.length;
   const isComplete = currentIndex >= totalQuestions;
@@ -109,6 +183,58 @@ export function QuizExperience({ content }: QuizExperienceProps) {
   });
 
   const correctAnswers = reviewItems.filter((item) => item.isCorrect).length;
+
+  useEffect(() => {
+    let isCancelled = false;
+    let storedProgress: StoredQuizProgress | null = null;
+
+    try {
+      storedProgress = getStoredQuizProgress(
+        window.localStorage.getItem(QUIZ_PROGRESS_STORAGE_KEY),
+        content.questions,
+      );
+    } catch {
+      hasRestoredStoredProgress.current = true;
+      return;
+    }
+
+    if (!storedProgress) {
+      hasRestoredStoredProgress.current = true;
+      return;
+    }
+
+    queueMicrotask(() => {
+      if (isCancelled) {
+        return;
+      }
+
+      hasRestoredStoredProgress.current = true;
+      setAnswers(storedProgress.answers);
+      setRevealedHints(storedProgress.revealedHints);
+      setCurrentIndex(storedProgress.currentIndex);
+    });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [content.questions]);
+
+  useEffect(() => {
+    if (!hasRestoredStoredProgress.current) {
+      return;
+    }
+
+    try {
+      window.localStorage.setItem(
+        QUIZ_PROGRESS_STORAGE_KEY,
+        JSON.stringify({
+          answers,
+          currentIndex,
+          revealedHints,
+        } satisfies StoredQuizProgress),
+      );
+    } catch {}
+  }, [answers, currentIndex, revealedHints]);
 
   function handleAnswerChange(questionId: string, optionId: QuizOptionId) {
     setAnswers((currentAnswers) => ({
