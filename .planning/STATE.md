@@ -8,7 +8,7 @@
 **Status:** Ready to plan 02-10
 **Progress:** 90%
 **Last Activity:** 2026-04-01
-**Last Activity Description:** Added same-device quiz and contact draft persistence with verification
+**Last Activity Description:** Added a completed-screen restart button that resets quiz state with verification
 **Paused At:** None
 
 ## Recent Decisions
@@ -23,6 +23,7 @@
 - The public Easter surface now includes a floating Adventist church invite badge with a Baja visit modal, simple map on larger screens, the provided Hungarian Adventist SVG mark cropped to the symbol, a re-centered floating badge mark, and a tighter mobile sheet layout without the map.
 - The public quiz now removes the hero, uses only a compact progress bar, keeps a small previous-next navigation row, keeps the Adventist badge as a compact round button on phones, clips answer-card tap feedback to the rounded option shape, and ends with a Baja church invitation plus a secondary expandable answer review.
 - The public quiz now restores quiz progress on the same device, and the learn-more contact dialog reloads unfinished draft fields from local browser storage until successful submission.
+- The completed quiz screen now includes a restart button that clears the saved same-device quiz progress and returns the visitor to the first question.
 - Timeline detail finalization remains separate follow-up work after the Adventist invite work.
 
 ## Blockers
@@ -31,7 +32,7 @@
 
 ## Session
 
-**Last Date:** 2026-04-01T18:00:38+02:00
-**Stopped At:** Same-device persistence verified
+**Last Date:** 2026-04-01T18:05:30+02:00
+**Stopped At:** Quiz restart reset verified
 **Resume File:** .planning/phases/02-deliver-v1/02-09-SUMMARY.md
 
