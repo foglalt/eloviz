@@ -120,14 +120,6 @@ function getOrCreateStoredQuizDeviceId() {
   }
 }
 
-function getCompletionMessage(totalQuestions: number) {
-  if (totalQuestions === 1) {
-    return "Köszönjük, hogy végigvitted ezt a kérdést. Ha szeretnéd személyesen is folytatni a beszélgetést, örömmel látunk Baján.";
-  }
-
-  return "Köszönjük, hogy végigjártad velünk a húsvéti történetet. Ha szeretnéd személyesen is továbbvinni a kérdéseidet, örömmel látunk a bajai adventista gyülekezetben.";
-}
-
 function getResultInsight(correctAnswers: number, totalQuestions: number) {
   const incorrectAnswers = Math.max(totalQuestions - correctAnswers, 0);
 
@@ -462,7 +454,7 @@ export function QuizExperience({ content }: QuizExperienceProps) {
               </p>
               <h2>{bajaAdventistChurch.invitationTitle}</h2>
               <p className={styles.resultSummary}>
-                {getCompletionMessage(totalQuestions)}
+                {"Köszönjük, hogy végigjártad velünk a húsvéti történetet, reméljük hasznos volt számodra!"}
               </p>
               <p className={styles.inviteLead}>
                 {bajaAdventistChurch.invitationCopy}
@@ -471,13 +463,6 @@ export function QuizExperience({ content }: QuizExperienceProps) {
           </div>
 
           <div className={styles.inviteFacts}>
-            <section className={styles.inviteFact}>
-              <span className={styles.inviteFactLabel}>Kvíz eredmény</span>
-              <strong>
-                {correctAnswers} / {totalQuestions}
-              </strong>
-              <p>{getResultInsight(correctAnswers, totalQuestions)}</p>
-            </section>
 
             <section className={styles.inviteFact}>
               <span className={styles.inviteFactLabel}>Cím</span>
@@ -506,14 +491,6 @@ export function QuizExperience({ content }: QuizExperienceProps) {
             >
               Útvonal megnyitása
             </a>
-            <a
-              className={styles.inviteSecondaryAction}
-              href={bajaAdventistChurch.websiteHref}
-              rel="noreferrer"
-              target="_blank"
-            >
-              Gyülekezet oldala
-            </a>
           </div>
 
           <button
@@ -525,10 +502,10 @@ export function QuizExperience({ content }: QuizExperienceProps) {
           </button>
 
           <LearnMoreContactCta
-            description="Ha szeretnéd, hogy felvegyük veled a kapcsolatot a húsvétról, egy bibliakörről vagy a bajai gyülekezetről, küldd el az elérhetőségedet."
+            description="Mindig is tudtad, hogy az élet több, mint amit látsz? Szeretnél többet megtudni Istenről, a Bibliáról, vagy arról, hogyan tapasztalhatod meg Isten szeretetét a saját életedben?"
             kicker={null}
             source="quiz"
-            title="Ha szeretnél, szívesen keresünk"
+            title="Szeretnél többet megtudni Istenről?"
           />
 
           <details className={styles.reviewPanel}>

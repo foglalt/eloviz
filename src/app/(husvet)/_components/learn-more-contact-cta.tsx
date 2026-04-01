@@ -312,7 +312,7 @@ export function LearnMoreContactCta({
       </div>
 
       <button className={styles.triggerButton} onClick={openDialog} type="button">
-        Szeretnék többet megtudni a húsvétról
+        Lépjünk kapcsolatba
       </button>
 
       {isOpen ? (
