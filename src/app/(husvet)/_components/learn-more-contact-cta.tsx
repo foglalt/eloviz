@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useEffectEvent, useState } from "react";
 import { useFormStatus } from "react-dom";
 import {
   idleInterestActionState,
@@ -25,7 +25,7 @@ function SubmitButton() {
 
   return (
     <button className={styles.submitButton} type="submit">
-      {pending ? "Küldés folyamatban..." : "Kapcsolat elküldése"}
+      {pending ? "Küldés..." : "Kapcsolat kérése"}
     </button>
   );
 }
@@ -35,57 +35,105 @@ function InterestDialog({ onClose, source }: InterestDialogProps) {
     submitHusvetInterestAction,
     idleInterestActionState,
   );
+  const [showNoteField, setShowNoteField] = useState(false);
+  const handleEscape = useEffectEvent(() => onClose());
+
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = "hidden";
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        handleEscape();
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <div
       aria-labelledby="learn-more-title"
       aria-modal="true"
       className={styles.overlay}
+      onClick={(event) => {
+        if (event.target === event.currentTarget) {
+          onClose();
+        }
+      }}
       role="dialog"
     >
       <div className={styles.dialog}>
+        <button
+          aria-label="Kapcsolatfelvételi ablak bezárása"
+          className={styles.dismissButton}
+          onClick={onClose}
+          type="button"
+        >
+          X
+        </button>
+
         <div className={styles.dialogHeader}>
-          <p className={styles.kicker}>Kapcsolatfelvétel</p>
+          <p className={styles.kicker}>Kapcsolat</p>
           <h3 id="learn-more-title">Szeretnék többet megtudni a húsvétról</h3>
           <p className={styles.dialogIntro}>
-            Add meg az elérhetőségedet, és később fel tudjuk venni veled a
-            kapcsolatot további húsvéti tartalmakkal vagy beszélgetéssel.
+            Add meg, hogyan érhetünk el, és később jelentkezünk.
           </p>
         </div>
 
         {state.status === "success" ? (
           <div className={styles.successPanel}>
+            <p className={styles.successKicker}>Köszönjük</p>
+            <h4>Jelentkezni fogunk</h4>
             <p>{state.message}</p>
             <button className={styles.closeButton} onClick={onClose} type="button">
-              Bezárás
+              Rendben
             </button>
           </div>
         ) : (
           <form action={formAction} className={styles.form}>
             <input name="source" type="hidden" value={source} />
 
-            <label className={styles.field}>
-              <span>Név</span>
-              <input name="name" placeholder="Hogyan szólíthatunk?" />
-            </label>
+            <div className={styles.fieldGrid}>
+              <label className={styles.field}>
+                <span>Név</span>
+                <input name="name" placeholder="Hogyan szólíthatunk?" />
+              </label>
 
-            <label className={styles.field}>
-              <span>E-mail vagy telefonszám</span>
-              <input
-                name="contact"
-                placeholder="pelda@email.hu vagy +36..."
-                required
-              />
-            </label>
+              <label className={styles.field}>
+                <span>E-mail vagy telefonszám</span>
+                <input
+                  name="contact"
+                  placeholder="pelda@email.hu vagy +36..."
+                  required
+                />
+              </label>
+            </div>
 
-            <label className={`${styles.field} ${styles.fieldWide}`}>
-              <span>Üzenet</span>
-              <textarea
-                name="note"
-                placeholder="Melyik rész érdekel jobban, vagy hogyan keressünk?"
-                rows={4}
-              />
-            </label>
+            <button
+              className={styles.noteToggle}
+              onClick={() => setShowNoteField((currentValue) => !currentValue)}
+              type="button"
+            >
+              {showNoteField ? "Üzenet elrejtése" : "Üzenet hozzáadása"}
+            </button>
+
+            {showNoteField ? (
+              <label className={`${styles.field} ${styles.fieldWide}`}>
+                <span>Üzenet</span>
+                <textarea
+                  name="note"
+                  placeholder="Mi érdekel jobban, vagy mikor keressünk?"
+                  rows={3}
+                />
+              </label>
+            ) : null}
 
             {state.message ? (
               <p

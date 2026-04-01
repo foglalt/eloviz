@@ -26,83 +26,76 @@ function AdventistInviteDialog({ onClose }: { onClose: () => void }) {
           onClick={onClose}
           type="button"
         >
-          Bezárás
+          X
         </button>
 
         <div className={styles.dialogHero}>
-          <div className={styles.lockup}>
-            <span className={styles.logoFrame}>
-              <Image
-                alt=""
-                aria-hidden="true"
-                height={80}
-                priority
-                src="/adventist-hu-centered--black.svg"
-                width={80}
-              />
-            </span>
+          <span className={styles.logoFrame}>
+            <Image
+              alt=""
+              aria-hidden="true"
+              height={80}
+              priority
+              src="/adventist-hu-centered--black.svg"
+              width={80}
+            />
+          </span>
 
-            <div className={styles.heroCopy}>
-              <p className={styles.kicker}>
-                {bajaAdventistChurch.city} • {bajaAdventistChurch.churchName}
-              </p>
-              <h2 id="adventist-invite-title">
-                {bajaAdventistChurch.invitationTitle}
-              </h2>
-            </div>
+          <div className={styles.heroCopy}>
+            <p className={styles.kicker}>
+              {bajaAdventistChurch.city} • {bajaAdventistChurch.churchName}
+            </p>
+            <h2 id="adventist-invite-title">
+              {bajaAdventistChurch.invitationTitle}
+            </h2>
+            <p className={styles.heroLead}>{bajaAdventistChurch.invitationCopy}</p>
           </div>
-
-          <p className={styles.heroLead}>{bajaAdventistChurch.invitationCopy}</p>
         </div>
 
-        <div className={styles.contentGrid}>
-          <section className={styles.detailsPanel}>
-            <div className={styles.infoBlock}>
-              <span className={styles.infoLabel}>Cím</span>
-              <strong>{bajaAdventistChurch.address}</strong>
-            </div>
-
-            <div className={styles.schedulePanel}>
-              <span className={styles.infoLabel}>Alkalmak</span>
-              <ul className={styles.scheduleList}>
-                {bajaAdventistChurch.serviceTimes.map((service) => (
-                  <li key={service.label}>
-                    <span>{service.label}</span>
-                    <strong>{service.value}</strong>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <p className={styles.note}>{bajaAdventistChurch.note}</p>
-
-            <div className={styles.actions}>
-              <a
-                className={styles.primaryAction}
-                href={bajaAdventistChurch.directionsHref}
-                rel="noreferrer"
-                target="_blank"
-              >
-                Útvonal megnyitása
-              </a>
-              <a
-                className={styles.secondaryAction}
-                href={bajaAdventistChurch.websiteHref}
-                rel="noreferrer"
-                target="_blank"
-              >
-                Gyülekezet oldala
-              </a>
-            </div>
+        <div className={styles.quickFacts}>
+          <section className={styles.factCard}>
+            <span className={styles.infoLabel}>Cím</span>
+            <strong>{bajaAdventistChurch.address}</strong>
           </section>
 
-          <section className={styles.mapPanel}>
-            <div className={styles.mapHeader}>
-              <span className={styles.infoLabel}>Térkép</span>
-              <p>Egyszerű útbaigazítás a bajai gyülekezethez.</p>
+          <section className={styles.factCard}>
+            <span className={styles.infoLabel}>Szombati alkalmak</span>
+            <div className={styles.scheduleCompact}>
+              {bajaAdventistChurch.serviceTimes.map((service) => (
+                <p key={service.label}>
+                  <span>{service.label}</span>
+                  <strong>{service.value}</strong>
+                </p>
+              ))}
             </div>
-            <BajaChurchMap className={styles.mapFrame} />
           </section>
+        </div>
+
+        <section className={styles.mapSection}>
+          <div className={styles.mapHeader}>
+            <span className={styles.infoLabel}>Térkép</span>
+            <p>Egyszerű útbaigazítás a bajai gyülekezethez.</p>
+          </div>
+          <BajaChurchMap className={styles.mapFrame} />
+        </section>
+
+        <div className={styles.actions}>
+          <a
+            className={styles.primaryAction}
+            href={bajaAdventistChurch.directionsHref}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Útvonal megnyitása
+          </a>
+          <a
+            className={styles.secondaryAction}
+            href={bajaAdventistChurch.websiteHref}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Gyülekezet oldala
+          </a>
         </div>
       </div>
     </div>
