@@ -8,7 +8,7 @@
 **Status:** Ready to plan 02-10
 **Progress:** 90%
 **Last Activity:** 2026-04-01
-**Last Activity Description:** Added a compact quiz result summary with expandable answer review and verification
+**Last Activity Description:** Redesigned the completed quiz page as a Baja church invitation with verification
 **Paused At:** None
 
 ## Recent Decisions
@@ -21,7 +21,7 @@
 - The site now includes a `/studies` route with collapsible topics and browser-based PDF export.
 - The Easter surface now includes a reusable learn-more contact dialog at the end of the quiz and below the timeline, now simplified on phones with two essential fields plus an optional message.
 - The public Easter surface now includes a floating Adventist church invite badge with a Baja visit modal, simple map on larger screens, the provided Hungarian Adventist SVG mark cropped to the symbol, a re-centered floating badge mark, and a tighter mobile sheet layout without the map.
-- The public quiz now removes the hero, uses only a compact progress bar, keeps a small previous-next navigation row, keeps the Adventist badge as a compact round button on phones, clips answer-card tap feedback to the rounded option shape, and ends with a compact result summary plus an expandable answer review.
+- The public quiz now removes the hero, uses only a compact progress bar, keeps a small previous-next navigation row, keeps the Adventist badge as a compact round button on phones, clips answer-card tap feedback to the rounded option shape, and ends with a Baja church invitation plus a secondary expandable answer review.
 - Timeline detail finalization remains separate follow-up work after the Adventist invite work.
 
 ## Blockers
@@ -30,7 +30,7 @@
 
 ## Session
 
-**Last Date:** 2026-04-01T17:30:42+02:00
-**Stopped At:** Quiz result review refinement verified
+**Last Date:** 2026-04-01T17:49:30+02:00
+**Stopped At:** Quiz completion invitation redesign verified
 **Resume File:** .planning/phases/02-deliver-v1/02-09-SUMMARY.md
 
