@@ -3,12 +3,12 @@
 **Project:** eloviz
 **Current Phase:** 02
 **Current Phase Name:** Deliver V1
-**Current Plan:** 02-15
-**Total Plans in Phase:** 15
-**Status:** Completed plan 02-15
+**Current Plan:** 02-16
+**Total Plans in Phase:** 16
+**Status:** Completed plan 02-16
 **Progress:** 100%
 **Last Activity:** 2026-04-02
-**Last Activity Description:** Synced PDF-based default quiz content to Neon (`quiz_key = husvet`) and verified read-back
+**Last Activity Description:** Restored the contact form modal for the CTA and kept portal-based full backdrop coverage
 **Paused At:** None
 
 ## Recent Decisions
@@ -34,7 +34,7 @@
 - Timeline detail finalization remains separate follow-up work after the Adventist invite work.
 - Public modals now share a reusable accessibility hook (focus trap, Escape close, scroll lock, focus restore), common parsing utilities are deduplicated, and README now matches the Next.js stack.
 - The quiz/admin oversized clients are now split into hook + UI modules, shared CSS primitives now cover repeated pill/label patterns, and unused media plus manual `next-env.d.ts` import drift were removed.
-- The contact CTA now opens the same reusable Baja church modal template as the floating Adventist badge, removing the separate contact form modal variant.
+- The contact CTA now uses its own contact form modal again (with "Lépjünk kapcsolatba"), while keeping the same portal-based full-screen overlay behavior and shared modal a11y pattern.
 - The shared Baja invite modal now renders through a `document.body` portal, preventing backdrop clipping caused by transformed quiz containers.
 - The built-in Easter quiz defaults now match the provided `husveti_kviz.pdf` question set (10 multiple-choice baseline questions).
 - The live Neon quiz row (`quiz_key = "husvet"`) now stores that same 10-question PDF-based baseline via project save logic.
@@ -45,7 +45,7 @@
 
 ## Session
 
-**Last Date:** 2026-04-02T11:26:00+02:00
-**Stopped At:** Plan 02-15 completed and verified
-**Resume File:** .planning/phases/02-deliver-v1/02-15-SUMMARY.md
+**Last Date:** 2026-04-02T11:35:00+02:00
+**Stopped At:** Plan 02-16 completed and verified
+**Resume File:** .planning/phases/02-deliver-v1/02-16-SUMMARY.md
 
