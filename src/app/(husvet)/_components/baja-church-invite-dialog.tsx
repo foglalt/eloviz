@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useId, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useModalA11y } from "@/lib/client/use-modal-a11y";
 import { bajaAdventistChurch } from "../_content/baja-adventist-church";
 import { BajaChurchMap } from "./baja-church-map";
@@ -15,15 +16,20 @@ export function BajaChurchInviteDialog({ onClose }: BajaChurchInviteDialogProps)
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const descriptionId = useId();
+  const portalRoot = typeof document === "undefined" ? null : document.body;
 
   useModalA11y({
-    isOpen: true,
+    isOpen: portalRoot !== null,
     containerRef: dialogRef,
     onClose,
     initialFocusRef: closeButtonRef,
   });
 
-  return (
+  if (!portalRoot) {
+    return null;
+  }
+
+  return createPortal(
     <div
       aria-describedby={descriptionId}
       aria-labelledby="adventist-invite-title"
@@ -109,6 +115,7 @@ export function BajaChurchInviteDialog({ onClose }: BajaChurchInviteDialogProps)
           </a>
         </div>
       </div>
-    </div>
+    </div>,
+    portalRoot,
   );
 }
