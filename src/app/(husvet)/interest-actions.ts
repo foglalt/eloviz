@@ -1,11 +1,8 @@
 "use server";
 
 import { saveHusvetInterestContact } from "@/lib/husvet-interest-store";
+import { normalizeText } from "@/lib/value-utils";
 import type { InterestActionState } from "./interest-action-state";
-
-function normalizeText(value: FormDataEntryValue | null) {
-  return typeof value === "string" ? value.trim() : "";
-}
 
 export async function submitHusvetInterestAction(
   _previousState: InterestActionState,

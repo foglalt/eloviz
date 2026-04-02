@@ -4,6 +4,7 @@ import {
   isAdminAuthenticated,
   isAdminPasswordConfigured,
 } from "@/lib/admin-auth";
+import { formatHuTimestamp } from "@/lib/date-utils";
 import {
   getInterestStorageStatus,
   listHusvetInterestContacts,
@@ -29,17 +30,6 @@ export const metadata: Metadata = {
   title: "Admin",
   description: "Admin felület a húsvéti kvíz kérdéseinek és érdeklődőinek követéséhez.",
 };
-
-function formatTimestamp(value?: string | null) {
-  if (!value) {
-    return "Még nincs adat.";
-  }
-
-  return new Intl.DateTimeFormat("hu-HU", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(value));
-}
 
 function formatDeviceSuccess(device: HusvetQuizDeviceProgress) {
   const denominator = device.isComplete ? device.totalQuestions : device.answeredCount;
@@ -205,7 +195,7 @@ export default async function AdminPage() {
                       </p>
                       <p>
                         <span>Utolsó aktivitás</span>
-                        <strong>{formatTimestamp(device.lastSeenAt)}</strong>
+                        <strong>{formatHuTimestamp(device.lastSeenAt)}</strong>
                       </p>
                     </div>
 
@@ -252,7 +242,7 @@ export default async function AdminPage() {
                       <div className={styles.insightTitleBlock}>
                         <h3>{getContactHeadline(contact)}</h3>
                         <p className={styles.insightMeta}>
-                          {formatTimestamp(contact.createdAt)}
+                          {formatHuTimestamp(contact.createdAt)}
                         </p>
                       </div>
 

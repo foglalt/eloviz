@@ -1,4 +1,5 @@
 import { neon } from "@neondatabase/serverless";
+import { clampNonNegativeInt } from "@/lib/value-utils";
 
 export type HusvetQuizDeviceProgressInput = {
   answeredCount: number;
@@ -48,17 +49,6 @@ let setupPromise: Promise<void> | null = null;
 function getSqlClient() {
   const databaseUrl = process.env.DATABASE_URL;
   return databaseUrl ? neon(databaseUrl) : null;
-}
-
-function normalizeCount(value: number, max?: number) {
-  const boundedValue = Number.isFinite(value) ? Math.trunc(value) : 0;
-  const minimumApplied = Math.max(boundedValue, 0);
-
-  if (typeof max !== "number") {
-    return minimumApplied;
-  }
-
-  return Math.min(minimumApplied, Math.max(max, 0));
 }
 
 async function ensureQuizAnalyticsStorage() {
@@ -123,16 +113,16 @@ export async function upsertHusvetQuizDeviceProgress(
     return null;
   }
 
-  const normalizedTotalQuestions = normalizeCount(input.totalQuestions);
-  const normalizedAnsweredCount = normalizeCount(
+  const normalizedTotalQuestions = clampNonNegativeInt(input.totalQuestions);
+  const normalizedAnsweredCount = clampNonNegativeInt(
     input.answeredCount,
     normalizedTotalQuestions,
   );
-  const normalizedCurrentIndex = normalizeCount(
+  const normalizedCurrentIndex = clampNonNegativeInt(
     input.currentIndex,
     normalizedTotalQuestions,
   );
-  const normalizedCorrectAnswers = normalizeCount(
+  const normalizedCorrectAnswers = clampNonNegativeInt(
     input.correctAnswers,
     normalizedAnsweredCount,
   );

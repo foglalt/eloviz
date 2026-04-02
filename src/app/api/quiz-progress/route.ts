@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { upsertHusvetQuizDeviceProgress } from "@/lib/husvet-quiz-analytics-store";
+import { clampNonNegativeInt, isRecord } from "@/lib/value-utils";
 
 type QuizProgressPayload = {
   answeredCount?: unknown;
@@ -10,22 +11,6 @@ type QuizProgressPayload = {
   quizSlug?: unknown;
   totalQuestions?: unknown;
 };
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
-}
-
-function normalizeCount(value: unknown, max?: number) {
-  const numericValue =
-    typeof value === "number" && Number.isFinite(value) ? Math.trunc(value) : 0;
-  const minimumApplied = Math.max(numericValue, 0);
-
-  if (typeof max !== "number") {
-    return minimumApplied;
-  }
-
-  return Math.min(minimumApplied, Math.max(max, 0));
-}
 
 function normalizeDeviceId(value: unknown) {
   return typeof value === "string" ? value.trim().slice(0, 120) : "";
@@ -68,10 +53,10 @@ export async function POST(request: Request) {
     );
   }
 
-  const totalQuestions = normalizeCount(payload.totalQuestions);
-  const answeredCount = normalizeCount(payload.answeredCount, totalQuestions);
-  const currentIndex = normalizeCount(payload.currentIndex, totalQuestions);
-  const correctAnswers = normalizeCount(payload.correctAnswers, answeredCount);
+  const totalQuestions = clampNonNegativeInt(payload.totalQuestions);
+  const answeredCount = clampNonNegativeInt(payload.answeredCount, totalQuestions);
+  const currentIndex = clampNonNegativeInt(payload.currentIndex, totalQuestions);
+  const correctAnswers = clampNonNegativeInt(payload.correctAnswers, answeredCount);
   const isComplete =
     payload.isComplete === true && totalQuestions > 0 && currentIndex >= totalQuestions;
 

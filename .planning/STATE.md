@@ -3,12 +3,12 @@
 **Project:** eloviz
 **Current Phase:** 02
 **Current Phase Name:** Deliver V1
-**Current Plan:** Not started
-**Total Plans in Phase:** 10
-**Status:** Ready to plan 02-10
-**Progress:** 90%
-**Last Activity:** 2026-04-01
-**Last Activity Description:** Hid the floating Adventist badge on the completed quiz screen and verified it
+**Current Plan:** 02-11
+**Total Plans in Phase:** 11
+**Status:** Completed plan 02-11
+**Progress:** 100%
+**Last Activity:** 2026-04-02
+**Last Activity Description:** Completed component decomposition, shared style primitives, asset cleanup, and verification
 **Paused At:** None
 
 ## Recent Decisions
@@ -32,6 +32,8 @@
 - The completed quiz review now shows each question's related Bible verse reference, and the stale unused helper warning in the quiz client component has been removed.
 - The floating Adventist badge now disappears on the completed quiz screen only, and returns on the active quiz flow and elsewhere in the public site.
 - Timeline detail finalization remains separate follow-up work after the Adventist invite work.
+- Public modals now share a reusable accessibility hook (focus trap, Escape close, scroll lock, focus restore), common parsing utilities are deduplicated, and README now matches the Next.js stack.
+- The quiz/admin oversized clients are now split into hook + UI modules, shared CSS primitives now cover repeated pill/label patterns, and unused media plus manual `next-env.d.ts` import drift were removed.
 
 ## Blockers
 
@@ -39,7 +41,7 @@
 
 ## Session
 
-**Last Date:** 2026-04-01T21:02:07+02:00
-**Stopped At:** Completed-quiz Adventist badge hide verified
-**Resume File:** .planning/phases/02-deliver-v1/02-09-SUMMARY.md
+**Last Date:** 2026-04-02T07:56:52+02:00
+**Stopped At:** Plan 02-11 completed and verified
+**Resume File:** .planning/phases/02-deliver-v1/02-11-SUMMARY.md
 

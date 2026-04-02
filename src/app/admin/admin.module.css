@@ -65,16 +65,9 @@
 }
 
 .kicker {
-  display: inline-flex;
-  width: fit-content;
-  padding: 0.45rem 0.9rem;
-  border-radius: 999px;
+  composes: pillLabel from "../../styles/ui-primitives.module.css";
   background: var(--accent-soft);
   color: var(--accent-strong);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
 }
 
 .loginCopy h1,
@@ -113,13 +106,13 @@
   background: rgba(255, 255, 255, 0.68);
 }
 
+.questionIndex {
+  composes: capsLabel from "../../styles/ui-primitives.module.css";
+}
+
 .statusBadge span,
 .questionIndex {
   color: var(--text-soft);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 .statusBadge strong {
@@ -144,15 +137,23 @@
     linear-gradient(150deg, rgba(201, 109, 66, 0.04), transparent 58%);
 }
 
+.metricLabel {
+  composes: capsLabel from "../../styles/ui-primitives.module.css";
+}
+
+.insightMeta {
+  composes: capsLabel from "../../styles/ui-primitives.module.css";
+}
+
+.sourceBadge {
+  composes: capsLabel from "../../styles/ui-primitives.module.css";
+}
+
 .metricLabel,
 .insightMeta,
 .insightStats span,
 .sourceBadge {
   color: var(--text-soft);
-  font-size: 0.74rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 .metricValue {
@@ -322,12 +323,19 @@
   align-items: start;
 }
 
+.secondaryButton {
+  composes: pillAction from "../../styles/ui-primitives.module.css";
+}
+
+.logoutButton {
+  composes: pillAction from "../../styles/ui-primitives.module.css";
+}
+
 .questionActions button,
 .secondaryButton,
 .logoutButton {
   padding: 0.82rem 1rem;
   border: 1px solid rgba(137, 84, 43, 0.16);
-  border-radius: 999px;
   background: rgba(255, 255, 255, 0.72);
   color: var(--text);
   cursor: pointer;
@@ -382,15 +390,18 @@
   justify-content: flex-end;
 }
 
+.primaryButton {
+  composes: pillAction from "../../styles/ui-primitives.module.css";
+}
+
+.ghostLink {
+  composes: pillAction from "../../styles/ui-primitives.module.css";
+}
+
 .primaryButton,
 .ghostLink {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   min-height: 52px;
   padding: 0.9rem 1.4rem;
-  border-radius: 999px;
-  font-weight: 700;
 }
 
 .primaryButton {

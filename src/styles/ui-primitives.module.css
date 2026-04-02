@@ -1,0 +1,35 @@
+.capsLabel {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.pillLabel {
+  composes: capsLabel;
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.42rem 0.86rem;
+  border-radius: 999px;
+}
+
+.actionBase {
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    opacity 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pillAction {
+  composes: actionBase;
+  min-height: 48px;
+  border-radius: 999px;
+  font-weight: 700;
+}

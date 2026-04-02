@@ -1,14 +1,27 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useEffectEvent, useState } from "react";
+import { useId, useRef, useState } from "react";
+import { useModalA11y } from "@/lib/client/use-modal-a11y";
 import { bajaAdventistChurch } from "../_content/baja-adventist-church";
 import { BajaChurchMap } from "./baja-church-map";
 import styles from "./adventist-church-invite.module.css";
 
 function AdventistInviteDialog({ onClose }: { onClose: () => void }) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const descriptionId = useId();
+
+  useModalA11y({
+    isOpen: true,
+    containerRef: dialogRef,
+    onClose,
+    initialFocusRef: closeButtonRef,
+  });
+
   return (
     <div
+      aria-describedby={descriptionId}
       aria-labelledby="adventist-invite-title"
       aria-modal="true"
       className={styles.overlay}
@@ -19,11 +32,12 @@ function AdventistInviteDialog({ onClose }: { onClose: () => void }) {
       }}
       role="dialog"
     >
-      <div className={styles.dialog}>
+      <div className={styles.dialog} ref={dialogRef} tabIndex={-1}>
         <button
           aria-label="Meghívó bezárása"
           className={styles.closeButton}
           onClick={onClose}
+          ref={closeButtonRef}
           type="button"
         >
           X
@@ -49,7 +63,9 @@ function AdventistInviteDialog({ onClose }: { onClose: () => void }) {
             <h2 id="adventist-invite-title">
               {bajaAdventistChurch.invitationTitle}
             </h2>
-            <p className={styles.heroLead}>{bajaAdventistChurch.invitationCopy}</p>
+            <p className={styles.heroLead} id={descriptionId}>
+              {bajaAdventistChurch.invitationCopy}
+            </p>
           </div>
         </div>
 
@@ -97,30 +113,6 @@ function AdventistInviteDialog({ onClose }: { onClose: () => void }) {
 
 export function AdventistChurchInvite() {
   const [isOpen, setIsOpen] = useState(false);
-  const handleEscape = useEffectEvent(() => setIsOpen(false));
-
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const previousOverflow = document.body.style.overflow;
-
-    document.body.style.overflow = "hidden";
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        handleEscape();
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen]);
 
   return (
     <>

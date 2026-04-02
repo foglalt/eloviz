@@ -1,7 +1,9 @@
 "use client";
 
-import { useActionState, useEffect, useEffectEvent, useState } from "react";
+import { useActionState, useEffect, useId, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
+import { useModalA11y } from "@/lib/client/use-modal-a11y";
+import { isRecord } from "@/lib/value-utils";
 import {
   idleInterestActionState,
   type InterestActionState,
@@ -37,10 +39,6 @@ const emptyInterestDraft: InterestDraft = {
 
 function getInterestDraftStorageKey(source: "quiz" | "timeline") {
   return `husvet-interest-draft-v1:${source}`;
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
 }
 
 function getStoredInterestDraft(rawValue: string | null): InterestDraft | null {
@@ -99,26 +97,16 @@ function InterestDialog({ onClose, source }: InterestDialogProps) {
       return emptyInterestDraft;
     }
   });
-  const handleEscape = useEffectEvent(() => onClose());
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const dismissButtonRef = useRef<HTMLButtonElement>(null);
+  const dialogDescriptionId = useId();
 
-  useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
-
-    document.body.style.overflow = "hidden";
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        handleEscape();
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+  useModalA11y({
+    isOpen: true,
+    containerRef: dialogRef,
+    onClose,
+    initialFocusRef: dismissButtonRef,
+  });
 
   useEffect(() => {
     const hasDraftContent =
@@ -152,6 +140,7 @@ function InterestDialog({ onClose, source }: InterestDialogProps) {
 
   return (
     <div
+      aria-describedby={dialogDescriptionId}
       aria-labelledby="learn-more-title"
       aria-modal="true"
       className={styles.overlay}
@@ -162,11 +151,12 @@ function InterestDialog({ onClose, source }: InterestDialogProps) {
       }}
       role="dialog"
     >
-      <div className={styles.dialog}>
+      <div className={styles.dialog} ref={dialogRef} tabIndex={-1}>
         <button
           aria-label="Kapcsolatfelvételi ablak bezárása"
           className={styles.dismissButton}
           onClick={onClose}
+          ref={dismissButtonRef}
           type="button"
         >
           X
@@ -175,7 +165,7 @@ function InterestDialog({ onClose, source }: InterestDialogProps) {
         <div className={styles.dialogHeader}>
           <p className={styles.kicker}>Kapcsolat</p>
           <h3 id="learn-more-title">Szeretnék többet megtudni a húsvétról</h3>
-          <p className={styles.dialogIntro}>
+          <p className={styles.dialogIntro} id={dialogDescriptionId}>
             Add meg, hogyan érhetünk el, és később jelentkezünk.
           </p>
         </div>

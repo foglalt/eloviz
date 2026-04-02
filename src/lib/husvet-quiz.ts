@@ -1,3 +1,5 @@
+import { isRecord, normalizeText } from "@/lib/value-utils";
+
 export const husvetQuizOptionIds = ["a", "b", "c", "d"] as const;
 
 export type QuizOptionId = (typeof husvetQuizOptionIds)[number];
@@ -37,14 +39,6 @@ type ParseFailure = {
 };
 
 export type ParseQuizContentResult = ParseSuccess | ParseFailure;
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
-}
-
-function normalizeText(value: unknown) {
-  return typeof value === "string" ? value.trim() : "";
-}
 
 export function parseHusvetQuizContentInput(
   payload: unknown,
