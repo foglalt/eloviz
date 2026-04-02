@@ -3,12 +3,12 @@
 **Project:** eloviz
 **Current Phase:** 02
 **Current Phase Name:** Deliver V1
-**Current Plan:** 02-11
-**Total Plans in Phase:** 11
-**Status:** Completed plan 02-11
+**Current Plan:** 02-12
+**Total Plans in Phase:** 12
+**Status:** Completed plan 02-12
 **Progress:** 100%
 **Last Activity:** 2026-04-02
-**Last Activity Description:** Completed component decomposition, shared style primitives, asset cleanup, and verification
+**Last Activity Description:** Replaced the contact CTA modal with the shared Baja church modal template and verified it
 **Paused At:** None
 
 ## Recent Decisions
@@ -34,6 +34,7 @@
 - Timeline detail finalization remains separate follow-up work after the Adventist invite work.
 - Public modals now share a reusable accessibility hook (focus trap, Escape close, scroll lock, focus restore), common parsing utilities are deduplicated, and README now matches the Next.js stack.
 - The quiz/admin oversized clients are now split into hook + UI modules, shared CSS primitives now cover repeated pill/label patterns, and unused media plus manual `next-env.d.ts` import drift were removed.
+- The contact CTA now opens the same reusable Baja church modal template as the floating Adventist badge, removing the separate contact form modal variant.
 
 ## Blockers
 
@@ -41,7 +42,7 @@
 
 ## Session
 
-**Last Date:** 2026-04-02T07:56:52+02:00
-**Stopped At:** Plan 02-11 completed and verified
-**Resume File:** .planning/phases/02-deliver-v1/02-11-SUMMARY.md
+**Last Date:** 2026-04-02T08:11:15+02:00
+**Stopped At:** Plan 02-12 completed and verified
+**Resume File:** .planning/phases/02-deliver-v1/02-12-SUMMARY.md
 
