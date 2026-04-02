@@ -179,92 +179,148 @@ export const defaultHusvetQuizContent: HusvetQuizContent = {
   slug: "husvet",
   title: "Húsvéti kvíz",
   intro:
-    "Ezek a kérdések végigvezetnek a nagyhét és a feltámadás fő állomásain. Válaszolj nyugodtan, majd nézd meg a rövid igei magyarázatokat is.",
+    "Ezek a kérdések a húsvét bibliai alapjain vezetnek végig. Válaszolj nyugodtan, majd nézd meg a rövid igei magyarázatokat is. +1 bónusz: gondold át személyesen, mit jelent számodra Jézus áldozata és feltámadása.",
   updatedAt: null,
   questions: [
     {
-      id: "bethania",
-      prompt: "Melyik településen történt Jézus megkenése közvetlenül a szenvedéstörténet előtt?",
-      reference: "Máté 26; János 12",
+      id: "husvet-jelkep",
+      prompt: "Melyik állat köthető a bibliai húsvéthoz és kit/mit jelképez?",
+      reference: "János 1:29",
       options: [
-        { id: "a", text: "Bethániában" },
-        { id: "b", text: "Názáretben" },
-        { id: "c", text: "Jerikóban" },
-        { id: "d", text: "Kapernaumban" },
-      ],
-      correctOptionId: "a",
-      explanation:
-        "A megkenés Bethániában történt, és előre jelezte Jézus közelgő halálát és temetését.",
-    },
-    {
-      id: "jeruzsalem",
-      prompt: "Milyen kiáltással fogadta a sokaság Jézust, amikor bevonult Jeruzsálembe?",
-      reference: "Máté 21,9",
-      options: [
-        { id: "a", text: "Dicsőség a templomnak!" },
-        { id: "b", text: "Hozsánna a Dávid Fiának!" },
-        { id: "c", text: "Békesség a földön!" },
-        { id: "d", text: "Áldott, aki a pusztából jön!" },
+        { id: "a", text: "Nyuszi - a termékenységet" },
+        { id: "b", text: "Bárány - a Megváltót" },
+        { id: "c", text: "Csibe - az újjászületést" },
+        { id: "d", text: "Galamb - a Szent Lelket" },
       ],
       correctOptionId: "b",
       explanation:
-        "A tömeg királyként köszöntötte Jézust, de nem értette még teljesen, hogy országa nem földi hatalomra épül.",
+        "A Biblia Jézust Isten Bárányaként mutatja be: ő a Megváltó, aki értünk adta az életét.",
     },
     {
-      id: "getsemane",
-      prompt: "Hol imádkozott Jézus az elfogatása előtti éjszakán?",
-      reference: "Máté 26,36",
+      id: "husvet-eredete",
+      prompt: "Honnan ered a húsvét ünnepe? Kik tartották először?",
+      reference: "5Mózes 16:1-8",
       options: [
-        { id: "a", text: "Az Olajfák hegyének kertjében, a Getsemánéban" },
-        { id: "b", text: "A templom belső udvarában" },
-        { id: "c", text: "Lázár sírjánál" },
-        { id: "d", text: "A galileai tó partján" },
-      ],
-      correctOptionId: "a",
-      explanation:
-        "A Getsemánéban Jézus mély küzdelemben, mégis teljes engedelmességgel készült a keresztre.",
-    },
-    {
-      id: "temetes",
-      prompt: "Ki kérte el Pilátustól Jézus testét, hogy eltemethesse?",
-      reference: "János 19,38",
-      options: [
-        { id: "a", text: "Péter apostol" },
-        { id: "b", text: "Nikodémus" },
-        { id: "c", text: "Arimátiai József" },
-        { id: "d", text: "Cirénei Simon" },
-      ],
-      correctOptionId: "c",
-      explanation:
-        "Arimátiai József kérte el Jézus testét, Nikodémus pedig a temetéshez szükséges fűszereket vitte.",
-    },
-    {
-      id: "ures-sir",
-      prompt: "Mit találtak a sírhoz érkezők húsvét hajnalán?",
-      reference: "János 20,1-8",
-      options: [
-        { id: "a", text: "A lezárt követ és római őröket" },
-        { id: "b", text: "Az üres sírt" },
-        { id: "c", text: "A tanítványokat imádkozva" },
-        { id: "d", text: "Egy új oltárt a sír előtt" },
+        { id: "a", text: "Korai keresztények" },
+        { id: "b", text: "Izraeliták, amikor kivonultak Egyiptomból" },
+        { id: "c", text: "Izraeliták, amikor megszabadultak Babilonból" },
+        { id: "d", text: "Görögök, a tavasz köszöntéseként" },
       ],
       correctOptionId: "b",
       explanation:
-        "Az üres sír a feltámadás jele volt: Jézus legyőzte a halált, és új reménységet nyitott meg.",
+        "A húsvét gyökere az egyiptomi szabadulás emléknapja, amelyet Isten népe tartott meg először.",
     },
     {
-      id: "negyven-nap",
-      prompt: "Mennyi ideig jelent meg a feltámadott Jézus a tanítványainak a mennybemenetel előtt?",
-      reference: "Apostolok cselekedetei 1,3",
+      id: "mit-unneplunk-husvetkor",
+      prompt: "Mit ünneplünk húsvétkor?",
+      reference: "1Korinthus 15:3-4",
       options: [
-        { id: "a", text: "Hét napig" },
-        { id: "b", text: "Tizenkét napig" },
-        { id: "c", text: "Harminc napig" },
-        { id: "d", text: "Negyven napig" },
+        { id: "a", text: "Jézus születését" },
+        { id: "b", text: "Jézus kereszthalálát és feltámadását" },
+        { id: "c", text: "A tanítványok elhívását" },
+        { id: "d", text: "Jézus megkeresztelkedését" },
+      ],
+      correctOptionId: "b",
+      explanation:
+        "Húsvét központja Jézus áldozata és feltámadása, amely az evangélium alapüzenete.",
+    },
+    {
+      id: "nagypentek-esemeny",
+      prompt: "Az alábbiak közül melyik esemény történt húsvét pénteken?",
+      reference: "Lukács 23:46",
+      options: [
+        { id: "a", text: "Júdás elárulja Jézust" },
+        { id: "b", text: "Az utolsó vacsora" },
+        { id: "c", text: "Jézust elfogták" },
+        { id: "d", text: "Jézus halála" },
       ],
       correctOptionId: "d",
       explanation:
-        "A negyven nap alatt Jézus sok bizonyítékát adta a feltámadásnak, és felkészítette tanítványait a küldetésre.",
+        "Nagypénteken Jézus meghalt a kereszten. Ez a megváltás történetének központi eseménye.",
+    },
+    {
+      id: "feltamadas-ideje",
+      prompt: "Mikor támadt fel Jézus?",
+      reference: "Lukács 24:1-2",
+      options: [
+        { id: "a", text: "Pénteken" },
+        { id: "b", text: "Szombaton" },
+        { id: "c", text: "Vasárnap" },
+        { id: "d", text: "Sosem történt ilyen" },
+      ],
+      correctOptionId: "c",
+      explanation:
+        "A feltámadás a hét első napján, vasárnap történt. Ezért a keresztény reménység alapja az élő Krisztus.",
+    },
+    {
+      id: "szombati-nyugalom",
+      prompt: "Miért nem történt semmi Jézussal szombaton?",
+      reference: "Lukács 23:57",
+      options: [
+        { id: "a", text: "Mert még nem jött el az ideje" },
+        { id: "b", text: "Mert a tanítványok elrejtették" },
+        { id: "c", text: "Mert a sír le volt zárva" },
+        { id: "d", text: "Mert szombat volt és megnyugodott" },
+      ],
+      correctOptionId: "d",
+      explanation:
+        "A bibliai beszámoló szerint a szombat nyugalomnapja miatt a temetéssel kapcsolatos további teendők megálltak.",
+    },
+    {
+      id: "halal-celja",
+      prompt: "Mi volt Jézus halálának a célja?",
+      reference: "2Korinthus 5:19; Ézsaiás 53:5; János 3:16",
+      options: [
+        { id: "a", text: "Megbékéltessen minket Istennel" },
+        { id: "b", text: "Megváltson a bűnből" },
+        { id: "c", text: "Új életet adjon" },
+        { id: "d", text: "Az első háromból mind" },
+      ],
+      correctOptionId: "d",
+      explanation:
+        "Jézus áldozata egyszerre hoz megbékélést Istennel, szabadítást a bűnből és új életet.",
+    },
+    {
+      id: "urvacsora-jelkepe",
+      prompt: "Milyen jelképet használ Jézus arra, hogy áldozatára emlékezzünk?",
+      reference: "Lukács 22:19-20; Máté 26:27-28",
+      options: [
+        { id: "a", text: "Olaj és só" },
+        { id: "b", text: "Kovásztalan kenyér és szőlőlé" },
+        { id: "c", text: "Bárány és kovásztalan kenyér" },
+        { id: "d", text: "Víz és bor" },
+      ],
+      correctOptionId: "b",
+      explanation:
+        "Az úrvacsora jelképei Jézus testére és vérére emlékeztetnek, és a szövetség valóságát hirdetik.",
+    },
+    {
+      id: "elso-talalkozas",
+      prompt: "Kivel találkozott először Jézus a feltámadása után?",
+      reference: "János 20:11-16",
+      options: [
+        { id: "a", text: "Mária Magdalénával" },
+        { id: "b", text: "Édesanyjával" },
+        { id: "c", text: "Tanítványokkal" },
+        { id: "d", text: "Katonákkal" },
+      ],
+      correctOptionId: "a",
+      explanation:
+        "A János evangéliuma szerint a feltámadott Jézus először Mária Magdalénának jelent meg.",
+    },
+    {
+      id: "hol-van-jezus",
+      prompt: "Hol van most Jézus?",
+      reference: "1Péter 3:22",
+      options: [
+        { id: "a", text: "Nem létezett sohasem" },
+        { id: "b", text: "Még mindig a sírban" },
+        { id: "c", text: "A mennyben" },
+        { id: "d", text: "Nem tudom, de szívesen tudnék meg erről többet" },
+      ],
+      correctOptionId: "c",
+      explanation:
+        "A Szentírás szerint Jézus feltámadt, felment a mennybe, és ma is közbenjár értünk.",
     },
   ],
 };

@@ -3,12 +3,12 @@
 **Project:** eloviz
 **Current Phase:** 02
 **Current Phase Name:** Deliver V1
-**Current Plan:** 02-13
-**Total Plans in Phase:** 13
-**Status:** Completed plan 02-13
+**Current Plan:** 02-14
+**Total Plans in Phase:** 14
+**Status:** Completed plan 02-14
 **Progress:** 100%
 **Last Activity:** 2026-04-02
-**Last Activity Description:** Portaled shared Baja invite modal overlay to document.body and verified phase checks
+**Last Activity Description:** Replaced default Easter quiz baseline with the provided PDF question set and verified it
 **Paused At:** None
 
 ## Recent Decisions
@@ -36,6 +36,7 @@
 - The quiz/admin oversized clients are now split into hook + UI modules, shared CSS primitives now cover repeated pill/label patterns, and unused media plus manual `next-env.d.ts` import drift were removed.
 - The contact CTA now opens the same reusable Baja church modal template as the floating Adventist badge, removing the separate contact form modal variant.
 - The shared Baja invite modal now renders through a `document.body` portal, preventing backdrop clipping caused by transformed quiz containers.
+- The built-in Easter quiz defaults now match the provided `husveti_kviz.pdf` question set (10 multiple-choice baseline questions).
 
 ## Blockers
 
@@ -43,7 +44,7 @@
 
 ## Session
 
-**Last Date:** 2026-04-02T10:40:00+02:00
-**Stopped At:** Plan 02-13 completed and verified
-**Resume File:** .planning/phases/02-deliver-v1/02-13-SUMMARY.md
+**Last Date:** 2026-04-02T11:00:00+02:00
+**Stopped At:** Plan 02-14 completed and verified
+**Resume File:** .planning/phases/02-deliver-v1/02-14-SUMMARY.md
 
