@@ -4,12 +4,9 @@ import styles from "./quiz-page.module.css";
 type QuizQuestionStageProps = {
   currentIndex: number;
   currentQuestion: HusvetQuizQuestion;
-  hintPanelId?: string;
-  hintVisible: boolean;
   onAnswerChange: (questionId: string, optionId: QuizOptionId) => void;
   onAdvance: () => void;
   onBack: () => void;
-  onHintToggle: () => void;
   progressPercent: number;
   selectedAnswer?: QuizOptionId;
   totalQuestions: number;
@@ -18,12 +15,9 @@ type QuizQuestionStageProps = {
 export function QuizQuestionStage({
   currentIndex,
   currentQuestion,
-  hintPanelId,
-  hintVisible,
   onAnswerChange,
   onAdvance,
   onBack,
-  onHintToggle,
   progressPercent,
   selectedAnswer,
   totalQuestions,
@@ -36,15 +30,6 @@ export function QuizQuestionStage({
             Kérdés {(currentIndex + 1).toString().padStart(2, "0")} /{" "}
             {totalQuestions.toString().padStart(2, "0")}
           </span>
-          <button
-            aria-controls={hintPanelId}
-            aria-expanded={hintVisible}
-            className={styles.hintButton}
-            onClick={onHintToggle}
-            type="button"
-          >
-            {hintVisible ? "Igehely elrejtése" : "Igehely megmutatása"}
-          </button>
         </div>
 
         <div className={styles.progressTrack} aria-hidden="true">
@@ -55,12 +40,13 @@ export function QuizQuestionStage({
       <article className={styles.questionCard}>
         <h2>{currentQuestion.prompt}</h2>
 
-        {hintVisible ? (
-          <div className={styles.hintPanel} id={hintPanelId}>
-            <strong>Kapcsolódó igehely</strong>
-            <p>{currentQuestion.reference}</p>
-          </div>
-        ) : null}
+        <div className={styles.hintPanel}>
+          <strong>Kapcsolódó igehely</strong>
+          <p>{currentQuestion.reference}</p>
+          <p className={styles.hintEncouragement}>
+            Keresd ki bátran, akár a kitett Bibliákban!
+          </p>
+        </div>
 
         <div className={styles.options}>
           {currentQuestion.options.map((option) => {

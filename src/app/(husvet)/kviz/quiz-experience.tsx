@@ -18,10 +18,7 @@ export function QuizExperience({ content }: QuizExperienceProps) {
     handleAdvance,
     handleAnswerChange,
     handleBack,
-    handleHintToggle,
     handleRestart,
-    hintPanelId,
-    hintVisible,
     isComplete,
     progressPercent,
     reviewItems,
@@ -35,12 +32,9 @@ export function QuizExperience({ content }: QuizExperienceProps) {
         <QuizQuestionStage
           currentIndex={currentIndex}
           currentQuestion={currentQuestion}
-          hintPanelId={hintPanelId}
-          hintVisible={hintVisible}
           onAdvance={handleAdvance}
           onAnswerChange={handleAnswerChange}
           onBack={handleBack}
-          onHintToggle={handleHintToggle}
           progressPercent={progressPercent}
           selectedAnswer={selectedAnswer}
           totalQuestions={totalQuestions}
