@@ -3,12 +3,12 @@
 **Project:** eloviz
 **Current Phase:** 02
 **Current Phase Name:** Deliver V1
-**Current Plan:** 02-14
-**Total Plans in Phase:** 14
-**Status:** Completed plan 02-14
+**Current Plan:** 02-15
+**Total Plans in Phase:** 15
+**Status:** Completed plan 02-15
 **Progress:** 100%
 **Last Activity:** 2026-04-02
-**Last Activity Description:** Replaced default Easter quiz baseline with the provided PDF question set and verified it
+**Last Activity Description:** Synced PDF-based default quiz content to Neon (`quiz_key = husvet`) and verified read-back
 **Paused At:** None
 
 ## Recent Decisions
@@ -37,14 +37,15 @@
 - The contact CTA now opens the same reusable Baja church modal template as the floating Adventist badge, removing the separate contact form modal variant.
 - The shared Baja invite modal now renders through a `document.body` portal, preventing backdrop clipping caused by transformed quiz containers.
 - The built-in Easter quiz defaults now match the provided `husveti_kviz.pdf` question set (10 multiple-choice baseline questions).
+- The live Neon quiz row (`quiz_key = "husvet"`) now stores that same 10-question PDF-based baseline via project save logic.
 
 ## Blockers
 
-- `DATABASE_URL` is not exposed in the local shell used for this session, so Neon-backed save operations were not exercised locally.
+- None.
 
 ## Session
 
-**Last Date:** 2026-04-02T11:00:00+02:00
-**Stopped At:** Plan 02-14 completed and verified
-**Resume File:** .planning/phases/02-deliver-v1/02-14-SUMMARY.md
+**Last Date:** 2026-04-02T11:26:00+02:00
+**Stopped At:** Plan 02-15 completed and verified
+**Resume File:** .planning/phases/02-deliver-v1/02-15-SUMMARY.md
 
