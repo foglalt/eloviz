@@ -35,7 +35,7 @@ const emptyInterestDraft: InterestDraft = {
   contact: "",
   name: "",
   note: "",
-  showNoteField: false,
+  showNoteField: true,
 };
 
 function getInterestDraftStorageKey(source: "quiz" | "timeline") {
@@ -60,7 +60,9 @@ function getStoredInterestDraft(rawValue: string | null): InterestDraft | null {
       name: typeof parsedValue.name === "string" ? parsedValue.name : "",
       note: typeof parsedValue.note === "string" ? parsedValue.note : "",
       showNoteField:
-        parsedValue.showNoteField === true ||
+        (typeof parsedValue.showNoteField === "boolean"
+          ? parsedValue.showNoteField
+          : true) ||
         (typeof parsedValue.note === "string" && parsedValue.note.length > 0),
     };
   } catch {
