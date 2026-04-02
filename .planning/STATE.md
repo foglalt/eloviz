@@ -3,12 +3,12 @@
 **Project:** eloviz
 **Current Phase:** 02
 **Current Phase Name:** Deliver V1
-**Current Plan:** 02-18
-**Total Plans in Phase:** 18
-**Status:** Completed plan 02-18
+**Current Plan:** 02-19
+**Total Plans in Phase:** 19
+**Status:** Completed plan 02-19
 **Progress:** 100%
 **Last Activity:** 2026-04-02
-**Last Activity Description:** Set verse references to always visible and added encouragement copy
+**Last Activity Description:** Updated /studies to poster order and imported the two provided source studies
 **Paused At:** None
 
 ## Recent Decisions
@@ -34,20 +34,20 @@
 - Timeline detail finalization remains separate follow-up work after the Adventist invite work.
 - Public modals now share a reusable accessibility hook (focus trap, Escape close, scroll lock, focus restore), common parsing utilities are deduplicated, and README now matches the Next.js stack.
 - The quiz/admin oversized clients are now split into hook + UI modules, shared CSS primitives now cover repeated pill/label patterns, and unused media plus manual `next-env.d.ts` import drift were removed.
-- The contact CTA now uses its own contact form modal again (with "LĂ„â€šĂ˘â‚¬ĹľÄ‚ËĂ˘â€šÂ¬ÄąË‡Ă„â€šĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â©pjĂ„â€šĂ˘â‚¬ĹľÄ‚ËĂ˘â€šÂ¬ÄąË‡Ă„â€šĂ˘â‚¬ĹľÄ‚â€ąÄąÄ„nk kapcsolatba"), while keeping the same portal-based full-screen overlay behavior and shared modal a11y pattern.
+- The contact CTA now uses its own contact form modal again (with "Lépjünk kapcsolatba"), while keeping the same portal-based full-screen overlay behavior and shared modal a11y pattern.
 - The shared Baja invite modal now renders through a `document.body` portal, preventing backdrop clipping caused by transformed quiz containers.
 - The built-in Easter quiz defaults now match the provided `husveti_kviz.pdf` question set (10 multiple-choice baseline questions).
 - The live Neon quiz row (`quiz_key = "husvet"`) now stores that same 10-question PDF-based baseline via project save logic.
 - The contact modal now shows its optional message field by default on open, while still allowing manual hide/show.
-- The quiz question view now shows related verse references by default and includes encouragement copy: `Keresd ki bĂˇtran, akĂˇr a kitett BibliĂˇkban!`.
-
+- The quiz question view now shows related verse references by default and includes encouragement copy: `Keresd ki bátran, akár a kitett Bibliákban!`.
+- The /studies page now follows the poster schedule order and titles, with detailed content imported for `A páska tipológiája` and `Hogy el ne fogyatkozzon a te hited`.
 ## Blockers
 
 - None.
 
 ## Session
 
-**Last Date:** 2026-04-02T11:48:00+02:00
-**Stopped At:** Plan 02-18 completed and verified
-**Resume File:** .planning/phases/02-deliver-v1/02-18-SUMMARY.md
+**Last Date:** 2026-04-02T18:20:00+02:00
+**Stopped At:** Plan 02-19 completed and verified
+**Resume File:** .planning/phases/02-deliver-v1/02-19-SUMMARY.md
 

@@ -25,129 +25,151 @@ export type StudiesPageContent = {
 };
 
 export const studiesPageContent = {
-  eyebrow: "Élő Víz / tanulmányok",
-  title: "Bibliai tanulmányi témák",
+  eyebrow: "Baja 2026 / bibliatanulmányok",
+  title: "Bibliatanulmányok",
   intro:
-    "Ezek a témák vázlatos, de már használható tanulmányindítók. Minden blokk külön nyitható meg, a PDF export pedig egyben nyomtatja ki az összes anyagot.",
+    "A plakáton szereplő alkalmak sorrendjét követve itt találod a témákat rövid bevezetővel. Az első két tanulmány részletesebb jegyzetként is elérhető.",
   exportNote:
-    "Az export a böngésző nyomtatási nézetét nyitja meg. Ott PDF-ként is elmentheted az összes témát a teljes tartalommal együtt.",
+    "Az export a böngésző nyomtatási nézetét nyitja meg, ahol PDF-ként is elmentheted a témákat.",
   topics: [
     {
-      id: "elo-viz",
-      title: "Az élő víz ígérete",
-      reference: "János 4,7-26; János 7,37-39",
+      id: "a-husvet-eredete-a-paszka-szimbolikaja",
+      title: "A húsvét eredete: a páska szimbolikája",
+      reference: "Csütörtök 20:30 · 2Mózes 12:1-28",
       summary:
-        "Jézus nemcsak egy új tanítást ad, hanem magát nevezi annak a forrásnak, amely valódi belső életet és megújulást ad.",
+        "Megvizsgáljuk a húsvét eredetét leíró történetet.",
       sections: [
         {
-          title: "Megfigyelés",
+          title: "Árnyék és valóság",
           paragraphs: [
-            "A samáriai asszonnyal folytatott beszélgetésben Jézus a mindennapi szomjúságból indul ki, de hamar a szív mélyebb hiányaira mutat rá.",
-            "Az élő víz képe azt hangsúlyozza, hogy Istennél nem pusztán egyszeri segítség van, hanem folyamatos, belülről fakadó élet."
+            "A páska története nem önmagáért áll az Írásban: a szabadítás eseménye Krisztus felé mutató előkép (Zsidók 10:1; 1Korinthus 10:11; Kolossé 2:17).",
+            "Mózes személye is előkép, de a valóság nagyobb az árnyéknál: Krisztus felülmúlja az előképet (5Mózes 18:15-18; Zsidók 3:1-3)."
           ],
         },
         {
-          title: "Mit emel ki ez a téma?",
+          title: "Mózes és Krisztus párhuzamai",
           paragraphs: [
-            "Az ember sokszor külső megoldásokkal próbálja betölteni azt az űrt, amelyet csak Krisztus tud valóban elérni.",
-            "A Szentlélek ígérete azt mutatja, hogy a hit nem száraz vallásosság, hanem átformáló jelenlét."
+            "A tanulmány központi gondolata, hogy a szabadítástörténet nagy íve Krisztusban teljesedik ki."
           ],
           bullets: [
-            "A forrás nem bennünk indul, hanem Jézusból fakad.",
-            "Az élő víz egyszerre vigasztal és tisztít.",
-            "A kapott élet túlcsordulhat mások felé is."
+            "Születésük körül veszély: 2Mózes 1:22-2:10; Máté 2:13-18.",
+            "Szolgaságból szabadítás: Apostolok cselekedetei 7:34-36; János 8:31-36.",
+            "A szabadító nem a bűn szolgája: Apostolok cselekedetei 7:21; 1János 3:5.",
+            "A szabadítás ideje előre jelzett: 2Mózes 12:40-41; Dániel 9:24-26."
+          ],
+        },
+        {
+          title: "A páska elemei Krisztusra mutatnak",
+          paragraphs: [
+            "A 2Mózes 12-ben a bárány kiválasztása, hibátlansága, vére és megtörhetetlen csontjai mind Krisztus áldozatának részleteire irányítják a figyelmet.",
+            "A vér nemcsak kiontva volt, hanem meghintve is: a megtisztítás a vér alkalmazásához kötődik (Zsidók 9:22; Zsidók 12:24; Róma 3:21-25; 1János 1:7)."
+          ],
+          bullets: [
+            "2Mózes 12:2 - új kezdet.",
+            "2Mózes 12:3 - a bárány előre kiválasztva (1Péter 1:19-20).",
+            "2Mózes 12:5 - hibátlan bárány (Zsidók 7:26).",
+            "2Mózes 12:46 - csontjai nem törhetők meg (János 19:36).",
+            "2Mózes 12:8-10 - a bárány teljes elfogyasztása: Krisztus beszédének teljes befogadása (János 6:53-54,63)."
+          ],
+        },
+        {
+          title: "Válaszunk ma",
+          paragraphs: [
+            "A páska tipológiája gyakorlati hívás is: a régi kovász kitakarítása, vagyis a bűnhöz való ragaszkodás elhagyása (1Korinthus 5:7-8).",
+            "Krisztus szolgálata nem ért véget a kereszten: meghív, hogy hittel kapcsolódjunk az Ő megtisztító és helyreállító munkájához."
+          ],
+        }
+      ],
+    },
+    {
+      id: "hogy-el-ne-fogyatkozzon-a-te-hited",
+      title: "Hogy el ne fogyatkozzon a te hited",
+      reference: "Péntek 7:30 · Lukács 22:31-34",
+      summary:
+        "Péter életén keresztül betekintést nyerhetünk az isteni bűnbocsánat rejtelmeibe.",
+      sections: [
+        {
+          title: "Péter története: bukásból helyreállásig",
+          paragraphs: [
+            "Jézus előre jelzi Péter próbatételét, és közbenjár érte: \"imádkoztam érted, hogy el ne fogyatkozzék a hited\" (Lukács 22:31-34).",
+            "Péter megtagadja Krisztust (Lukács 22:54-64), mégsem marad remény nélkül: az üres sír híre újra mozgásba hozza hitét (Lukács 24:1-12).",
+            "A helyreállítás János 21:15-17-ben teljesedik ki, ahol Jézus újra szolgálatba állítja Pétert."
+          ],
+        },
+        {
+          title: "A bűnbocsánat alapja",
+          paragraphs: [
+            "A megbékélés középpontja Krisztus áldozata: Isten Krisztusban megbékéltette magával a világot (2Korinthus 5:17-21).",
+            "Ezért nem nekünk kell hordozni a bűn ítéletét: Jézus elszenvedte azt, ami minket illetett (János 12:27; Lukács 22:42)."
+          ],
+          bullets: [
+            "Az ítélet pohara az Írásban: Zsoltárok 75:9; Jeremiás 25:15; Ézsaiás 51:17; Ezékiel 23:33.",
+            "Krisztus kiitta a poharat, hogy nekünk ne kelljen az ítéletet hordoznunk.",
+            "Aki visszautasítja az áldozatát, maga marad az ítélet terhe alatt (Jelenések 14:10; Jelenések 16)."
+          ],
+        },
+        {
+          title: "Krisztus közbenjárása ma is élő remény",
+          paragraphs: [
+            "Ahhoz, hogy valódi Megváltónk lehessen, Krisztus teljesen emberré lett és bűntelenül élt helyettünk (Róma 8:3; Galata 4:4; Filippi 2:5-8; Zsidók 2:14-18; 1Péter 2:22-24).",
+            "Minden kísértésünkben és fájdalmunkban érthet minket, ezért bátran közeledhetünk hozzá (Zsidók 4:15-16).",
+            "Jézus nemcsak Péterért imádkozott, hanem minden későbbi hívőért is (János 17:20; Zsidók 7:25)."
+          ],
+        }
+      ],
+    },
+    {
+      id: "az-uj-szovetseg",
+      title: "Az új szövetség",
+      reference: "Péntek 21:00",
+      summary:
+        "Szövetségkötések Istennel, miért különleges az Úrvacsora?",
+      sections: [
+        {
+          title: "Rövid bevezető",
+          paragraphs: [
+            "Az alkalom középpontjában az áll, hogyan kapcsolódnak össze a bibliai szövetségek, és mit jelent az Úrvacsora Krisztus követői számára.",
+            "A részletes jegyzet feltöltése folyamatban van."
           ],
         },
       ],
     },
     {
-      id: "kereszt",
-      title: "A kereszt középpontja",
-      reference: "Ézsaiás 53; Lukács 23; 1Péter 2,24",
+      id: "krisztus-akiben-minden-igeret-beteljesedik",
+      title: "Krisztus, akiben minden ígéret beteljesedik",
+      reference: "Szombat 8:00",
       summary:
-        "A kereszt nem pusztán tragikus végpont, hanem az a hely, ahol Isten szeretete és igazsága egyszerre válik láthatóvá.",
+        "Kevésbé ismert Krisztusra mutató szakaszok az ószövetségben.",
       sections: [
         {
-          title: "Megfigyelés",
+          title: "Rövid bevezető",
           paragraphs: [
-            "A szenvedéstörténetben Jézus nem sodródó áldozatként jelenik meg, hanem olyan Megváltóként, aki tudatosan vállalja az engedelmesség útját.",
-            "Az ószövetségi prófétai háttér segít megérteni, hogy a kereszthalál nem véletlen fordulat, hanem Isten előre kijelentett megváltó terve."
-          ],
-        },
-        {
-          title: "Mit emel ki ez a téma?",
-          paragraphs: [
-            "A bűn súlya valódi, de Isten kegyelme nem kisebb annál. A kereszt ennek a találkozási pontja.",
-            "A keresztény reménység ezért nem önigazolásra, hanem Krisztus befejezett művére épül."
-          ],
-          bullets: [
-            "A kereszt egyszerre leleplezi a bűnt és hirdeti a kegyelmet.",
-            "Jézus helyettes áldozata személyes és közösségi jelentőségű.",
-            "A bocsánat nem olcsó, hanem megfizetett ajándék."
+            "A fókusz azon a bibliai íven lesz, amelyben az ószövetségi ígéretek Jézus Krisztus személyében és művében nyernek beteljesedést.",
+            "A részletes jegyzet feltöltése folyamatban van."
           ],
         },
       ],
     },
     {
-      id: "feltamadas",
-      title: "A feltámadás mint új kezdet",
-      reference: "János 20; 1Korinthus 15,12-22",
+      id: "az-igazsagnak-ama-lelke",
+      title: "Az igazságnak ama Lelke",
+      reference: "Szombat 19:30",
       summary:
-        "A feltámadás nem csupán vigasztaló utóhang, hanem annak a bizonyossága, hogy Krisztus valóban legyőzte a halált és új teremtést nyitott meg.",
+        "Krisztus ígéretének beteljesedése pünkösdkor, a Szentlélek munkássága.",
       sections: [
         {
-          title: "Megfigyelés",
+          title: "Rövid bevezető",
           paragraphs: [
-            "Az üres sír önmagában még kérdéseket hagy nyitva, de a feltámadott Jézussal való találkozások fokozatosan bizonyossággá érnek.",
-            "Pál azért teszi a feltámadást a hit szívébe, mert nélküle az evangélium legfeljebb erkölcsi bátorítás maradna."
-          ],
-        },
-        {
-          title: "Mit emel ki ez a téma?",
-          paragraphs: [
-            "A feltámadás azt jelenti, hogy a remény nem hangulat, hanem történeti és teológiai állítás.",
-            "A hívő élet ezért nem a veszteség tagadása, hanem a végső győzelem elővételezése."
-          ],
-          bullets: [
-            "Krisztus feltámadása a mi jövőnk záloga.",
-            "A félelem és a gyász nem az utolsó szó.",
-            "Az új élet már most elkezdődhet a hívő emberben."
+            "Ez a tanulmány pünkösd eseményére, valamint a Szentlélek vezetésére és szolgálatára összpontosít.",
+            "A részletes jegyzet feltöltése folyamatban van."
           ],
         },
       ],
-    },
-    {
-      id: "kuldetes",
-      title: "Küldetés a feltámadott Úrtól",
-      reference: "Máté 28,16-20; Apostolok cselekedetei 1,6-11",
-      summary:
-        "A húsvéti történet nem zárul be a tanítványok belső vigasztalásába: a feltámadott Krisztus népet formál és küldetésbe állít.",
-      sections: [
-        {
-          title: "Megfigyelés",
-          paragraphs: [
-            "A misszió parancsa nem emberi ambícióból fakad, hanem abból, hogy minden hatalom Krisztusé mennyen és földön.",
-            "A mennybemenetel nem távolodásként jelenik meg, hanem annak a jeleként, hogy Jézus uralma már elkezdődött."
-          ],
-        },
-        {
-          title: "Mit emel ki ez a téma?",
-          paragraphs: [
-            "A tanítványi lét nem csupán befogadás, hanem továbbadás is. A megismert kegyelem közösségi irányt ad.",
-            "Az egyház küldetése nem önmaga fenntartása, hanem Krisztus tanúbizonyságának hordozása."
-          ],
-          bullets: [
-            "A küldetés alapja Krisztus tekintélye.",
-            "A küldetés ereje a Szentlélek ígéretéhez kötődik.",
-            "A tanítványi élet egyszerre tanulás és továbbadás."
-          ],
-        },
-      ],
-    },
+    }
   ],
   seo: {
-    title: "Bibliai tanulmányok",
+    title: "Bibliatanulmányok",
     description:
-      "Megnyitható és PDF-be exportálható bibliai tanulmányi témák az Élő Víz húsvéti oldalán.",
+      "A baja 2026-os bibliatanulmányok plakát szerinti sorrendben, rövid bevezetőkkel és bővíthető témablokkokkal.",
   },
 } satisfies StudiesPageContent;
