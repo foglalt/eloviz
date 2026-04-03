@@ -174,7 +174,7 @@ function InterestDialog({ onClose, source }: InterestDialogProps) {
           <p className={styles.kicker}>Lépjünk kapcsolatba</p>
           <h3 id="learn-more-title">Szeretnék többet megtudni a húsvétról</h3>
           <p className={styles.dialogIntro} id={dialogDescriptionId}>
-            Add meg, hogyan érhetünk el, és később jelentkezünk.
+            Add meg, hogyan érhetünk el, és szívesen felvesszük veled a kapcsolatot!
           </p>
         </div>
 
