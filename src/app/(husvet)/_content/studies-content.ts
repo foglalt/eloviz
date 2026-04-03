@@ -28,7 +28,7 @@ export const studiesPageContent = {
   eyebrow: "Baja 2026 / bibliatanulmányok",
   title: "Bibliatanulmányok",
   intro:
-    "A plakáton szereplő alkalmak sorrendjét követve itt találod a témákat rövid bevezetővel. Az első két tanulmány részletesebb jegyzetként is elérhető.",
+    "A plakáton szereplő alkalmak sorrendjét követve itt találod a témákat rövid bevezetővel. Az első három tanulmány részletesebb jegyzetként is elérhető.",
   exportNote:
     "Az export a böngésző nyomtatási nézetét nyitja meg, ahol PDF-ként is elmentheted a témákat.",
   topics: [
@@ -121,15 +121,66 @@ export const studiesPageContent = {
     {
       id: "az-uj-szovetseg",
       title: "Az új szövetség",
-      reference: "Péntek 21:00",
+      reference: "Péntek 21:00 · 1Korinthus 11:24-26",
       summary:
         "Szövetségkötések Istennel, miért különleges az Úrvacsora?",
       sections: [
         {
-          title: "Rövid bevezető",
+          title: "Korábbi szövetségkötések",
           paragraphs: [
-            "Az alkalom középpontjában az áll, hogyan kapcsolódnak össze a bibliai szövetségek, és mit jelent az Úrvacsora Krisztus követői számára.",
-            "A részletes jegyzet feltöltése folyamatban van."
+            "A bibliai történetben Isten több alkalommal megerősítette szövetségét népével. Ezek mind előkészítik az Új szövetség megértését.",
+            "A tanulmány az Ábrámmal, Izsákkal, Jákobbal és Izraellel kötött szövetségi állomásokból indul ki."
+          ],
+          bullets: [
+            "Ábrám: 1Mózes 15:5-18; 1Mózes 17:1-11.",
+            "Izsák: 1Mózes 26:24.",
+            "Jákob: 1Mózes 28:11-22; 1Mózes 32:21-30.",
+            "Mózes és Izrael népe: 2Mózes 24:1-8."
+          ],
+        },
+        {
+          title: "A páska emlékezete és fordulata Krisztusban",
+          paragraphs: [
+            "Izrael történelmében a páska újra és újra a szabadítás emléke lett, mégis húsvétkor fordulóponthoz ért: Krisztusban teljesedik ki, amit jelképezett.",
+            "A nép vezetői elutasították Isten küldöttét, ezért vált nyilvánvalóvá, hogy szükség van az Új szövetségre, mert a régit megtörték."
+          ],
+          bullets: [
+            "Páska-megújítás Józsué idejében: Józsué 5:2-12.",
+            "Páska-megújítás Jósiás idejében: 2Királyok 23:21-25.",
+            "Páska-megújítás Ezsdrás idejében: Ezsdrás 6:18-22.",
+            "Elutasítás és figyelmeztetés: Apostolok cselekedetei 7:51-54; Lukács 19:41-44; Lukács 20:9-19.",
+            "Krisztus nagyobb minden prófétánál: Zsidók 1:1-3; Zsidók 3:3."
+          ],
+        },
+        {
+          title: "Az Új szövetség ígérete és pecsétje",
+          paragraphs: [
+            "Krisztus jobb szövetség közbenjárója, amelyet az Írás már előre kijelentett (Zsidók 8:6-13; Jeremiás 31:31-34).",
+            "Az Új szövetség részeseit Isten Lelkének pecsétje jelöli meg, ezért az Úrvacsora egyszerre emlékezés Krisztus áldozatára és előretekintés az Ő eljövetelére."
+          ],
+          bullets: [
+            "A Lélek pecsétje: 2Korinthus 1:22; 2Korinthus 5:5; Efézus 1:13-14.",
+            "Úrvacsora alapigéje: 1Korinthus 11:24-26 (új testamentom = új szövetség).",
+            "A szövetséget Krisztus vére szenteli meg: Zsidók 9:18-22."
+          ],
+        },
+        {
+          title: "Kenyér, pohár és lábmosás",
+          paragraphs: [
+            "A kenyér Krisztus testére, vagyis az életadó Igére mutat (János 6:47-58). A manna képe is ezt készítette elő: nem csupán testi, hanem lelki eledelként.",
+            "A lábmosásban Krisztus alázatot és szolgáló szeretetet tanít, miközben a megtisztítás szükségét is láthatóvá teszi."
+          ],
+          bullets: [
+            "Manna és romlatlanság képei: Zsoltárok 16:10; 2Mózes 16:19-24.",
+            "A lelki eledel hangsúlya: 5Mózes 8:3; 1Korinthus 10:1-4.",
+            "Lábmosás mint minta: Lukács 22:25-27; János 13:1-17."
+          ],
+        },
+        {
+          title: "Gyakorlati hívás",
+          paragraphs: [
+            "Tanuljunk Krisztustól alázatot, fogadjuk el a megtisztítását, és vegyük az Igét mindennapi táplálékként.",
+            "Az Úrvacsora így nem csak múltbeli emlék, hanem jelenidejű szövetségi élet Krisztussal."
           ],
         },
       ],

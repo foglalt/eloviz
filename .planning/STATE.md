@@ -3,12 +3,12 @@
 **Project:** eloviz
 **Current Phase:** 02
 **Current Phase Name:** Deliver V1
-**Current Plan:** 02-19
-**Total Plans in Phase:** 19
-**Status:** Completed plan 02-19
+**Current Plan:** 02-20
+**Total Plans in Phase:** 20
+**Status:** Completed plan 02-20
 **Progress:** 100%
-**Last Activity:** 2026-04-02
-**Last Activity Description:** Updated /studies to poster order and imported the two provided source studies
+**Last Activity:** 2026-04-03
+**Last Activity Description:** Imported Az Úrvacsora study into Az új szövetség content block
 **Paused At:** None
 
 ## Recent Decisions
@@ -41,13 +41,14 @@
 - The contact modal now shows its optional message field by default on open, while still allowing manual hide/show.
 - The quiz question view now shows related verse references by default and includes encouragement copy: `Keresd ki bátran, akár a kitett Bibliákban!`.
 - The /studies page now follows the poster schedule order and titles, with detailed content imported for `A páska tipológiája` and `Hogy el ne fogyatkozzon a te hited`.
+- The `Az új szövetség` block now includes full structured content imported from `Az Úrvacsora.txt`, including covenant background, Lord's Supper meaning, and foot-washing practice references.
 ## Blockers
 
 - None.
 
 ## Session
 
-**Last Date:** 2026-04-02T18:20:00+02:00
-**Stopped At:** Plan 02-19 completed and verified
-**Resume File:** .planning/phases/02-deliver-v1/02-19-SUMMARY.md
+**Last Date:** 2026-04-03T07:16:30+02:00
+**Stopped At:** Plan 02-20 completed and verified
+**Resume File:** .planning/phases/02-deliver-v1/02-20-SUMMARY.md
 
