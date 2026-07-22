@@ -12,9 +12,8 @@ export function SiteFooter() {
               <Link href="/temak">Témák</Link><Link href="/tanulmanyok">Tanulmányok</Link><Link href="/videok">Videók</Link>
             </nav>
           </div>
-          <p className="site-footer__verse">„Aki szomjúhozik, jöjjön el; és aki akarja, vegye az élet vizét ingyen.”</p>
+          <p className="site-footer__verse">„Aki szomjúhozik, jöjjön el; és aki akarja, vegye az élet vizét ingyen.” - Jelenések 22:17</p>
         </div>
-        <div className="site-footer__bottom"><span>Jelenések 22:17 · Károli-fordítás, mai helyesírással</span><span>Magyar nyelvű bibliai gyűjtemény</span></div>
       </div>
     </footer>
   );

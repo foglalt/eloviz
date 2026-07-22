@@ -8,7 +8,7 @@
 **Status:** Completed; final verification recorded
 **Progress:** 100%
 **Last Activity:** 2026-07-22
-**Last Activity Description:** Verification completed (passed)
+**Last Activity Description:** Corrected landing-page gutters, mobile menu closing, and footer quotation after launch feedback
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -26,6 +26,7 @@
 - Chromium route, 404, sitemap, PDF header, responsive overflow, admin protection, and CRUD checks: passed.
 - Complete PDF editorial lifecycle: passed with four detected and published references; test content then safely deleted.
 - Database migrations and idempotent seed: passed.
+- Post-launch hero gutter, mobile-menu close behavior, and combined footer quotation regression: passed.
 
 ## Next Decision Gate
 
@@ -35,5 +36,5 @@
 ## Session
 
 **Last Date:** 2026-07-22T13:20:29+02:00
-**Stopped At:** Verification completed
+**Stopped At:** Post-launch UI hotfix verified
 **Resume File:** None

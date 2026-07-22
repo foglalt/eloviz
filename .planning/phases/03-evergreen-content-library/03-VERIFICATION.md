@@ -47,6 +47,15 @@ Exit code: 0
 
 Browser artifacts are stored locally under ignored `output/playwright/`; the private legacy backup is under ignored `output/private-backups/`.
 
+### Post-launch layout/menu/footer regression — 2026-07-22
+
+- Targeted ESLint and strict TypeScript: PASS.
+- Mobile hero gutter at 390 px: PASS — left edge 16 px, right edge 16 px.
+- Desktop hero gutter at 1440 px: PASS — left/right edge 130 px around the 1180 px content column.
+- Mobile menu: PASS — open before selecting `/temak`, closed immediately after navigation.
+- Footer: PASS — exact requested combined quotation/reference present; obsolete footer-bottom row absent.
+- Chromium console errors: none.
+
 ### npm run build
 
 Exit code: 0
