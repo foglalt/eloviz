@@ -19,7 +19,7 @@ Másold a [`.env.example`](./.env.example) fájlt `.env.local` néven, és tölt
 - `DATABASE_URL`: szükséges Neon/Postgres kapcsolat.
 - `ADMIN_PASSWORD`: az egyetlen szerkesztői jelszó.
 - `ADMIN_SESSION_SECRET`: külön, legalább 32 karakteres véletlen munkamenet-kulcs.
-- `BLOB_READ_WRITE_TOKEN`: ajánlott éles környezetben. Ha nincs beállítva, a feltöltött PDF tartós adatbázis-fallbackbe kerül.
+- Vercel Blob: éles környezetben ajánlott egy privát Blob tárhelyet kapcsolni a projekthez. Az alkalmazás támogatja a Vercel által automatikusan biztosított `BLOB_STORE_ID` + rövid életű `VERCEL_OIDC_TOKEN` hitelesítést, valamint a régi `BLOB_READ_WRITE_TOKEN` megoldást. Ha egyik teljes konfiguráció sincs jelen, a feltöltött PDF tartós adatbázis-fallbackbe kerül.
 
 ## Parancsok
 

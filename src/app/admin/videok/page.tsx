@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { AdminRelationPicker } from "@/components/admin-relation-picker";
 import { AdminNotice, AdminShell } from "@/components/admin-shell";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
-import { listAdminStudies, listAdminTopics, listAdminVideos } from "@/lib/content-repository";
+import { listAdminStudyOptions, listAdminTopics, listAdminVideos } from "@/lib/content-repository";
 import { deleteContentAction, saveVideoAction } from "../actions";
 
 type Props = { searchParams: Promise<{ edit?: string; message?: string; error?: string }> };
@@ -11,7 +12,7 @@ export const dynamic = "force-dynamic";
 export default async function AdminVideosPage({ searchParams }: Props) {
   if (!(await isAdminAuthenticated())) redirect("/admin");
   const query = await searchParams;
-  const [videos, topics, studies] = await Promise.all([listAdminVideos(), listAdminTopics(), listAdminStudies()]);
+  const [videos, topics, studies] = await Promise.all([listAdminVideos(), listAdminTopics(), listAdminStudyOptions()]);
   const selected = videos.find((video) => video.id === query.edit);
 
   return (
@@ -32,8 +33,8 @@ export default async function AdminVideosPage({ searchParams }: Props) {
             <div className="field field--full"><label htmlFor="youtubeUrl">YouTube-link</label><input id="youtubeUrl" name="youtubeUrl" type="url" defaultValue={selected?.youtubeUrl} placeholder="https://www.youtube.com/watch?v=…" required /></div>
             <div className="field"><label htmlFor="channelName">Csatorna neve</label><input id="channelName" name="channelName" defaultValue={selected?.channelName ?? ""} /></div>
             <div className="field field--full"><label htmlFor="description">Leírás</label><textarea id="description" name="description" defaultValue={selected?.description} required /></div>
-            <fieldset className="field field--full"><legend>Témák</legend><div className="check-grid">{topics.map((topic) => <label className="check-field" key={topic.id}><input type="checkbox" name="topicIds" value={topic.id} defaultChecked={selected?.topics.some((item) => item.id === topic.id)} /> {topic.title}</label>)}</div></fieldset>
-            <fieldset className="field field--full"><legend>Kapcsolódó tanulmányok</legend><div className="check-grid">{studies.map((study) => <label className="check-field" key={study.id}><input type="checkbox" name="relatedStudyIds" value={study.id} defaultChecked={selected?.relatedStudyIds.includes(study.id)} /> {study.title}</label>)}</div></fieldset>
+            <fieldset className="field field--full"><legend>Témák</legend><AdminRelationPicker key={`video-topics-${selected?.id ?? "new"}`} name="topicIds" options={topics.map((topic) => ({ id: topic.id, label: topic.title, meta: topic.status === "published" ? "élő" : "vázlat" }))} selectedIds={selected?.topics.map((item) => item.id)} searchLabel="Témák szűrése" emptyLabel="Nincs ilyen téma." /></fieldset>
+            <fieldset className="field field--full"><legend>Kapcsolódó tanulmányok</legend><AdminRelationPicker key={`video-studies-${selected?.id ?? "new"}`} name="relatedStudyIds" options={studies.map((study) => ({ id: study.id, label: study.title, meta: study.status === "published" ? "élő" : "vázlat" }))} selectedIds={selected?.relatedStudyIds} searchLabel="Tanulmányok szűrése" emptyLabel="Nincs ilyen tanulmány." /></fieldset>
             <div className="field"><label htmlFor="seoTitle">SEO-cím</label><input id="seoTitle" name="seoTitle" defaultValue={selected?.seoTitle} maxLength={70} /></div>
             <div className="field"><label htmlFor="seoDescription">SEO-leírás</label><textarea id="seoDescription" name="seoDescription" defaultValue={selected?.seoDescription} maxLength={170} /></div>
             <div className="field"><label htmlFor="status">Állapot</label><select id="status" name="status" defaultValue={selected?.status ?? "draft"}><option value="draft">Vázlat</option><option value="published">Publikált</option></select></div>

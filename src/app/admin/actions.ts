@@ -18,6 +18,7 @@ import { deleteBlobPdf, MAX_PDF_BYTES, sha256, storePdf, validatePdfBuffer } fro
 import { extractPdfPages } from "@/lib/pdf-extract";
 import { DETECTOR_VERSION, detectScriptureReferences, parseOsisReferenceLine } from "@/lib/scripture-references";
 import { parseYouTubeId, sanitizePdfFilename, slugifyHungarian, studyInputSchema, topicInputSchema, videoInputSchema } from "@/lib/content-validation";
+import { resolveStudyPublicationStatus } from "@/lib/study-publication";
 
 function field(formData: FormData, name: string) {
   return String(formData.get(name) ?? "").trim();
@@ -107,13 +108,14 @@ export async function saveStudyAction(formData: FormData) {
   if (!parsed.success) redirect(destination("/admin/tanulmanyok", "error", validationMessage(parsed.error.issues), id));
   const sql = requireSql();
   try {
-    if (id && parsed.data.status === "published") {
-      const readiness = await sql.query("SELECT published_document_id, reference_reviewed FROM studies WHERE id=$1", [id]);
-      if (!readiness[0]?.published_document_id || !readiness[0]?.reference_reviewed) {
-        redirect(destination("/admin/tanulmanyok", "error", "Publikálás előtt tölts fel PDF-et, majd véglegesítsd az igehelyeket.", id));
-      }
-    }
-    const status = id ? parsed.data.status : "draft";
+    const readiness = id
+      ? await sql.query("SELECT published_document_id IS NOT NULL AS has_published_document FROM studies WHERE id=$1", [id])
+      : [];
+    const publication = resolveStudyPublicationStatus(
+      parsed.data.status,
+      Boolean(readiness[0]?.has_published_document),
+    );
+    const status = id ? publication.status : "draft";
     const rows = id
       ? await sql.query(`UPDATE studies SET slug=$2,title=$3,summary=$4,seo_title=NULLIF($5,''),seo_description=NULLIF($6,''),status=$7,featured=$8,sort_order=$9,updated_at=now(),published_at=CASE WHEN $7='published' THEN COALESCE(published_at,now()) ELSE published_at END WHERE id=$1 RETURNING id::text`, [id, parsed.data.slug, parsed.data.title, parsed.data.summary, parsed.data.seoTitle, parsed.data.seoDescription, status, parsed.data.featured, parsed.data.sortOrder])
       : await sql.query(`INSERT INTO studies(slug,title,summary,seo_title,seo_description,status,featured,sort_order) VALUES($1,$2,$3,NULLIF($4,''),NULLIF($5,''),$6,$7,$8) RETURNING id::text`, [parsed.data.slug, parsed.data.title, parsed.data.summary, parsed.data.seoTitle, parsed.data.seoDescription, status, parsed.data.featured, parsed.data.sortOrder]);
@@ -123,7 +125,11 @@ export async function saveStudyAction(formData: FormData) {
     await sql.query("DELETE FROM study_videos WHERE study_id=$1", [studyId]);
     for (const [index, videoId] of parsed.data.relatedVideoIds.entries()) await sql.query("INSERT INTO study_videos(study_id,video_id,sort_order) VALUES($1,$2,$3)", [studyId, videoId, index]);
     refreshPublicContent();
-    const message = id ? "A tanulmány adatai mentve." : "A tanulmány vázlata létrejött. Most feltöltheted a PDF-et.";
+    const message = !id
+      ? "A tanulmány vázlata létrejött. Most feltöltheted a PDF-et."
+      : publication.downgraded
+        ? "Az adatok mentve. Véglegesített PDF nélkül a tanulmány vázlatként maradt."
+        : "A tanulmány adatai mentve.";
     redirect(destination("/admin/tanulmanyok", "message", message, studyId));
   } catch (error) {
     rethrowFrameworkRedirect(error);

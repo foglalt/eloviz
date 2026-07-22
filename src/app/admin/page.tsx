@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { AdminNotice, AdminShell } from "@/components/admin-shell";
 import { isAdminAuthenticated, isAdminAuthConfigured } from "@/lib/admin-auth";
-import { listAdminStudies, listAdminTopics, listAdminVideos } from "@/lib/content-repository";
+import { getAdminOverview } from "@/lib/content-repository";
 import { loginAction } from "./actions";
 
 type Props = { searchParams: Promise<{ message?: string; error?: string }> };
@@ -39,7 +39,7 @@ export default async function AdminPage({ searchParams }: Props) {
     );
   }
 
-  const [topics, studies, videos] = await Promise.all([listAdminTopics(), listAdminStudies(), listAdminVideos()]);
+  const overview = await getAdminOverview();
   return (
     <AdminShell>
       <div className="admin-heading">
@@ -48,17 +48,17 @@ export default async function AdminPage({ searchParams }: Props) {
       </div>
       <AdminNotice message={query.message} error={query.error} />
       <div className="admin-stat-grid">
-        <Link className="admin-stat" href="/admin/temak"><strong>{topics.length}</strong><span>téma</span></Link>
-        <Link className="admin-stat" href="/admin/tanulmanyok"><strong>{studies.length}</strong><span>tanulmány</span></Link>
-        <Link className="admin-stat" href="/admin/videok"><strong>{videos.length}</strong><span>videó</span></Link>
+        <Link className="admin-stat" href="/admin/temak"><strong>{overview.topicCount}</strong><span>téma</span></Link>
+        <Link className="admin-stat" href="/admin/tanulmanyok"><strong>{overview.studyCount}</strong><span>tanulmány</span></Link>
+        <Link className="admin-stat" href="/admin/videok"><strong>{overview.videoCount}</strong><span>videó</span></Link>
       </div>
       <section className="admin-panel admin-panel--spaced">
         <h2>Figyelmet igényel</h2>
         <ul className="admin-list">
-          {studies.filter((study) => study.documents.length > 0 && !study.referenceReviewed).map((study) => (
+          {overview.pendingStudies.map((study) => (
             <li key={study.id}><span><strong>{study.title}</strong><small>Feltöltött PDF, még nem véglegesített igehelyek</small></span><Link href={`/admin/tanulmanyok?edit=${study.id}`}>Ellenőrzés →</Link></li>
           ))}
-          {!studies.some((study) => study.documents.length > 0 && !study.referenceReviewed) && <li><span>Nincs függőben lévő PDF-ellenőrzés.</span></li>}
+          {overview.pendingStudies.length === 0 && <li><span>Nincs függőben lévő PDF-ellenőrzés.</span></li>}
         </ul>
       </section>
     </AdminShell>

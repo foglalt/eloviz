@@ -1,22 +1,38 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { AdminRelationPicker } from "@/components/admin-relation-picker";
 import { AdminNotice, AdminShell } from "@/components/admin-shell";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
-import { listAdminStudies, listAdminTopics, listAdminVideos } from "@/lib/content-repository";
+import { getAdminStudy, listAdminStudyIndex, listAdminTopics, listAdminVideos } from "@/lib/content-repository";
 import { deleteContentAction, deleteStudyDocumentAction, finalizeStudyReferencesAction, saveStudyAction, uploadStudyPdfAction } from "../actions";
 
-type Props = { searchParams: Promise<{ edit?: string; message?: string; error?: string }> };
+type Props = { searchParams: Promise<{ edit?: string; message?: string; error?: string; q?: string; page?: string }> };
 export const dynamic = "force-dynamic";
 
 function referenceLine(reference: { label: string; osisStart: string; osisEnd: string }) {
   return `${reference.label} | ${reference.osisStart}${reference.osisEnd !== reference.osisStart ? `-${reference.osisEnd}` : ""}`;
 }
 
+function indexHref(edit: string | undefined, search: string, page: number) {
+  const params = new URLSearchParams();
+  if (edit) params.set("edit", edit);
+  if (search) params.set("q", search);
+  if (page > 1) params.set("page", String(page));
+  const suffix = params.toString();
+  return `/admin/tanulmanyok${suffix ? `?${suffix}` : ""}`;
+}
+
 export default async function AdminStudiesPage({ searchParams }: Props) {
   if (!(await isAdminAuthenticated())) redirect("/admin");
   const query = await searchParams;
-  const [studies, topics, videos] = await Promise.all([listAdminStudies(), listAdminTopics(), listAdminVideos()]);
-  const selected = studies.find((study) => study.id === query.edit);
+  const search = query.q?.trim().slice(0, 120) ?? "";
+  const requestedPage = Number.parseInt(query.page ?? "1", 10) || 1;
+  const [studyIndex, selected, topics, videos] = await Promise.all([
+    listAdminStudyIndex(search, requestedPage),
+    query.edit ? getAdminStudy(query.edit) : Promise.resolve(null),
+    listAdminTopics(),
+    listAdminVideos(),
+  ]);
   const reviewDocument = selected?.documents[0];
   const proposedLines = reviewDocument?.candidates.length
     ? reviewDocument.candidates.map(referenceLine)
@@ -24,17 +40,44 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
 
   return (
     <AdminShell>
-      <div className="admin-heading"><div><p className="eyebrow">PDF-könyvtár</p><h1>Tanulmányok</h1></div><Link className="button button--small" href="/admin/tanulmanyok">Új tanulmány</Link></div>
+      <div className="admin-heading"><div><p className="eyebrow">PDF-könyvtár</p><h1>Tanulmányok</h1></div></div>
       <AdminNotice message={query.message} error={query.error} />
       <div className="admin-grid">
-        <aside className="admin-panel">
-          <h2>Tanulmányok</h2>
-          <ul className="admin-list">
-            {studies.map((study) => {
+        <aside className="admin-panel admin-index-panel">
+          <div className="admin-index-heading">
+            <div><h2>Tanulmányok</h2><small>{studyIndex.total} anyag</small></div>
+            <Link className="admin-index-create" href="/admin/tanulmanyok">+ Új</Link>
+          </div>
+          <form className="admin-index-search" action="/admin/tanulmanyok">
+            {selected ? <input type="hidden" name="edit" value={selected.id} /> : null}
+            <label htmlFor="study-search">Keresés</label>
+            <div><input id="study-search" name="q" type="search" defaultValue={search} placeholder="Cím vagy slug" /><button type="submit">Keresés</button></div>
+            {search ? <Link href={indexHref(selected?.id, "", 1)}>Szűrés törlése</Link> : null}
+          </form>
+          <ul className="admin-list admin-study-list">
+            {studyIndex.items.map((study) => {
               const isSelected = selected?.id === study.id;
-              return <li key={study.id} className={isSelected ? "is-selected" : undefined}><span><strong>{study.title}</strong><small>{study.documents.length} PDF-verzió · {study.referenceReviewed ? "ellenőrizve" : "ellenőrzésre vár"}</small></span><span><i className={`status${study.status === "draft" ? " status--draft" : ""}`}>{study.status === "published" ? "élő" : "vázlat"}</i> <Link href={`/admin/tanulmanyok?edit=${study.id}`} aria-current={isSelected ? "page" : undefined}>{isSelected ? "Kiválasztva" : "Szerkesztés"}</Link></span></li>;
+              const documentState = study.documentCount === 0
+                ? "nincs PDF"
+                : study.hasPendingDocument
+                  ? "ellenőrzésre vár"
+                  : study.hasPublishedDocument
+                    ? "véglegesítve"
+                    : "PDF feltöltve";
+              return <li key={study.id} className={isSelected ? "is-selected" : undefined}>
+                <Link className="admin-list-row" href={indexHref(study.id, search, studyIndex.page)} aria-current={isSelected ? "page" : undefined}>
+                  <span><strong>{study.title}</strong><small>{study.documentCount} PDF · {documentState}</small></span>
+                  <i className={`status${study.status === "draft" ? " status--draft" : ""}`}>{study.status === "published" ? "élő" : "vázlat"}</i>
+                </Link>
+              </li>;
             })}
+            {studyIndex.items.length === 0 ? <li className="admin-list-empty">Nincs találat.</li> : null}
           </ul>
+          {studyIndex.pageCount > 1 ? <nav className="admin-index-pagination" aria-label="Tanulmánylista lapozása">
+            {studyIndex.page > 1 ? <Link href={indexHref(selected?.id, search, studyIndex.page - 1)}>← Előző</Link> : <span />}
+            <span>{studyIndex.page} / {studyIndex.pageCount}</span>
+            {studyIndex.page < studyIndex.pageCount ? <Link href={indexHref(selected?.id, search, studyIndex.page + 1)}>Következő →</Link> : <span />}
+          </nav> : null}
         </aside>
         <div className="admin-stack">
           <section className="admin-panel">
@@ -45,11 +88,11 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
               <div className="field"><label htmlFor="title">Cím</label><input id="title" name="title" defaultValue={selected?.title} required /></div>
               <div className="field"><label htmlFor="slug">URL slug</label><input id="slug" name="slug" defaultValue={selected?.slug} placeholder="automatikus-a-cimbol" /></div>
               <div className="field field--full"><label htmlFor="summary">Összefoglaló</label><textarea id="summary" name="summary" defaultValue={selected?.summary} required /></div>
-              <fieldset className="field field--full"><legend>Témák</legend><div className="check-grid">{topics.map((topic) => <label className="check-field" key={topic.id}><input type="checkbox" name="topicIds" value={topic.id} defaultChecked={selected?.topics.some((item) => item.id === topic.id)} /> {topic.title}</label>)}</div></fieldset>
-              <fieldset className="field field--full"><legend>Kapcsolódó videók</legend><div className="check-grid">{videos.length ? videos.map((video) => <label className="check-field" key={video.id}><input type="checkbox" name="relatedVideoIds" value={video.id} defaultChecked={selected?.relatedVideoIds.includes(video.id)} /> {video.title}</label>) : <span className="admin-help">Még nincs videó a gyűjteményben.</span>}</div></fieldset>
+              <fieldset className="field field--full"><legend>Témák</legend><AdminRelationPicker key={`topics-${selected?.id ?? "new"}`} name="topicIds" options={topics.map((topic) => ({ id: topic.id, label: topic.title, meta: topic.status === "published" ? "élő" : "vázlat" }))} selectedIds={selected?.topics.map((item) => item.id)} searchLabel="Témák szűrése" emptyLabel="Nincs ilyen téma." /></fieldset>
+              <fieldset className="field field--full"><legend>Kapcsolódó videók</legend><AdminRelationPicker key={`videos-${selected?.id ?? "new"}`} name="relatedVideoIds" options={videos.map((video) => ({ id: video.id, label: video.title, meta: video.status === "published" ? "élő" : "vázlat" }))} selectedIds={selected?.relatedVideoIds} searchLabel="Videók szűrése" emptyLabel="Nincs ilyen videó." /></fieldset>
               <div className="field"><label htmlFor="seoTitle">SEO-cím</label><input id="seoTitle" name="seoTitle" defaultValue={selected?.seoTitle} maxLength={70} /></div>
               <div className="field"><label htmlFor="seoDescription">SEO-leírás</label><textarea id="seoDescription" name="seoDescription" defaultValue={selected?.seoDescription} maxLength={170} /></div>
-              <div className="field"><label htmlFor="status">Állapot</label><select id="status" name="status" defaultValue={selected?.status ?? "draft"}><option value="draft">Vázlat</option><option value="published">Publikált</option></select></div>
+              <div className="field"><label htmlFor="status">Állapot</label><select id="status" name="status" defaultValue={selected?.status ?? "draft"}><option value="draft">Vázlat</option><option value="published">Publikált</option></select><small className="field-help">Véglegesített PDF nélkül a tanulmány mentéskor automatikusan vázlat marad.</small></div>
               <div className="field"><label htmlFor="sortOrder">Sorrend</label><input id="sortOrder" name="sortOrder" type="number" min="0" defaultValue={selected?.sortOrder ?? 0} /></div>
               <label className="check-field field--full"><input name="featured" type="checkbox" defaultChecked={selected?.featured} /> Kiemelt tanulmány</label>
               <div className="form-actions field--full"><button className="button button--primary" type="submit">Adatok mentése</button></div>

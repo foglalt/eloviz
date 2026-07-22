@@ -31,3 +31,18 @@ completed: 2026-07-22
 - Removed the repeated hero image from the featured-study area and converted it into a calm cardless editorial feature; refreshed public buttons, lists, references, footer, hover states, and motion without changing information architecture.
 - Retired the 2.4 MB legacy PNG and added an optimized 540 KB WebP hero with updated Open Graph/Twitter metadata and descriptive Hungarian alt text.
 - Verified every public collection/detail route at 1440 px and 390 px, the complete first viewport at 320 px, real CTA/navigation/mobile-menu interactions, responsive image loading, and reduced-motion behavior.
+
+## Vercel Blob OIDC compatibility — 2026-07-22
+
+- Updated PDF upload and deletion storage selection to support Vercel's automatically supplied `BLOB_STORE_ID` plus short-lived `VERCEL_OIDC_TOKEN`, while retaining legacy `BLOB_READ_WRITE_TOKEN` compatibility.
+- Kept the durable database fallback for missing, blank, or partial Blob credentials and documented the modern connected-store setup in the README and environment example.
+- Added focused storage-configuration tests covering legacy authentication, complete OIDC authentication, partial credentials, and blank values.
+- Passed storage and reference tests, lint, strict TypeScript, and the Next.js production build.
+
+## Scalable study administration — 2026-07-22
+
+- Removed the publication-readiness error from ordinary study edits. Saves now persist metadata and relationships, keep a study public when it has a finalized PDF, and automatically fall back to draft when publication is requested without one.
+- Replaced the N+1 admin study load with a 30-item server-paginated title/slug search index plus one detailed query for the selected study; dashboard counts and video relationship options now use lightweight queries.
+- Moved “Új tanulmány” into the study sidebar, made each compact row the navigation target, removed visible “Szerkesztés/Kiválasztva” labels, and retained accessible `aria-current` selection semantics with a single color highlight.
+- Added searchable, scroll-bounded relation pickers for topics, videos, and studies so forms remain usable with 100+ catalogue entries.
+- Passed publication, Blob, and reference tests, lint, strict TypeScript, production build, authenticated Chromium interaction checks, server-backed search, relationship filtering, and 390 px overflow verification.

@@ -8,7 +8,7 @@
 **Status:** Completed; final verification recorded
 **Progress:** 100%
 **Last Activity:** 2026-07-22
-**Last Activity Description:** Replaced the Chosen-adjacent visual language with a Revelation 22 river-and-tree identity
+**Last Activity Description:** Made study publication self-correcting and rebuilt the admin catalogue for searchable, paginated, high-volume editing; verification passed
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -29,14 +29,20 @@
 - Post-launch hero gutter, mobile-menu close behavior, and combined footer quotation regression: passed.
 - Admin selection, direct record switching, complete field hydration, authenticated PDF viewing/removal, and 390 px responsive checks: passed.
 - Revelation 22 visual redesign, original hero asset, sans-serif identity, all public routes, 320/390 px responsive behavior, and reduced motion: passed.
+- Vercel Blob legacy-token/OIDC configuration tests, lint, strict TypeScript, and production build: passed.
+- Automatic study draft fallback, paginated/searchable admin index, large relation pickers, authenticated desktop/mobile interactions, and production build: passed.
 
 ## Next Decision Gate
 
 - Before Phase 04, select and document one Hungarian Bible translation whose full text may legally be stored and displayed.
-- For production uploads, configure `BLOB_READ_WRITE_TOKEN`; the implemented database fallback remains durable without it.
+- After deployment, smoke-test one PDF upload against the connected private Vercel Blob store; the implemented database fallback remains durable when Blob credentials are unavailable.
+
+## Workflow Preference
+
+- After each completed and verified implementation workflow, stage, commit, and push the changes to `origin` unless the user explicitly requests local-only work.
 
 ## Session
 
-**Last Date:** 2026-07-22T16:30:33+02:00
-**Stopped At:** Distinct river-of-life visual redesign verified
+**Last Date:** 2026-07-22T20:02:58+02:00
+**Stopped At:** Scalable study administration and publication invariants implemented and verification passed
 **Resume File:** None

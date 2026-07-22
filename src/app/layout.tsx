@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="hu" className={`${headingFont.variable} ${bodyFont.variable}`}>
+    <html lang="hu" className={`${headingFont.variable} ${bodyFont.variable}`} data-scroll-behavior="smooth">
       <body>{children}</body>
     </html>
   );

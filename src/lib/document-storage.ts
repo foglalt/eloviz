@@ -1,6 +1,7 @@
 import "server-only";
 import { del, get, put } from "@vercel/blob";
 import { createHash } from "node:crypto";
+import { isBlobStorageConfigured } from "@/lib/blob-storage-config";
 
 export const MAX_PDF_BYTES = 12 * 1024 * 1024;
 
@@ -15,7 +16,7 @@ export function sha256(buffer: Buffer) {
 }
 
 export async function storePdf(buffer: Buffer, studyId: string, filename: string) {
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
+  if (isBlobStorageConfigured()) {
     const result = await put(`studies/${studyId}/${filename}`, buffer, {
       access: "private",
       addRandomSuffix: true,
@@ -36,5 +37,5 @@ export async function getBlobPdf(pathname: string) {
 }
 
 export async function deleteBlobPdf(pathname: string) {
-  if (process.env.BLOB_READ_WRITE_TOKEN) await del(pathname);
+  if (isBlobStorageConfigured()) await del(pathname);
 }

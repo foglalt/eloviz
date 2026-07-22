@@ -244,7 +244,35 @@ export type AdminStudy = Omit<StudySummary, "pdfUrl"> & {
   documents: StudyDocumentAdmin[];
   relatedVideoIds: string[];
 };
+export type AdminStudyIndexItem = {
+  id: string;
+  title: string;
+  slug: string;
+  status: "draft" | "published";
+  documentCount: number;
+  hasPublishedDocument: boolean;
+  hasPendingDocument: boolean;
+};
+export type AdminStudyIndexPage = {
+  items: AdminStudyIndexItem[];
+  total: number;
+  page: number;
+  pageCount: number;
+};
+export type AdminStudyOption = {
+  id: string;
+  title: string;
+  status: "draft" | "published";
+};
+export type AdminOverview = {
+  topicCount: number;
+  studyCount: number;
+  videoCount: number;
+  pendingStudies: { id: string; title: string }[];
+};
 export type AdminVideo = VideoSummary & { seoTitle: string; seoDescription: string; relatedStudyIds: string[] };
+
+export const ADMIN_STUDY_PAGE_SIZE = 30;
 
 export async function listAdminTopics(): Promise<AdminTopic[]> {
   const sql = getSql();
@@ -253,9 +281,9 @@ export async function listAdminTopics(): Promise<AdminTopic[]> {
   return (rows as Row[]).map((row) => ({ ...mapTopic(row), status: row.status === "published" ? "published" : "draft", seoTitle: String(row.seo_title), seoDescription: String(row.seo_description) }));
 }
 
-export async function listAdminStudies(): Promise<AdminStudy[]> {
+export async function getAdminStudy(id: string): Promise<AdminStudy | null> {
   const sql = getSql();
-  if (!sql) return [];
+  if (!sql) return null;
   const rows = await sql.query(`
     SELECT s.id::text, s.slug, s.title, s.summary, s.status, s.featured, s.sort_order,
       s.updated_at, s.published_document_id::text, s.reference_reviewed,
@@ -263,47 +291,137 @@ export async function listAdminStudies(): Promise<AdminStudy[]> {
       COALESCE((SELECT jsonb_agg(jsonb_build_object('id', t.id::text, 'slug', t.slug, 'title', t.title, 'description', t.description, 'featured', t.featured, 'sort_order', t.sort_order) ORDER BY t.sort_order) FROM study_topics st JOIN topics t ON t.id = st.topic_id WHERE st.study_id = s.id), '[]'::jsonb) AS topics,
       COALESCE((SELECT jsonb_agg(jsonb_build_object('id', r.id::text, 'label', r.display_label, 'osis_start', r.osis_start, 'osis_end', r.osis_end) ORDER BY r.sort_order) FROM study_scripture_references r WHERE r.study_id = s.id AND r.document_id = s.published_document_id), '[]'::jsonb) AS references,
       COALESCE((SELECT jsonb_agg(video_id::text ORDER BY sort_order) FROM study_videos WHERE study_id = s.id), '[]'::jsonb) AS related_video_ids
-    FROM studies s ORDER BY s.sort_order, s.title`);
+    FROM studies s
+    WHERE s.id = $1`, [id]);
+  const row = (rows as Row[])[0];
+  if (!row) return null;
 
-  const studies: AdminStudy[] = [];
-  for (const row of rows as Row[]) {
-    const documentRows = await sql.query(`
-      SELECT d.id::text, d.version_number, d.original_filename, d.byte_size, d.extraction_status,
-        d.extraction_error, d.created_at,
-        COALESCE((SELECT jsonb_agg(jsonb_build_object(
-          'id', c.id::text, 'raw_text', c.raw_text, 'label', c.display_label,
-          'osis_start', c.osis_start, 'osis_end', c.osis_end, 'page_number', c.page_number,
-          'context_snippet', c.context_snippet, 'review_status', c.review_status
-        ) ORDER BY c.sort_order) FROM study_reference_candidates c WHERE c.document_id = d.id), '[]'::jsonb) AS candidates
-      FROM study_documents d WHERE d.study_id = $1 ORDER BY d.version_number DESC`, [row.id]);
-    const documents: StudyDocumentAdmin[] = (documentRows as Row[]).map((document) => ({
-      id: String(document.id),
-      versionNumber: Number(document.version_number),
-      originalFilename: String(document.original_filename),
-      byteSize: Number(document.byte_size),
-      extractionStatus: document.extraction_status as StudyDocumentAdmin["extractionStatus"],
-      extractionError: document.extraction_error ? String(document.extraction_error) : null,
-      createdAt: String(document.created_at),
-      candidates: jsonArray<Row>(document.candidates).map((candidate): ReferenceCandidate => ({
-        ...mapReference(candidate),
-        id: String(candidate.id),
-        rawText: String(candidate.raw_text),
-        pageNumber: candidate.page_number ? Number(candidate.page_number) : null,
-        contextSnippet: candidate.context_snippet ? String(candidate.context_snippet) : null,
-        reviewStatus: candidate.review_status as ReferenceCandidate["reviewStatus"],
-      })),
-    }));
-    studies.push({
-      ...mapStudy({ ...row, document_id: row.published_document_id }),
-      seoTitle: String(row.seo_title),
-      seoDescription: String(row.seo_description),
-      publishedDocumentId: row.published_document_id ? String(row.published_document_id) : null,
-      referenceReviewed: Boolean(row.reference_reviewed),
-      documents,
-      relatedVideoIds: jsonArray<string>(row.related_video_ids),
-    });
-  }
-  return studies;
+  const documentRows = await sql.query(`
+    SELECT d.id::text, d.version_number, d.original_filename, d.byte_size, d.extraction_status,
+      d.extraction_error, d.created_at,
+      COALESCE((SELECT jsonb_agg(jsonb_build_object(
+        'id', c.id::text, 'raw_text', c.raw_text, 'label', c.display_label,
+        'osis_start', c.osis_start, 'osis_end', c.osis_end, 'page_number', c.page_number,
+        'context_snippet', c.context_snippet, 'review_status', c.review_status
+      ) ORDER BY c.sort_order) FROM study_reference_candidates c WHERE c.document_id = d.id), '[]'::jsonb) AS candidates
+    FROM study_documents d WHERE d.study_id = $1 ORDER BY d.version_number DESC`, [id]);
+  const documents: StudyDocumentAdmin[] = (documentRows as Row[]).map((document) => ({
+    id: String(document.id),
+    versionNumber: Number(document.version_number),
+    originalFilename: String(document.original_filename),
+    byteSize: Number(document.byte_size),
+    extractionStatus: document.extraction_status as StudyDocumentAdmin["extractionStatus"],
+    extractionError: document.extraction_error ? String(document.extraction_error) : null,
+    createdAt: String(document.created_at),
+    candidates: jsonArray<Row>(document.candidates).map((candidate): ReferenceCandidate => ({
+      ...mapReference(candidate),
+      id: String(candidate.id),
+      rawText: String(candidate.raw_text),
+      pageNumber: candidate.page_number ? Number(candidate.page_number) : null,
+      contextSnippet: candidate.context_snippet ? String(candidate.context_snippet) : null,
+      reviewStatus: candidate.review_status as ReferenceCandidate["reviewStatus"],
+    })),
+  }));
+
+  return {
+    ...mapStudy({ ...row, document_id: row.published_document_id }),
+    seoTitle: String(row.seo_title),
+    seoDescription: String(row.seo_description),
+    publishedDocumentId: row.published_document_id ? String(row.published_document_id) : null,
+    referenceReviewed: Boolean(row.reference_reviewed),
+    documents,
+    relatedVideoIds: jsonArray<string>(row.related_video_ids),
+  };
+}
+
+export async function listAdminStudyIndex(
+  search = "",
+  requestedPage = 1,
+): Promise<AdminStudyIndexPage> {
+  const sql = getSql();
+  if (!sql) return { items: [], total: 0, page: 1, pageCount: 1 };
+  const normalizedSearch = search.trim().slice(0, 120);
+  const countRows = await sql.query(`
+    SELECT count(*)::int AS count
+    FROM studies s
+    WHERE $1 = ''
+      OR strpos(lower(s.title), lower($1)) > 0
+      OR strpos(lower(s.slug), lower($1)) > 0`, [normalizedSearch]);
+  const total = Number(countRows[0]?.count ?? 0);
+  const pageCount = Math.max(1, Math.ceil(total / ADMIN_STUDY_PAGE_SIZE));
+  const page = Math.min(Math.max(1, Math.trunc(requestedPage) || 1), pageCount);
+  const rows = await sql.query(`
+    SELECT s.id::text, s.title, s.slug, s.status,
+      (SELECT count(*)::int FROM study_documents d WHERE d.study_id = s.id) AS document_count,
+      (s.published_document_id IS NOT NULL) AS has_published_document,
+      COALESCE((
+        SELECT d.id IS DISTINCT FROM s.published_document_id
+        FROM study_documents d
+        WHERE d.study_id = s.id
+        ORDER BY d.version_number DESC
+        LIMIT 1
+      ), false) AS has_pending_document
+    FROM studies s
+    WHERE $1 = ''
+      OR strpos(lower(s.title), lower($1)) > 0
+      OR strpos(lower(s.slug), lower($1)) > 0
+    ORDER BY s.sort_order, s.title
+    LIMIT $2 OFFSET $3`, [normalizedSearch, ADMIN_STUDY_PAGE_SIZE, (page - 1) * ADMIN_STUDY_PAGE_SIZE]);
+
+  return {
+    items: (rows as Row[]).map((row) => ({
+      id: String(row.id),
+      title: String(row.title),
+      slug: String(row.slug),
+      status: row.status === "published" ? "published" : "draft",
+      documentCount: Number(row.document_count ?? 0),
+      hasPublishedDocument: Boolean(row.has_published_document),
+      hasPendingDocument: Boolean(row.has_pending_document),
+    })),
+    total,
+    page,
+    pageCount,
+  };
+}
+
+export async function listAdminStudyOptions(): Promise<AdminStudyOption[]> {
+  const sql = getSql();
+  if (!sql) return [];
+  const rows = await sql.query("SELECT id::text, title, status FROM studies ORDER BY sort_order, title");
+  return (rows as Row[]).map((row) => ({
+    id: String(row.id),
+    title: String(row.title),
+    status: row.status === "published" ? "published" : "draft",
+  }));
+}
+
+export async function getAdminOverview(): Promise<AdminOverview> {
+  const sql = getSql();
+  if (!sql) return { topicCount: 0, studyCount: 0, videoCount: 0, pendingStudies: [] };
+  const counts = await sql.query(`
+    SELECT
+      (SELECT count(*)::int FROM topics) AS topic_count,
+      (SELECT count(*)::int FROM studies) AS study_count,
+      (SELECT count(*)::int FROM videos) AS video_count`);
+  const pendingRows = await sql.query(`
+    SELECT s.id::text, s.title
+    FROM studies s
+    WHERE COALESCE((
+      SELECT d.id IS DISTINCT FROM s.published_document_id
+      FROM study_documents d
+      WHERE d.study_id = s.id
+      ORDER BY d.version_number DESC
+      LIMIT 1
+    ), false)
+    ORDER BY s.updated_at DESC, s.title
+    LIMIT 20`);
+
+  return {
+    topicCount: Number(counts[0]?.topic_count ?? 0),
+    studyCount: Number(counts[0]?.study_count ?? 0),
+    videoCount: Number(counts[0]?.video_count ?? 0),
+    pendingStudies: (pendingRows as Row[]).map((row) => ({ id: String(row.id), title: String(row.title) })),
+  };
 }
 
 export async function listAdminVideos(): Promise<AdminVideo[]> {
