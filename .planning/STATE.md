@@ -8,7 +8,7 @@
 **Status:** Completed; final verification recorded
 **Progress:** 100%
 **Last Activity:** 2026-07-22
-**Last Activity Description:** Hardened admin selection, form hydration, PDF management, and mobile layout after editorial feedback
+**Last Activity Description:** Replaced the Chosen-adjacent visual language with a Revelation 22 river-and-tree identity
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -28,6 +28,7 @@
 - Database migrations and idempotent seed: passed.
 - Post-launch hero gutter, mobile-menu close behavior, and combined footer quotation regression: passed.
 - Admin selection, direct record switching, complete field hydration, authenticated PDF viewing/removal, and 390 px responsive checks: passed.
+- Revelation 22 visual redesign, original hero asset, sans-serif identity, all public routes, 320/390 px responsive behavior, and reduced motion: passed.
 
 ## Next Decision Gate
 
@@ -36,6 +37,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-22T16:14:30+02:00
-**Stopped At:** Admin editor reliability hotfix verified
+**Last Date:** 2026-07-22T16:30:33+02:00
+**Stopped At:** Distinct river-of-life visual redesign verified
 **Resume File:** None

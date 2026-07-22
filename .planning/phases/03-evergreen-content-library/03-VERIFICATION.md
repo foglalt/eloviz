@@ -1,5 +1,5 @@
 ---
-generated: 2026-07-22T16:14:30+02:00
+generated: 2026-07-22T16:30:33+02:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-07-22T16:14:30+02:00
+- Timestamp: 2026-07-22T16:30:33+02:00
 
 ## Checks
 
@@ -30,16 +30,16 @@ Exit code: 0
 
 ## Manual and browser evidence
 
-- `npm run test:references`: PASS — 3/3 Hungarian reference parsing and deduplication tests.
+- `npm run test:references`: PASS — 3/3 reference parsing tests.
 - `npx tsc --noEmit`: PASS.
-- Authenticated admin selection: PASS — topic, study, and video lists expose exactly one visible selected row and one `aria-current` edit link.
-- Direct client-side switching: PASS — edited sentinel values were discarded and every destination record repopulated its title, slug, descriptions, status, ordering, topic relations, and content relations; returning to a new item cleared the form.
-- Existing PDF viewing: PASS — the editor link returned 200 with `application/pdf`; the active PDF of a published study showed the protected-removal explanation and no removal form.
-- Draft PDF lifecycle: PASS — created a temporary study, uploaded a real 63 kB PDF, opened it through the controlled document endpoint, removed that version after explicit confirmation, and deleted the temporary study; no test content remains.
-- Responsive admin: PASS — topic, study, and video editors had `scrollWidth === viewport width` at both 390 px and 1440 px. The study heading, record list, file input, document actions, and form panels remain inside their containers.
-- Browser console: no application errors observed during the authenticated editor and PDF flows.
-
-Earlier phase verification also covered database migrations and seed idempotency, public routes and 404s, sitemap filtering, legacy redirects, security headers, PDF rendering, mobile menu behavior, and the launch-page/footer regressions.
+- Desktop first viewport at 1440×900: PASS — throne, river, joined tree canopy, meadow, brand, quotation, and both calls to action are visible; no horizontal overflow.
+- Mobile first viewport at 390×844 and compact 320×700: PASS — responsive crop retains the river/tree scene and distant throne; brand, quotation, and both actions fit above the fold.
+- Identity separation: PASS — computed wordmark/heading font is Outfit, the logo is uppercase sans-serif, all brown/sepia design tokens and the old stone-water image are absent, and the body uses cool white/green surfaces.
+- Public route sweep: PASS — home, all three collections, three topic details, three study details, and the video detail have no overflow at 1440 px or 390 px after correcting the long `Bibliatanulmányok` mobile heading.
+- Interaction pass: PASS — desktop navigation, hero study CTA, and the full mobile-menu open/navigate/close cycle work with real clicks.
+- Reduced motion: PASS — hero animation duration collapses to `0.01ms` with one iteration.
+- Visual inspection: PASS — home hero, full landing page, mobile collection page, and study detail were reviewed for crop, contrast, hierarchy, typography, spacing, clipping, and unwanted resemblance to the retired styling.
+- Browser console: no application errors; the initial `127.0.0.1` HMR origin warning was eliminated by restarting the dev server and testing through `localhost`.
 
 ### npm run build
 
@@ -55,15 +55,15 @@ Exit code: 0
   · serverActions
 
   Creating an optimized production build ...
-✓ Compiled successfully in 2.9s
+✓ Compiled successfully in 8.8s
   Running TypeScript ...
-  Finished TypeScript in 5.2s ...
+  Finished TypeScript in 9.8s ...
   Collecting page data using 11 workers ...
   Generating static pages using 11 workers (0/9) ...
   Generating static pages using 11 workers (2/9)
   Generating static pages using 11 workers (4/9)
   Generating static pages using 11 workers (6/9)
-✓ Generating static pages using 11 workers (9/9) in 280ms
+✓ Generating static pages using 11 workers (9/9) in 916ms
   Finalizing page optimization ...
 
 Route (app)
