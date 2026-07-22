@@ -1,284 +1,66 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  isAdminAuthenticated,
-  isAdminPasswordConfigured,
-} from "@/lib/admin-auth";
-import { formatHuTimestamp } from "@/lib/date-utils";
-import {
-  getInterestStorageStatus,
-  listHusvetInterestContacts,
-  type HusvetInterestContact,
-} from "@/lib/husvet-interest-store";
-import {
-  getQuizAnalyticsStorageStatus,
-  listHusvetQuizDeviceProgress,
-  type HusvetQuizDeviceProgress,
-} from "@/lib/husvet-quiz-analytics-store";
-import {
-  getHusvetQuizContent,
-  getQuizStorageStatus,
-} from "@/lib/husvet-quiz-store";
-import { logoutAdminAction } from "./actions";
-import { AdminLoginForm } from "./admin-login-form";
-import { AdminQuizEditor } from "./admin-quiz-editor";
-import styles from "./admin.module.css";
+import { AdminNotice, AdminShell } from "@/components/admin-shell";
+import { isAdminAuthenticated, isAdminAuthConfigured } from "@/lib/admin-auth";
+import { listAdminStudies, listAdminTopics, listAdminVideos } from "@/lib/content-repository";
+import { loginAction } from "./actions";
 
-export const dynamic = "force-dynamic";
+type Props = { searchParams: Promise<{ message?: string; error?: string }> };
 
-export const metadata: Metadata = {
-  title: "Admin",
-  description: "Admin felület a húsvéti kvíz kérdéseinek és érdeklődőinek követéséhez.",
-};
-
-function formatDeviceSuccess(device: HusvetQuizDeviceProgress) {
-  const denominator = device.isComplete ? device.totalQuestions : device.answeredCount;
-
-  if (denominator <= 0) {
-    return "Még nincs válasz";
-  }
-
-  return `${device.correctAnswers}/${denominator} helyes`;
-}
-
-function formatDeviceProgress(device: HusvetQuizDeviceProgress) {
-  if (device.totalQuestions <= 0) {
-    return "Még nincs követhető kérdésszám";
-  }
-
-  return `${device.answeredCount}/${device.totalQuestions} megválaszolva`;
-}
-
-function getContactHeadline(contact: HusvetInterestContact) {
-  if (contact.name.trim()) {
-    return contact.name;
-  }
-
-  return "Név nélküli érdeklődő";
-}
-
-function getSourceLabel(source: HusvetInterestContact["source"]) {
-  return source === "quiz" ? "Kvíz" : "Idővonal";
-}
-
-export default async function AdminPage() {
-  const storageStatus = getQuizStorageStatus();
-  const interestStorageStatus = getInterestStorageStatus();
-  const analyticsStorageStatus = getQuizAnalyticsStorageStatus();
-  const passwordConfigured = isAdminPasswordConfigured();
-
-  if (!passwordConfigured) {
-    return (
-      <main className={styles.page}>
-        <section className={styles.shell}>
-          <div className={styles.noticePanel}>
-            <p className={styles.kicker}>Admin</p>
-            <h1>Hiányzó hozzáférési beállítás</h1>
-            <p>
-              Az admin felület használatához állítsd be az <code>ADMIN_PASSWORD</code>{" "}
-              környezeti változót.
-            </p>
-            <p className={styles.storageNote}>{storageStatus.note}</p>
-            <Link className={styles.ghostLink} href="/kviz">
-              Vissza a kvízhez
-            </Link>
-          </div>
-        </section>
-      </main>
-    );
-  }
-
+export default async function AdminPage({ searchParams }: Props) {
+  const query = await searchParams;
   const authenticated = await isAdminAuthenticated();
 
   if (!authenticated) {
+    const configured = isAdminAuthConfigured();
     return (
-      <main className={styles.page}>
-        <section className={styles.shell}>
-          <div className={styles.loginShell}>
-            <div className={styles.noticePanel}>
-              <p className={styles.kicker}>Húsvéti kvíz admin</p>
-              <h2>Gyors tartalmi szerkesztés</h2>
-              <p>
-                A publikus kvíz kérdéseit itt tudod frissíteni anélkül, hogy a
-                kódot kézzel módosítanád.
-              </p>
-              <p className={styles.storageNote}>{storageStatus.note}</p>
+      <main className="admin-login">
+        <section className="admin-login__panel">
+          <p className="eyebrow">Élő Víz</p>
+          <h1>Szerkesztői belépés</h1>
+          <p>Témák, PDF-tanulmányok, igehelyek és videók kezelése.</p>
+          <AdminNotice message={query.message} error={query.error} />
+          {!configured ? (
+            <div className="admin-config-note">
+              <strong>A belépés még nincs beállítva.</strong>
+              <p>Add meg az <code>ADMIN_PASSWORD</code> és egy hosszú, véletlen <code>ADMIN_SESSION_SECRET</code> környezeti változót, majd indítsd újra az alkalmazást.</p>
             </div>
-
-            <AdminLoginForm />
-          </div>
+          ) : (
+            <form action={loginAction} className="admin-login__form">
+              <div className="field">
+                <label htmlFor="password">Jelszó</label>
+                <input id="password" name="password" type="password" autoComplete="current-password" required autoFocus />
+              </div>
+              <button className="button button--primary" type="submit">Belépés</button>
+            </form>
+          )}
+          <Link className="text-link" href="/">Vissza a nyilvános oldalra</Link>
         </section>
       </main>
     );
   }
 
-  const [quizContent, contacts, quizDevices] = await Promise.all([
-    getHusvetQuizContent(),
-    listHusvetInterestContacts(),
-    listHusvetQuizDeviceProgress(),
-  ]);
-  const completedDeviceCount = quizDevices.filter((device) => device.isComplete).length;
-  const activeDeviceCount = quizDevices.filter(
-    (device) => !device.isComplete && device.answeredCount > 0,
-  ).length;
-
+  const [topics, studies, videos] = await Promise.all([listAdminTopics(), listAdminStudies(), listAdminVideos()]);
   return (
-    <main className={styles.page}>
-      <section className={styles.shell}>
-        <div className={styles.topbar}>
-          <Link className={styles.ghostLink} href="/kviz">
-            Publikus kvíz
-          </Link>
-
-          <form action={logoutAdminAction}>
-            <button className={styles.logoutButton} type="submit">
-              Kijelentkezés
-            </button>
-          </form>
-        </div>
-
-        <section className={styles.dashboardGrid}>
-          <section className={styles.dataPanel}>
-            <div className={styles.sectionHeading}>
-              <h2>Kvíz eszközök és haladás</h2>
-              <p>
-                Itt látszik, hány egyedi eszköz járt a kvízen, hol tartanak, és
-                eddig mennyire sikerült a kitöltés.
-              </p>
-            </div>
-
-            <div className={styles.metricsGrid}>
-              <article className={styles.metricCard}>
-                <span className={styles.metricLabel}>Látott eszközök</span>
-                <strong className={styles.metricValue}>{quizDevices.length}</strong>
-              </article>
-
-              <article className={styles.metricCard}>
-                <span className={styles.metricLabel}>Befejezett kvízek</span>
-                <strong className={styles.metricValue}>{completedDeviceCount}</strong>
-              </article>
-
-              <article className={styles.metricCard}>
-                <span className={styles.metricLabel}>Folyamatban</span>
-                <strong className={styles.metricValue}>{activeDeviceCount}</strong>
-              </article>
-            </div>
-
-            <p className={styles.storageNote}>{analyticsStorageStatus.note}</p>
-
-            {quizDevices.length > 0 ? (
-              <div className={styles.insightList}>
-                {quizDevices.map((device, index) => (
-                  <article className={styles.insightCard} key={device.deviceId}>
-                    <div className={styles.insightHeader}>
-                      <div className={styles.insightTitleBlock}>
-                        <h3>Eszköz {(index + 1).toString().padStart(2, "0")}</h3>
-                        <p className={styles.insightMeta}>
-                          Azonosító: {device.deviceId.slice(0, 12)}
-                          {device.deviceId.length > 12 ? "..." : ""}
-                        </p>
-                      </div>
-
-                      <span className={styles.sourceBadge}>
-                        {device.isComplete ? "Befejezve" : "Folyamatban"}
-                      </span>
-                    </div>
-
-                    <div className={styles.insightStats}>
-                      <p>
-                        <span>Haladás</span>
-                        <strong>{formatDeviceProgress(device)}</strong>
-                      </p>
-                      <p>
-                        <span>Siker</span>
-                        <strong>{formatDeviceSuccess(device)}</strong>
-                      </p>
-                      <p>
-                        <span>Utolsó aktivitás</span>
-                        <strong>{formatHuTimestamp(device.lastSeenAt)}</strong>
-                      </p>
-                    </div>
-
-                    <p className={styles.deviceNote}>
-                      {device.userAgent.trim()
-                        ? device.userAgent
-                        : "A böngésző nem adott át eszközleírást."}
-                    </p>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <p className={styles.emptyState}>
-                {analyticsStorageStatus.configured
-                  ? "Még nem érkezett eszközadat a kvízről."
-                  : "Az eszközstatisztika megjelenítéséhez állítsd be a DATABASE_URL környezeti változót."}
-              </p>
-            )}
-          </section>
-
-          <section className={styles.dataPanel}>
-            <div className={styles.sectionHeading}>
-              <h2>Kapcsolatot kérők</h2>
-              <p>
-                A következő listában látszanak azok, akik a kvíz vagy az idővonal
-                végén kértek visszajelzést.
-              </p>
-            </div>
-
-            <div className={styles.metricsGrid}>
-              <article className={styles.metricCard}>
-                <span className={styles.metricLabel}>Kapcsolatok</span>
-                <strong className={styles.metricValue}>{contacts.length}</strong>
-              </article>
-            </div>
-
-            <p className={styles.storageNote}>{interestStorageStatus.note}</p>
-
-            {contacts.length > 0 ? (
-              <div className={styles.insightList}>
-                {contacts.map((contact) => (
-                  <article className={styles.insightCard} key={contact.id}>
-                    <div className={styles.insightHeader}>
-                      <div className={styles.insightTitleBlock}>
-                        <h3>{getContactHeadline(contact)}</h3>
-                        <p className={styles.insightMeta}>
-                          {formatHuTimestamp(contact.createdAt)}
-                        </p>
-                      </div>
-
-                      <span className={styles.sourceBadge}>
-                        {getSourceLabel(contact.source)}
-                      </span>
-                    </div>
-
-                    <div className={styles.contactStack}>
-                      <p className={styles.contactValue}>{contact.contact}</p>
-                      {contact.note.trim() ? (
-                        <p className={styles.contactNote}>{contact.note}</p>
-                      ) : (
-                        <p className={styles.contactNote}>
-                          Nem hagyott külön üzenetet.
-                        </p>
-                      )}
-                    </div>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <p className={styles.emptyState}>
-                {interestStorageStatus.configured
-                  ? "Még nincs rögzített kapcsolatfelvételi kérés."
-                  : "A kapcsolatfelvételi listához állítsd be a DATABASE_URL környezeti változót."}
-              </p>
-            )}
-          </section>
-        </section>
-
-        <AdminQuizEditor
-          initialContent={quizContent}
-          storageStatus={storageStatus}
-        />
+    <AdminShell>
+      <div className="admin-heading">
+        <div><p className="eyebrow">Áttekintés</p><h1>Tartalomtár</h1></div>
+        <p>Az itt véglegesített tartalom azonnal megjelenik a nyilvános oldalon.</p>
+      </div>
+      <AdminNotice message={query.message} error={query.error} />
+      <div className="admin-stat-grid">
+        <Link className="admin-stat" href="/admin/temak"><strong>{topics.length}</strong><span>téma</span></Link>
+        <Link className="admin-stat" href="/admin/tanulmanyok"><strong>{studies.length}</strong><span>tanulmány</span></Link>
+        <Link className="admin-stat" href="/admin/videok"><strong>{videos.length}</strong><span>videó</span></Link>
+      </div>
+      <section className="admin-panel admin-panel--spaced">
+        <h2>Figyelmet igényel</h2>
+        <ul className="admin-list">
+          {studies.filter((study) => study.documents.length > 0 && !study.referenceReviewed).map((study) => (
+            <li key={study.id}><span><strong>{study.title}</strong><small>Feltöltött PDF, még nem véglegesített igehelyek</small></span><Link href={`/admin/tanulmanyok?edit=${study.id}`}>Ellenőrzés →</Link></li>
+          ))}
+          {!studies.some((study) => study.documents.length > 0 && !study.referenceReviewed) && <li><span>Nincs függőben lévő PDF-ellenőrzés.</span></li>}
+        </ul>
       </section>
-    </main>
+    </AdminShell>
   );
 }

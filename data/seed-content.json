@@ -1,0 +1,124 @@
+{
+  "topics": [
+    {
+      "id": "11111111-1111-4111-8111-111111111111",
+      "slug": "megvaltas-es-husvet",
+      "title": "Megváltás és húsvét",
+      "description": "A páska, Krisztus áldozata és a szabadítás bibliai összefüggései – az előképektől a feltámadás reménységéig.",
+      "featured": true,
+      "sortOrder": 10
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222222",
+      "slug": "hit-es-helyreallitas",
+      "title": "Hit és helyreállítás",
+      "description": "Tanulmányok bukásról, bűnbocsánatról, közbenjárásról és arról, hogyan állít helyre Krisztus.",
+      "featured": true,
+      "sortOrder": 20
+    },
+    {
+      "id": "33333333-3333-4333-8333-333333333333",
+      "slug": "szovetseg-es-kozosseg",
+      "title": "Szövetség és közösség",
+      "description": "Isten szövetségi ígéretei, az úrvacsora jelentése és a Krisztussal megélt közösség.",
+      "featured": true,
+      "sortOrder": 30
+    },
+    {
+      "id": "44444444-4444-4444-8444-444444444444",
+      "slug": "krisztus-az-irasokban",
+      "title": "Krisztus az Írásokban",
+      "description": "Ó- és újszövetségi szakaszok, amelyek Krisztus személyét, szolgálatát és ígéreteit tárják fel.",
+      "featured": false,
+      "sortOrder": 40
+    },
+    {
+      "id": "55555555-5555-4555-8555-555555555555",
+      "slug": "szentlelek",
+      "title": "A Szentlélek munkája",
+      "description": "A Lélek vezetése, vigasztalása és Krisztusra mutató szolgálata az egyéni és közösségi életben.",
+      "featured": false,
+      "sortOrder": 50
+    }
+  ],
+  "studies": [
+    {
+      "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      "documentId": "dddddddd-dddd-4ddd-8ddd-ddddddddddd1",
+      "slug": "a-paszka-tipologiaja",
+      "title": "A páska tipológiája",
+      "summary": "Hogyan mutat előre az egyiptomi szabadítás története Krisztus áldozatára, és milyen választ kér tőlünk ma?",
+      "pdfPath": "/studies/a-paszka-tipologiaja.pdf",
+      "featured": true,
+      "sortOrder": 10,
+      "topicIds": ["11111111-1111-4111-8111-111111111111", "44444444-4444-4444-8444-444444444444"],
+      "references": [
+        { "label": "2Mózes 12:1-28", "osisStart": "Exod.12.1", "osisEnd": "Exod.12.28" },
+        { "label": "Zsidók 10:1", "osisStart": "Heb.10.1", "osisEnd": "Heb.10.1" },
+        { "label": "1Korinthus 5:7-8", "osisStart": "1Cor.5.7", "osisEnd": "1Cor.5.8" }
+      ],
+      "sections": [
+        { "title": "Árnyék és valóság", "paragraphs": ["A páska története nem önmagáért áll az Írásban: a szabadítás eseménye Krisztus felé mutató előkép.", "A bárány kiválasztása, hibátlansága és vére Jézus áldozatának részleteire irányítja a figyelmet."] },
+        { "title": "A szabadítás jelei", "paragraphs": ["A vér nemcsak kiontatott, hanem az ajtófélfára is került. A történet így a hitből elfogadott szabadításról beszél.", "A kovásztalan kenyér és az indulásra kész állapot azt mutatja, hogy Isten hívása új életkezdetet nyit."] },
+        { "title": "Gyakorlati hívás", "paragraphs": ["Krisztus, a mi páskabárányunk, megáldoztatott értünk. A tanulmány arra hív, hogy a régi kovászt elhagyva őszinte szívvel kövessük Őt."] }
+      ]
+    },
+    {
+      "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa2",
+      "documentId": "dddddddd-dddd-4ddd-8ddd-ddddddddddd2",
+      "slug": "hogy-el-ne-fogyatkozzon-a-te-hited",
+      "title": "Hogy el ne fogyatkozzon a te hited",
+      "summary": "Péter bukásán és helyreállításán keresztül közelítünk a bűnbocsánat és Krisztus közbenjárásának reménységéhez.",
+      "pdfPath": "/studies/hogy-el-ne-fogyatkozzon-a-te-hited.pdf",
+      "featured": true,
+      "sortOrder": 20,
+      "topicIds": ["22222222-2222-4222-8222-222222222222"],
+      "references": [
+        { "label": "Lukács 22:31-34", "osisStart": "Luke.22.31", "osisEnd": "Luke.22.34" },
+        { "label": "János 21:15-17", "osisStart": "John.21.15", "osisEnd": "John.21.17" },
+        { "label": "Zsidók 4:15-16", "osisStart": "Heb.4.15", "osisEnd": "Heb.4.16" }
+      ],
+      "sections": [
+        { "title": "Bukásból helyreállításig", "paragraphs": ["Jézus előre látja Péter próbáját, mégis így szól: imádkoztam érted, hogy el ne fogyatkozzék a hited.", "Péter megtagadja Krisztust, de története nem a bukással ér véget. A feltámadott Jézus újra szolgálatba állítja."] },
+        { "title": "A bűnbocsánat alapja", "paragraphs": ["A megbékélés középpontja Krisztus áldozata. Nem nekünk kell hordoznunk a bűn végső ítéletét, mert Jézus magára vette azt."] },
+        { "title": "Élő közbenjárás", "paragraphs": ["Krisztus ismeri kísértéseinket és fájdalmainkat. Ezért bizalommal közeledhetünk hozzá, és a gyengeségben is reménységet találhatunk."] }
+      ]
+    },
+    {
+      "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa3",
+      "documentId": "dddddddd-dddd-4ddd-8ddd-ddddddddddd3",
+      "slug": "az-uj-szovetseg",
+      "title": "Az új szövetség",
+      "summary": "Szövetségkötések az Írásban, az úrvacsora jelei és Krisztus jelenidejű hívása a közösségre.",
+      "pdfPath": "/studies/az-uj-szovetseg.pdf",
+      "featured": false,
+      "sortOrder": 30,
+      "topicIds": ["33333333-3333-4333-8333-333333333333", "44444444-4444-4444-8444-444444444444"],
+      "references": [
+        { "label": "1Korinthus 11:24-26", "osisStart": "1Cor.11.24", "osisEnd": "1Cor.11.26" },
+        { "label": "Jeremiás 31:31-34", "osisStart": "Jer.31.31", "osisEnd": "Jer.31.34" },
+        { "label": "János 13:1-17", "osisStart": "John.13.1", "osisEnd": "John.13.17" }
+      ],
+      "sections": [
+        { "title": "Szövetségi ígéretek", "paragraphs": ["Isten történeteiben újra és újra kezdeményezi a kapcsolatot népével. Az Ábrahámmal, Izsákkal, Jákóbbal és Izraellel kötött szövetségek előkészítik az új szövetség megértését."] },
+        { "title": "Kenyér és pohár", "paragraphs": ["Az úrvacsora egyszerre emlékezés Krisztus áldozatára és előretekintés az Ő eljövetelére. A kenyér és a pohár a vele való szövetségi közösséget hirdeti."] },
+        { "title": "Alázat és szolgálat", "paragraphs": ["A lábmosásban Krisztus az alázat és a szolgáló szeretet útját mutatja. Az új szövetség nem csupán tanítás, hanem megélt kapcsolat vele és egymással."] }
+      ]
+    }
+  ],
+  "videos": [
+    {
+      "id": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee1",
+      "slug": "attekintes-jeremias",
+      "title": "Áttekintés: Jeremiás",
+      "description": "A BibleProject magyar nyelvű animációja áttekinti Jeremiás könyvének felépítését, az ítélet és reménység üzenetét, valamint az új szövetség ígéretét.",
+      "youtubeUrl": "https://www.youtube.com/watch?v=9hi9Xp_Nczw",
+      "youtubeId": "9hi9Xp_Nczw",
+      "channelName": "BibleProject – Hungarian / Magyarország",
+      "featured": true,
+      "sortOrder": 10,
+      "topicIds": ["33333333-3333-4333-8333-333333333333", "44444444-4444-4444-8444-444444444444"],
+      "relatedStudyIds": ["aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa3"]
+    }
+  ]
+}

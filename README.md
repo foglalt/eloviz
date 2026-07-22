@@ -1,70 +1,47 @@
-# Élő Víz - Next.js 16 Project
+# Élő Víz
 
-Hungarian-language Easter microsite built with Next.js 16 App Router and React 19.
+Magyar nyelvű, örökzöld bibliatanulmány-gyűjtemény Next.js 16 és React 19 alapon.
 
-## Tech Stack
+## Funkciók
 
-- Next.js `16.2.1` (App Router)
-- React `19.2.x`
-- TypeScript (strict mode)
-- ESLint 9 + `eslint-config-next`
-- Optional Neon Postgres via `@neondatabase/serverless`
+- Témák, PDF-tanulmányok és YouTube-videók külön, keresőbarát oldalakon.
+- Több-több kapcsolat a témák között, valamint közvetlen tanulmány–videó párosítás.
+- Verziózott PDF-feltöltés 12 MB-os korláttal, tartalom- és checksum-ellenőrzéssel.
+- Magyar igehelyek automatikus felismerése oldal- és szövegkörnyezet-bizonyítékkal.
+- Kötelező szerkesztői ellenőrzés és javítható OSIS-lista publikálás előtt.
+- Egyszerű, jelszóval védett admin témákhoz, tanulmányokhoz és videókhoz.
+- Magyar metaadatok, canonical URL-ek, strukturált adatok, sitemap és robots szabályok.
 
-## Main Features
+## Beállítás
 
-- Public Easter landing page (`/`)
-- One-question-at-a-time Easter quiz (`/kviz`)
-- Study topics with printable export (`/studies`)
-- Admin editor for quiz content (`/admin`)
-- Optional contact capture and device analytics persisted to Neon
+Másold a [`.env.example`](./.env.example) fájlt `.env.local` néven, és töltsd ki:
 
-## Environment Variables
+- `DATABASE_URL`: szükséges Neon/Postgres kapcsolat.
+- `ADMIN_PASSWORD`: az egyetlen szerkesztői jelszó.
+- `ADMIN_SESSION_SECRET`: külön, legalább 32 karakteres véletlen munkamenet-kulcs.
+- `BLOB_READ_WRITE_TOKEN`: ajánlott éles környezetben. Ha nincs beállítva, a feltöltött PDF tartós adatbázis-fallbackbe kerül.
 
-Create a local `.env.local` file with:
-
-```env
-# Required to use /admin login
-ADMIN_PASSWORD=your-secure-password
-
-# Optional: enables persistent storage in Neon
-DATABASE_URL=postgresql://...
-```
-
-Behavior without `DATABASE_URL`:
-
-- Quiz content falls back to built-in defaults.
-- Contact requests and quiz analytics cannot be stored.
-- Admin still works for editing, but saving to DB is disabled.
-
-## Development
-
-Install dependencies:
+## Parancsok
 
 ```bash
 npm install
-```
-
-Run dev server:
-
-```bash
+npm run db:migrate
+npm run db:seed
 npm run dev
 ```
 
-Build production bundle:
+Minőségellenőrzés:
 
 ```bash
+npm run test:references
+npm run lint
 npm run build
 ```
 
-Run linter:
+Az admin a `/admin` útvonalon érhető el. A publikált PDF-ek a jogosultságot és publikációs állapotot ellenőrző `/api/documents/[id]` útvonalon keresztül nyílnak meg.
 
-```bash
-npm run lint
-```
+## Adat- és verziómodell
 
-## Project Notes
+Az adatbázis-migrációk a [`database`](./database) könyvtárban, az idempotens kezdő tartalom a [`data/seed-content.json`](./data/seed-content.json) fájlban található. A tanulmány új PDF-je új dokumentumverzió; a korábbi publikált verzió addig marad nyilvános, amíg az új hivatkozáslistát a szerkesztő nem véglegesíti.
 
-- Public-facing copy is intentionally Hungarian by default.
-- Styling uses warm parchment/clay tokens defined in `src/app/globals.css`.
-- Easter-specific routes are grouped under `src/app/(husvet)`.
-- `next-env.d.ts` is Next-generated; do not manually edit it.
+Az egyszerű Biblia-olvasó és a versenkénti tanulmány-visszamutatás a következő fázis. A V1 már fordításfüggetlen OSIS-tartományokat tárol ehhez.

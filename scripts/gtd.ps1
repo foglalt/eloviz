@@ -116,7 +116,7 @@ function Get-TemplateContent {
   if (-not (Test-Path $templatePath)) {
     throw "Template missing: $RelativePath"
   }
-  $content = Get-Content $templatePath -Raw
+  $content = Get-Content $templatePath -Raw -Encoding UTF8
   foreach ($key in $Tokens.Keys) {
     $pattern = [regex]::Escape("__${key}__")
     $replacement = [string]$Tokens[$key]
@@ -152,7 +152,7 @@ function Set-MemoryStateFields {
   if (-not (Test-Path $StatePath)) {
     return
   }
-  $content = Get-Content $StatePath -Raw
+  $content = Get-Content $StatePath -Raw -Encoding UTF8
   foreach ($field in $Updates.Keys) {
     $escaped = [regex]::Escape($field)
     $pattern = "(?im)^(\*\*${escaped}:\*\*\s*).*$"
@@ -365,7 +365,7 @@ function Invoke-Init {
     if (-not (Test-Path $AnswersFile)) {
       throw "Answers file not found: $AnswersFile"
     }
-    $answers = Get-Content $AnswersFile -Raw | ConvertFrom-Json
+    $answers = Get-Content $AnswersFile -Raw -Encoding UTF8 | ConvertFrom-Json
   }
 
   function Resolve-Answer {
@@ -501,7 +501,7 @@ function Get-StateSummaryObject {
     }
   }
 
-  $stateContent = Get-Content (Join-Path $Script:PlanningDir "STATE.md") -Raw
+  $stateContent = Get-Content (Join-Path $Script:PlanningDir "STATE.md") -Raw -Encoding UTF8
   $field = {
     param([string]$Name)
     $match = [regex]::Match($stateContent, "(?im)^\*\*${Name}:\*\*\s*(.+)$")
@@ -596,7 +596,7 @@ function Invoke-Health {
 
   $statePath = Join-Path $Script:PlanningDir "STATE.md"
   if (Test-Path $statePath) {
-    $state = Get-Content $statePath -Raw
+    $state = Get-Content $statePath -Raw -Encoding UTF8
     foreach ($requiredField in @("Project", "Current Phase", "Status", "Progress", "Last Date", "Resume File")) {
       if (-not [regex]::IsMatch($state, "(?im)^\*\*$([regex]::Escape($requiredField)):\*\*")) {
         $issues += "STATE.md missing field: $requiredField"
@@ -643,7 +643,7 @@ function Invoke-Compact {
   $keepDecisions = 7
   if (Test-Path $configPath) {
     try {
-      $cfg = Get-Content $configPath -Raw | ConvertFrom-Json
+      $cfg = Get-Content $configPath -Raw -Encoding UTF8 | ConvertFrom-Json
       if ($cfg.memory.state_max_lines) { $maxLines = [int]$cfg.memory.state_max_lines }
       if ($cfg.memory.recent_decisions_to_keep) { $keepDecisions = [int]$cfg.memory.recent_decisions_to_keep }
     } catch {
@@ -651,7 +651,7 @@ function Invoke-Compact {
     }
   }
 
-  $stateContent = Get-Content $statePath -Raw
+  $stateContent = Get-Content $statePath -Raw -Encoding UTF8
   $lineCount = ($stateContent -split "`r?`n").Count
   if (($lineCount -le $maxLines) -and -not $Force) {
     Write-Info "No compaction needed ($lineCount lines <= $maxLines)."
@@ -744,7 +744,7 @@ function Get-VerificationCommands {
   $packagePath = Join-Path $Script:RepoRoot "package.json"
   if (Test-Path $packagePath) {
     try {
-      $pkg = Get-Content $packagePath -Raw | ConvertFrom-Json
+      $pkg = Get-Content $packagePath -Raw -Encoding UTF8 | ConvertFrom-Json
       $scripts = $null
       $pkgProps = @($pkg.PSObject.Properties.Name)
       if ($pkgProps -contains "scripts") {
@@ -888,7 +888,7 @@ function Invoke-ScaffoldPhase {
 
   $roadmapPath = Join-Path $Script:PlanningDir "ROADMAP.md"
   if (Test-Path $roadmapPath) {
-    $roadmap = Get-Content $roadmapPath -Raw
+    $roadmap = Get-Content $roadmapPath -Raw -Encoding UTF8
     if ($roadmap -notmatch [regex]::Escape("Phase ${phaseNorm}: $Name")) {
       $checklistPattern = "(?ms)(## Phase Checklist\s*\r?\n)"
       if ([regex]::IsMatch($roadmap, $checklistPattern)) {

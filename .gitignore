@@ -9,10 +9,12 @@ lerna-debug.log*
 
 node_modules
 .next
+.next-stale-*
 dist
 dist-ssr
 out
 *.local
+*.tsbuildinfo
 
 # Editor directories and files
 .vscode/*
@@ -26,3 +28,5 @@ out
 *.sw?
 
 .env
+/tmp/
+/output/

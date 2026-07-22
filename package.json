@@ -6,13 +6,20 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint src scripts next.config.ts --no-warn-ignored",
+    "db:migrate": "node --env-file=.env scripts/migrate.mjs",
+    "db:backup-legacy": "node --env-file=.env scripts/backup-legacy.mjs",
+    "db:seed": "node --env-file=.env scripts/seed.mjs",
+    "test:references": "node --experimental-strip-types --test src/lib/scripture-references.test.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
+    "@vercel/blob": "^2.6.1",
     "next": "16.2.1",
+    "pdfjs-dist": "^6.1.200",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^20.19.22",

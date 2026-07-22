@@ -1,0 +1,16 @@
+[
+  ["Gen", "1Mózes", "OT"], ["Exod", "2Mózes", "OT"], ["Lev", "3Mózes", "OT"], ["Num", "4Mózes", "OT"], ["Deut", "5Mózes", "OT"],
+  ["Josh", "Józsué", "OT"], ["Judg", "Bírák", "OT"], ["Ruth", "Ruth", "OT"], ["1Sam", "1Sámuel", "OT"], ["2Sam", "2Sámuel", "OT"],
+  ["1Kgs", "1Királyok", "OT"], ["2Kgs", "2Királyok", "OT"], ["1Chr", "1Krónikák", "OT"], ["2Chr", "2Krónikák", "OT"], ["Ezra", "Ezsdrás", "OT"],
+  ["Neh", "Nehémiás", "OT"], ["Esth", "Eszter", "OT"], ["Job", "Jób", "OT"], ["Ps", "Zsoltárok", "OT"], ["Prov", "Példabeszédek", "OT"],
+  ["Eccl", "Prédikátor", "OT"], ["Song", "Énekek éneke", "OT"], ["Isa", "Ézsaiás", "OT"], ["Jer", "Jeremiás", "OT"], ["Lam", "Jeremiás siralmai", "OT"],
+  ["Ezek", "Ezékiel", "OT"], ["Dan", "Dániel", "OT"], ["Hos", "Hóseás", "OT"], ["Joel", "Jóel", "OT"], ["Amos", "Ámós", "OT"],
+  ["Obad", "Abdiás", "OT"], ["Jonah", "Jónás", "OT"], ["Mic", "Mikeás", "OT"], ["Nah", "Náhum", "OT"], ["Hab", "Habakuk", "OT"],
+  ["Zeph", "Zofóniás", "OT"], ["Hag", "Aggeus", "OT"], ["Zech", "Zakariás", "OT"], ["Mal", "Malakiás", "OT"],
+  ["Matt", "Máté", "NT"], ["Mark", "Márk", "NT"], ["Luke", "Lukács", "NT"], ["John", "János", "NT"], ["Acts", "Apostolok cselekedetei", "NT"],
+  ["Rom", "Róma", "NT"], ["1Cor", "1Korinthus", "NT"], ["2Cor", "2Korinthus", "NT"], ["Gal", "Galata", "NT"], ["Eph", "Efézus", "NT"],
+  ["Phil", "Filippi", "NT"], ["Col", "Kolossé", "NT"], ["1Thess", "1Thesszalonika", "NT"], ["2Thess", "2Thesszalonika", "NT"], ["1Tim", "1Timóteus", "NT"],
+  ["2Tim", "2Timóteus", "NT"], ["Titus", "Titusz", "NT"], ["Phlm", "Filemon", "NT"], ["Heb", "Zsidók", "NT"], ["Jas", "Jakab", "NT"],
+  ["1Pet", "1Péter", "NT"], ["2Pet", "2Péter", "NT"], ["1John", "1János", "NT"], ["2John", "2János", "NT"], ["3John", "3János", "NT"],
+  ["Jude", "Júdás", "NT"], ["Rev", "Jelenések", "NT"]
+]

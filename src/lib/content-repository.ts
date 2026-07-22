@@ -1,0 +1,318 @@
+import "server-only";
+import { defaultStudies, defaultTopics, defaultVideos } from "./content-defaults";
+import type {
+  ReferenceCandidate,
+  ScriptureReference,
+  StudyDetail,
+  StudyDocumentAdmin,
+  StudySummary,
+  TopicDetail,
+  TopicSummary,
+  VideoDetail,
+  VideoSummary,
+} from "./content-types";
+import { getSql } from "./db";
+
+type Row = Record<string, unknown>;
+
+function jsonArray<T>(value: unknown): T[] {
+  if (Array.isArray(value)) return value as T[];
+  if (typeof value === "string") {
+    try { return JSON.parse(value) as T[]; } catch { return []; }
+  }
+  return [];
+}
+
+function mapTopic(row: Row): TopicSummary {
+  return {
+    id: String(row.id),
+    slug: String(row.slug),
+    title: String(row.title),
+    description: String(row.description),
+    seoTitle: row.seo_title ? String(row.seo_title) : null,
+    seoDescription: row.seo_description ? String(row.seo_description) : null,
+    featured: Boolean(row.featured),
+    sortOrder: Number(row.sort_order ?? 0),
+    studyCount: Number(row.study_count ?? 0),
+    videoCount: Number(row.video_count ?? 0),
+  };
+}
+
+function mapReference(value: unknown): ScriptureReference {
+  const row = value as Row;
+  return {
+    id: row.id ? String(row.id) : undefined,
+    label: String(row.label ?? row.display_label ?? ""),
+    osisStart: String(row.osisStart ?? row.osis_start ?? ""),
+    osisEnd: String(row.osisEnd ?? row.osis_end ?? ""),
+    bookCode: row.bookCode ? String(row.bookCode) : row.book_code ? String(row.book_code) : undefined,
+    startChapter: row.startChapter ? Number(row.startChapter) : row.start_chapter ? Number(row.start_chapter) : undefined,
+    startVerse: row.startVerse ? Number(row.startVerse) : row.start_verse ? Number(row.start_verse) : undefined,
+    endChapter: row.endChapter ? Number(row.endChapter) : row.end_chapter ? Number(row.end_chapter) : undefined,
+    endVerse: row.endVerse ? Number(row.endVerse) : row.end_verse ? Number(row.end_verse) : undefined,
+  };
+}
+
+function mapStudy(row: Row): StudySummary {
+  return {
+    id: String(row.id),
+    slug: String(row.slug),
+    title: String(row.title),
+    summary: String(row.summary),
+    seoTitle: row.seo_title ? String(row.seo_title) : null,
+    seoDescription: row.seo_description ? String(row.seo_description) : null,
+    featured: Boolean(row.featured),
+    sortOrder: Number(row.sort_order ?? 0),
+    status: row.status === "draft" ? "draft" : "published",
+    pdfUrl: row.document_id ? `/api/documents/${row.document_id}` : String(row.pdf_url ?? ""),
+    pdfFilename: row.original_filename ? String(row.original_filename) : undefined,
+    updatedAt: row.updated_at ? String(row.updated_at) : null,
+    topics: jsonArray<Row>(row.topics).map(mapTopic),
+    references: jsonArray<Row>(row.references).map(mapReference),
+  };
+}
+
+function mapVideo(row: Row): VideoSummary {
+  return {
+    id: String(row.id),
+    slug: String(row.slug),
+    title: String(row.title),
+    description: String(row.description),
+    seoTitle: row.seo_title ? String(row.seo_title) : null,
+    seoDescription: row.seo_description ? String(row.seo_description) : null,
+    youtubeUrl: String(row.youtube_url),
+    youtubeId: String(row.youtube_id),
+    channelName: row.channel_name ? String(row.channel_name) : null,
+    thumbnailUrl: row.thumbnail_url ? String(row.thumbnail_url) : `https://i.ytimg.com/vi/${row.youtube_id}/maxresdefault.jpg`,
+    uploadDate: row.upload_date ? String(row.upload_date) : null,
+    featured: Boolean(row.featured),
+    sortOrder: Number(row.sort_order ?? 0),
+    status: row.status === "draft" ? "draft" : "published",
+    topics: jsonArray<Row>(row.topics).map(mapTopic),
+  };
+}
+
+const studiesQuery = `
+  SELECT s.id::text, s.slug, s.title, s.summary, s.seo_title, s.seo_description,
+    s.status, s.featured, s.sort_order, s.updated_at, d.id::text AS document_id,
+    d.original_filename,
+    COALESCE((
+      SELECT jsonb_agg(jsonb_build_object(
+        'id', t.id::text, 'slug', t.slug, 'title', t.title, 'description', t.description,
+        'featured', t.featured, 'sort_order', t.sort_order
+      ) ORDER BY st.sort_order, t.sort_order, t.title)
+      FROM study_topics st JOIN topics t ON t.id = st.topic_id
+      WHERE st.study_id = s.id AND t.status = 'published'
+    ), '[]'::jsonb) AS topics,
+    COALESCE((
+      SELECT jsonb_agg(jsonb_build_object(
+        'id', r.id::text, 'label', r.display_label, 'osis_start', r.osis_start,
+        'osis_end', r.osis_end, 'book_code', r.book_code, 'start_chapter', r.start_chapter,
+        'start_verse', r.start_verse, 'end_chapter', r.end_chapter, 'end_verse', r.end_verse
+      ) ORDER BY r.sort_order, r.created_at)
+      FROM study_scripture_references r
+      WHERE r.study_id = s.id AND r.document_id = s.published_document_id
+    ), '[]'::jsonb) AS references
+  FROM studies s
+  JOIN study_documents d ON d.id = s.published_document_id
+  WHERE s.status = 'published'
+  ORDER BY s.sort_order, s.title`;
+
+const videosQuery = `
+  SELECT v.id::text, v.slug, v.title, v.description, v.youtube_url, v.youtube_id,
+    v.channel_name, v.thumbnail_url, v.upload_date, v.seo_title, v.seo_description,
+    v.status, v.featured, v.sort_order, v.updated_at,
+    COALESCE((
+      SELECT jsonb_agg(jsonb_build_object(
+        'id', t.id::text, 'slug', t.slug, 'title', t.title, 'description', t.description,
+        'featured', t.featured, 'sort_order', t.sort_order
+      ) ORDER BY vt.sort_order, t.sort_order, t.title)
+      FROM video_topics vt JOIN topics t ON t.id = vt.topic_id
+      WHERE vt.video_id = v.id AND t.status = 'published'
+    ), '[]'::jsonb) AS topics
+  FROM videos v
+  WHERE v.status = 'published'
+  ORDER BY v.sort_order, v.title`;
+
+export async function listPublicTopics() {
+  const sql = getSql();
+  if (!sql) return defaultTopics;
+
+  try {
+    const rows = await sql.query(`
+      SELECT t.id::text, t.slug, t.title, t.description, t.seo_title, t.seo_description, t.featured, t.sort_order,
+        (SELECT count(*) FROM study_topics st JOIN studies s ON s.id = st.study_id
+          WHERE st.topic_id = t.id AND s.status = 'published' AND s.published_document_id IS NOT NULL) AS study_count,
+        (SELECT count(*) FROM video_topics vt JOIN videos v ON v.id = vt.video_id
+          WHERE vt.topic_id = t.id AND v.status = 'published') AS video_count
+      FROM topics t WHERE t.status = 'published'
+      ORDER BY t.sort_order, t.title`);
+    return (rows as Row[]).map(mapTopic);
+  } catch (error) {
+    console.error("Unable to load topics; using bundled content.", error);
+    return defaultTopics;
+  }
+}
+
+export async function listPublicStudies() {
+  const sql = getSql();
+  if (!sql) return defaultStudies;
+
+  try {
+    const rows = await sql.query(studiesQuery);
+    return (rows as Row[]).map(mapStudy);
+  } catch (error) {
+    console.error("Unable to load studies; using bundled content.", error);
+    return defaultStudies;
+  }
+}
+
+export async function listPublicVideos() {
+  const sql = getSql();
+  if (!sql) return defaultVideos;
+
+  try {
+    const rows = await sql.query(videosQuery);
+    return (rows as Row[]).map(mapVideo);
+  } catch (error) {
+    console.error("Unable to load videos; using bundled content.", error);
+    return defaultVideos;
+  }
+}
+
+export async function getTopicBySlug(slug: string): Promise<TopicDetail | null> {
+  const [topics, studies, videos] = await Promise.all([listPublicTopics(), listPublicStudies(), listPublicVideos()]);
+  const topic = topics.find((item) => item.slug === slug);
+  if (!topic) return null;
+  return {
+    ...topic,
+    studies: studies.filter((study) => study.topics.some((item) => item.id === topic.id)),
+    videos: videos.filter((video) => video.topics.some((item) => item.id === topic.id)),
+  };
+}
+
+export async function getStudyBySlug(slug: string): Promise<StudyDetail | null> {
+  const [studies, videos] = await Promise.all([listPublicStudies(), listPublicVideos()]);
+  const study = studies.find((item) => item.slug === slug);
+  if (!study) return null;
+
+  let relatedIds: string[] = [];
+  const sql = getSql();
+  if (sql) {
+    try {
+      const rows = await sql.query("SELECT video_id::text AS id FROM study_videos WHERE study_id = $1 ORDER BY sort_order", [study.id]);
+      relatedIds = (rows as Row[]).map((row) => String(row.id));
+    } catch { relatedIds = []; }
+  }
+
+  return {
+    ...study,
+    relatedVideos: relatedIds.length
+      ? videos.filter((video) => relatedIds.includes(video.id))
+      : videos.filter((video) => video.topics.some((topic) => study.topics.some((item) => item.id === topic.id))).slice(0, 3),
+  };
+}
+
+export async function getVideoBySlug(slug: string): Promise<VideoDetail | null> {
+  const [videos, studies] = await Promise.all([listPublicVideos(), listPublicStudies()]);
+  const video = videos.find((item) => item.slug === slug);
+  if (!video) return null;
+
+  let relatedIds: string[] = [];
+  const sql = getSql();
+  if (sql) {
+    try {
+      const rows = await sql.query("SELECT study_id::text AS id FROM study_videos WHERE video_id = $1 ORDER BY sort_order", [video.id]);
+      relatedIds = (rows as Row[]).map((row) => String(row.id));
+    } catch { relatedIds = []; }
+  }
+
+  return {
+    ...video,
+    relatedStudies: relatedIds.length
+      ? studies.filter((study) => relatedIds.includes(study.id))
+      : studies.filter((study) => study.topics.some((topic) => video.topics.some((item) => item.id === topic.id))).slice(0, 3),
+  };
+}
+
+export type AdminTopic = TopicSummary & { status: "draft" | "published"; seoTitle: string; seoDescription: string };
+export type AdminStudy = Omit<StudySummary, "pdfUrl"> & {
+  seoTitle: string;
+  seoDescription: string;
+  publishedDocumentId: string | null;
+  referenceReviewed: boolean;
+  documents: StudyDocumentAdmin[];
+  relatedVideoIds: string[];
+};
+export type AdminVideo = VideoSummary & { seoTitle: string; seoDescription: string; relatedStudyIds: string[] };
+
+export async function listAdminTopics(): Promise<AdminTopic[]> {
+  const sql = getSql();
+  if (!sql) return [];
+  const rows = await sql.query("SELECT id::text, slug, title, description, featured, sort_order, status, COALESCE(seo_title, '') AS seo_title, COALESCE(seo_description, '') AS seo_description FROM topics ORDER BY sort_order, title");
+  return (rows as Row[]).map((row) => ({ ...mapTopic(row), status: row.status === "published" ? "published" : "draft", seoTitle: String(row.seo_title), seoDescription: String(row.seo_description) }));
+}
+
+export async function listAdminStudies(): Promise<AdminStudy[]> {
+  const sql = getSql();
+  if (!sql) return [];
+  const rows = await sql.query(`
+    SELECT s.id::text, s.slug, s.title, s.summary, s.status, s.featured, s.sort_order,
+      s.updated_at, s.published_document_id::text, s.reference_reviewed,
+      COALESCE(s.seo_title, '') AS seo_title, COALESCE(s.seo_description, '') AS seo_description,
+      COALESCE((SELECT jsonb_agg(jsonb_build_object('id', t.id::text, 'slug', t.slug, 'title', t.title, 'description', t.description, 'featured', t.featured, 'sort_order', t.sort_order) ORDER BY t.sort_order) FROM study_topics st JOIN topics t ON t.id = st.topic_id WHERE st.study_id = s.id), '[]'::jsonb) AS topics,
+      COALESCE((SELECT jsonb_agg(jsonb_build_object('id', r.id::text, 'label', r.display_label, 'osis_start', r.osis_start, 'osis_end', r.osis_end) ORDER BY r.sort_order) FROM study_scripture_references r WHERE r.study_id = s.id AND r.document_id = s.published_document_id), '[]'::jsonb) AS references,
+      COALESCE((SELECT jsonb_agg(video_id::text ORDER BY sort_order) FROM study_videos WHERE study_id = s.id), '[]'::jsonb) AS related_video_ids
+    FROM studies s ORDER BY s.sort_order, s.title`);
+
+  const studies: AdminStudy[] = [];
+  for (const row of rows as Row[]) {
+    const documentRows = await sql.query(`
+      SELECT d.id::text, d.version_number, d.original_filename, d.byte_size, d.extraction_status,
+        d.extraction_error, d.created_at,
+        COALESCE((SELECT jsonb_agg(jsonb_build_object(
+          'id', c.id::text, 'raw_text', c.raw_text, 'label', c.display_label,
+          'osis_start', c.osis_start, 'osis_end', c.osis_end, 'page_number', c.page_number,
+          'context_snippet', c.context_snippet, 'review_status', c.review_status
+        ) ORDER BY c.sort_order) FROM study_reference_candidates c WHERE c.document_id = d.id), '[]'::jsonb) AS candidates
+      FROM study_documents d WHERE d.study_id = $1 ORDER BY d.version_number DESC`, [row.id]);
+    const documents: StudyDocumentAdmin[] = (documentRows as Row[]).map((document) => ({
+      id: String(document.id),
+      versionNumber: Number(document.version_number),
+      originalFilename: String(document.original_filename),
+      byteSize: Number(document.byte_size),
+      extractionStatus: document.extraction_status as StudyDocumentAdmin["extractionStatus"],
+      extractionError: document.extraction_error ? String(document.extraction_error) : null,
+      createdAt: String(document.created_at),
+      candidates: jsonArray<Row>(document.candidates).map((candidate): ReferenceCandidate => ({
+        ...mapReference(candidate),
+        id: String(candidate.id),
+        rawText: String(candidate.raw_text),
+        pageNumber: candidate.page_number ? Number(candidate.page_number) : null,
+        contextSnippet: candidate.context_snippet ? String(candidate.context_snippet) : null,
+        reviewStatus: candidate.review_status as ReferenceCandidate["reviewStatus"],
+      })),
+    }));
+    studies.push({
+      ...mapStudy({ ...row, document_id: row.published_document_id }),
+      seoTitle: String(row.seo_title),
+      seoDescription: String(row.seo_description),
+      publishedDocumentId: row.published_document_id ? String(row.published_document_id) : null,
+      referenceReviewed: Boolean(row.reference_reviewed),
+      documents,
+      relatedVideoIds: jsonArray<string>(row.related_video_ids),
+    });
+  }
+  return studies;
+}
+
+export async function listAdminVideos(): Promise<AdminVideo[]> {
+  const sql = getSql();
+  if (!sql) return [];
+  const rows = await sql.query(`
+    SELECT v.*, v.id::text,
+      COALESCE((SELECT jsonb_agg(jsonb_build_object('id', t.id::text, 'slug', t.slug, 'title', t.title, 'description', t.description, 'featured', t.featured, 'sort_order', t.sort_order) ORDER BY t.sort_order) FROM video_topics vt JOIN topics t ON t.id = vt.topic_id WHERE vt.video_id = v.id), '[]'::jsonb) AS topics,
+      COALESCE((SELECT jsonb_agg(study_id::text ORDER BY sort_order) FROM study_videos WHERE video_id = v.id), '[]'::jsonb) AS related_study_ids
+    FROM videos v ORDER BY v.sort_order, v.title`);
+  return (rows as Row[]).map((row) => ({ ...mapVideo(row), seoTitle: String(row.seo_title ?? ""), seoDescription: String(row.seo_description ?? ""), relatedStudyIds: jsonArray<string>(row.related_study_ids) }));
+}
