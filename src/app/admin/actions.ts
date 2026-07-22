@@ -176,6 +176,47 @@ export async function uploadStudyPdfAction(formData: FormData) {
   }
 }
 
+export async function deleteStudyDocumentAction(formData: FormData) {
+  await requireAdmin();
+  const studyId = field(formData, "studyId");
+  const documentId = field(formData, "documentId");
+  if (!studyId || !documentId) redirect(destination("/admin/tanulmanyok", "error", "Érvénytelen PDF-törlési kérés.", studyId));
+  if (formData.get("confirmed") !== "on") {
+    redirect(destination("/admin/tanulmanyok", "error", "A PDF eltávolításához jelöld be a megerősítést.", studyId));
+  }
+
+  const sql = requireSql();
+  try {
+    const rows = await sql.query(`
+      SELECT d.storage_kind, d.storage_key,
+        s.status, s.published_document_id::text
+      FROM study_documents d
+      JOIN studies s ON s.id = d.study_id
+      WHERE d.id = $1 AND d.study_id = $2
+    `, [documentId, studyId]);
+    const document = rows[0];
+    if (!document) {
+      redirect(destination("/admin/tanulmanyok", "error", "A PDF nem található, vagy nem ehhez a tanulmányhoz tartozik.", studyId));
+    }
+
+    const isPublishedDocument = String(document.published_document_id ?? "") === documentId;
+    if (isPublishedDocument && document.status === "published") {
+      redirect(destination("/admin/tanulmanyok", "error", "A publikált PDF nem távolítható el. Előbb állítsd a tanulmányt vázlatra.", studyId));
+    }
+
+    if (document.storage_kind === "blob") await deleteBlobPdf(String(document.storage_key));
+    await sql.query("DELETE FROM study_documents WHERE id=$1 AND study_id=$2", [documentId, studyId]);
+    if (isPublishedDocument) {
+      await sql.query("UPDATE studies SET reference_reviewed=false,updated_at=now() WHERE id=$1", [studyId]);
+    }
+    refreshPublicContent();
+    redirect(destination("/admin/tanulmanyok", "message", "A PDF-verzió eltávolítva.", studyId));
+  } catch (error) {
+    rethrowFrameworkRedirect(error);
+    redirect(destination("/admin/tanulmanyok", "error", "A PDF eltávolítása nem sikerült.", studyId));
+  }
+}
+
 export async function finalizeStudyReferencesAction(formData: FormData) {
   await requireAdmin();
   const studyId = field(formData, "studyId");

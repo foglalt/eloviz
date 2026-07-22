@@ -19,10 +19,13 @@ export default async function AdminVideosPage({ searchParams }: Props) {
       <div className="admin-heading"><div><p className="eyebrow">YouTube-gyűjtemény</p><h1>Videók</h1></div><Link className="button button--small" href="/admin/videok">Új videó</Link></div>
       <AdminNotice message={query.message} error={query.error} />
       <div className="admin-grid">
-        <aside className="admin-panel"><h2>Videók</h2><ul className="admin-list">{videos.map((video) => <li key={video.id}><span><strong>{video.title}</strong><small>{video.channelName || "Csatorna nélkül"}</small></span><span><i className={`status${video.status === "draft" ? " status--draft" : ""}`}>{video.status === "published" ? "élő" : "vázlat"}</i> <Link href={`/admin/videok?edit=${video.id}`}>Szerkesztés</Link></span></li>)}{videos.length === 0 && <li>Még nincs videó.</li>}</ul></aside>
+        <aside className="admin-panel"><h2>Videók</h2><ul className="admin-list">{videos.map((video) => {
+          const isSelected = selected?.id === video.id;
+          return <li key={video.id} className={isSelected ? "is-selected" : undefined}><span><strong>{video.title}</strong><small>{video.channelName || "Csatorna nélkül"}</small></span><span><i className={`status${video.status === "draft" ? " status--draft" : ""}`}>{video.status === "published" ? "élő" : "vázlat"}</i> <Link href={`/admin/videok?edit=${video.id}`} aria-current={isSelected ? "page" : undefined}>{isSelected ? "Kiválasztva" : "Szerkesztés"}</Link></span></li>;
+        })}{videos.length === 0 && <li>Még nincs videó.</li>}</ul></aside>
         <section className="admin-panel">
           <h2>{selected ? "Videó szerkesztése" : "Új videó"}</h2>
-          <form action={saveVideoAction} className="form-grid">
+          <form key={selected?.id ?? "new"} action={saveVideoAction} className="form-grid">
             {selected && <input type="hidden" name="id" value={selected.id} />}
             <div className="field"><label htmlFor="title">Cím</label><input id="title" name="title" defaultValue={selected?.title} required /></div>
             <div className="field"><label htmlFor="slug">URL slug</label><input id="slug" name="slug" defaultValue={selected?.slug} placeholder="automatikus-a-cimbol" /></div>

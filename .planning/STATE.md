@@ -8,7 +8,7 @@
 **Status:** Completed; final verification recorded
 **Progress:** 100%
 **Last Activity:** 2026-07-22
-**Last Activity Description:** Corrected landing-page gutters, mobile menu closing, and footer quotation after launch feedback
+**Last Activity Description:** Hardened admin selection, form hydration, PDF management, and mobile layout after editorial feedback
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -27,6 +27,7 @@
 - Complete PDF editorial lifecycle: passed with four detected and published references; test content then safely deleted.
 - Database migrations and idempotent seed: passed.
 - Post-launch hero gutter, mobile-menu close behavior, and combined footer quotation regression: passed.
+- Admin selection, direct record switching, complete field hydration, authenticated PDF viewing/removal, and 390 px responsive checks: passed.
 
 ## Next Decision Gate
 
@@ -35,6 +36,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-22T13:20:29+02:00
-**Stopped At:** Post-launch UI hotfix verified
+**Last Date:** 2026-07-22T16:14:30+02:00
+**Stopped At:** Admin editor reliability hotfix verified
 **Resume File:** None

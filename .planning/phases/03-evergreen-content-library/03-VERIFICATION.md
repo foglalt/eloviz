@@ -1,5 +1,5 @@
 ---
-generated: 2026-07-22T13:20:29+02:00
+generated: 2026-07-22T16:14:30+02:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-07-22T13:20:29+02:00
+- Timestamp: 2026-07-22T16:14:30+02:00
 
 ## Checks
 
@@ -30,31 +30,16 @@ Exit code: 0
 
 ## Manual and browser evidence
 
-- `npm run test:references`: PASS — 3/3 tests for Hungarian references, ranges, deduplication, and reviewed OSIS lines.
+- `npm run test:references`: PASS — 3/3 Hungarian reference parsing and deduplication tests.
 - `npx tsc --noEmit`: PASS.
-- `npm run db:migrate` and `npm run db:seed`: PASS — migrations 001/002 applied, 66 books, 5 topics, 3 studies, and 1 video present.
-- Chromium production-route smoke test: PASS — `/`, topic, study, video, and authenticated admin routes returned 200 with a single descriptive H1 and no console/page errors.
-- Missing study: PASS — returned 404.
-- Sitemap: PASS — includes the seeded study and video URLs; public queries exclude drafts.
-- Controlled PDF response: PASS — returned 200, `application/pdf`, and `X-Robots-Tag: noindex, nofollow`.
-- Legacy redirects: PASS — `/studies` → `/tanulmanyok`, `/kviz` → `/`, `/husvet` → `/`, each as one permanent 308 hop.
-- Responsive checks: PASS — home, topic list, study, video, and admin had `scrollWidth === viewport width` at 390 px; desktop and mobile screenshots were visually inspected.
-- Admin protection: PASS — unauthenticated `/admin/tanulmanyok` returned to `/admin`; authenticated production route returned 200.
-- Admin editing: PASS — existing topic and video saved successfully.
-- Full study lifecycle: PASS — created a draft, uploaded a real PDF, detected 4 references with page/context evidence, confirmed and published them, verified the public page and reference list, returned the study to draft, then safely deleted it; the deleted public slug returned 404.
-- Seed PDF visual check: PASS — rendered pages had correct Hungarian typography, margins, hierarchy, references, and no clipping.
-- Security headers: PASS — `nosniff`, strict-origin referrer policy, and camera/microphone/geolocation denial present.
+- Authenticated admin selection: PASS — topic, study, and video lists expose exactly one visible selected row and one `aria-current` edit link.
+- Direct client-side switching: PASS — edited sentinel values were discarded and every destination record repopulated its title, slug, descriptions, status, ordering, topic relations, and content relations; returning to a new item cleared the form.
+- Existing PDF viewing: PASS — the editor link returned 200 with `application/pdf`; the active PDF of a published study showed the protected-removal explanation and no removal form.
+- Draft PDF lifecycle: PASS — created a temporary study, uploaded a real 63 kB PDF, opened it through the controlled document endpoint, removed that version after explicit confirmation, and deleted the temporary study; no test content remains.
+- Responsive admin: PASS — topic, study, and video editors had `scrollWidth === viewport width` at both 390 px and 1440 px. The study heading, record list, file input, document actions, and form panels remain inside their containers.
+- Browser console: no application errors observed during the authenticated editor and PDF flows.
 
-Browser artifacts are stored locally under ignored `output/playwright/`; the private legacy backup is under ignored `output/private-backups/`.
-
-### Post-launch layout/menu/footer regression — 2026-07-22
-
-- Targeted ESLint and strict TypeScript: PASS.
-- Mobile hero gutter at 390 px: PASS — left edge 16 px, right edge 16 px.
-- Desktop hero gutter at 1440 px: PASS — left/right edge 130 px around the 1180 px content column.
-- Mobile menu: PASS — open before selecting `/temak`, closed immediately after navigation.
-- Footer: PASS — exact requested combined quotation/reference present; obsolete footer-bottom row absent.
-- Chromium console errors: none.
+Earlier phase verification also covered database migrations and seed idempotency, public routes and 404s, sitemap filtering, legacy redirects, security headers, PDF rendering, mobile menu behavior, and the launch-page/footer regressions.
 
 ### npm run build
 
@@ -70,15 +55,15 @@ Exit code: 0
   · serverActions
 
   Creating an optimized production build ...
-✓ Compiled successfully in 43s
+✓ Compiled successfully in 2.9s
   Running TypeScript ...
-  Finished TypeScript in 97s ...
+  Finished TypeScript in 5.2s ...
   Collecting page data using 11 workers ...
   Generating static pages using 11 workers (0/9) ...
   Generating static pages using 11 workers (2/9)
   Generating static pages using 11 workers (4/9)
   Generating static pages using 11 workers (6/9)
-✓ Generating static pages using 11 workers (9/9) in 6.9s
+✓ Generating static pages using 11 workers (9/9) in 280ms
   Finalizing page optimization ...
 
 Route (app)

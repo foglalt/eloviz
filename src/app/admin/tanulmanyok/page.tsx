@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { AdminNotice, AdminShell } from "@/components/admin-shell";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { listAdminStudies, listAdminTopics, listAdminVideos } from "@/lib/content-repository";
-import { deleteContentAction, finalizeStudyReferencesAction, saveStudyAction, uploadStudyPdfAction } from "../actions";
+import { deleteContentAction, deleteStudyDocumentAction, finalizeStudyReferencesAction, saveStudyAction, uploadStudyPdfAction } from "../actions";
 
 type Props = { searchParams: Promise<{ edit?: string; message?: string; error?: string }> };
 export const dynamic = "force-dynamic";
@@ -30,14 +30,17 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
         <aside className="admin-panel">
           <h2>Tanulmányok</h2>
           <ul className="admin-list">
-            {studies.map((study) => <li key={study.id}><span><strong>{study.title}</strong><small>{study.documents.length} PDF-verzió · {study.referenceReviewed ? "ellenőrizve" : "ellenőrzésre vár"}</small></span><span><i className={`status${study.status === "draft" ? " status--draft" : ""}`}>{study.status === "published" ? "élő" : "vázlat"}</i> <Link href={`/admin/tanulmanyok?edit=${study.id}`}>Szerkesztés</Link></span></li>)}
+            {studies.map((study) => {
+              const isSelected = selected?.id === study.id;
+              return <li key={study.id} className={isSelected ? "is-selected" : undefined}><span><strong>{study.title}</strong><small>{study.documents.length} PDF-verzió · {study.referenceReviewed ? "ellenőrizve" : "ellenőrzésre vár"}</small></span><span><i className={`status${study.status === "draft" ? " status--draft" : ""}`}>{study.status === "published" ? "élő" : "vázlat"}</i> <Link href={`/admin/tanulmanyok?edit=${study.id}`} aria-current={isSelected ? "page" : undefined}>{isSelected ? "Kiválasztva" : "Szerkesztés"}</Link></span></li>;
+            })}
           </ul>
         </aside>
         <div className="admin-stack">
           <section className="admin-panel">
             <h2>{selected ? "Tanulmány szerkesztése" : "Új tanulmány"}</h2>
             <p className="admin-help">Először mentsd a vázlatot. Ezután tölthetsz fel hozzá PDF-et és ellenőrizheted az automatikusan talált igehelyeket.</p>
-            <form action={saveStudyAction} className="form-grid">
+            <form key={selected?.id ?? "new"} action={saveStudyAction} className="form-grid">
               {selected && <input type="hidden" name="id" value={selected.id} />}
               <div className="field"><label htmlFor="title">Cím</label><input id="title" name="title" defaultValue={selected?.title} required /></div>
               <div className="field"><label htmlFor="slug">URL slug</label><input id="slug" name="slug" defaultValue={selected?.slug} placeholder="automatikus-a-cimbol" /></div>
@@ -60,7 +63,27 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
               <input name="pdf" type="file" accept="application/pdf,.pdf" required />
               <button className="button" type="submit">Feltöltés és elemzés</button>
             </form>
-            {selected.documents.length > 0 && <ol className="document-history">{selected.documents.map((document) => <li key={document.id}><strong>v{document.versionNumber} · {document.originalFilename}</strong><span>{Math.round(document.byteSize / 1024)} kB · {document.extractionStatus === "complete" ? "szöveg kiolvasva" : "kézi ellenőrzés szükséges"}</span></li>)}</ol>}
+            {selected.documents.length > 0 && <ol className="document-history">{selected.documents.map((document) => {
+              const isPublishedDocument = selected.publishedDocumentId === document.id;
+              const isProtected = isPublishedDocument && selected.status === "published";
+              return <li key={document.id}>
+                <div className="document-history__meta">
+                  <strong>v{document.versionNumber} · {document.originalFilename}</strong>
+                  <span>{Math.round(document.byteSize / 1024)} kB · {document.extractionStatus === "complete" ? "szöveg kiolvasva" : "kézi ellenőrzés szükséges"}{isPublishedDocument ? " · jelenlegi PDF" : ""}</span>
+                </div>
+                <div className="document-history__actions">
+                  <Link className="document-link" href={`/api/documents/${document.id}`} target="_blank" rel="noreferrer">PDF megnyitása ↗</Link>
+                  {isProtected
+                    ? <small className="document-protected">Eltávolítás előtt állítsd vázlatra.</small>
+                    : <form action={deleteStudyDocumentAction} className="document-delete">
+                        <input type="hidden" name="studyId" value={selected.id} />
+                        <input type="hidden" name="documentId" value={document.id} />
+                        <label><input type="checkbox" name="confirmed" required /> Törlés megerősítése</label>
+                        <button className="admin-link-button admin-link-button--danger" type="submit">Eltávolítás</button>
+                      </form>}
+                </div>
+              </li>;
+            })}</ol>}
           </section>}
 
           {selected && reviewDocument && <section className="admin-panel">

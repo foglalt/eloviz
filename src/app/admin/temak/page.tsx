@@ -22,12 +22,15 @@ export default async function AdminTopicsPage({ searchParams }: Props) {
         <aside className="admin-panel">
           <h2>Meglévő témák</h2>
           <ul className="admin-list">
-            {topics.map((topic) => <li key={topic.id}><span><strong>{topic.title}</strong><small>/{topic.slug}</small></span><span><i className={`status${topic.status === "draft" ? " status--draft" : ""}`}>{topic.status === "published" ? "élő" : "vázlat"}</i> <Link href={`/admin/temak?edit=${topic.id}`}>Szerkesztés</Link></span></li>)}
+            {topics.map((topic) => {
+              const isSelected = selected?.id === topic.id;
+              return <li key={topic.id} className={isSelected ? "is-selected" : undefined}><span><strong>{topic.title}</strong><small>/{topic.slug}</small></span><span><i className={`status${topic.status === "draft" ? " status--draft" : ""}`}>{topic.status === "published" ? "élő" : "vázlat"}</i> <Link href={`/admin/temak?edit=${topic.id}`} aria-current={isSelected ? "page" : undefined}>{isSelected ? "Kiválasztva" : "Szerkesztés"}</Link></span></li>;
+            })}
           </ul>
         </aside>
         <section className="admin-panel">
           <h2>{selected ? "Téma szerkesztése" : "Új téma"}</h2>
-          <form action={saveTopicAction} className="form-grid">
+          <form key={selected?.id ?? "new"} action={saveTopicAction} className="form-grid">
             {selected && <input type="hidden" name="id" value={selected.id} />}
             <div className="field"><label htmlFor="title">Cím</label><input id="title" name="title" defaultValue={selected?.title} required /></div>
             <div className="field"><label htmlFor="slug">URL slug</label><input id="slug" name="slug" defaultValue={selected?.slug} placeholder="automatikus-a-cimbol" /></div>
