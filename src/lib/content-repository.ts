@@ -1,4 +1,12 @@
 import "server-only";
+import {
+  CATALOG_SEARCH_LIMIT,
+  foldCatalogSearchText,
+  normalizeCatalogSearchQuery,
+  searchBundledCatalog,
+  type CatalogSearchItem,
+  type CatalogSearchResults,
+} from "./catalog-search";
 import { defaultStudies, defaultTopics, defaultVideos } from "./content-defaults";
 import type {
   ReferenceCandidate,
@@ -177,6 +185,133 @@ export async function listPublicVideos() {
   } catch (error) {
     console.error("Unable to load videos; using bundled content.", error);
     return defaultVideos;
+  }
+}
+
+const foldedSqlText = (value: string) =>
+  `translate(lower(${value}), 'áéíóöőúüű', 'aeiooouuu')`;
+
+function mapSearchItem(kind: CatalogSearchItem["kind"], row: Row): CatalogSearchItem {
+  return {
+    id: String(row.id),
+    kind,
+    slug: String(row.slug),
+    title: String(row.title),
+    description: String(row.description),
+    meta: row.meta ? String(row.meta) : null,
+  };
+}
+
+export async function searchPublicCatalog(rawQuery: string): Promise<CatalogSearchResults> {
+  const query = normalizeCatalogSearchQuery(rawQuery);
+  const foldedQuery = foldCatalogSearchText(query);
+  const emptyResults = { query, topics: [], studies: [], videos: [], total: 0 };
+
+  if (foldedQuery.length < 2) return emptyResults;
+
+  const sql = getSql();
+  if (!sql) {
+    return searchBundledCatalog(query, defaultTopics, defaultStudies, defaultVideos);
+  }
+
+  try {
+    const topicSearchText = foldedSqlText("concat_ws(' ', t.title, t.slug, t.description)");
+    const studySearchText = foldedSqlText(
+      "concat_ws(' ', s.title, s.slug, s.summary, topic_data.search_topics)",
+    );
+    const videoSearchText = foldedSqlText(
+      "concat_ws(' ', v.title, v.slug, v.description, v.channel_name, topic_data.search_topics)",
+    );
+
+    const [topicRows, studyRows, videoRows] = await Promise.all([
+      sql.query(`
+        SELECT t.id::text, t.slug, t.title, t.description,
+          concat(
+            (SELECT count(*) FROM study_topics st JOIN studies s ON s.id = st.study_id
+              WHERE st.topic_id = t.id AND s.status = 'published' AND s.published_document_id IS NOT NULL),
+            ' tanulmány · ',
+            (SELECT count(*) FROM video_topics vt JOIN videos v ON v.id = vt.video_id
+              WHERE vt.topic_id = t.id AND v.status = 'published'),
+            ' videó'
+          ) AS meta
+        FROM topics t
+        WHERE t.status = 'published'
+          AND position($1 in ${topicSearchText}) > 0
+        ORDER BY
+          CASE
+            WHEN ${foldedSqlText("t.title")} = $1 THEN 0
+            WHEN position($1 in ${foldedSqlText("t.title")}) = 1 THEN 1
+            WHEN position($1 in ${foldedSqlText("t.title")}) > 0 THEN 2
+            ELSE 3
+          END,
+          t.sort_order,
+          t.title
+        LIMIT $2
+      `, [foldedQuery, CATALOG_SEARCH_LIMIT]),
+      sql.query(`
+        SELECT s.id::text, s.slug, s.title, s.summary AS description,
+          COALESCE(topic_data.topic_names, 'PDF-tanulmány') AS meta
+        FROM studies s
+        JOIN study_documents d ON d.id = s.published_document_id
+        LEFT JOIN LATERAL (
+          SELECT
+            string_agg(t.title, ' · ' ORDER BY st.sort_order, t.sort_order, t.title) AS topic_names,
+            string_agg(concat_ws(' ', t.title, t.description), ' ') AS search_topics
+          FROM study_topics st
+          JOIN topics t ON t.id = st.topic_id AND t.status = 'published'
+          WHERE st.study_id = s.id
+        ) topic_data ON true
+        WHERE s.status = 'published'
+          AND position($1 in ${studySearchText}) > 0
+        ORDER BY
+          CASE
+            WHEN ${foldedSqlText("s.title")} = $1 THEN 0
+            WHEN position($1 in ${foldedSqlText("s.title")}) = 1 THEN 1
+            WHEN position($1 in ${foldedSqlText("s.title")}) > 0 THEN 2
+            ELSE 3
+          END,
+          s.sort_order,
+          s.title
+        LIMIT $2
+      `, [foldedQuery, CATALOG_SEARCH_LIMIT]),
+      sql.query(`
+        SELECT v.id::text, v.slug, v.title, v.description,
+          COALESCE(v.channel_name, 'Videóajánló') AS meta
+        FROM videos v
+        LEFT JOIN LATERAL (
+          SELECT string_agg(concat_ws(' ', t.title, t.description), ' ') AS search_topics
+          FROM video_topics vt
+          JOIN topics t ON t.id = vt.topic_id AND t.status = 'published'
+          WHERE vt.video_id = v.id
+        ) topic_data ON true
+        WHERE v.status = 'published'
+          AND position($1 in ${videoSearchText}) > 0
+        ORDER BY
+          CASE
+            WHEN ${foldedSqlText("v.title")} = $1 THEN 0
+            WHEN position($1 in ${foldedSqlText("v.title")}) = 1 THEN 1
+            WHEN position($1 in ${foldedSqlText("v.title")}) > 0 THEN 2
+            ELSE 3
+          END,
+          v.sort_order,
+          v.title
+        LIMIT $2
+      `, [foldedQuery, CATALOG_SEARCH_LIMIT]),
+    ]);
+
+    const topics = (topicRows as Row[]).map((row) => mapSearchItem("topic", row));
+    const studies = (studyRows as Row[]).map((row) => mapSearchItem("study", row));
+    const videos = (videoRows as Row[]).map((row) => mapSearchItem("video", row));
+    return {
+      query,
+      topics,
+      studies,
+      videos,
+      total: topics.length + studies.length + videos.length,
+    };
+  } catch (error) {
+    console.error("Unable to search the catalogue; using bundled content.", error);
+    return searchBundledCatalog(query, defaultTopics, defaultStudies, defaultVideos);
   }
 }
 

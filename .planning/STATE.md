@@ -7,8 +7,8 @@
 **Total Plans in Phase:** 10
 **Status:** Completed; final verification recorded
 **Progress:** 100%
-**Last Activity:** 2026-07-22
-**Last Activity Description:** Made study publication self-correcting and rebuilt the admin catalogue for searchable, paginated, high-volume editing; verification passed
+**Last Activity:** 2026-07-23
+**Last Activity Description:** Added a responsive, database-backed public search across published topics, finalized studies, and videos; verification passed
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -31,6 +31,7 @@
 - Revelation 22 visual redesign, original hero asset, sans-serif identity, all public routes, 320/390 px responsive behavior, and reduced motion: passed.
 - Vercel Blob legacy-token/OIDC configuration tests, lint, strict TypeScript, and production build: passed.
 - Automatic study draft fallback, paginated/searchable admin index, large relation pickers, authenticated desktop/mobile interactions, and production build: passed.
+- Central catalogue search tests, accent-free database matching, grouped public results, empty/noindex states, result navigation, and desktop/mobile responsive checks: passed.
 
 ## Next Decision Gate
 
@@ -43,6 +44,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-22T20:02:58+02:00
-**Stopped At:** Scalable study administration and publication invariants implemented and verification passed
+**Last Date:** 2026-07-23T11:23:19+02:00
+**Stopped At:** Public catalogue search implemented and verified
 **Resume File:** None

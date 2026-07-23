@@ -46,3 +46,12 @@ completed: 2026-07-22
 - Moved “Új tanulmány” into the study sidebar, made each compact row the navigation target, removed visible “Szerkesztés/Kiválasztva” labels, and retained accessible `aria-current` selection semantics with a single color highlight.
 - Added searchable, scroll-bounded relation pickers for topics, videos, and studies so forms remain usable with 100+ catalogue entries.
 - Passed publication, Blob, and reference tests, lint, strict TypeScript, production build, authenticated Chromium interaction checks, server-backed search, relationship filtering, and 390 px overflow verification.
+
+## Public catalogue search — 2026-07-23
+
+- Added a compact central search to the desktop header and the mobile menu, with native GET submission and no additional client-side search state.
+- Added the Hungarian `/kereses` results page with grouped topics, finalized PDF studies, and video recommendations, plus clear short-query and empty states.
+- Implemented bounded, parameterized database searches that exclude drafts and studies without a published document, match related published topic text, rank title matches first, and accept Hungarian searches without accents.
+- Kept a bundled-content fallback for missing or unavailable database connections and added focused tests for normalization, cross-type/topic-context matching, accent-free input, and minimum query length.
+- Marked result pages `noindex, follow`, while keeping all result destinations as normal crawlable detail links.
+- Passed search, publication, Blob, and reference tests, lint, strict TypeScript, production build, desktop/mobile Chromium interaction checks, result navigation, empty-state metadata, and responsive overflow verification.

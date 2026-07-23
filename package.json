@@ -12,7 +12,8 @@
     "db:seed": "node --env-file=.env scripts/seed.mjs",
     "test:references": "node --experimental-strip-types --test src/lib/scripture-references.test.ts",
     "test:storage": "node --experimental-strip-types --test src/lib/blob-storage-config.test.ts",
-    "test:publication": "node --experimental-strip-types --test src/lib/study-publication.test.ts"
+    "test:publication": "node --experimental-strip-types --test src/lib/study-publication.test.ts",
+    "test:search": "node --experimental-strip-types --test src/lib/catalog-search.test.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
