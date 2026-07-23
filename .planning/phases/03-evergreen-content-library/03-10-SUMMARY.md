@@ -55,3 +55,11 @@ completed: 2026-07-22
 - Kept a bundled-content fallback for missing or unavailable database connections and added focused tests for normalization, cross-type/topic-context matching, accent-free input, and minimum query length.
 - Marked result pages `noindex, follow`, while keeping all result destinations as normal crawlable detail links.
 - Passed search, publication, Blob, and reference tests, lint, strict TypeScript, production build, desktop/mobile Chromium interaction checks, result navigation, empty-state metadata, and responsive overflow verification.
+
+## Nunito typography refinement — 2026-07-23
+
+- Replaced Outfit and Source Sans 3 with one Hungarian-capable Nunito family across headings, body copy, navigation, admin surfaces, and controls through `next/font`.
+- Increased the hero eyebrow-to-title spacing from 14 px to 24 px so “MAGYAR BIBLIATANULMÁNYOK” no longer crowds the accented `ÉLŐ VÍZ` title.
+- Confirmed the real Nunito webfont rather than its fallback at 1440×900 and 390×844, with a measured 24 px visual gap at both sizes.
+- Verified the complete hero and both actions remain inside the first viewport, the mobile menu still fits, collection headings and body copy use Nunito, and no overflow, framework overlay, or browser console error appears.
+- Passed lint, strict TypeScript, the production build, GTD phase verification, and repository health.

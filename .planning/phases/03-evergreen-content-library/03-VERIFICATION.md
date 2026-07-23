@@ -1,5 +1,5 @@
 ---
-generated: 2026-07-23T11:22:52+02:00
+generated: 2026-07-23T11:41:18+02:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-07-23T11:22:52+02:00
+- Timestamp: 2026-07-23T11:41:18+02:00
 
 ## Checks
 
@@ -44,13 +44,13 @@ Exit code: 0
   Creating an optimized production build ...
 ✓ Compiled successfully in 9.1s
   Running TypeScript ...
-  Finished TypeScript in 2.8s ...
+  Finished TypeScript in 6.8s ...
   Collecting page data using 11 workers ...
   Generating static pages using 11 workers (0/10) ...
   Generating static pages using 11 workers (2/10)
   Generating static pages using 11 workers (4/10)
   Generating static pages using 11 workers (7/10)
-✓ Generating static pages using 11 workers (10/10) in 628ms
+✓ Generating static pages using 11 workers (10/10) in 402ms
   Finalizing page optimization ...
 
 Route (app)
@@ -76,23 +76,28 @@ Route (app)
 ƒ  (Dynamic)  server-rendered on demand
 ```
 
-## Focused public-search evidence
+## Focused Nunito typography evidence
+
+- `npx tsc --noEmit`: PASS.
+- Desktop Chromium at 1440×900: PASS — computed heading and body families are `Nunito, "Nunito Fallback", sans-serif`, `document.fonts.status` is `loaded`, and the measured eyebrow/title gap is 24 px.
+- Desktop first viewport: PASS — the hero actions end at 819 px inside the 900 px viewport; there is no horizontal overflow, framework overlay, or browser console error.
+- Mobile Chromium at 390×844: PASS — the measured eyebrow/title gap remains 24 px, both actions end at 786 px inside the viewport, and horizontal overflow is zero.
+- Collection typography: PASS — `/temak` computes Nunito for both the page heading and body copy with zero overflow.
+- Mobile-menu interaction: PASS — the native menu opens through a real click, computes Nunito, stays within the 390 px viewport, and produces no overflow.
+- Visual inspection: PASS — the softer rounded letterforms retain readable contrast and hierarchy, while the increased gap clearly separates “MAGYAR BIBLIATANULMÁNYOK” from the accented title.
+
+## Retained public-search evidence
 
 - `npm run test:search`: PASS — 3/3 checks for whitespace/accent normalization, grouped topic/study/video matching through related topic context, accent-free input, and minimum query length.
 - `npm run test:publication`: PASS — 3/3 publication-invariant checks.
 - `npm run test:storage`: PASS — 3/3 Blob configuration checks.
 - `npm run test:references`: PASS — 3/3 reference parsing checks.
-- `npx tsc --noEmit`: PASS.
-- Desktop Chromium at 1440×1000: PASS — the header search is visible, the page has meaningful content, and there is no framework overlay, console error, or horizontal overflow.
-- Database-backed `szovetseg` submission: PASS — `/kereses?q=szovetseg` returned four published results grouped as one topic, two finalized PDF studies, and one video; no accent was required.
-- Mobile Chromium at 390×844: PASS — the search is present inside the open mobile menu, desktop actions are hidden, submission finds “A páska tipológiája,” and both the menu and results page have zero horizontal overflow.
-- Result navigation: PASS — clicking the mobile result opened `/tanulmanyok/a-paszka-tipologiaja`, rendered the expected heading and PDF action, and produced no framework overlay.
-- Empty state and indexing policy: PASS — an unmatched query shows the Hungarian recovery prompt and emits `robots: noindex, follow`.
-- React best-practices review: PASS — data and search rendering remain Server Components; the existing client menu receives the server-rendered search form as a slot, native form/link semantics are preserved, and stable IDs key all result rows.
+- Database-backed `szovetseg` submission: PASS — `/kereses?q=szovetseg` returned published results grouped across topics, finalized PDF studies, and videos.
+- Mobile search at 390×844: PASS — the header search submits correctly, result navigation works, the unmatched-query state is clear, and search pages emit `robots: noindex, follow`.
 
 ## Retained maintenance evidence
 
-- Authenticated Chromium at 1440×1000: PASS — the study page loaded with the embedded “+ Új” action, title/slug search, compact study rows, and no framework overlay or console errors.
+- Authenticated Chromium at 1440×1000: PASS — the study editor provides embedded creation, title/slug search, compact rows, and no framework overlay or console errors.
 - Study navigation: PASS — the complete row is the link, exactly one row receives `aria-current="page"` and the teal selection state, and no visible “Szerkesztés” or “Kiválasztva” labels remain.
 - Admin search and high-volume controls: PASS — server-backed study search and bounded relation filtering preserve selected records and checked inputs.
 - Admin mobile at 390×844: PASS — no horizontal overflow, the sidebar returns to normal document flow, selection remains visible, and the editor follows below it.

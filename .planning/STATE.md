@@ -8,7 +8,7 @@
 **Status:** Completed; final verification recorded
 **Progress:** 100%
 **Last Activity:** 2026-07-23
-**Last Activity Description:** Added a responsive, database-backed public search across published topics, finalized studies, and videos; verification passed
+**Last Activity Description:** Replaced the public typography with Nunito and opened a 24 px gap above the accented hero title; verification passed
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -32,6 +32,7 @@
 - Vercel Blob legacy-token/OIDC configuration tests, lint, strict TypeScript, and production build: passed.
 - Automatic study draft fallback, paginated/searchable admin index, large relation pickers, authenticated desktop/mobile interactions, and production build: passed.
 - Central catalogue search tests, accent-free database matching, grouped public results, empty/noindex states, result navigation, and desktop/mobile responsive checks: passed.
+- Nunito next/font loading, 24 px hero eyebrow/title spacing, first-viewport fit, collection typography, mobile menu, and responsive overflow: passed.
 
 ## Next Decision Gate
 
@@ -44,6 +45,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-23T11:23:19+02:00
-**Stopped At:** Public catalogue search implemented and verified
+**Last Date:** 2026-07-23T11:41:33+02:00
+**Stopped At:** Nunito typography and hero title spacing implemented and verified
 **Resume File:** None

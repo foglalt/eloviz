@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
-import { Outfit, Source_Sans_3 } from "next/font/google";
+import { Nunito } from "next/font/google";
 import "./globals.css";
 
-const headingFont = Outfit({
+const siteFont = Nunito({
   subsets: ["latin-ext"],
-  variable: "--font-heading",
-  weight: ["500", "600", "700"],
-  display: "swap",
-});
-
-const bodyFont = Source_Sans_3({
-  subsets: ["latin-ext"],
-  variable: "--font-body",
+  variable: "--font-site",
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -32,7 +26,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="hu" className={`${headingFont.variable} ${bodyFont.variable}`} data-scroll-behavior="smooth">
+    <html lang="hu" className={siteFont.variable} data-scroll-behavior="smooth">
       <body>{children}</body>
     </html>
   );
