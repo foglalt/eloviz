@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 type MobileMenuProps = {
   links: ReadonlyArray<readonly [label: string, href: string]>;
@@ -11,6 +11,36 @@ type MobileMenuProps = {
 
 export function MobileMenu({ links, search }: MobileMenuProps) {
   const menuRef = useRef<HTMLDetailsElement>(null);
+
+  useEffect(() => {
+    function handlePointerDown(event: PointerEvent) {
+      const menu = menuRef.current;
+      if (
+        menu?.open
+        && event.target instanceof Node
+        && !menu.contains(event.target)
+      ) {
+        menu.removeAttribute("open");
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      const menu = menuRef.current;
+      if (event.key !== "Escape" || !menu?.open) return;
+
+      event.preventDefault();
+      menu.removeAttribute("open");
+      menu.querySelector("summary")?.focus();
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   function closeMenu() {
     menuRef.current?.removeAttribute("open");

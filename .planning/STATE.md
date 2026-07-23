@@ -8,7 +8,7 @@
 **Status:** Completed; final verification recorded
 **Progress:** 100%
 **Last Activity:** 2026-07-23
-**Last Activity Description:** Replaced the public typography with Nunito and opened a 24 px gap above the accented hero title; verification passed
+**Last Activity Description:** Added outside-click and Escape dismissal to the mobile menu, corrected touch/focus feedback, and aligned the panel beneath the header; verification passed
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -33,6 +33,7 @@
 - Automatic study draft fallback, paginated/searchable admin index, large relation pickers, authenticated desktop/mobile interactions, and production build: passed.
 - Central catalogue search tests, accent-free database matching, grouped public results, empty/noindex states, result navigation, and desktop/mobile responsive checks: passed.
 - Nunito next/font loading, 24 px hero eyebrow/title spacing, first-viewport fit, collection typography, mobile menu, and responsive overflow: passed.
+- Mobile-menu outside dismissal, internal search interaction, Escape/focus behavior, transparent tap feedback, 44 px target, and 320/390 px responsive fit: passed.
 
 ## Next Decision Gate
 
@@ -45,6 +46,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-23T11:41:33+02:00
-**Stopped At:** Nunito typography and hero title spacing implemented and verified
+**Last Date:** 2026-07-23T11:50:36+02:00
+**Stopped At:** Mobile menu dismissal and interaction feedback implemented and verified
 **Resume File:** None

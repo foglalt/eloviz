@@ -301,9 +301,12 @@ h3 { margin: 0; font-size: clamp(1.45rem, 2.4vw, 2rem); }
   :root { --page: min(100% - 32px, 1180px); }
   .site-header__actions { display: none; }
   .mobile-menu { display: block; position: relative; }
-  .mobile-menu summary { list-style: none; cursor: pointer; font-weight: 800; font-size: .78rem; text-transform: uppercase; }
+  .mobile-menu summary { min-height: 44px; display: inline-flex; align-items: center; padding: 0 10px; list-style: none; border-radius: 5px; cursor: pointer; color: var(--ink); font-weight: 800; font-size: .78rem; text-transform: uppercase; user-select: none; -webkit-tap-highlight-color: transparent; transition: color 160ms ease, background 160ms ease; }
   .mobile-menu summary::-webkit-details-marker { display: none; }
-  .mobile-menu__panel { position: absolute; right: 0; top: 36px; width: min(330px, calc(100vw - 32px)); display: grid; gap: 14px; padding: 20px; background: var(--paper); border: 1px solid var(--line); box-shadow: var(--shadow); }
+  .mobile-menu summary:focus:not(:focus-visible) { outline: none; }
+  .mobile-menu summary:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+  .mobile-menu[open] summary { background: var(--spring-soft); color: var(--teal); }
+  .mobile-menu__panel { position: absolute; right: 0; top: calc(100% + 14px); width: min(330px, calc(100vw - 32px)); display: grid; gap: 14px; padding: 20px; background: var(--paper); border: 1px solid var(--line); box-shadow: var(--shadow); }
   .mobile-menu__panel .public-search { margin-bottom: 6px; }
   .section-heading, .feature-pair, .feature-study, .detail-grid, .admin-grid { grid-template-columns: 1fr; }
   .editorial-row { grid-template-columns: 44px minmax(0, 1fr) 20px; gap: 16px; }
