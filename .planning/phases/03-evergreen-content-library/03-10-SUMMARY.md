@@ -72,3 +72,11 @@ completed: 2026-07-22
 - Extended the same native-highlight suppression, 44 px target, rounded pale-green pressed state, teal text, and keyboard focus treatment to every mobile navigation link.
 - Aligned the menu panel directly beneath the 72 px header and verified the layout at 390 px and 320 px without horizontal overflow.
 - Passed lint, strict TypeScript, the production build, focused Chromium interaction checks, GTD phase verification, and repository health.
+
+## Site-wide interaction feedback — 2026-07-23
+
+- Removed the browser-native tap highlight from all links, buttons, disclosures, labels, and form controls, including both Élő Víz logo links.
+- Replaced default link/button/disclosure keyboard outlines with the established teal focus treatment while retaining the existing form-control focus system.
+- Applied the pale-green and deep-teal selection palette globally so selectable content remains useful without reverting to browser blue.
+- Audited the homepage, collections, search, representative detail pages, desktop navigation, mobile navigation, footer, and available admin controls at 1440 px, 390 px, and 320 px.
+- Passed real logo/menu/hero/footer/search navigation, focused and held-state visual review, lint, strict TypeScript, production build, GTD phase verification, and repository health.

@@ -8,7 +8,7 @@
 **Status:** Completed; final verification recorded
 **Progress:** 100%
 **Last Activity:** 2026-07-23
-**Last Activity Description:** Replaced the mobile navigation links' native blue tap indicator with the menu trigger's pale-green and teal pressed treatment; verification passed
+**Last Activity Description:** Removed native blue tap and focus effects site-wide, including both Élő Víz logo links, and replaced them with the established teal/green interaction system; verification passed
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -35,6 +35,7 @@
 - Nunito next/font loading, 24 px hero eyebrow/title spacing, first-viewport fit, collection typography, mobile menu, and responsive overflow: passed.
 - Mobile-menu outside dismissal, internal search interaction, Escape/focus behavior, transparent tap feedback, 44 px target, and 320/390 px responsive fit: passed.
 - Mobile navigation link pressed state, transparent tap highlight, keyboard focus, touch navigation, and 320/390 px fit: passed.
+- Site-wide transparent tap highlights, branded selection, teal keyboard focus, logo/footer/menu/hero/search navigation, public route audit, and 320/390/1440 px fit: passed.
 
 ## Next Decision Gate
 
@@ -47,6 +48,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-23T11:57:59+02:00
-**Stopped At:** Mobile navigation link tap feedback corrected and verified
+**Last Date:** 2026-07-23T12:07:55+02:00
+**Stopped At:** Site-wide native interaction effects removed and verified
 **Resume File:** None
