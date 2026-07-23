@@ -1,5 +1,5 @@
 ---
-generated: 2026-07-23T11:50:25+02:00
+generated: 2026-07-23T11:57:47+02:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-07-23T11:50:25+02:00
+- Timestamp: 2026-07-23T11:57:47+02:00
 
 ## Checks
 
@@ -42,15 +42,15 @@ Exit code: 0
   · serverActions
 
   Creating an optimized production build ...
-✓ Compiled successfully in 4.2s
+✓ Compiled successfully in 4.1s
   Running TypeScript ...
-  Finished TypeScript in 5.0s ...
+  Finished TypeScript in 6.0s ...
   Collecting page data using 11 workers ...
   Generating static pages using 11 workers (0/10) ...
   Generating static pages using 11 workers (2/10)
   Generating static pages using 11 workers (4/10)
   Generating static pages using 11 workers (7/10)
-✓ Generating static pages using 11 workers (10/10) in 532ms
+✓ Generating static pages using 11 workers (10/10) in 848ms
   Finalizing page optimization ...
 
 Route (app)
@@ -76,12 +76,13 @@ Route (app)
 ƒ  (Dynamic)  server-rendered on demand
 ```
 
-## Focused mobile-menu evidence
+## Focused mobile navigation-link evidence
 
 - `npx tsc --noEmit`: PASS.
-- Mobile Chromium at 390×844: PASS — the menu opens through a real tap, remains open for interaction inside the search field, closes on an outside pointer action, and closes on Escape with focus returned to the trigger.
-- Touch and keyboard feedback: PASS — the trigger reports a transparent WebKit tap highlight, a 44 px target height, a pale-green open state, and a keyboard-only 2 px teal focus ring.
-- Panel alignment: PASS — the panel begins at 71.5 px beneath the 72 px header and stays within the viewport with zero horizontal overflow.
-- Compact mobile Chromium at 320×700: PASS — the panel fits from 16 px to 304 px, remains fully usable, and produces zero horizontal overflow.
-- Navigation regression: PASS — selecting a mobile navigation link closes the menu and completes client-side navigation.
+- Held link at 390×844: PASS — the native WebKit tap highlight is transparent and the visible state uses the same pale-green background, teal text, and 5 px radius as the pressed menu trigger.
+- Touch target and selection behavior: PASS — every direct mobile navigation link is 44 px high and reports `user-select: none`.
+- Touch navigation: PASS — tapping “Témák” navigates to `/temak` and closes the menu.
+- Keyboard behavior: PASS — a keyboard-focused link receives a 2 px teal focus ring; Escape still closes the menu and returns focus to the trigger.
+- Regression checks: PASS — interaction inside the search field keeps the menu open, an outside tap closes it, and there is no horizontal overflow at 390×844 or 320×700.
+- Visual review: PASS — the held-state screenshot is coherent with the “MENÜ” button and contains no blue selection bar.
 - Browser console: no application errors.

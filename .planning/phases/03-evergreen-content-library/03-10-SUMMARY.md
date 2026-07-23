@@ -69,5 +69,6 @@ completed: 2026-07-22
 - Added outside-pointer dismissal to the mobile menu while preserving interaction with its search field and navigation links.
 - Added Escape dismissal with focus returned to the menu trigger for keyboard users.
 - Removed the browser-native cyan tap flash, established a 44 px trigger target, and added a restrained pale-green open state plus a keyboard-only teal focus ring.
+- Extended the same native-highlight suppression, 44 px target, rounded pale-green pressed state, teal text, and keyboard focus treatment to every mobile navigation link.
 - Aligned the menu panel directly beneath the 72 px header and verified the layout at 390 px and 320 px without horizontal overflow.
 - Passed lint, strict TypeScript, the production build, focused Chromium interaction checks, GTD phase verification, and repository health.

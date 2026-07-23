@@ -8,7 +8,7 @@
 **Status:** Completed; final verification recorded
 **Progress:** 100%
 **Last Activity:** 2026-07-23
-**Last Activity Description:** Added outside-click and Escape dismissal to the mobile menu, corrected touch/focus feedback, and aligned the panel beneath the header; verification passed
+**Last Activity Description:** Replaced the mobile navigation links' native blue tap indicator with the menu trigger's pale-green and teal pressed treatment; verification passed
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -34,6 +34,7 @@
 - Central catalogue search tests, accent-free database matching, grouped public results, empty/noindex states, result navigation, and desktop/mobile responsive checks: passed.
 - Nunito next/font loading, 24 px hero eyebrow/title spacing, first-viewport fit, collection typography, mobile menu, and responsive overflow: passed.
 - Mobile-menu outside dismissal, internal search interaction, Escape/focus behavior, transparent tap feedback, 44 px target, and 320/390 px responsive fit: passed.
+- Mobile navigation link pressed state, transparent tap highlight, keyboard focus, touch navigation, and 320/390 px fit: passed.
 
 ## Next Decision Gate
 
@@ -46,6 +47,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-23T11:50:36+02:00
-**Stopped At:** Mobile menu dismissal and interaction feedback implemented and verified
+**Last Date:** 2026-07-23T11:57:59+02:00
+**Stopped At:** Mobile navigation link tap feedback corrected and verified
 **Resume File:** None
