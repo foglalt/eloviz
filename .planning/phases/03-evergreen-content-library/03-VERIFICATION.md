@@ -1,5 +1,5 @@
 ---
-generated: 2026-07-24T12:16:10+02:00
+generated: 2026-07-24T16:04:16+02:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-07-24T12:16:10+02:00
+- Timestamp: 2026-07-24T16:04:16+02:00
 
 ## Checks
 
@@ -17,15 +17,16 @@ status: passed
 | `npm run lint` | 0 | PASS |
 | `npm run build` | 0 | PASS |
 
-## Focused Admin Workspace Evidence
+## Focused “Egyéb” Topic Evidence
 
+- `npm run test:topics`: 5/5 PASS, covering fallback assignment, permanent topic inclusion/counting, duplicate merging, central search, and reserved-slug validation.
+- Existing reference, storage, publication, and catalogue-search suites: 14/14 PASS.
 - `npx tsc --noEmit`: PASS.
-- `npm run test:references`, `npm run test:storage`, `npm run test:publication`, and `npm run test:search`: 14 tests passed.
-- Authenticated Chrome at 1440×1000: topic, study, and video editors each rendered one shared index panel, six common fields, one selected full-row link with `aria-current="page"`, and one danger panel.
-- Authenticated mobile Chrome at 390×844: all three editors stacked to one column, preserved full-row selection and the shared form template, and had no horizontal overflow.
-- Real index interactions: row selection, new-item reset, server-backed filtered results, filter clearing, a no-match state, and a selected editor outside the current result set behaved correctly.
-- Relation-picker filtering changed the visible study topic count from `4 / 4` to `1 / 4` and restored it to `4 / 4`.
-- No “Szerkesztés” or “Kiválasztva” list labels, browser console errors, framework overlays, clipping, or inconsistent selected-state styling were found.
+- Database-backed Chrome at 1440×1000: `/temak` showed one `Egyéb` row, `/temak/egyeb` returned its canonical metadata and valid zero-study empty state, and the homepage exposed the topic.
+- Real central-search submissions for both `egyeb` and `egyéb` returned the topic with correct count metadata; the final parameterized SQL query was rechecked against the database-backed production server.
+- Current explicitly categorized studies showed no `Egyéb` tag and the current unassigned-study count remained correctly at zero.
+- `/sitemap.xml` included `https://eloviz.hu/temak/egyeb`; the admin study form showed the automatic-fallback explanation with no synthetic topic selected.
+- Desktop and 390×844 mobile visual review found no clipping, horizontal overflow, failed resources, console errors, or framework overlays.
 
 ## Detailed Output
 
@@ -52,15 +53,15 @@ Exit code: 0
   · serverActions
 
   Creating an optimized production build ...
-✓ Compiled successfully in 20.0s
+✓ Compiled successfully in 22.4s
   Running TypeScript ...
-  Finished TypeScript in 16.3s ...
+  Finished TypeScript in 16.5s ...
   Collecting page data using 11 workers ...
   Generating static pages using 11 workers (0/10) ...
   Generating static pages using 11 workers (2/10)
   Generating static pages using 11 workers (4/10)
   Generating static pages using 11 workers (7/10)
-✓ Generating static pages using 11 workers (10/10) in 356ms
+✓ Generating static pages using 11 workers (10/10) in 683ms
   Finalizing page optimization ...
 
 Route (app)

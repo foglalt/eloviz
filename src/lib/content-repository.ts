@@ -20,6 +20,12 @@ import type {
   VideoSummary,
 } from "./content-types";
 import { getSql } from "./db";
+import {
+  attachOtherTopicToUnassignedStudies,
+  createOtherTopic,
+  includeOtherTopic,
+  OTHER_TOPIC_SLUG,
+} from "./other-topic";
 
 type Row = Record<string, unknown>;
 
@@ -142,20 +148,38 @@ const videosQuery = `
   WHERE v.status = 'published'
   ORDER BY v.sort_order, v.title`;
 
+const unassignedPublicStudyCountQuery = `
+  SELECT count(*)::int AS count
+  FROM studies s
+  WHERE s.status = 'published'
+    AND s.published_document_id IS NOT NULL
+    AND NOT EXISTS (
+      SELECT 1
+      FROM study_topics st
+      JOIN topics t ON t.id = st.topic_id AND t.status = 'published'
+      WHERE st.study_id = s.id
+    )`;
+
 export async function listPublicTopics() {
   const sql = getSql();
   if (!sql) return defaultTopics;
 
   try {
-    const rows = await sql.query(`
-      SELECT t.id::text, t.slug, t.title, t.description, t.seo_title, t.seo_description, t.featured, t.sort_order,
-        (SELECT count(*) FROM study_topics st JOIN studies s ON s.id = st.study_id
-          WHERE st.topic_id = t.id AND s.status = 'published' AND s.published_document_id IS NOT NULL) AS study_count,
-        (SELECT count(*) FROM video_topics vt JOIN videos v ON v.id = vt.video_id
-          WHERE vt.topic_id = t.id AND v.status = 'published') AS video_count
-      FROM topics t WHERE t.status = 'published'
-      ORDER BY t.sort_order, t.title`);
-    return (rows as Row[]).map(mapTopic);
+    const [rows, countRows] = await Promise.all([
+      sql.query(`
+        SELECT t.id::text, t.slug, t.title, t.description, t.seo_title, t.seo_description, t.featured, t.sort_order,
+          (SELECT count(*) FROM study_topics st JOIN studies s ON s.id = st.study_id
+            WHERE st.topic_id = t.id AND s.status = 'published' AND s.published_document_id IS NOT NULL) AS study_count,
+          (SELECT count(*) FROM video_topics vt JOIN videos v ON v.id = vt.video_id
+            WHERE vt.topic_id = t.id AND v.status = 'published') AS video_count
+        FROM topics t WHERE t.status = 'published'
+        ORDER BY t.sort_order, t.title`),
+      sql.query(unassignedPublicStudyCountQuery),
+    ]);
+    return includeOtherTopic(
+      (rows as Row[]).map(mapTopic),
+      Number(countRows[0]?.count ?? 0),
+    );
   } catch (error) {
     console.error("Unable to load topics; using bundled content.", error);
     return defaultTopics;
@@ -168,7 +192,7 @@ export async function listPublicStudies() {
 
   try {
     const rows = await sql.query(studiesQuery);
-    return (rows as Row[]).map(mapStudy);
+    return attachOtherTopicToUnassignedStudies((rows as Row[]).map(mapStudy));
   } catch (error) {
     console.error("Unable to load studies; using bundled content.", error);
     return defaultStudies;
@@ -215,15 +239,22 @@ export async function searchPublicCatalog(rawQuery: string): Promise<CatalogSear
   }
 
   try {
+    const fallbackSearchText = `Egyéb egyeb ${createOtherTopic(0).description}`;
     const topicSearchText = foldedSqlText("concat_ws(' ', t.title, t.slug, t.description)");
     const studySearchText = foldedSqlText(
-      "concat_ws(' ', s.title, s.slug, s.summary, topic_data.search_topics)",
+      "concat_ws(' ', s.title, s.slug, s.summary, COALESCE(topic_data.search_topics, $3))",
     );
     const videoSearchText = foldedSqlText(
       "concat_ws(' ', v.title, v.slug, v.description, v.channel_name, topic_data.search_topics)",
     );
 
-    const [topicRows, studyRows, videoRows] = await Promise.all([
+    const otherTopicMatches = searchBundledCatalog(
+      query,
+      [createOtherTopic(0)],
+      [],
+      [],
+    ).topics.length > 0;
+    const [topicRows, studyRows, videoRows, unassignedCountRows] = await Promise.all([
       sql.query(`
         SELECT t.id::text, t.slug, t.title, t.description,
           concat(
@@ -250,7 +281,7 @@ export async function searchPublicCatalog(rawQuery: string): Promise<CatalogSear
       `, [foldedQuery, CATALOG_SEARCH_LIMIT]),
       sql.query(`
         SELECT s.id::text, s.slug, s.title, s.summary AS description,
-          COALESCE(topic_data.topic_names, 'PDF-tanulmány') AS meta
+          COALESCE(topic_data.topic_names, 'Egyéb') AS meta
         FROM studies s
         JOIN study_documents d ON d.id = s.published_document_id
         LEFT JOIN LATERAL (
@@ -273,7 +304,7 @@ export async function searchPublicCatalog(rawQuery: string): Promise<CatalogSear
           s.sort_order,
           s.title
         LIMIT $2
-      `, [foldedQuery, CATALOG_SEARCH_LIMIT]),
+      `, [foldedQuery, CATALOG_SEARCH_LIMIT, fallbackSearchText]),
       sql.query(`
         SELECT v.id::text, v.slug, v.title, v.description,
           COALESCE(v.channel_name, 'Videóajánló') AS meta
@@ -297,9 +328,25 @@ export async function searchPublicCatalog(rawQuery: string): Promise<CatalogSear
           v.title
         LIMIT $2
       `, [foldedQuery, CATALOG_SEARCH_LIMIT]),
+      otherTopicMatches
+        ? sql.query(unassignedPublicStudyCountQuery)
+        : Promise.resolve([]),
     ]);
 
-    const topics = (topicRows as Row[]).map((row) => mapSearchItem("topic", row));
+    const otherTopicResults = otherTopicMatches
+      ? searchBundledCatalog(
+          query,
+          [createOtherTopic(Number(unassignedCountRows[0]?.count ?? 0))],
+          [],
+          [],
+        ).topics
+      : [];
+    const topics = [
+      ...otherTopicResults,
+      ...(topicRows as Row[])
+        .map((row) => mapSearchItem("topic", row))
+        .filter((topic) => topic.slug !== OTHER_TOPIC_SLUG),
+    ].slice(0, CATALOG_SEARCH_LIMIT);
     const studies = (studyRows as Row[]).map((row) => mapSearchItem("study", row));
     const videos = (videoRows as Row[]).map((row) => mapSearchItem("video", row));
     return {

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { OTHER_TOPIC_SLUG } from "./other-topic.ts";
 
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -15,7 +16,14 @@ export function slugifyHungarian(value: string) {
 export const topicInputSchema = z.object({
   id: z.string().uuid().optional(),
   title: z.string().trim().min(2, "A cím legalább 2 karakter legyen.").max(120),
-  slug: z.string().trim().regex(slugPattern, "A slug csak kisbetűt, számot és kötőjelet tartalmazhat.").max(120),
+  slug: z.string()
+    .trim()
+    .regex(slugPattern, "A slug csak kisbetűt, számot és kötőjelet tartalmazhat.")
+    .max(120)
+    .refine(
+      (slug) => slug !== OTHER_TOPIC_SLUG,
+      "Az „egyeb” slugot a rendszer automatikus témaköre használja.",
+    ),
   description: z.string().trim().min(20, "A leírás legalább 20 karakter legyen.").max(1200),
   seoTitle: z.string().trim().max(70).optional().default(""),
   seoDescription: z.string().trim().max(170).optional().default(""),

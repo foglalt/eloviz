@@ -99,3 +99,12 @@ completed: 2026-07-22
 - Kept PDF lifecycle and entity-specific relationship fields explicit while consolidating repeated title/slug, SEO, publication, ordering, featured, and destructive-action behavior.
 - Audited other repeated UI: public resource lists, relation pickers, header/footer, admin shell, and notices were already shared and required no additional refactor.
 - Passed all four test suites, lint, strict TypeScript, two production builds, authenticated Chrome interaction/search/selection checks, and visual/overflow review at 1440×1000 and 390×844.
+
+## Automatic “Egyéb” topic — 2026-07-24
+
+- Added a permanent, system-managed public `Egyéb` topic for published studies that have no explicit published topic.
+- Kept the fallback derived in the public repository layer, so admin data remains truthful and editors never need to assign or maintain a fake database relation.
+- Added `Egyéb` to topic lists, the homepage, `/temak/egyeb`, study tags/details, sitemap generation, bundled fallback content, and accented/accent-free central search.
+- Reserved the `egyeb` slug from manually created topics and added an explanatory hint beside the study topic picker.
+- Preserved explicitly categorized studies outside the fallback and made the zero-unassigned-study state a valid, indexable empty collection.
+- Added five focused fallback tests and passed all existing tests, lint, strict TypeScript, three production builds, GTD verification/health, and desktop/mobile Chrome route, search, sitemap, metadata, console, and overflow checks.

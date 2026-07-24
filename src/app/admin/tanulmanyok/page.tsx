@@ -111,6 +111,9 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
             </div>
             <fieldset className="field field--full">
               <legend>Témák</legend>
+              <small className="field-help">
+                Ha nem választasz témát, a tanulmány nyilvánosan az Egyéb témakörbe kerül.
+              </small>
               <AdminRelationPicker
                 key={`topics-${selected?.id ?? "new"}`}
                 name="topicIds"

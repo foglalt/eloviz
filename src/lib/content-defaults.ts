@@ -1,5 +1,9 @@
 import seed from "../../data/seed-content.json";
 import type { StudySummary, TopicSummary, VideoSummary } from "./content-types";
+import {
+  attachOtherTopicToUnassignedStudies,
+  includeOtherTopic,
+} from "./other-topic";
 
 const content = seed;
 
@@ -9,9 +13,7 @@ const topics: TopicSummary[] = content.topics.map((topic) => ({
   videoCount: content.videos.filter((video) => video.topicIds.includes(topic.id)).length,
 }));
 
-export const defaultTopics = topics;
-
-export const defaultStudies: StudySummary[] = content.studies.map((study) => ({
+const studies: StudySummary[] = content.studies.map((study) => ({
   id: study.id,
   slug: study.slug,
   title: study.title,
@@ -25,6 +27,11 @@ export const defaultStudies: StudySummary[] = content.studies.map((study) => ({
   topics: topics.filter((topic) => study.topicIds.includes(topic.id)),
   references: study.references,
 }));
+
+const unassignedStudyCount = studies.filter((study) => study.topics.length === 0).length;
+
+export const defaultTopics = includeOtherTopic(topics, unassignedStudyCount);
+export const defaultStudies = attachOtherTopicToUnassignedStudies(studies);
 
 export const defaultVideos: VideoSummary[] = content.videos.map((video) => ({
   id: video.id,

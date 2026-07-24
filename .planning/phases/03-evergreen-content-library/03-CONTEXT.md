@@ -19,6 +19,7 @@ This phase does not implement the Bible reader or original-language concordances
 - Videos are YouTube recommendations, not self-hosted media.
 - A study and video can be explicitly marked as related when they belong together.
 - Topics, studies, videos, descriptions, and relations are editable through a very simple admin.
+- Published studies without an explicit public topic appear under the system-managed `Egyéb` topic; the fallback is derived and does not create a fake editable relationship.
 - The visual language must be redesigned around “living water.”
 - Revelation 22:17 may anchor the invitation and brand message.
 - Planning and feasibility work must be complete before product code is edited.

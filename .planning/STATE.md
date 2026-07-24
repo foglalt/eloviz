@@ -8,7 +8,7 @@
 **Status:** Completed; final verification recorded
 **Progress:** 100%
 **Last Activity:** 2026-07-24
-**Last Activity Description:** Unified topic, study, and video editors on one scalable shared admin workspace and verified desktop/mobile behavior
+**Last Activity Description:** Added the system-managed Egyéb topic for published studies without an explicit topic and verified public/admin behavior
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -38,6 +38,7 @@
 - Site-wide transparent tap highlights, branded selection, teal keyboard focus, logo/footer/menu/hero/search navigation, public route audit, and 320/390/1440 px fit: passed.
 - Direct published topic/study deletion, current-PDF automatic draft fallback, immediate editor refresh, cascade cleanup, five publication tests, and authenticated desktop/mobile UI checks: passed.
 - Shared topic/study/video workspace, common content fields and danger zone, 30-item searchable/paginated indexes, lightweight relation options, real selection/search interaction, and 390/1440 px responsive checks: passed.
+- Automatic Egyéb fallback topic, orphan-study categorization, accented/accent-free search, sitemap/canonical metadata, reserved slug, admin guidance, five focused tests, and 390/1440 px route checks: passed.
 
 ## Next Decision Gate
 
@@ -50,6 +51,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-24T12:16:10+02:00
-**Stopped At:** Unified admin content workspace implemented and verified
+**Last Date:** 2026-07-24T16:04:17+02:00
+**Stopped At:** Automatic Egyéb topic implemented and verified
 **Resume File:** None
