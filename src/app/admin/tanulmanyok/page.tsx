@@ -83,7 +83,7 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
           <section className="admin-panel">
             <h2>{selected ? "Tanulmány szerkesztése" : "Új tanulmány"}</h2>
             <p className="admin-help">Először mentsd a vázlatot. Ezután tölthetsz fel hozzá PDF-et és ellenőrizheted az automatikusan talált igehelyeket.</p>
-            <form key={selected?.id ?? "new"} action={saveStudyAction} className="form-grid">
+            <form key={selected ? `${selected.id}:${selected.updatedAt ?? ""}` : "new"} action={saveStudyAction} className="form-grid">
               {selected && <input type="hidden" name="id" value={selected.id} />}
               <div className="field"><label htmlFor="title">Cím</label><input id="title" name="title" defaultValue={selected?.title} required /></div>
               <div className="field"><label htmlFor="slug">URL slug</label><input id="slug" name="slug" defaultValue={selected?.slug} placeholder="automatikus-a-cimbol" /></div>
@@ -108,7 +108,6 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
             </form>
             {selected.documents.length > 0 && <ol className="document-history">{selected.documents.map((document) => {
               const isPublishedDocument = selected.publishedDocumentId === document.id;
-              const isProtected = isPublishedDocument && selected.status === "published";
               return <li key={document.id}>
                 <div className="document-history__meta">
                   <strong>v{document.versionNumber} · {document.originalFilename}</strong>
@@ -116,14 +115,15 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
                 </div>
                 <div className="document-history__actions">
                   <Link className="document-link" href={`/api/documents/${document.id}`} target="_blank" rel="noreferrer">PDF megnyitása ↗</Link>
-                  {isProtected
-                    ? <small className="document-protected">Eltávolítás előtt állítsd vázlatra.</small>
-                    : <form action={deleteStudyDocumentAction} className="document-delete">
-                        <input type="hidden" name="studyId" value={selected.id} />
-                        <input type="hidden" name="documentId" value={document.id} />
-                        <label><input type="checkbox" name="confirmed" required /> Törlés megerősítése</label>
-                        <button className="admin-link-button admin-link-button--danger" type="submit">Eltávolítás</button>
-                      </form>}
+                  {isPublishedDocument && selected.status === "published"
+                    ? <small className="document-protected">Eltávolításkor a tanulmány automatikusan vázlatra kerül.</small>
+                    : null}
+                  <form action={deleteStudyDocumentAction} className="document-delete">
+                    <input type="hidden" name="studyId" value={selected.id} />
+                    <input type="hidden" name="documentId" value={document.id} />
+                    <label><input type="checkbox" name="confirmed" required /> Törlés megerősítése</label>
+                    <button className="admin-link-button admin-link-button--danger" type="submit">Eltávolítás</button>
+                  </form>
                 </div>
               </li>;
             })}</ol>}
@@ -144,7 +144,7 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
           </section>}
           {selected && <section className="admin-panel danger-panel"><h2>Veszélyzóna</h2><form action={deleteContentAction} className="danger-zone">
             <input type="hidden" name="entity" value="study" /><input type="hidden" name="id" value={selected.id} />
-            <div><strong>Vázlat és összes PDF-verzió végleges törlése</strong><p>Publikált tanulmány nem törölhető. Megerősítésként írd be pontosan: <code>{selected.title}</code></p></div>
+            <div><strong>Tanulmány és összes PDF-verzió végleges törlése</strong><p>A tanulmány, kapcsolatai és PDF-verziói végleg törlődnek. Megerősítésként írd be pontosan: <code>{selected.title}</code></p></div>
             <input name="confirmedTitle" aria-label="A törlendő tanulmány címe" required /><button className="button button--danger button--small" type="submit">Törlés</button>
           </form></section>}
         </div>

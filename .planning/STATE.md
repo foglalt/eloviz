@@ -7,8 +7,8 @@
 **Total Plans in Phase:** 10
 **Status:** Completed; final verification recorded
 **Progress:** 100%
-**Last Activity:** 2026-07-23
-**Last Activity Description:** Removed native blue tap and focus effects site-wide, including both Élő Víz logo links, and replaced them with the established teal/green interaction system; verification passed
+**Last Activity:** 2026-07-24
+**Last Activity Description:** Removed draft-first deletion restrictions; current-PDF removal now automatically drafts the study, and direct published-content deletion is verified
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -36,6 +36,7 @@
 - Mobile-menu outside dismissal, internal search interaction, Escape/focus behavior, transparent tap feedback, 44 px target, and 320/390 px responsive fit: passed.
 - Mobile navigation link pressed state, transparent tap highlight, keyboard focus, touch navigation, and 320/390 px fit: passed.
 - Site-wide transparent tap highlights, branded selection, teal keyboard focus, logo/footer/menu/hero/search navigation, public route audit, and 320/390/1440 px fit: passed.
+- Direct published topic/study deletion, current-PDF automatic draft fallback, immediate editor refresh, cascade cleanup, five publication tests, and authenticated desktop/mobile UI checks: passed.
 
 ## Next Decision Gate
 
@@ -48,6 +49,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-23T12:07:55+02:00
-**Stopped At:** Site-wide native interaction effects removed and verified
+**Last Date:** 2026-07-24T11:55:02+02:00
+**Stopped At:** Direct content and PDF deletion workflow implemented and verified
 **Resume File:** None

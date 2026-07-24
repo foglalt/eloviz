@@ -18,7 +18,7 @@ import { deleteBlobPdf, MAX_PDF_BYTES, sha256, storePdf, validatePdfBuffer } fro
 import { extractPdfPages } from "@/lib/pdf-extract";
 import { DETECTOR_VERSION, detectScriptureReferences, parseOsisReferenceLine } from "@/lib/scripture-references";
 import { parseYouTubeId, sanitizePdfFilename, slugifyHungarian, studyInputSchema, topicInputSchema, videoInputSchema } from "@/lib/content-validation";
-import { resolveStudyPublicationStatus } from "@/lib/study-publication";
+import { resolveStudyDocumentRemoval, resolveStudyPublicationStatus } from "@/lib/study-publication";
 
 function field(formData: FormData, name: string) {
   return String(formData.get(name) ?? "").trim();
@@ -206,17 +206,28 @@ export async function deleteStudyDocumentAction(formData: FormData) {
     }
 
     const isPublishedDocument = String(document.published_document_id ?? "") === documentId;
-    if (isPublishedDocument && document.status === "published") {
-      redirect(destination("/admin/tanulmanyok", "error", "A publikált PDF nem távolítható el. Előbb állítsd a tanulmányt vázlatra.", studyId));
-    }
+    const publication = resolveStudyDocumentRemoval(
+      document.status === "published" ? "published" : "draft",
+      isPublishedDocument,
+    );
 
     if (document.storage_kind === "blob") await deleteBlobPdf(String(document.storage_key));
     await sql.query("DELETE FROM study_documents WHERE id=$1 AND study_id=$2", [documentId, studyId]);
     if (isPublishedDocument) {
-      await sql.query("UPDATE studies SET reference_reviewed=false,updated_at=now() WHERE id=$1", [studyId]);
+      await sql.query(
+        "UPDATE studies SET status=$2,reference_reviewed=false,updated_at=now() WHERE id=$1",
+        [studyId, publication.status],
+      );
     }
     refreshPublicContent();
-    redirect(destination("/admin/tanulmanyok", "message", "A PDF-verzió eltávolítva.", studyId));
+    redirect(destination(
+      "/admin/tanulmanyok",
+      "message",
+      publication.downgraded
+        ? "A PDF-verzió eltávolítva. A tanulmány automatikusan vázlatra került."
+        : "A PDF-verzió eltávolítva.",
+      studyId,
+    ));
   } catch (error) {
     rethrowFrameworkRedirect(error);
     redirect(destination("/admin/tanulmanyok", "error", "A PDF eltávolítása nem sikerült.", studyId));
@@ -302,10 +313,9 @@ export async function deleteContentAction(formData: FormData) {
   if (!definition || !id) redirect("/admin?error=Érvénytelen+törlési+kérés.");
   const sql = requireSql();
   try {
-    const rows = await sql.query(`SELECT title,status FROM ${definition.table} WHERE id=$1`, [id]);
+    const rows = await sql.query(`SELECT title FROM ${definition.table} WHERE id=$1`, [id]);
     const item = rows[0];
     if (!item) redirect(destination(definition.path, "error", "A törlendő tartalom nem található."));
-    if (item.status === "published") redirect(destination(definition.path, "error", "Publikált tartalom nem törölhető. Előbb állítsd vázlatra.", id));
     if (confirmedTitle !== String(item.title)) redirect(destination(definition.path, "error", "A megerősítéshez pontosan írd be a tartalom címét.", id));
     if (entity === "study") {
       const blobs = await sql.query("SELECT storage_key FROM study_documents WHERE study_id=$1 AND storage_kind='blob'", [id]);

@@ -44,7 +44,7 @@ export default async function AdminTopicsPage({ searchParams }: Props) {
           </form>
           {selected && <form action={deleteContentAction} className="danger-zone">
             <input type="hidden" name="entity" value="topic" /><input type="hidden" name="id" value={selected.id} />
-            <div><strong>Vázlat végleges törlése</strong><p>Publikált téma nem törölhető. Megerősítésként írd be pontosan: <code>{selected.title}</code></p></div>
+            <div><strong>Téma végleges törlése</strong><p>A téma és kapcsolatai végleg törlődnek. Megerősítésként írd be pontosan: <code>{selected.title}</code></p></div>
             <input name="confirmedTitle" aria-label="A törlendő téma címe" required /><button className="button button--danger button--small" type="submit">Törlés</button>
           </form>}
         </section>

@@ -80,3 +80,12 @@ completed: 2026-07-22
 - Applied the pale-green and deep-teal selection palette globally so selectable content remains useful without reverting to browser blue.
 - Audited the homepage, collections, search, representative detail pages, desktop navigation, mobile navigation, footer, and available admin controls at 1440 px, 390 px, and 320 px.
 - Passed real logo/menu/hero/footer/search navigation, focused and held-state visual review, lint, strict TypeScript, production build, GTD phase verification, and repository health.
+
+## Direct deletion workflow — 2026-07-24
+
+- Removed the draft-first guard from confirmed topic, study, and video deletion; publication status is no longer an extra manual prerequisite.
+- Made every study PDF version removable, including the current PDF of a published study.
+- Automatically changes a study to draft, clears its publication readiness, and refreshes the public catalogue when its current PDF is removed; older-version removal leaves publication unchanged.
+- Kept the title confirmation for whole-content deletion and the checkbox confirmation for individual PDF removal.
+- Keyed the study editor form by the record update timestamp so automatic draft changes appear immediately after the server-action redirect.
+- Passed five publication-state tests, lint, strict TypeScript, production build, authenticated desktop/mobile UI review, and temporary database-backed published-topic, published-study, PDF-removal, cascade, and cleanup checks.

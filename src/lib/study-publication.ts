@@ -13,3 +13,15 @@ export function resolveStudyPublicationStatus(
     downgraded: requestedStatus === "published" && status === "draft",
   } as const;
 }
+
+export function resolveStudyDocumentRemoval(
+  currentStatus: StudyPublicationStatus,
+  removesPublishedDocument: boolean,
+) {
+  const status = removesPublishedDocument ? "draft" : currentStatus;
+
+  return {
+    status,
+    downgraded: currentStatus === "published" && status === "draft",
+  } as const;
+}

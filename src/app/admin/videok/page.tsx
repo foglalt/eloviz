@@ -44,7 +44,7 @@ export default async function AdminVideosPage({ searchParams }: Props) {
           </form>
           {selected && <form action={deleteContentAction} className="danger-zone">
             <input type="hidden" name="entity" value="video" /><input type="hidden" name="id" value={selected.id} />
-            <div><strong>Vázlat végleges törlése</strong><p>Publikált videó nem törölhető. Megerősítésként írd be pontosan: <code>{selected.title}</code></p></div>
+            <div><strong>Videó végleges törlése</strong><p>A videó és kapcsolatai végleg törlődnek. Megerősítésként írd be pontosan: <code>{selected.title}</code></p></div>
             <input name="confirmedTitle" aria-label="A törlendő videó címe" required /><button className="button button--danger button--small" type="submit">Törlés</button>
           </form>}
         </section>
