@@ -399,6 +399,18 @@ export type AdminStudyOption = {
   title: string;
   status: "draft" | "published";
 };
+export type AdminContentIndexItem = {
+  id: string;
+  title: string;
+  meta: string;
+  status: "draft" | "published";
+};
+export type AdminContentIndexPage = {
+  items: AdminContentIndexItem[];
+  total: number;
+  page: number;
+  pageCount: number;
+};
 export type AdminOverview = {
   topicCount: number;
   studyCount: number;
@@ -407,13 +419,102 @@ export type AdminOverview = {
 };
 export type AdminVideo = VideoSummary & { seoTitle: string; seoDescription: string; relatedStudyIds: string[] };
 
-export const ADMIN_STUDY_PAGE_SIZE = 30;
+export const ADMIN_INDEX_PAGE_SIZE = 30;
 
-export async function listAdminTopics(): Promise<AdminTopic[]> {
+type SimpleAdminIndexDefinition = {
+  table: "topics" | "videos";
+  metaExpression: string;
+};
+
+async function listSimpleAdminIndex(
+  definition: SimpleAdminIndexDefinition,
+  search = "",
+  requestedPage = 1,
+): Promise<AdminContentIndexPage> {
+  const sql = getSql();
+  if (!sql) return { items: [], total: 0, page: 1, pageCount: 1 };
+  const normalizedSearch = search.trim().slice(0, 120);
+  const countRows = await sql.query(`
+    SELECT count(*)::int AS count
+    FROM ${definition.table} content
+    WHERE $1 = ''
+      OR strpos(lower(content.title), lower($1)) > 0
+      OR strpos(lower(content.slug), lower($1)) > 0`, [normalizedSearch]);
+  const total = Number(countRows[0]?.count ?? 0);
+  const pageCount = Math.max(1, Math.ceil(total / ADMIN_INDEX_PAGE_SIZE));
+  const page = Math.min(Math.max(1, Math.trunc(requestedPage) || 1), pageCount);
+  const rows = await sql.query(`
+    SELECT content.id::text, content.title, content.status,
+      ${definition.metaExpression} AS meta
+    FROM ${definition.table} content
+    WHERE $1 = ''
+      OR strpos(lower(content.title), lower($1)) > 0
+      OR strpos(lower(content.slug), lower($1)) > 0
+    ORDER BY content.sort_order, content.title
+    LIMIT $2 OFFSET $3`, [normalizedSearch, ADMIN_INDEX_PAGE_SIZE, (page - 1) * ADMIN_INDEX_PAGE_SIZE]);
+
+  return {
+    items: (rows as Row[]).map((row) => ({
+      id: String(row.id),
+      title: String(row.title),
+      meta: String(row.meta),
+      status: row.status === "published" ? "published" : "draft",
+    })),
+    total,
+    page,
+    pageCount,
+  };
+}
+
+async function listAdminOptions(table: "topics" | "studies" | "videos"): Promise<AdminStudyOption[]> {
   const sql = getSql();
   if (!sql) return [];
-  const rows = await sql.query("SELECT id::text, slug, title, description, featured, sort_order, status, COALESCE(seo_title, '') AS seo_title, COALESCE(seo_description, '') AS seo_description FROM topics ORDER BY sort_order, title");
-  return (rows as Row[]).map((row) => ({ ...mapTopic(row), status: row.status === "published" ? "published" : "draft", seoTitle: String(row.seo_title), seoDescription: String(row.seo_description) }));
+  const rows = await sql.query(`SELECT id::text, title, status FROM ${table} ORDER BY sort_order, title`);
+  return (rows as Row[]).map((row) => ({
+    id: String(row.id),
+    title: String(row.title),
+    status: row.status === "published" ? "published" : "draft",
+  }));
+}
+
+export function listAdminTopicIndex(search = "", requestedPage = 1) {
+  return listSimpleAdminIndex(
+    { table: "topics", metaExpression: "'/' || content.slug" },
+    search,
+    requestedPage,
+  );
+}
+
+export function listAdminVideoIndex(search = "", requestedPage = 1) {
+  return listSimpleAdminIndex(
+    { table: "videos", metaExpression: "COALESCE(NULLIF(content.channel_name, ''), 'Csatorna nélkül')" },
+    search,
+    requestedPage,
+  );
+}
+
+export async function getAdminTopic(id: string): Promise<AdminTopic | null> {
+  const sql = getSql();
+  if (!sql) return null;
+  const rows = await sql.query(`
+    SELECT id::text, slug, title, description, featured, sort_order, status,
+      COALESCE(seo_title, '') AS seo_title,
+      COALESCE(seo_description, '') AS seo_description
+    FROM topics
+    WHERE id = $1`, [id]);
+  const row = (rows as Row[])[0];
+  return row
+    ? {
+        ...mapTopic(row),
+        status: row.status === "published" ? "published" : "draft",
+        seoTitle: String(row.seo_title),
+        seoDescription: String(row.seo_description),
+      }
+    : null;
+}
+
+export function listAdminTopicOptions() {
+  return listAdminOptions("topics");
 }
 
 export async function getAdminStudy(id: string): Promise<AdminStudy | null> {
@@ -483,7 +584,7 @@ export async function listAdminStudyIndex(
       OR strpos(lower(s.title), lower($1)) > 0
       OR strpos(lower(s.slug), lower($1)) > 0`, [normalizedSearch]);
   const total = Number(countRows[0]?.count ?? 0);
-  const pageCount = Math.max(1, Math.ceil(total / ADMIN_STUDY_PAGE_SIZE));
+  const pageCount = Math.max(1, Math.ceil(total / ADMIN_INDEX_PAGE_SIZE));
   const page = Math.min(Math.max(1, Math.trunc(requestedPage) || 1), pageCount);
   const rows = await sql.query(`
     SELECT s.id::text, s.title, s.slug, s.status,
@@ -501,7 +602,7 @@ export async function listAdminStudyIndex(
       OR strpos(lower(s.title), lower($1)) > 0
       OR strpos(lower(s.slug), lower($1)) > 0
     ORDER BY s.sort_order, s.title
-    LIMIT $2 OFFSET $3`, [normalizedSearch, ADMIN_STUDY_PAGE_SIZE, (page - 1) * ADMIN_STUDY_PAGE_SIZE]);
+    LIMIT $2 OFFSET $3`, [normalizedSearch, ADMIN_INDEX_PAGE_SIZE, (page - 1) * ADMIN_INDEX_PAGE_SIZE]);
 
   return {
     items: (rows as Row[]).map((row) => ({
@@ -520,14 +621,7 @@ export async function listAdminStudyIndex(
 }
 
 export async function listAdminStudyOptions(): Promise<AdminStudyOption[]> {
-  const sql = getSql();
-  if (!sql) return [];
-  const rows = await sql.query("SELECT id::text, title, status FROM studies ORDER BY sort_order, title");
-  return (rows as Row[]).map((row) => ({
-    id: String(row.id),
-    title: String(row.title),
-    status: row.status === "published" ? "published" : "draft",
-  }));
+  return listAdminOptions("studies");
 }
 
 export async function getAdminOverview(): Promise<AdminOverview> {
@@ -559,13 +653,26 @@ export async function getAdminOverview(): Promise<AdminOverview> {
   };
 }
 
-export async function listAdminVideos(): Promise<AdminVideo[]> {
+export async function getAdminVideo(id: string): Promise<AdminVideo | null> {
   const sql = getSql();
-  if (!sql) return [];
+  if (!sql) return null;
   const rows = await sql.query(`
     SELECT v.*, v.id::text,
       COALESCE((SELECT jsonb_agg(jsonb_build_object('id', t.id::text, 'slug', t.slug, 'title', t.title, 'description', t.description, 'featured', t.featured, 'sort_order', t.sort_order) ORDER BY t.sort_order) FROM video_topics vt JOIN topics t ON t.id = vt.topic_id WHERE vt.video_id = v.id), '[]'::jsonb) AS topics,
       COALESCE((SELECT jsonb_agg(study_id::text ORDER BY sort_order) FROM study_videos WHERE video_id = v.id), '[]'::jsonb) AS related_study_ids
-    FROM videos v ORDER BY v.sort_order, v.title`);
-  return (rows as Row[]).map((row) => ({ ...mapVideo(row), seoTitle: String(row.seo_title ?? ""), seoDescription: String(row.seo_description ?? ""), relatedStudyIds: jsonArray<string>(row.related_study_ids) }));
+    FROM videos v
+    WHERE v.id = $1`, [id]);
+  const row = (rows as Row[])[0];
+  return row
+    ? {
+        ...mapVideo(row),
+        seoTitle: String(row.seo_title ?? ""),
+        seoDescription: String(row.seo_description ?? ""),
+        relatedStudyIds: jsonArray<string>(row.related_study_ids),
+      }
+    : null;
+}
+
+export function listAdminVideoOptions() {
+  return listAdminOptions("videos");
 }

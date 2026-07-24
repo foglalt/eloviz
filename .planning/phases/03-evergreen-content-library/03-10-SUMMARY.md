@@ -89,3 +89,13 @@ completed: 2026-07-22
 - Kept the title confirmation for whole-content deletion and the checkbox confirmation for individual PDF removal.
 - Keyed the study editor form by the record update timestamp so automatic draft changes appear immediately after the server-action redirect.
 - Passed five publication-state tests, lint, strict TypeScript, production build, authenticated desktop/mobile UI review, and temporary database-backed published-topic, published-study, PDF-removal, cascade, and cleanup checks.
+
+## Unified admin content workspace — 2026-07-24
+
+- Rebuilt topic, study, and video administration around one shared workspace, searchable/paginated index, editor panel, common content-field template, and confirmed deletion panel.
+- Moved every new-content action into its sidebar, made every list row the navigation target, and removed the remaining visible “Szerkesztés” and “Kiválasztva” labels while preserving accessible `aria-current` selection.
+- Added 30-item server pagination and title/slug search to topic and video administration, with one detailed query only for the selected record.
+- Replaced detailed all-record relation loads with lightweight topic, study, and video options so the editors remain practical with 100+ records.
+- Kept PDF lifecycle and entity-specific relationship fields explicit while consolidating repeated title/slug, SEO, publication, ordering, featured, and destructive-action behavior.
+- Audited other repeated UI: public resource lists, relation pickers, header/footer, admin shell, and notices were already shared and required no additional refactor.
+- Passed all four test suites, lint, strict TypeScript, two production builds, authenticated Chrome interaction/search/selection checks, and visual/overflow review at 1440×1000 and 390×844.

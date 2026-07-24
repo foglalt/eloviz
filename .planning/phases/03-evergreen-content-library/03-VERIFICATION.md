@@ -1,5 +1,5 @@
 ---
-generated: 2026-07-24T11:54:43+02:00
+generated: 2026-07-24T12:16:10+02:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-07-24T11:54:43+02:00
+- Timestamp: 2026-07-24T12:16:10+02:00
 
 ## Checks
 
@@ -16,6 +16,16 @@ status: passed
 |---|---:|---|
 | `npm run lint` | 0 | PASS |
 | `npm run build` | 0 | PASS |
+
+## Focused Admin Workspace Evidence
+
+- `npx tsc --noEmit`: PASS.
+- `npm run test:references`, `npm run test:storage`, `npm run test:publication`, and `npm run test:search`: 14 tests passed.
+- Authenticated Chrome at 1440×1000: topic, study, and video editors each rendered one shared index panel, six common fields, one selected full-row link with `aria-current="page"`, and one danger panel.
+- Authenticated mobile Chrome at 390×844: all three editors stacked to one column, preserved full-row selection and the shared form template, and had no horizontal overflow.
+- Real index interactions: row selection, new-item reset, server-backed filtered results, filter clearing, a no-match state, and a selected editor outside the current result set behaved correctly.
+- Relation-picker filtering changed the visible study topic count from `4 / 4` to `1 / 4` and restored it to `4 / 4`.
+- No “Szerkesztés” or “Kiválasztva” list labels, browser console errors, framework overlays, clipping, or inconsistent selected-state styling were found.
 
 ## Detailed Output
 
@@ -42,15 +52,15 @@ Exit code: 0
   · serverActions
 
   Creating an optimized production build ...
-✓ Compiled successfully in 13.8s
+✓ Compiled successfully in 20.0s
   Running TypeScript ...
-  Finished TypeScript in 15.2s ...
+  Finished TypeScript in 16.3s ...
   Collecting page data using 11 workers ...
   Generating static pages using 11 workers (0/10) ...
   Generating static pages using 11 workers (2/10)
   Generating static pages using 11 workers (4/10)
   Generating static pages using 11 workers (7/10)
-✓ Generating static pages using 11 workers (10/10) in 413ms
+✓ Generating static pages using 11 workers (10/10) in 356ms
   Finalizing page optimization ...
 
 Route (app)
@@ -75,16 +85,3 @@ Route (app)
 ○  (Static)   prerendered as static content
 ƒ  (Dynamic)  server-rendered on demand
 ```
-
-## Focused direct-deletion evidence
-
-- `npm run test:publication`: PASS — 5/5 checks, including automatic draft after current-PDF removal and unchanged publication when removing an older version.
-- `npx tsc --noEmit`: PASS.
-- Authenticated published-content UI: PASS — published topic, study, and video editors expose direct title-confirmed deletion without draft-first copy.
-- Authenticated current-PDF UI: PASS — the published study exposes the required checkbox-confirmed removal form and explains the automatic draft result.
-- Responsive visual review: PASS — PDF and whole-study deletion controls are readable and usable at 1440×1000 and 390×844 with no horizontal overflow.
-- Database-backed current-PDF lifecycle: PASS — removal deleted the document row, cleared `published_document_id`, reset `reference_reviewed`, changed status to `draft`, and displayed the automatic-draft message.
-- Same-route editor refresh: PASS — the status dropdown immediately displayed `draft` after the server-action redirect.
-- Database-backed direct deletion: PASS — a published topic and a published study were deleted without a prior status save; the study document cascaded with its parent.
-- Cleanup: PASS — all temporary QA topics, studies, and document rows were confirmed absent afterward; no real content was modified.
-- Browser console: no application errors.
