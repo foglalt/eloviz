@@ -52,6 +52,7 @@ export type VideoSummary = {
   youtubeUrl: string;
   youtubeId: string;
   channelName?: string | null;
+  speaker?: string | null;
   thumbnailUrl?: string | null;
   uploadDate?: string | null;
   featured: boolean;

@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS videos (
   youtube_url text NOT NULL,
   youtube_id text NOT NULL,
   channel_name text,
+  speaker text,
   thumbnail_url text,
   duration_seconds integer,
   upload_date date,

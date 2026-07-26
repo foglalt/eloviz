@@ -24,6 +24,7 @@
 - [x] **REQ-28**: Extract text and candidate Bible references from a newly uploaded or replaced PDF, retaining page/context evidence where available.
 - [x] **REQ-29**: Automatically finalize successfully detected references with one canonical Hungarian display label per OSIS range; reject PDFs whose text cannot be extracted instead of requiring manual review.
 - [x] **REQ-30**: Publish only automatically finalized Scripture references and model them against canonical verses so a later reader can query which studies contain a verse.
+- [x] **REQ-32**: Derive video title and channel from the YouTube link, store an editor-managed speaker, and make videos searchable by speaker.
 
 ## V2 Feasibility Requirement
 
@@ -53,6 +54,7 @@
 | REQ-25 | 03-10 | Completed |
 | REQ-26 | Research record | Completed |
 | REQ-27–REQ-30 | 03-01, 03-05, 03-06, 03-08 | Completed |
+| REQ-32 | Phase 03 post-launch refinement | Completed |
 | REQ-31 | Phase 04 plans 04-01 through 04-03 | Planned |
 
 ---

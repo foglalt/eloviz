@@ -39,6 +39,7 @@ const video: VideoSummary = {
   youtubeUrl: "https://www.youtube.com/watch?v=example",
   youtubeId: "example",
   channelName: "BibleProject",
+  speaker: "Kovács János",
   featured: true,
   sortOrder: 10,
   status: "published",
@@ -69,4 +70,11 @@ test("supports accent-free searches and ignores one-character queries", () => {
 
   assert.ok(accentFree.studies.some((item) => item.slug === "a-paszka-tipologiaja"));
   assert.equal(tooShort.total, 0);
+});
+
+test("finds videos by speaker", () => {
+  const results = searchBundledCatalog("kovacs", [topic], [study], [video]);
+
+  assert.ok(results.videos.some((item) => item.slug === "attekintes-jeremias"));
+  assert.match(results.videos[0]?.meta ?? "", /Kovács János/);
 });

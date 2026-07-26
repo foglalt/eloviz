@@ -20,6 +20,7 @@ import { extractPdfPages } from "@/lib/pdf-extract";
 import { DETECTOR_VERSION, detectScriptureReferences } from "@/lib/scripture-references";
 import { parseYouTubeId, sanitizePdfFilename, slugifyHungarian, studyInputSchema, topicInputSchema, videoInputSchema } from "@/lib/content-validation";
 import { resolveStudyDocumentRemoval, resolveStudyPublicationStatus } from "@/lib/study-publication";
+import { fetchYouTubeMetadata } from "@/lib/youtube-metadata";
 
 function field(formData: FormData, name: string) {
   return String(formData.get(name) ?? "").trim();
@@ -282,11 +283,24 @@ export async function deleteStudyDocumentAction(formData: FormData) {
 export async function saveVideoAction(formData: FormData) {
   await requireAdmin();
   const id = field(formData, "id") || undefined;
-  const title = field(formData, "title");
   const youtubeUrl = field(formData, "youtubeUrl");
+  let title = field(formData, "title");
+  let channelName = field(formData, "channelName");
+
+  if (parseYouTubeId(youtubeUrl)) {
+    try {
+      const metadata = await fetchYouTubeMetadata(youtubeUrl);
+      title = metadata.title;
+      channelName = metadata.channelName;
+    } catch (error) {
+      console.warn("Unable to refresh YouTube metadata while saving; using submitted values.", error);
+    }
+  }
+
   const parsed = videoInputSchema.safeParse({
     id, title, slug: field(formData, "slug") || slugifyHungarian(title), description: field(formData, "description"),
-    youtubeUrl, youtubeId: parseYouTubeId(youtubeUrl) ?? "", channelName: field(formData, "channelName"),
+    youtubeUrl, youtubeId: parseYouTubeId(youtubeUrl) ?? "", channelName,
+    speaker: field(formData, "speaker"),
     seoTitle: field(formData, "seoTitle"), seoDescription: field(formData, "seoDescription"),
     status: field(formData, "status"), featured: formData.get("featured") === "on",
     sortOrder: Number(field(formData, "sortOrder") || 0), topicIds: ids(formData, "topicIds"),
@@ -296,8 +310,8 @@ export async function saveVideoAction(formData: FormData) {
   const sql = requireSql();
   try {
     const rows = id
-      ? await sql.query(`UPDATE videos SET slug=$2,title=$3,description=$4,youtube_url=$5,youtube_id=$6,channel_name=NULLIF($7,''),seo_title=NULLIF($8,''),seo_description=NULLIF($9,''),status=$10,featured=$11,sort_order=$12,updated_at=now(),published_at=CASE WHEN $10='published' THEN COALESCE(published_at,now()) ELSE published_at END WHERE id=$1 RETURNING id::text`, [id, parsed.data.slug, parsed.data.title, parsed.data.description, parsed.data.youtubeUrl, parsed.data.youtubeId, parsed.data.channelName, parsed.data.seoTitle, parsed.data.seoDescription, parsed.data.status, parsed.data.featured, parsed.data.sortOrder])
-      : await sql.query(`INSERT INTO videos(slug,title,description,youtube_url,youtube_id,channel_name,seo_title,seo_description,status,featured,sort_order,published_at) VALUES($1,$2,$3,$4,$5,NULLIF($6,''),NULLIF($7,''),NULLIF($8,''),$9,$10,$11,CASE WHEN $9='published' THEN now() END) RETURNING id::text`, [parsed.data.slug, parsed.data.title, parsed.data.description, parsed.data.youtubeUrl, parsed.data.youtubeId, parsed.data.channelName, parsed.data.seoTitle, parsed.data.seoDescription, parsed.data.status, parsed.data.featured, parsed.data.sortOrder]);
+      ? await sql.query(`UPDATE videos SET slug=$2,title=$3,description=$4,youtube_url=$5,youtube_id=$6,channel_name=NULLIF($7,''),speaker=NULLIF($8,''),seo_title=NULLIF($9,''),seo_description=NULLIF($10,''),status=$11,featured=$12,sort_order=$13,updated_at=now(),published_at=CASE WHEN $11='published' THEN COALESCE(published_at,now()) ELSE published_at END WHERE id=$1 RETURNING id::text`, [id, parsed.data.slug, parsed.data.title, parsed.data.description, parsed.data.youtubeUrl, parsed.data.youtubeId, parsed.data.channelName, parsed.data.speaker, parsed.data.seoTitle, parsed.data.seoDescription, parsed.data.status, parsed.data.featured, parsed.data.sortOrder])
+      : await sql.query(`INSERT INTO videos(slug,title,description,youtube_url,youtube_id,channel_name,speaker,seo_title,seo_description,status,featured,sort_order,published_at) VALUES($1,$2,$3,$4,$5,NULLIF($6,''),NULLIF($7,''),NULLIF($8,''),NULLIF($9,''),$10,$11,$12,CASE WHEN $10='published' THEN now() END) RETURNING id::text`, [parsed.data.slug, parsed.data.title, parsed.data.description, parsed.data.youtubeUrl, parsed.data.youtubeId, parsed.data.channelName, parsed.data.speaker, parsed.data.seoTitle, parsed.data.seoDescription, parsed.data.status, parsed.data.featured, parsed.data.sortOrder]);
     const videoId = String(rows[0].id);
     await sql.query("DELETE FROM video_topics WHERE video_id=$1", [videoId]);
     for (const [index, topicId] of parsed.data.topicIds.entries()) await sql.query("INSERT INTO video_topics(video_id,topic_id,sort_order) VALUES($1,$2,$3)", [videoId, topicId, index]);

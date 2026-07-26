@@ -26,7 +26,15 @@ export function VideoRows({ videos }: { videos: VideoSummary[] }) {
   return <div className="resource-list">{videos.map((video) => (
     <Link className="resource-item" href={`/videok/${video.slug}`} key={video.id}>
       <span><span className="eyebrow">Videóajánló</span><h3>{video.title}</h3><span className="tag-list">{video.topics.map((topic) => <span className="tag" key={topic.id}>{topic.title}</span>)}</span></span>
-      <span className="resource-item__summary">{video.description}</span>
+      <span className="resource-item__summary">
+        {video.description}
+        {(video.speaker || video.channelName) ? (
+          <span className="meta-line">
+            {video.speaker ? <span>Előadó: {video.speaker}</span> : null}
+            {video.channelName ? <span>{video.channelName}</span> : null}
+          </span>
+        ) : null}
+      </span>
     </Link>
   ))}</div>;
 }

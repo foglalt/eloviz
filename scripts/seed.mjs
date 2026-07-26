@@ -69,12 +69,12 @@ for (const study of seed.studies) {
 }
 
 for (const video of seed.videos) {
-  await sql.query(`INSERT INTO videos(id,slug,title,description,youtube_url,youtube_id,channel_name,status,featured,sort_order,published_at)
-    VALUES($1,$2,$3,$4,$5,$6,$7,'published',$8,$9,now())
+  await sql.query(`INSERT INTO videos(id,slug,title,description,youtube_url,youtube_id,channel_name,speaker,status,featured,sort_order,published_at)
+    VALUES($1,$2,$3,$4,$5,$6,$7,NULLIF($8,''),'published',$9,$10,now())
     ON CONFLICT(id) DO UPDATE SET slug=EXCLUDED.slug,title=EXCLUDED.title,description=EXCLUDED.description,
       youtube_url=EXCLUDED.youtube_url,youtube_id=EXCLUDED.youtube_id,channel_name=EXCLUDED.channel_name,
-      featured=EXCLUDED.featured,sort_order=EXCLUDED.sort_order,updated_at=now()`,
-    [video.id, video.slug, video.title, video.description, video.youtubeUrl, video.youtubeId, video.channelName, video.featured, video.sortOrder]);
+      speaker=EXCLUDED.speaker,featured=EXCLUDED.featured,sort_order=EXCLUDED.sort_order,updated_at=now()`,
+    [video.id, video.slug, video.title, video.description, video.youtubeUrl, video.youtubeId, video.channelName, video.speaker, video.featured, video.sortOrder]);
   await sql.query("DELETE FROM video_topics WHERE video_id=$1", [video.id]);
   for (let index = 0; index < video.topicIds.length; index += 1) {
     await sql.query("INSERT INTO video_topics(video_id,topic_id,sort_order) VALUES($1,$2,$3)", [video.id, video.topicIds[index], index]);

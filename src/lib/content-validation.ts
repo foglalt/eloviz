@@ -54,6 +54,7 @@ export const videoInputSchema = z.object({
   youtubeUrl: z.string().url(),
   youtubeId: z.string().regex(/^[A-Za-z0-9_-]{11}$/),
   channelName: z.string().trim().max(160).optional().default(""),
+  speaker: z.string().trim().max(160).optional().default(""),
   seoTitle: z.string().trim().max(70).optional().default(""),
   seoDescription: z.string().trim().max(170).optional().default(""),
   status: z.enum(["draft", "published"]),

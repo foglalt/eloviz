@@ -19,7 +19,8 @@
     "test:publication": "node --experimental-strip-types --test src/lib/study-publication.test.ts",
     "test:search": "node --experimental-strip-types --test src/lib/catalog-search.test.ts",
     "test:topics": "node --experimental-strip-types --test src/lib/other-topic.test.ts",
-    "test:pdf": "node --experimental-strip-types --test src/lib/pdf-extract.test.ts"
+    "test:pdf": "node --experimental-strip-types --test src/lib/pdf-extract.test.ts",
+    "test:youtube": "node --experimental-strip-types --test src/lib/youtube-metadata.test.ts"
   },
   "dependencies": {
     "@napi-rs/canvas": "^1.0.2",

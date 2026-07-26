@@ -41,6 +41,7 @@ export const defaultVideos: VideoSummary[] = content.videos.map((video) => ({
   youtubeUrl: video.youtubeUrl,
   youtubeId: video.youtubeId,
   channelName: video.channelName,
+  speaker: video.speaker || null,
   thumbnailUrl: `https://i.ytimg.com/vi/${video.youtubeId}/maxresdefault.jpg`,
   uploadDate: null,
   featured: video.featured,

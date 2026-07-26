@@ -108,6 +108,7 @@ export function searchBundledCatalog(
       video.slug,
       video.description,
       video.channelName,
+      video.speaker,
       topicText,
     ]);
     if (!match.matches) return [];
@@ -118,7 +119,7 @@ export function searchBundledCatalog(
       slug: video.slug,
       title: video.title,
       description: video.description,
-      meta: video.channelName || "Videóajánló",
+      meta: [video.speaker, video.channelName].filter(Boolean).join(" · ") || "Videóajánló",
     }];
   });
 

@@ -19,6 +19,7 @@ type Props = {
   paginationLabel: string;
   items: AdminIndexItem[];
   emptyLabel: string;
+  searchPlaceholder?: string;
 };
 
 function indexHref(basePath: string, edit: string | undefined, search: string, page: number) {
@@ -42,6 +43,7 @@ export function AdminContentIndex({
   paginationLabel,
   items,
   emptyLabel,
+  searchPlaceholder = "Keresés cím alapján",
 }: Props) {
   return (
     <aside className="admin-panel admin-index-panel">
@@ -53,7 +55,7 @@ export function AdminContentIndex({
         {selectedId ? <input type="hidden" name="edit" value={selectedId} /> : null}
         <label htmlFor={searchId}>Keresés</label>
         <div>
-          <input id={searchId} name="q" type="search" defaultValue={search} placeholder="Keresés cím alapján" />
+          <input id={searchId} name="q" type="search" defaultValue={search} placeholder={searchPlaceholder} />
           <button type="submit">Keresés</button>
         </div>
         {search ? <Link href={indexHref(basePath, selectedId, "", 1)}>Szűrés törlése</Link> : null}

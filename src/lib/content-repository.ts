@@ -100,6 +100,7 @@ function mapVideo(row: Row): VideoSummary {
     youtubeUrl: String(row.youtube_url),
     youtubeId: String(row.youtube_id),
     channelName: row.channel_name ? String(row.channel_name) : null,
+    speaker: row.speaker ? String(row.speaker) : null,
     thumbnailUrl: row.thumbnail_url ? String(row.thumbnail_url) : `https://i.ytimg.com/vi/${row.youtube_id}/maxresdefault.jpg`,
     uploadDate: row.upload_date ? String(row.upload_date) : null,
     featured: Boolean(row.featured),
@@ -137,7 +138,7 @@ const studiesQuery = `
 
 const videosQuery = `
   SELECT v.id::text, v.slug, v.title, v.description, v.youtube_url, v.youtube_id,
-    v.channel_name, v.thumbnail_url, v.upload_date, v.seo_title, v.seo_description,
+    v.channel_name, v.speaker, v.thumbnail_url, v.upload_date, v.seo_title, v.seo_description,
     v.status, v.featured, v.sort_order, v.updated_at,
     COALESCE((
       SELECT jsonb_agg(jsonb_build_object(
@@ -248,7 +249,7 @@ export async function searchPublicCatalog(rawQuery: string): Promise<CatalogSear
       "concat_ws(' ', s.title, s.slug, s.summary, COALESCE(topic_data.search_topics, $3))",
     );
     const videoSearchText = foldedSqlText(
-      "concat_ws(' ', v.title, v.slug, v.description, v.channel_name, topic_data.search_topics)",
+      "concat_ws(' ', v.title, v.slug, v.description, v.channel_name, v.speaker, topic_data.search_topics)",
     );
 
     const otherTopicMatches = searchBundledCatalog(
@@ -310,7 +311,10 @@ export async function searchPublicCatalog(rawQuery: string): Promise<CatalogSear
       `, [foldedQuery, CATALOG_SEARCH_LIMIT, fallbackSearchText]),
       sql.query(`
         SELECT v.id::text, v.slug, v.title, v.description,
-          COALESCE(v.channel_name, 'Videóajánló') AS meta
+          COALESCE(
+            NULLIF(concat_ws(' · ', NULLIF(v.speaker, ''), NULLIF(v.channel_name, '')), ''),
+            'Videóajánló'
+          ) AS meta
         FROM videos v
         LEFT JOIN LATERAL (
           SELECT string_agg(concat_ws(' ', t.title, t.description), ' ') AS search_topics
@@ -472,6 +476,7 @@ export const ADMIN_INDEX_PAGE_SIZE = 30;
 type SimpleAdminIndexDefinition = {
   table: "topics" | "videos";
   metaExpression: string;
+  searchExpression?: string;
 };
 
 async function listSimpleAdminIndex(
@@ -482,12 +487,13 @@ async function listSimpleAdminIndex(
   const sql = getSql();
   if (!sql) return { items: [], total: 0, page: 1, pageCount: 1 };
   const normalizedSearch = search.trim().slice(0, 120);
+  const searchExpression = definition.searchExpression
+    ?? "concat_ws(' ', content.title, content.slug)";
   const countRows = await sql.query(`
     SELECT count(*)::int AS count
     FROM ${definition.table} content
     WHERE $1 = ''
-      OR strpos(lower(content.title), lower($1)) > 0
-      OR strpos(lower(content.slug), lower($1)) > 0`, [normalizedSearch]);
+      OR strpos(lower(${searchExpression}), lower($1)) > 0`, [normalizedSearch]);
   const total = Number(countRows[0]?.count ?? 0);
   const pageCount = Math.max(1, Math.ceil(total / ADMIN_INDEX_PAGE_SIZE));
   const page = Math.min(Math.max(1, Math.trunc(requestedPage) || 1), pageCount);
@@ -496,8 +502,7 @@ async function listSimpleAdminIndex(
       ${definition.metaExpression} AS meta
     FROM ${definition.table} content
     WHERE $1 = ''
-      OR strpos(lower(content.title), lower($1)) > 0
-      OR strpos(lower(content.slug), lower($1)) > 0
+      OR strpos(lower(${searchExpression}), lower($1)) > 0
     ORDER BY content.sort_order, content.title
     LIMIT $2 OFFSET $3`, [normalizedSearch, ADMIN_INDEX_PAGE_SIZE, (page - 1) * ADMIN_INDEX_PAGE_SIZE]);
 
@@ -535,7 +540,14 @@ export function listAdminTopicIndex(search = "", requestedPage = 1) {
 
 export function listAdminVideoIndex(search = "", requestedPage = 1) {
   return listSimpleAdminIndex(
-    { table: "videos", metaExpression: "COALESCE(NULLIF(content.channel_name, ''), 'Csatorna nélkül')" },
+    {
+      table: "videos",
+      metaExpression: `COALESCE(
+        NULLIF(concat_ws(' · ', NULLIF(content.speaker, ''), NULLIF(content.channel_name, '')), ''),
+        'Csatorna és előadó nélkül'
+      )`,
+      searchExpression: "concat_ws(' ', content.title, content.slug, content.channel_name, content.speaker)",
+    },
     search,
     requestedPage,
   );

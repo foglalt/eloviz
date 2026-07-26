@@ -8,7 +8,7 @@
 **Status:** Completed; final verification recorded
 **Progress:** 100%
 **Last Activity:** 2026-07-26
-**Last Activity Description:** Deployed compact admin relationship pickers and hidden automatic URL slugs
+**Last Activity Description:** Added fixed relationship panels, YouTube-derived video metadata, and speaker search
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -44,6 +44,7 @@
 - Production deployment `dpl_8YCudqoQDCg2mWAFMqP7zAc2CuT1`: READY; 11 stored labels normalized and the repaired `Teszt.pdf` revision finalized with seven accepted canonical references.
 - Compact topic/related-content admin sections, hidden stable slugs, lint, strict TypeScript, and production build: passed.
 - Production deployment `dpl_Hu8c6msEvrNEQJVd4CTaSFtJ1V1V`: READY; authenticated study/video editors passed 1440/390 px layout and overflow checks.
+- Fixed-height relationship panels, authenticated YouTube title/channel derivation, speaker storage/search, migration 003, focused metadata/search tests, lint, migrated-schema build, GTD verification, and repository health: passed.
 
 ## Next Decision Gate
 
@@ -56,6 +57,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-26T11:25:04+02:00
-**Stopped At:** Compact admin relationships and hidden automatic slugs deployed and verified
+**Last Date:** 2026-07-26T12:57:26+02:00
+**Stopped At:** Video metadata and speaker workflow implemented and locally verified; production rollout pending
 **Resume File:** None

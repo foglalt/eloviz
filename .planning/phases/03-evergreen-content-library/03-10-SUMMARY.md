@@ -142,3 +142,11 @@ completed: 2026-07-22
 - Passed lint, strict TypeScript, and the Next.js production build.
 - Deployed commit `bb5e321` to production as `dpl_Hu8c6msEvrNEQJVd4CTaSFtJ1V1V`.
 - Verified the authenticated study and video editors in production: no visible slug control, equal two-column relationship layout at 1440 px, stacked layout at 390 px, and no horizontal overflow.
+
+## Fixed relationship panels and video metadata — 2026-07-26
+
+- Gave every topic and connected-video/study selector the same fixed 240 px height with an internally scrolling result list.
+- Added authenticated YouTube metadata lookup that derives the title and channel from a valid link in the editor and refreshes them again on the server while saving.
+- Added an independent optional speaker field to the video schema, migration, seed path, admin editor, public detail/list presentation, and both admin and public catalogue search.
+- Preserved a safe metadata fallback for temporary YouTube failures while preventing a changed link from silently retaining stale client-side title/channel values.
+- Applied production migration `003_add_video_speaker`; YouTube metadata tests, speaker-search tests, lint, the migrated-schema production build, GTD verification, and memory health passed.

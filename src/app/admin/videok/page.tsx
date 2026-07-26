@@ -5,6 +5,7 @@ import { AdminContentWorkspace } from "@/components/admin-content-workspace";
 import { AdminDeletePanel } from "@/components/admin-delete-panel";
 import { AdminEditorPanel } from "@/components/admin-editor-panel";
 import { AdminRelationPicker } from "@/components/admin-relation-picker";
+import { YouTubeMetadataFields } from "@/components/youtube-metadata-fields";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import {
   getAdminVideo,
@@ -57,27 +58,28 @@ export default async function AdminVideosPage({ searchParams }: Props) {
           paginationLabel="Videólista lapozása"
           items={videoIndex.items}
           emptyLabel="Nincs találat."
+          searchPlaceholder="Keresés cím, csatorna vagy előadó alapján"
         />
       )}
     >
       <AdminEditorPanel title={selected ? "Videó szerkesztése" : "Új videó"}>
         <form key={selected?.id ?? "new"} action={saveVideoAction} className="form-grid">
           {selected ? <input type="hidden" name="id" value={selected.id} /> : null}
-          <AdminContentFormFields record={selected} featuredLabel="Kiemelt videó">
-            <div className="field field--full">
-              <label htmlFor="youtubeUrl">YouTube-link</label>
-              <input
-                id="youtubeUrl"
-                name="youtubeUrl"
-                type="url"
-                defaultValue={selected?.youtubeUrl}
-                placeholder="https://www.youtube.com/watch?v=…"
-                required
-              />
-            </div>
+          <AdminContentFormFields record={selected} featuredLabel="Kiemelt videó" showTitle={false}>
+            <YouTubeMetadataFields
+              initialUrl={selected?.youtubeUrl}
+              initialTitle={selected?.title}
+              initialChannelName={selected?.channelName}
+            />
             <div className="field">
-              <label htmlFor="channelName">Csatorna neve</label>
-              <input id="channelName" name="channelName" defaultValue={selected?.channelName ?? ""} />
+              <label htmlFor="speaker">Előadó</label>
+              <input
+                id="speaker"
+                name="speaker"
+                defaultValue={selected?.speaker ?? ""}
+                placeholder="A videóban megszólaló személy"
+                maxLength={160}
+              />
             </div>
             <div className="field field--full">
               <label htmlFor="description">Leírás</label>

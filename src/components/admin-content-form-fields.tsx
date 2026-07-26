@@ -14,6 +14,7 @@ type Props = {
   record?: CommonRecord | null;
   featuredLabel: string;
   statusHelp?: string;
+  showTitle?: boolean;
   children: ReactNode;
 };
 
@@ -21,14 +22,17 @@ export function AdminContentFormFields({
   record,
   featuredLabel,
   statusHelp,
+  showTitle = true,
   children,
 }: Props) {
   return (
     <>
-      <div className="field">
-        <label htmlFor="title">Cím</label>
-        <input id="title" name="title" defaultValue={record?.title} required />
-      </div>
+      {showTitle ? (
+        <div className="field">
+          <label htmlFor="title">Cím</label>
+          <input id="title" name="title" defaultValue={record?.title} required />
+        </div>
+      ) : null}
       {record?.slug ? <input type="hidden" name="slug" value={record.slug} /> : null}
       {children}
       <div className="field">

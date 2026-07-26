@@ -18,6 +18,7 @@ This phase does not implement the Bible reader or original-language concordances
 - A PDF upload or replacement triggers Bible-reference detection and automatic finalization when text extraction succeeds.
 - OSIS remains the translation-independent storage format; all detected and stored ranges are displayed with one canonical Hungarian abbreviation format.
 - Videos are YouTube recommendations, not self-hosted media.
+- Video titles and channel names are derived from the YouTube link; the editor separately records the person speaking.
 - A study and video can be explicitly marked as related when they belong together.
 - Topics, studies, videos, descriptions, and relations are editable through a very simple admin.
 - Published studies without an explicit public topic appear under the system-managed `Egyéb` topic; the fallback is derived and does not create a fake editable relationship.
@@ -46,6 +47,7 @@ This phase does not implement the Bible reader or original-language concordances
 - Reference detection recognizes an explicit, tested dictionary covering all 66 canonical books, Hungarian book names/abbreviations, and common chapter/verse/range separators.
 - Aliases normalize through OSIS and then render with the canonical Hungarian abbreviation, so variants such as `Zsidók 5:8` and `Zsid 5:8` both finalize as `Zsid 5:8`.
 - Topic and video summaries/descriptions are plain text with sensible length validation.
+- The video speaker is stored independently from the YouTube channel and participates in admin and public catalogue search.
 - Slugs are generated from Hungarian titles when content is created, remain stable on later edits, and are not shown as an ordinary editor field.
 - Deletion is blocked when it would orphan or silently remove linked content; unpublish is the default safe action.
 
@@ -153,7 +155,7 @@ Phase 03 creates the canonical verse structure and confirmed study mappings but 
 
 - User accounts, bookmarks, reading progress, comments, newsletters, and personalization.
 - Site-wide full-text content search unless the initial catalogue size justifies it during implementation.
-- Automated YouTube Data API synchronization; editors remain authoritative for titles and descriptions in V1.
+- Broader YouTube Data API synchronization beyond link-time title/channel metadata.
 - General media library, image uploads, audio content, or podcast feeds beyond study PDFs.
 - OCR and manual reference correction are deferred; V1 accepts only PDFs with a usable text layer and finalizes detected references automatically.
 - Multiple translations, Greek/Hebrew tools, interlinear alignment, and Hungarian lexicon localization.
