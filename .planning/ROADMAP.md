@@ -2,7 +2,7 @@
 
 ## Overview
 
-The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as an evergreen library whose study materials are versioned PDF uploads. Each PDF produces candidate Scripture references for editorial review. Phase 04 then adds one simple Bible translation and uses the confirmed references to show which published studies contain each verse. Original-language concordances follow later.
+The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as an evergreen library whose study materials are versioned PDF uploads. Each text-readable PDF produces automatically finalized Scripture references with canonical OSIS storage and one normalized Hungarian display format. Phase 04 then adds one simple Bible translation and uses the finalized references to show which published studies contain each verse. Original-language concordances follow later.
 
 ## Phase Checklist
 
@@ -18,10 +18,10 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 2. [x] **03-02: Migrate and seed evergreen content** — Idempotent import of useful current metadata, real PDFs, topic assignments, and a video recommendation.
 3. [x] **03-03: Create the Living Water design system and shell** — Brand direction, global navigation, typography, imagery, responsive layout, and motion.
 4. [x] **03-04: Build homepage and topic discovery** — `/`, `/temak`, and `/temak/[slug]`.
-5. [x] **03-05: Build PDF ingestion and reference review** — Secure upload, text extraction, Hungarian reference detection, candidate evidence, and editor finalization.
+5. [x] **03-05: Build PDF ingestion and reference processing** — Secure upload, text extraction, Hungarian reference detection, canonical display labels, and automatic finalization.
 6. [x] **03-06: Build SEO-first study pages** — `/tanulmanyok` and `/tanulmanyok/[slug]`, PDF access, confirmed Scripture references, topics, and related videos.
 7. [x] **03-07: Build video pages and related content** — `/videok` and `/videok/[slug]`, safe YouTube handling, topics, and related studies.
-8. [x] **03-08: Build the editorial admin** — Hardened CRUD, PDF revision workflow, reference review, publication, and relationships.
+8. [x] **03-08: Build the editorial admin** — Hardened CRUD, automatic PDF revision processing, publication, and relationships.
 9. [x] **03-09: Complete technical SEO and discoverability** — Dynamic metadata, canonicals, structured data, robots, sitemap, raw-PDF indexing policy, and social previews.
 10. [x] **03-10: Migrate routes and verify the rebuild** — Legacy redirects/removal, regression checks, PDF/reference fixtures, accessibility, and final verification evidence.
 

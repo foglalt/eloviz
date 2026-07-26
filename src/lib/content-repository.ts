@@ -26,6 +26,7 @@ import {
   includeOtherTopic,
   OTHER_TOPIC_SLUG,
 } from "./other-topic";
+import { formatOsisReference } from "./scripture-references";
 
 type Row = Record<string, unknown>;
 
@@ -54,11 +55,13 @@ function mapTopic(row: Row): TopicSummary {
 
 function mapReference(value: unknown): ScriptureReference {
   const row = value as Row;
+  const osisStart = String(row.osisStart ?? row.osis_start ?? "");
+  const osisEnd = String(row.osisEnd ?? row.osis_end ?? "");
   return {
     id: row.id ? String(row.id) : undefined,
-    label: String(row.label ?? row.display_label ?? ""),
-    osisStart: String(row.osisStart ?? row.osis_start ?? ""),
-    osisEnd: String(row.osisEnd ?? row.osis_end ?? ""),
+    label: formatOsisReference(osisStart, osisEnd) ?? String(row.label ?? row.display_label ?? ""),
+    osisStart,
+    osisEnd,
     bookCode: row.bookCode ? String(row.bookCode) : row.book_code ? String(row.book_code) : undefined,
     startChapter: row.startChapter ? Number(row.startChapter) : row.start_chapter ? Number(row.start_chapter) : undefined,
     startVerse: row.startVerse ? Number(row.startVerse) : row.start_verse ? Number(row.start_verse) : undefined,
@@ -433,7 +436,6 @@ export type AdminStudyIndexItem = {
   status: "draft" | "published";
   documentCount: number;
   hasPublishedDocument: boolean;
-  hasPendingDocument: boolean;
 };
 export type AdminStudyIndexPage = {
   items: AdminStudyIndexItem[];
@@ -462,7 +464,6 @@ export type AdminOverview = {
   topicCount: number;
   studyCount: number;
   videoCount: number;
-  pendingStudies: { id: string; title: string }[];
 };
 export type AdminVideo = VideoSummary & { seoTitle: string; seoDescription: string; relatedStudyIds: string[] };
 
@@ -636,14 +637,7 @@ export async function listAdminStudyIndex(
   const rows = await sql.query(`
     SELECT s.id::text, s.title, s.slug, s.status,
       (SELECT count(*)::int FROM study_documents d WHERE d.study_id = s.id) AS document_count,
-      (s.published_document_id IS NOT NULL) AS has_published_document,
-      COALESCE((
-        SELECT d.id IS DISTINCT FROM s.published_document_id
-        FROM study_documents d
-        WHERE d.study_id = s.id
-        ORDER BY d.version_number DESC
-        LIMIT 1
-      ), false) AS has_pending_document
+      (s.published_document_id IS NOT NULL) AS has_published_document
     FROM studies s
     WHERE $1 = ''
       OR strpos(lower(s.title), lower($1)) > 0
@@ -659,7 +653,6 @@ export async function listAdminStudyIndex(
       status: row.status === "published" ? "published" : "draft",
       documentCount: Number(row.document_count ?? 0),
       hasPublishedDocument: Boolean(row.has_published_document),
-      hasPendingDocument: Boolean(row.has_pending_document),
     })),
     total,
     page,
@@ -673,30 +666,17 @@ export async function listAdminStudyOptions(): Promise<AdminStudyOption[]> {
 
 export async function getAdminOverview(): Promise<AdminOverview> {
   const sql = getSql();
-  if (!sql) return { topicCount: 0, studyCount: 0, videoCount: 0, pendingStudies: [] };
+  if (!sql) return { topicCount: 0, studyCount: 0, videoCount: 0 };
   const counts = await sql.query(`
     SELECT
       (SELECT count(*)::int FROM topics) AS topic_count,
       (SELECT count(*)::int FROM studies) AS study_count,
       (SELECT count(*)::int FROM videos) AS video_count`);
-  const pendingRows = await sql.query(`
-    SELECT s.id::text, s.title
-    FROM studies s
-    WHERE COALESCE((
-      SELECT d.id IS DISTINCT FROM s.published_document_id
-      FROM study_documents d
-      WHERE d.study_id = s.id
-      ORDER BY d.version_number DESC
-      LIMIT 1
-    ), false)
-    ORDER BY s.updated_at DESC, s.title
-    LIMIT 20`);
 
   return {
     topicCount: Number(counts[0]?.topic_count ?? 0),
     studyCount: Number(counts[0]?.study_count ?? 0),
     videoCount: Number(counts[0]?.video_count ?? 0),
-    pendingStudies: (pendingRows as Row[]).map((row) => ({ id: String(row.id), title: String(row.title) })),
   };
 }
 

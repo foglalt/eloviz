@@ -22,8 +22,8 @@
 - [x] **REQ-25**: Verify mobile usability, keyboard access, reduced motion, contrast, missing-content behavior, lint, build, and memory integrity before launch.
 - [x] **REQ-27**: Store study PDFs in object storage as versioned documents with validated file type, size, checksum, and publication state.
 - [x] **REQ-28**: Extract text and candidate Bible references from a newly uploaded or replaced PDF, retaining page/context evidence where available.
-- [x] **REQ-29**: Let an authenticated editor confirm, correct, add, reject, and reorder detected references before finalizing the study revision.
-- [x] **REQ-30**: Publish only confirmed Scripture references and model them against canonical verses so a later reader can query which studies contain a verse.
+- [x] **REQ-29**: Automatically finalize successfully detected references with one canonical Hungarian display label per OSIS range; reject PDFs whose text cannot be extracted instead of requiring manual review.
+- [x] **REQ-30**: Publish only automatically finalized Scripture references and model them against canonical verses so a later reader can query which studies contain a verse.
 
 ## V2 Feasibility Requirement
 
@@ -56,4 +56,4 @@
 | REQ-31 | Phase 04 plans 04-01 through 04-03 | Planned |
 
 ---
-*Last updated: 2026-07-22*
+*Last updated: 2026-07-26*

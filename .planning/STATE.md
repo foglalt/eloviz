@@ -8,13 +8,13 @@
 **Status:** Completed; final verification recorded
 **Progress:** 100%
 **Last Activity:** 2026-07-26
-**Last Activity Description:** Deployed the PDF extraction runtime fix and repaired the failed `Teszt.pdf` revision with seven candidates
+**Last Activity Description:** Verification completed (passed)
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
 
 - Hungarian topic, PDF-study, and YouTube-video library with dedicated public pages and relations.
-- Versioned PDF upload with validation, extraction, editable evidence-backed candidate references, and confirmed OSIS ranges.
+- Versioned PDF upload with validation, extraction, evidence-backed automatic reference finalization, canonical OSIS ranges, and normalized Hungarian display labels.
 - Password-protected editorial admin with publication lifecycle, ordering, SEO fields, relations, and safe deletion.
 - Living-water visual identity, Revelation 22:17 invitation, responsive layouts, sitemap, canonicals, structured data, and controlled PDF delivery.
 - Five seeded topics, three polished study PDFs, and one verified Hungarian BibleProject video.
@@ -40,11 +40,12 @@
 - Shared topic/study/video workspace, common content fields and danger zone, 30-item searchable/paginated indexes, lightweight relation options, real selection/search interaction, and 390/1440 px responsive checks: passed.
 - Automatic Egyéb fallback topic, orphan-study categorization, accented/accent-free search, sitemap/canonical metadata, reserved slug, admin guidance, five focused tests, and 390/1440 px route checks: passed.
 - Production PDF.js/canvas dependency tracing, native-PDF extraction regression, deployed `Teszt.pdf` seven-candidate repair, authenticated PDF response, lint, strict TypeScript, and production build: passed.
+- All-66-book Hungarian reference formatting, alias deduplication, automatic transactional PDF finalization, review-layer removal, six regression suites, lint, strict TypeScript, and production build: passed.
 
 ## Next Decision Gate
 
 - Before Phase 04, select and document one Hungarian Bible translation whose full text may legally be stored and displayed.
-- On the next new PDF revision, confirm the deployed upload action performs extraction directly in Vercel; the repaired `Teszt.pdf` row and packaged runtime are already verified.
+- On the next new PDF revision, confirm the deployed upload action performs extraction and automatic finalization directly in Vercel; the repaired `Teszt.pdf` row and packaged runtime are already verified.
 
 ## Workflow Preference
 
@@ -52,6 +53,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-26T10:31:00+02:00
-**Stopped At:** Production PDF extraction fix deployed and failed revision repaired
+**Last Date:** 2026-07-26T10:56:36+02:00
+**Stopped At:** Verification completed
 **Resume File:** None

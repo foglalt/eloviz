@@ -118,3 +118,14 @@ completed: 2026-07-22
 - Re-ran the fixed extraction path against `Teszt.pdf`: one page, 150 extracted characters, and seven unique candidate references.
 - Passed all focused test suites, lint, strict TypeScript, the production build, and Next.js output-trace inspection confirming PDF.js, the canvas package, and its native binding are packaged with the study admin function.
 - Deployed commit `a445158`, repaired the original failed staged revision without deleting or publishing it, and verified production now shows extracted text, seven evidence-backed candidates, a populated OSIS review list, and a working authenticated PDF response.
+
+## Canonical Hungarian references and automatic finalization — 2026-07-26
+
+- Added one canonical Hungarian abbreviation for every OSIS book code and expanded detection to all 66 canonical books.
+- Normalized detected labels after OSIS resolution, so full names, abbreviations, punctuation variants, and duplicate aliases produce one display form such as `Zsid 5:8`.
+- Kept OSIS as the stored identity and added an OSIS-to-Hungarian formatter used by repository reads, ensuring legacy labels also render consistently.
+- Changed successful PDF uploads to atomically store the document, accepted evidence rows, finalized Scripture ranges, and current-document pointer without an editorial review step.
+- Rejected extraction failures and insufficient-text PDFs before storing a revision, with explicit guidance to upload a PDF that has a usable text layer.
+- Removed the third-step review editor, its server action, the pending-review dashboard queue, and obsolete review-specific styles.
+- Updated bundled seed labels and current product/memory documentation to the canonical Hungarian format and automatic workflow.
+- Passed the reference suite, all five regression suites, lint, strict TypeScript through the production build, and the Next.js production build.

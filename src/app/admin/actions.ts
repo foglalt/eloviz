@@ -1,5 +1,6 @@
 "use server";
 
+import { randomUUID } from "node:crypto";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -16,7 +17,7 @@ import {
 import { requireSql } from "@/lib/db";
 import { deleteBlobPdf, MAX_PDF_BYTES, sha256, storePdf, validatePdfBuffer } from "@/lib/document-storage";
 import { extractPdfPages } from "@/lib/pdf-extract";
-import { DETECTOR_VERSION, detectScriptureReferences, parseOsisReferenceLine } from "@/lib/scripture-references";
+import { DETECTOR_VERSION, detectScriptureReferences } from "@/lib/scripture-references";
 import { parseYouTubeId, sanitizePdfFilename, slugifyHungarian, studyInputSchema, topicInputSchema, videoInputSchema } from "@/lib/content-validation";
 import { resolveStudyDocumentRemoval, resolveStudyPublicationStatus } from "@/lib/study-publication";
 
@@ -148,41 +149,77 @@ export async function uploadStudyPdfAction(formData: FormData) {
   try { validatePdfBuffer(buffer); } catch (error) {
     redirect(destination("/admin/tanulmanyok", "error", error instanceof Error ? error.message : "Érvénytelen PDF.", studyId));
   }
+  const filename = sanitizePdfFilename(file.name);
+  let pages: string[];
+  try {
+    pages = await extractPdfPages(buffer);
+  } catch (error) {
+    console.error(JSON.stringify({
+      level: "error",
+      message: "PDF text extraction failed",
+      studyId,
+      filename,
+      byteSize: buffer.length,
+      error: error instanceof Error ? error.message : String(error),
+    }));
+    redirect(destination(
+      "/admin/tanulmanyok",
+      "error",
+      "A PDF szövege nem olvasható ki automatikusan. Tölts fel géppel olvasható szövegréteget tartalmazó PDF-et.",
+      studyId,
+    ));
+  }
+  if (pages.join(" ").trim().length < 40) {
+    redirect(destination(
+      "/admin/tanulmanyok",
+      "error",
+      "A PDF nem tartalmaz elegendő géppel olvasható szöveget. Tölts fel szövegréteget tartalmazó PDF-et.",
+      studyId,
+    ));
+  }
+
   const sql = requireSql();
   try {
     const versionRows = await sql.query("SELECT COALESCE(max(version_number),0)+1 AS next_version FROM study_documents WHERE study_id=$1", [studyId]);
     const version = Number(versionRows[0].next_version);
-    const filename = sanitizePdfFilename(file.name);
     const stored = await storePdf(buffer, studyId, filename);
-    let pages: string[] = [];
-    let extractionStatus: "complete" | "manual_required" | "failed" = "complete";
-    let extractionError: string | null = null;
-    try {
-      pages = await extractPdfPages(buffer);
-      if (pages.join(" ").trim().length < 40) {
-        extractionStatus = "manual_required";
-        extractionError = "A PDF-ben kevés géppel olvasható szöveg található. Az igehelyeket kézzel ellenőrizd.";
-      }
-    } catch (error) {
-      console.error(JSON.stringify({
-        level: "error",
-        message: "PDF text extraction failed",
-        studyId,
-        filename,
-        byteSize: buffer.length,
-        error: error instanceof Error ? error.message : String(error),
-      }));
-      extractionStatus = "failed";
-      extractionError = "A szöveg automatikus kiolvasása nem sikerült. Az igehelyek kézzel megadhatók.";
-    }
-    const documentRows = await sql.query(`INSERT INTO study_documents(study_id,version_number,original_filename,byte_size,sha256,storage_kind,storage_key,file_data,extraction_status,extraction_error,extracted_text) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING id::text`, [studyId, version, filename, buffer.length, sha256(buffer), stored.storageKind, stored.storageKey, stored.fileData, extractionStatus, extractionError, pages.join("\n\n")]);
-    const documentId = String(documentRows[0].id);
+    const documentId = randomUUID();
     const candidates = detectScriptureReferences(pages);
-    for (const [index, candidate] of candidates.entries()) {
-      await sql.query(`INSERT INTO study_reference_candidates(document_id,raw_text,display_label,book_code,start_chapter,start_verse,end_chapter,end_verse,osis_start,osis_end,page_number,context_snippet,detector_version,sort_order) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)`, [documentId, candidate.rawText, candidate.displayLabel, candidate.bookCode, candidate.startChapter, candidate.startVerse, candidate.endChapter, candidate.endVerse, candidate.osisStart, candidate.osisEnd, candidate.pageNumber, candidate.contextSnippet, DETECTOR_VERSION, index]);
+    try {
+      await sql.transaction((transaction) => [
+        transaction.query(`INSERT INTO study_documents(id,study_id,version_number,original_filename,byte_size,sha256,storage_kind,storage_key,file_data,extraction_status,extraction_error,extracted_text) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,'complete',NULL,$10)`, [documentId, studyId, version, filename, buffer.length, sha256(buffer), stored.storageKind, stored.storageKey, stored.fileData, pages.join("\n\n")]),
+        ...candidates.flatMap((candidate, index) => {
+          const referenceValues = [documentId, candidate.rawText, candidate.displayLabel, candidate.bookCode, candidate.startChapter, candidate.startVerse, candidate.endChapter, candidate.endVerse, candidate.osisStart, candidate.osisEnd, candidate.pageNumber, candidate.contextSnippet, DETECTOR_VERSION, index];
+          return [
+            transaction.query(`INSERT INTO study_reference_candidates(document_id,raw_text,display_label,book_code,start_chapter,start_verse,end_chapter,end_verse,osis_start,osis_end,page_number,context_snippet,detector_version,review_status,sort_order) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,'accepted',$14)`, referenceValues),
+            transaction.query(`INSERT INTO study_scripture_references(study_id,document_id,display_label,book_code,start_chapter,start_verse,end_chapter,end_verse,osis_start,osis_end,sort_order) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`, [studyId, documentId, candidate.displayLabel, candidate.bookCode, candidate.startChapter, candidate.startVerse, candidate.endChapter, candidate.endVerse, candidate.osisStart, candidate.osisEnd, index]),
+          ];
+        }),
+        transaction.query("UPDATE studies SET published_document_id=$2,reference_reviewed=true,updated_at=now() WHERE id=$1", [studyId, documentId]),
+      ]);
+    } catch (error) {
+      if (stored.storageKind === "blob") {
+        try {
+          await deleteBlobPdf(stored.storageKey);
+        } catch (cleanupError) {
+          console.error(JSON.stringify({
+            level: "error",
+            message: "Failed to clean up PDF blob after database transaction failure",
+            studyId,
+            storageKey: stored.storageKey,
+            error: cleanupError instanceof Error ? cleanupError.message : String(cleanupError),
+          }));
+        }
+      }
+      throw error;
     }
-    await sql.query("UPDATE studies SET reference_reviewed=false,updated_at=now() WHERE id=$1", [studyId]);
-    redirect(destination("/admin/tanulmanyok", "message", `${candidates.length} igehely-javaslat készült. Ellenőrizd és véglegesítsd a listát.`, studyId));
+    refreshPublicContent();
+    redirect(destination(
+      "/admin/tanulmanyok",
+      "message",
+      `${candidates.length} igehely felismerve. A PDF-verzió automatikusan véglegesítve.`,
+      studyId,
+    ));
   } catch (error) {
     rethrowFrameworkRedirect(error);
     const duplicate = error instanceof Error && error.message.includes("sha256");
@@ -239,38 +276,6 @@ export async function deleteStudyDocumentAction(formData: FormData) {
   } catch (error) {
     rethrowFrameworkRedirect(error);
     redirect(destination("/admin/tanulmanyok", "error", "A PDF eltávolítása nem sikerült.", studyId));
-  }
-}
-
-export async function finalizeStudyReferencesAction(formData: FormData) {
-  await requireAdmin();
-  const studyId = field(formData, "studyId");
-  const documentId = field(formData, "documentId");
-  if (formData.get("confirmed") !== "on") redirect(destination("/admin/tanulmanyok", "error", "A véglegesítéshez jelöld be az ellenőrzés megerősítését.", studyId));
-  const rawLines = field(formData, "references").split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
-  const parsed = rawLines.map(parseOsisReferenceLine);
-  if (parsed.some((reference) => !reference)) redirect(destination("/admin/tanulmanyok", "error", "Hibás igehelyformátum. Példa: Jn 3:16 | John.3.16", studyId));
-  const references = parsed.filter((reference) => reference !== null);
-  const sql = requireSql();
-  try {
-    const validDocument = await sql.query("SELECT 1 FROM study_documents WHERE id=$1 AND study_id=$2", [documentId, studyId]);
-    if (!validDocument.length) redirect(destination("/admin/tanulmanyok", "error", "A dokumentum nem tartozik ehhez a tanulmányhoz.", studyId));
-    const bookRows = await sql.query("SELECT code FROM canonical_books");
-    const knownBooks = new Set(bookRows.map((row) => String(row.code)));
-    if (references.some((reference) => !knownBooks.has(reference.bookCode))) redirect(destination("/admin/tanulmanyok", "error", "Ismeretlen OSIS-könyvkód van a listában.", studyId));
-    await sql.query("DELETE FROM study_scripture_references WHERE study_id=$1 AND document_id=$2", [studyId, documentId]);
-    for (const [index, reference] of references.entries()) {
-      await sql.query(`INSERT INTO study_scripture_references(study_id,document_id,display_label,book_code,start_chapter,start_verse,end_chapter,end_verse,osis_start,osis_end,sort_order) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`, [studyId, documentId, reference.displayLabel, reference.bookCode, reference.startChapter, reference.startVerse, reference.endChapter, reference.endVerse, reference.osisStart, reference.osisEnd, index]);
-    }
-    await sql.query("UPDATE study_reference_candidates SET review_status='rejected' WHERE document_id=$1", [documentId]);
-    for (const reference of references) await sql.query("UPDATE study_reference_candidates SET review_status='accepted' WHERE document_id=$1 AND osis_start=$2 AND osis_end=$3", [documentId, reference.osisStart, reference.osisEnd]);
-    const publishNow = formData.get("publishNow") === "on";
-    await sql.query("UPDATE studies SET published_document_id=$2,reference_reviewed=true,status=CASE WHEN $3 THEN 'published' ELSE status END,published_at=CASE WHEN $3 THEN COALESCE(published_at,now()) ELSE published_at END,updated_at=now() WHERE id=$1", [studyId, documentId, publishNow]);
-    refreshPublicContent();
-    redirect(destination("/admin/tanulmanyok", "message", publishNow ? "Az igehelyek véglegesítve, a tanulmány publikálva." : "Az igehelyek és a PDF-verzió véglegesítve.", studyId));
-  } catch (error) {
-    rethrowFrameworkRedirect(error);
-    redirect(destination("/admin/tanulmanyok", "error", "Az igehelyek véglegesítése nem sikerült.", studyId));
   }
 }
 

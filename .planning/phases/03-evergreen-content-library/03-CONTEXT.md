@@ -15,7 +15,8 @@ This phase does not implement the Bible reader or original-language concordances
 - Every topic has a description and dedicated page.
 - Every study and video has its own descriptive, indexable page.
 - Study materials are uploaded PDF files rather than primarily authored as Markdown in the admin.
-- A PDF upload or replacement triggers a simple Bible-reference scan, followed by mandatory editorial review of the proposed list.
+- A PDF upload or replacement triggers Bible-reference detection and automatic finalization when text extraction succeeds.
+- OSIS remains the translation-independent storage format; all detected and stored ranges are displayed with one canonical Hungarian abbreviation format.
 - Videos are YouTube recommendations, not self-hosted media.
 - A study and video can be explicitly marked as related when they belong together.
 - Topics, studies, videos, descriptions, and relations are editable through a very simple admin.
@@ -33,17 +34,17 @@ This phase does not implement the Bible reader or original-language concordances
 - `canonical_books`, `canonical_chapters`, and `canonical_verses` provide translation-independent verse identities before any Bible text is imported.
 - `study_topics` and `video_topics` provide many-to-many topic membership.
 - `study_videos` provides the requested relationship, with optional editor note and ordering.
-- `study_reference_candidates` stores detected ranges plus source page, context snippet, detector version, and review status.
-- `study_scripture_references` stores only editor-confirmed canonical ranges used by public pages and the future reader.
+- `study_reference_candidates` stores automatically accepted detected ranges plus source page, context snippet, detector version, and compatibility review status.
+- `study_scripture_references` stores automatically finalized canonical ranges used by public pages and the future reader.
 - Published queries never return drafts. Admin queries are explicitly authenticated and may return both.
 
 ### Content editing
 
 - The study record contains a plain-text summary/description for its dedicated SEO page; the authored material itself is the attached PDF.
-- Replacing a PDF creates a new document revision and a new candidate set without changing the currently published PDF/reference list until the editor finalizes the revision.
-- Text extraction is page-aware where possible. Native-text PDFs receive automatic candidate detection; scanned/image-only PDFs are flagged for manual reference entry in the first version, with OCR deferred.
-- Reference detection recognizes an explicit, tested dictionary of Hungarian Bible-book names/abbreviations and common chapter/verse/range separators. It is assistive rather than authoritative.
-- The review screen lets the editor accept, edit, reject, add, and reorder references, while viewing page/context evidence and the PDF.
+- Replacing a PDF creates a new immutable document revision; successful extraction and detection atomically make that revision and its finalized reference set current.
+- Text extraction is page-aware where possible. Native-text PDFs receive automatic detection and finalization; scanned/image-only or insufficient-text PDFs are rejected with a clear error, with OCR deferred.
+- Reference detection recognizes an explicit, tested dictionary covering all 66 canonical books, Hungarian book names/abbreviations, and common chapter/verse/range separators.
+- Aliases normalize through OSIS and then render with the canonical Hungarian abbreviation, so variants such as `Zsidók 5:8` and `Zsid 5:8` both finalize as `Zsid 5:8`.
 - Topic and video summaries/descriptions are plain text with sensible length validation.
 - Slugs are generated from Hungarian titles, remain manually editable, and never change silently after publication.
 - Deletion is blocked when it would orphan or silently remove linked content; unpublish is the default safe action.
@@ -120,7 +121,7 @@ The admin uses utility-first product language and a calm operational layout, not
 ## Migration Policy
 
 - Import the five current study entries and descriptions into the new schema through an idempotent seed/migration, but do not pretend that legacy TypeScript text is an uploaded PDF.
-- Existing records without a real PDF remain draft or legacy content until the source document is supplied and reviewed.
+- Existing records without a real PDF remain draft or legacy content until a text-readable source document is supplied and processed.
 - Replace mojibake with verified UTF-8 Hungarian source text during migration.
 - Do not delete the Easter quiz, invitation, or old study content during early plans.
 - In 03-09, choose between preserving the Easter experience at `/husvet`, retaining selected routes, or redirecting retired routes to the closest relevant evergreen page.
@@ -130,11 +131,10 @@ The admin uses utility-first product language and a calm operational layout, not
 
 1. Admin creates or opens a study draft and uploads a PDF revision directly to the chosen object store through a constrained signed upload.
 2. The server validates PDF signature/type, size, sanitized filename, and checksum, then records an immutable `study_document` revision.
-3. Text is extracted per page. If extraction fails or yields too little text, the document is marked “manual references required.”
-4. The detector produces normalized candidate verse/range rows with page number and a short surrounding snippet.
-5. The admin reviews the candidates beside the PDF, edits/adds/removes entries, and explicitly marks reference review complete.
-6. Finalization transactionally selects the new PDF revision and replaces the public study-reference set with the confirmed rows.
-7. Revalidation updates the study, its topics, sitemap, and—once Phase 04 exists—the affected Bible verse pages.
+3. Text is extracted per page. If extraction fails or yields too little text, the upload is rejected before a document revision is stored.
+4. The detector resolves Hungarian aliases to OSIS, deduplicates identical ranges, and produces canonical Hungarian display labels with page/context evidence.
+5. One database transaction stores the immutable revision, accepted evidence rows, finalized Scripture ranges, and the new current-document pointer.
+6. Revalidation updates the study, its topics, sitemap, and—once Phase 04 exists—the affected Bible verse pages.
 
 Files remain private/staged before publication. Published PDFs are served without application cookies and with a deliberate raw-PDF indexing policy so the descriptive HTML page remains canonical.
 
@@ -155,7 +155,7 @@ Phase 03 creates the canonical verse structure and confirmed study mappings but 
 - Site-wide full-text content search unless the initial catalogue size justifies it during implementation.
 - Automated YouTube Data API synchronization; editors remain authoritative for titles and descriptions in V1.
 - General media library, image uploads, audio content, or podcast feeds beyond study PDFs.
-- OCR for scanned PDFs in the first release; manual reference review remains available.
+- OCR and manual reference correction are deferred; V1 accepts only PDFs with a usable text layer and finalizes detected references automatically.
 - Multiple translations, Greek/Hebrew tools, interlinear alignment, and Hungarian lexicon localization.
 
 ---

@@ -52,15 +52,6 @@ export default async function AdminPage({ searchParams }: Props) {
         <Link className="admin-stat" href="/admin/tanulmanyok"><strong>{overview.studyCount}</strong><span>tanulmány</span></Link>
         <Link className="admin-stat" href="/admin/videok"><strong>{overview.videoCount}</strong><span>videó</span></Link>
       </div>
-      <section className="admin-panel admin-panel--spaced">
-        <h2>Figyelmet igényel</h2>
-        <ul className="admin-list">
-          {overview.pendingStudies.map((study) => (
-            <li key={study.id}><span><strong>{study.title}</strong><small>Feltöltött PDF, még nem véglegesített igehelyek</small></span><Link href={`/admin/tanulmanyok?edit=${study.id}`}>Ellenőrzés →</Link></li>
-          ))}
-          {overview.pendingStudies.length === 0 && <li><span>Nincs függőben lévő PDF-ellenőrzés.</span></li>}
-        </ul>
-      </section>
     </AdminShell>
   );
 }

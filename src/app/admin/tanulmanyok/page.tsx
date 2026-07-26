@@ -15,7 +15,6 @@ import {
 } from "@/lib/content-repository";
 import {
   deleteStudyDocumentAction,
-  finalizeStudyReferencesAction,
   saveStudyAction,
   uploadStudyPdfAction,
 } from "../actions";
@@ -32,10 +31,6 @@ type Props = {
 
 export const dynamic = "force-dynamic";
 
-function referenceLine(reference: { label: string; osisStart: string; osisEnd: string }) {
-  return `${reference.label} | ${reference.osisStart}${reference.osisEnd !== reference.osisStart ? `-${reference.osisEnd}` : ""}`;
-}
-
 export default async function AdminStudiesPage({ searchParams }: Props) {
   if (!(await isAdminAuthenticated())) redirect("/admin");
   const query = await searchParams;
@@ -47,18 +42,12 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
     listAdminTopicOptions(),
     listAdminVideoOptions(),
   ]);
-  const reviewDocument = selected?.documents[0];
-  const proposedLines = reviewDocument?.candidates.length
-    ? reviewDocument.candidates.map(referenceLine)
-    : selected?.references.map(referenceLine) ?? [];
   const indexItems = studyIndex.items.map((study) => {
     const documentState = study.documentCount === 0
       ? "nincs PDF"
-      : study.hasPendingDocument
-        ? "ellenőrzésre vár"
-        : study.hasPublishedDocument
-          ? "véglegesítve"
-          : "PDF feltöltve";
+      : study.hasPublishedDocument
+        ? "véglegesítve"
+        : "nincs használható PDF";
 
     return {
       id: study.id,
@@ -92,7 +81,7 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
     >
       <AdminEditorPanel
         title={selected ? "Tanulmány szerkesztése" : "Új tanulmány"}
-        help="Először mentsd a vázlatot. Ezután tölthetsz fel hozzá PDF-et és ellenőrizheted az automatikusan talált igehelyeket."
+        help="Először mentsd a vázlatot. A feltöltött PDF-ből az igehelyek automatikusan felismerésre és véglegesítésre kerülnek."
       >
         <form
           key={selected ? `${selected.id}:${selected.updatedAt ?? ""}` : "new"}
@@ -158,7 +147,7 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
           <form action={uploadStudyPdfAction} className="upload-form">
             <input type="hidden" name="studyId" value={selected.id} />
             <input name="pdf" type="file" accept="application/pdf,.pdf" required />
-            <button className="button" type="submit">Feltöltés és elemzés</button>
+            <button className="button" type="submit">Feltöltés és feldolgozás</button>
           </form>
           {selected.documents.length > 0 ? (
             <ol className="document-history">
@@ -171,8 +160,8 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
                       <span>
                         {Math.round(document.byteSize / 1024)} kB ·{" "}
                         {document.extractionStatus === "complete"
-                          ? "szöveg kiolvasva"
-                          : "kézi ellenőrzés szükséges"}
+                          ? `${document.candidates.length} igehely · automatikusan véglegesítve`
+                          : "feldolgozás sikertelen"}
                         {isPublishedDocument ? " · jelenlegi PDF" : ""}
                       </span>
                     </div>
@@ -209,64 +198,6 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
         </section>
       ) : null}
 
-      {selected && reviewDocument ? (
-        <section className="admin-panel">
-          <p className="eyebrow">3. lépés</p>
-          <h2>Talált igehelyek ellenőrzése</h2>
-          <p className="admin-help">
-            Egy sor egy hivatkozás. Formátum:{" "}
-            <code>Megjelenő név | OSIS-kezdőpont-OSIS-végpont</code>. Példa:{" "}
-            <code>Jn 3:16 | John.3.16</code>.
-          </p>
-          {reviewDocument.extractionError ? (
-            <p className="admin-notice admin-notice--error">{reviewDocument.extractionError}</p>
-          ) : null}
-          {reviewDocument.candidates.length > 0 ? (
-            <details className="candidate-evidence" open>
-              <summary>
-                {reviewDocument.candidates.length} automatikus találat és szövegkörnyezete
-              </summary>
-              <ol>
-                {reviewDocument.candidates.map((candidate) => (
-                  <li key={candidate.id}>
-                    <strong>{candidate.label}</strong>
-                    <span>
-                      {candidate.pageNumber ? `${candidate.pageNumber}. oldal` : "oldalszám nélkül"} ·{" "}
-                      {candidate.contextSnippet}
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            </details>
-          ) : null}
-          <form action={finalizeStudyReferencesAction} className="form-grid">
-            <input type="hidden" name="studyId" value={selected.id} />
-            <input type="hidden" name="documentId" value={reviewDocument.id} />
-            <div className="field field--full">
-              <label htmlFor="references">Végleges igehelylista</label>
-              <textarea
-                id="references"
-                name="references"
-                className="reference-editor"
-                defaultValue={proposedLines.join("\n")}
-              />
-            </div>
-            <label className="check-field field--full">
-              <input name="confirmed" type="checkbox" required /> Ellenőriztem a listát, a hiányzó
-              vagy hibás hivatkozásokat javítottam.
-            </label>
-            <label className="check-field field--full">
-              <input name="publishNow" type="checkbox" /> A véglegesítés után legyen azonnal
-              publikált
-            </label>
-            <div className="form-actions field--full">
-              <button className="button button--primary" type="submit">
-                Igehelyek és PDF-verzió véglegesítése
-              </button>
-            </div>
-          </form>
-        </section>
-      ) : null}
       {selected ? <AdminDeletePanel entity="study" id={selected.id} title={selected.title} /> : null}
     </AdminContentWorkspace>
   );

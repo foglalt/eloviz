@@ -285,13 +285,6 @@ h3 { margin: 0; font-size: clamp(1.45rem, 2.4vw, 2rem); }
 .document-delete input { accent-color: var(--danger); }
 .admin-link-button--danger { color: var(--danger); }
 .document-protected { max-width: 230px; color: #76542d; text-align: right; }
-.candidate-evidence { margin: 22px 0; padding: 16px; border: 1px solid #dbe2df; border-radius: 8px; background: #f8faf8; }
-.candidate-evidence summary { cursor: pointer; font-weight: 800; }
-.candidate-evidence ol { margin-bottom: 0; padding-left: 22px; }
-.candidate-evidence li { padding: 9px 0; border-bottom: 1px solid #dfe6e2; }
-.candidate-evidence li:last-child { border-bottom: 0; }
-.candidate-evidence span { display: block; margin-top: 3px; color: var(--muted); font-size: .78rem; }
-.reference-editor { min-height: 210px !important; font-family: ui-monospace, SFMono-Regular, Consolas, monospace !important; font-size: .84rem !important; }
 .danger-panel { border-color: #e8caca; }
 .danger-zone { display: grid; grid-template-columns: minmax(0, 1fr) minmax(150px, 240px) auto; gap: 14px; align-items: center; margin-top: 28px; padding-top: 22px; border-top: 1px solid #ead4d4; }
 .danger-zone p { margin: 3px 0 0; color: var(--muted); font-size: .78rem; }

@@ -1,5 +1,5 @@
 ---
-generated: 2026-07-26T10:31:00+02:00
+generated: 2026-07-26T10:56:36+02:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-07-26T10:23:17+02:00
+- Timestamp: 2026-07-26T10:56:36+02:00
 
 ## Checks
 
@@ -18,22 +18,6 @@ status: passed
 | `npm run build` | 0 | PASS |
 
 ## Detailed Output
-
-## Production PDF extraction dependency hotfix — 2026-07-26
-
-- Production database evidence: `Teszt.pdf` was recorded as `failed` with zero extracted characters and zero candidates.
-- Vercel runtime evidence at the failed upload: PDF.js could not load `@napi-rs/canvas` and could not polyfill `DOMMatrix` or `Path2D`.
-- `npm run test:pdf`: PASS; the real bundled native-text PDF produced the four expected normalized ranges.
-- Direct `Teszt.pdf` regression: PASS; one page, 150 extracted characters, and seven unique candidates.
-- Existing reference, Blob-storage, publication, search, and automatic-topic suites: 19/19 PASS.
-- `npm run lint`: PASS.
-- `npx tsc --noEmit`: PASS.
-- `npm run build`: PASS with Next.js 16.2.1.
-- Next.js function trace: PASS; the study admin function includes PDF.js, `@napi-rs/canvas`, and the native canvas binding.
-- Vercel production deployment `dpl_BzLLiAbKWMjhn4XLKBsKeHBCNB4f`: READY from commit `a445158`.
-- Original failed staged revision repaired in place: `complete`, 150 extracted characters, seven candidates, and no extraction error; it remained unpublished.
-- Authenticated production editor: PASS; visible seven-candidate evidence, populated OSIS textarea, no extraction-error notice, no horizontal overflow, and the staged PDF opened successfully.
-- New-deployment runtime scan: no PDF.js, canvas, `DOMMatrix`, or `Path2D` error. The document route still emits a separate pre-existing `Buffer()` deprecation warning.
 
 ### npm run lint
 
@@ -58,15 +42,15 @@ Exit code: 0
   · serverActions
 
   Creating an optimized production build ...
-✓ Compiled successfully in 12.3s
+✓ Compiled successfully in 12.0s
   Running TypeScript ...
-  Finished TypeScript in 9.7s ...
+  Finished TypeScript in 11.6s ...
   Collecting page data using 11 workers ...
   Generating static pages using 11 workers (0/10) ...
   Generating static pages using 11 workers (2/10)
   Generating static pages using 11 workers (4/10)
   Generating static pages using 11 workers (7/10)
-✓ Generating static pages using 11 workers (10/10) in 630ms
+✓ Generating static pages using 11 workers (10/10) in 3.1s
   Finalizing page optimization ...
 
 Route (app)
@@ -91,3 +75,16 @@ Route (app)
 ○  (Static)   prerendered as static content
 ƒ  (Dynamic)  server-rendered on demand
 ```
+
+## Additional evidence
+
+- `npm run test:references`: PASS; four tests cover canonical alias deduplication, single/range/cross-chapter OSIS formatting, and detection across previously missing canonical books.
+- `npm run test:storage`: PASS; 3/3.
+- `npm run test:publication`: PASS; 5/5.
+- `npm run test:search`: PASS; 3/3.
+- `npm run test:topics`: PASS; 5/5.
+- `npm run test:pdf`: PASS; 1/1.
+- `npx tsc --noEmit`: PASS.
+- Static inspection: no manual finalization action, third-step review UI, pending-review dashboard queue, or manual-review copy remains in application code.
+- Upload integrity: extraction/short-text failures return before storage; successful document, candidate, finalized-reference, and current-pointer writes use one Neon transaction.
+- `scripts/gtd.ps1 health`: PASS.
