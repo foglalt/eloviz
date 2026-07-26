@@ -5,6 +5,7 @@ import { AdminContentIndex } from "@/components/admin-content-index";
 import { AdminContentWorkspace } from "@/components/admin-content-workspace";
 import { AdminDeletePanel } from "@/components/admin-delete-panel";
 import { AdminEditorPanel } from "@/components/admin-editor-panel";
+import { AdminFormSubmit } from "@/components/admin-form-submit";
 import { AdminRelationPicker } from "@/components/admin-relation-picker";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import {
@@ -135,7 +136,7 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
             </div>
           </AdminContentFormFields>
           <div className="form-actions field--full">
-            <button className="button button--primary" type="submit">Adatok mentése</button>
+            <AdminFormSubmit label="Adatok mentése" />
           </div>
         </form>
       </AdminEditorPanel>
@@ -149,7 +150,11 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
           <form action={uploadStudyPdfAction} className="upload-form">
             <input type="hidden" name="studyId" value={selected.id} />
             <input name="pdf" type="file" accept="application/pdf,.pdf" required />
-            <button className="button" type="submit">Feltöltés és feldolgozás</button>
+            <AdminFormSubmit
+              label="Feltöltés és feldolgozás"
+              pendingLabel="A PDF feltöltése és feldolgozása…"
+              className="button"
+            />
           </form>
           {selected.documents.length > 0 ? (
             <ol className="document-history">

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { AdminNotice, AdminShell } from "@/components/admin-shell";
+import { AdminSuccessDialog } from "@/components/admin-success-dialog";
 
 type Props = {
   eyebrow: string;
@@ -23,7 +24,8 @@ export function AdminContentWorkspace({
       <div className="admin-heading">
         <div><p className="eyebrow">{eyebrow}</p><h1>{title}</h1></div>
       </div>
-      <AdminNotice message={message} error={error} />
+      <AdminSuccessDialog message={message} />
+      <AdminNotice error={error} />
       <div className="admin-grid">
         {index}
         <div className="admin-stack">{children}</div>

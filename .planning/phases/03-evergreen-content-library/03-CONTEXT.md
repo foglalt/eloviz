@@ -49,6 +49,7 @@ This phase does not implement the Bible reader or original-language concordances
 - Topic and video summaries/descriptions are plain text with sensible length validation.
 - The video speaker is stored independently from the YouTube channel and participates in admin and public catalogue search.
 - Slugs are generated from Hungarian titles when content is created, remain stable on later edits, and are not shown as an ordinary editor field.
+- Content saves and PDF processing use a modal pending state that prevents competing editor actions; successful redirects require an explicit acknowledgement.
 - Deletion is blocked when it would orphan or silently remove linked content; unpublish is the default safe action.
 
 ### Rendering and caching

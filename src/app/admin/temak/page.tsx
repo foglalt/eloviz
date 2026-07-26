@@ -4,6 +4,7 @@ import { AdminContentIndex } from "@/components/admin-content-index";
 import { AdminContentWorkspace } from "@/components/admin-content-workspace";
 import { AdminDeletePanel } from "@/components/admin-delete-panel";
 import { AdminEditorPanel } from "@/components/admin-editor-panel";
+import { AdminFormSubmit } from "@/components/admin-form-submit";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { getAdminTopic, listAdminTopicIndex } from "@/lib/content-repository";
 import { saveTopicAction } from "../actions";
@@ -62,7 +63,7 @@ export default async function AdminTopicsPage({ searchParams }: Props) {
             </div>
           </AdminContentFormFields>
           <div className="form-actions field--full">
-            <button className="button button--primary" type="submit">Mentés</button>
+            <AdminFormSubmit label="Mentés" />
           </div>
         </form>
       </AdminEditorPanel>

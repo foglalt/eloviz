@@ -152,3 +152,11 @@ completed: 2026-07-22
 - Applied production migration `003_add_video_speaker`; YouTube metadata tests, speaker-search tests, lint, the migrated-schema production build, GTD verification, and memory health passed.
 - Deployed commit `0a6a76d` to production as `dpl_6Z7y7jiGgpHo88pHif5rnpxP84C3`.
 - Verified the authenticated production editor: the sample link derived `Áttekintés: Jeremiás` and `BibleProject - Hungarian / Magyarország`, both relationship panels measured 240 px at desktop and 390 px mobile width, the mobile layout stacked cleanly, and no horizontal overflow appeared.
+
+## Blocking save feedback — 2026-07-26
+
+- Added one shared `useFormStatus` submit component to topic, study, and video saves plus the longer PDF upload/processing action.
+- Opens a native modal pending dialog during the server action, disables the initiating button, prevents Escape dismissal, and blocks pointer and keyboard interaction with the editor until completion.
+- Replaced transient success notices in content workspaces with a native confirmation dialog that displays the returned server message, returns focus safely, and removes the consumed message from the browser URL when dismissed.
+- Kept validation and server errors as persistent inline notices so corrective context remains visible.
+- Passed the React best-practices review, lint, the production build, GTD verification, and repository health.
