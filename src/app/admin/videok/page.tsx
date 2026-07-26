@@ -83,36 +83,38 @@ export default async function AdminVideosPage({ searchParams }: Props) {
               <label htmlFor="description">Leírás</label>
               <textarea id="description" name="description" defaultValue={selected?.description} required />
             </div>
-            <fieldset className="field field--full">
-              <legend>Témák</legend>
-              <AdminRelationPicker
-                key={`video-topics-${selected?.id ?? "new"}`}
-                name="topicIds"
-                options={topics.map((topic) => ({
-                  id: topic.id,
-                  label: topic.title,
-                  meta: topic.status === "published" ? "élő" : "vázlat",
-                }))}
-                selectedIds={selected?.topics.map((item) => item.id)}
-                searchLabel="Témák szűrése"
-                emptyLabel="Nincs ilyen téma."
-              />
-            </fieldset>
-            <fieldset className="field field--full">
-              <legend>Kapcsolódó tanulmányok</legend>
-              <AdminRelationPicker
-                key={`video-studies-${selected?.id ?? "new"}`}
-                name="relatedStudyIds"
-                options={studies.map((study) => ({
-                  id: study.id,
-                  label: study.title,
-                  meta: study.status === "published" ? "élő" : "vázlat",
-                }))}
-                selectedIds={selected?.relatedStudyIds}
-                searchLabel="Tanulmányok szűrése"
-                emptyLabel="Nincs ilyen tanulmány."
-              />
-            </fieldset>
+            <div className="relation-fields field--full">
+              <fieldset className="field relation-field">
+                <legend>Témák</legend>
+                <AdminRelationPicker
+                  key={`video-topics-${selected?.id ?? "new"}`}
+                  name="topicIds"
+                  options={topics.map((topic) => ({
+                    id: topic.id,
+                    label: topic.title,
+                    meta: topic.status === "published" ? "élő" : "vázlat",
+                  }))}
+                  selectedIds={selected?.topics.map((item) => item.id)}
+                  searchLabel="Témák szűrése"
+                  emptyLabel="Nincs ilyen téma."
+                />
+              </fieldset>
+              <fieldset className="field relation-field">
+                <legend>Kapcsolódó tanulmányok</legend>
+                <AdminRelationPicker
+                  key={`video-studies-${selected?.id ?? "new"}`}
+                  name="relatedStudyIds"
+                  options={studies.map((study) => ({
+                    id: study.id,
+                    label: study.title,
+                    meta: study.status === "published" ? "élő" : "vázlat",
+                  }))}
+                  selectedIds={selected?.relatedStudyIds}
+                  searchLabel="Tanulmányok szűrése"
+                  emptyLabel="Nincs ilyen tanulmány."
+                />
+              </fieldset>
+            </div>
           </AdminContentFormFields>
           <div className="form-actions field--full">
             <button className="button button--primary" type="submit">Mentés</button>

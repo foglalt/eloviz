@@ -36,14 +36,14 @@ export function AdminRelationPicker({
   return (
     <div className="relation-picker">
       <div className="relation-picker__search">
-        <label htmlFor={searchId}>{searchLabel}</label>
+        <label className="visually-hidden" htmlFor={searchId}>{searchLabel}</label>
         <input
           id={searchId}
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           aria-controls={listId}
-          placeholder="Keresés…"
+          placeholder={searchLabel}
         />
         <span>{visibleCount} / {options.length}</span>
       </div>

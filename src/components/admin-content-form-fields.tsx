@@ -29,10 +29,7 @@ export function AdminContentFormFields({
         <label htmlFor="title">Cím</label>
         <input id="title" name="title" defaultValue={record?.title} required />
       </div>
-      <div className="field">
-        <label htmlFor="slug">URL slug</label>
-        <input id="slug" name="slug" defaultValue={record?.slug} placeholder="automatikus-a-cimbol" />
-      </div>
+      {record?.slug ? <input type="hidden" name="slug" value={record.slug} /> : null}
       {children}
       <div className="field">
         <label htmlFor="seoTitle">SEO-cím (max. 70)</label>

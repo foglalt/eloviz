@@ -46,7 +46,7 @@ This phase does not implement the Bible reader or original-language concordances
 - Reference detection recognizes an explicit, tested dictionary covering all 66 canonical books, Hungarian book names/abbreviations, and common chapter/verse/range separators.
 - Aliases normalize through OSIS and then render with the canonical Hungarian abbreviation, so variants such as `Zsidók 5:8` and `Zsid 5:8` both finalize as `Zsid 5:8`.
 - Topic and video summaries/descriptions are plain text with sensible length validation.
-- Slugs are generated from Hungarian titles, remain manually editable, and never change silently after publication.
+- Slugs are generated from Hungarian titles when content is created, remain stable on later edits, and are not shown as an ordinary editor field.
 - Deletion is blocked when it would orphan or silently remove linked content; unpublish is the default safe action.
 
 ### Rendering and caching

@@ -527,7 +527,7 @@ async function listAdminOptions(table: "topics" | "studies" | "videos"): Promise
 
 export function listAdminTopicIndex(search = "", requestedPage = 1) {
   return listSimpleAdminIndex(
-    { table: "topics", metaExpression: "'/' || content.slug" },
+    { table: "topics", metaExpression: "left(content.description, 72)" },
     search,
     requestedPage,
   );

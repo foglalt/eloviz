@@ -8,7 +8,7 @@
 **Status:** Completed; final verification recorded
 **Progress:** 100%
 **Last Activity:** 2026-07-26
-**Last Activity Description:** Deployed canonical Hungarian Scripture labels, automatic PDF finalization, and normalized production data
+**Last Activity Description:** Compacted admin relationship pickers and hid automatically managed URL slugs
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -42,6 +42,7 @@
 - Production PDF.js/canvas dependency tracing, native-PDF extraction regression, deployed `Teszt.pdf` seven-candidate repair, authenticated PDF response, lint, strict TypeScript, and production build: passed.
 - All-66-book Hungarian reference formatting, alias deduplication, automatic transactional PDF finalization, review-layer removal, six regression suites, lint, strict TypeScript, and production build: passed.
 - Production deployment `dpl_8YCudqoQDCg2mWAFMqP7zAc2CuT1`: READY; 11 stored labels normalized and the repaired `Teszt.pdf` revision finalized with seven accepted canonical references.
+- Compact topic/related-content admin sections, hidden stable slugs, lint, strict TypeScript, and production build: passed.
 
 ## Next Decision Gate
 
@@ -54,6 +55,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-26T10:59:57+02:00
-**Stopped At:** Canonical Hungarian references and automatic PDF finalization deployed; production data normalized
+**Last Date:** 2026-07-26T11:25:04+02:00
+**Stopped At:** Compact admin relationships and hidden automatic slugs implemented and verified
 **Resume File:** None

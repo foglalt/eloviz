@@ -1,5 +1,5 @@
 ---
-generated: 2026-07-26T10:56:36+02:00
+generated: 2026-07-26T11:25:03+02:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-07-26T10:56:36+02:00
+- Timestamp: 2026-07-26T11:25:03+02:00
 
 ## Checks
 
@@ -42,15 +42,15 @@ Exit code: 0
   · serverActions
 
   Creating an optimized production build ...
-✓ Compiled successfully in 12.0s
+✓ Compiled successfully in 3.3s
   Running TypeScript ...
-  Finished TypeScript in 11.6s ...
+  Finished TypeScript in 4.4s ...
   Collecting page data using 11 workers ...
   Generating static pages using 11 workers (0/10) ...
   Generating static pages using 11 workers (2/10)
   Generating static pages using 11 workers (4/10)
   Generating static pages using 11 workers (7/10)
-✓ Generating static pages using 11 workers (10/10) in 3.1s
+✓ Generating static pages using 11 workers (10/10) in 447ms
   Finalizing page optimization ...
 
 Route (app)
@@ -78,18 +78,9 @@ Route (app)
 
 ## Additional evidence
 
-- `npm run test:references`: PASS; four tests cover canonical alias deduplication, single/range/cross-chapter OSIS formatting, and detection across previously missing canonical books.
-- `npm run test:storage`: PASS; 3/3.
-- `npm run test:publication`: PASS; 5/5.
-- `npm run test:search`: PASS; 3/3.
-- `npm run test:topics`: PASS; 5/5.
-- `npm run test:pdf`: PASS; 1/1.
 - `npx tsc --noEmit`: PASS.
-- Static inspection: no manual finalization action, third-step review UI, pending-review dashboard queue, or manual-review copy remains in application code.
-- Upload integrity: extraction/short-text failures return before storage; successful document, candidate, finalized-reference, and current-pointer writes use one Neon transaction.
+- Shared editor inspection: visible URL-slug input removed for topics, studies, and videos; existing slugs remain hidden form values and new records still derive slugs in their server actions.
+- Topic index inspection: URL fragments removed and replaced with bounded description text.
+- Relationship layout inspection: topic plus related video/study groups share a two-column wrapper, 190 px scroll-bounded option lists, and a one-column breakpoint below 560 px.
+- Accessibility inspection: picker search labels remain available to assistive technology and each input now uses its section-specific search prompt.
 - `scripts/gtd.ps1 health`: PASS.
-- Vercel production deployment `dpl_8YCudqoQDCg2mWAFMqP7zAc2CuT1`: READY from commit `7690bb7`.
-- Production normalization: 11 stored labels changed to the canonical Hungarian format; one staged complete document finalized with seven accepted references.
-- `Teszt.pdf` state: extraction `complete`, current document pointer set, `reference_reviewed=true`, study status still `draft`, and all seven candidates accepted.
-- `Teszt.pdf` canonical labels: `Zsid 8:4`, `Zsid 11:1`, `1Kor 5:8`, `1Kor 8:5`, `1Kor 8:1`, `2Móz 12:1-28`, and `2Móz 13:28-30`.
-- Idempotence: second `npm run db:normalize-references` run reported zero normalized labels, zero finalized documents, and zero finalized references.

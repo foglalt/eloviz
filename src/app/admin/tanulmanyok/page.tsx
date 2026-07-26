@@ -98,39 +98,41 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
               <label htmlFor="summary">Összefoglaló</label>
               <textarea id="summary" name="summary" defaultValue={selected?.summary} required />
             </div>
-            <fieldset className="field field--full">
-              <legend>Témák</legend>
-              <small className="field-help">
-                Ha nem választasz témát, a tanulmány nyilvánosan az Egyéb témakörbe kerül.
-              </small>
-              <AdminRelationPicker
-                key={`topics-${selected?.id ?? "new"}`}
-                name="topicIds"
-                options={topics.map((topic) => ({
-                  id: topic.id,
-                  label: topic.title,
-                  meta: topic.status === "published" ? "élő" : "vázlat",
-                }))}
-                selectedIds={selected?.topics.map((item) => item.id)}
-                searchLabel="Témák szűrése"
-                emptyLabel="Nincs ilyen téma."
-              />
-            </fieldset>
-            <fieldset className="field field--full">
-              <legend>Kapcsolódó videók</legend>
-              <AdminRelationPicker
-                key={`videos-${selected?.id ?? "new"}`}
-                name="relatedVideoIds"
-                options={videos.map((video) => ({
-                  id: video.id,
-                  label: video.title,
-                  meta: video.status === "published" ? "élő" : "vázlat",
-                }))}
-                selectedIds={selected?.relatedVideoIds}
-                searchLabel="Videók szűrése"
-                emptyLabel="Nincs ilyen videó."
-              />
-            </fieldset>
+            <div className="relation-fields field--full">
+              <fieldset className="field relation-field">
+                <legend>Témák</legend>
+                <small className="field-help">
+                  Üresen hagyva az Egyéb témakörbe kerül.
+                </small>
+                <AdminRelationPicker
+                  key={`topics-${selected?.id ?? "new"}`}
+                  name="topicIds"
+                  options={topics.map((topic) => ({
+                    id: topic.id,
+                    label: topic.title,
+                    meta: topic.status === "published" ? "élő" : "vázlat",
+                  }))}
+                  selectedIds={selected?.topics.map((item) => item.id)}
+                  searchLabel="Témák szűrése"
+                  emptyLabel="Nincs ilyen téma."
+                />
+              </fieldset>
+              <fieldset className="field relation-field">
+                <legend>Kapcsolódó videók</legend>
+                <AdminRelationPicker
+                  key={`videos-${selected?.id ?? "new"}`}
+                  name="relatedVideoIds"
+                  options={videos.map((video) => ({
+                    id: video.id,
+                    label: video.title,
+                    meta: video.status === "published" ? "élő" : "vázlat",
+                  }))}
+                  selectedIds={selected?.relatedVideoIds}
+                  searchLabel="Videók szűrése"
+                  emptyLabel="Nincs ilyen videó."
+                />
+              </fieldset>
+            </div>
           </AdminContentFormFields>
           <div className="form-actions field--full">
             <button className="button button--primary" type="submit">Adatok mentése</button>

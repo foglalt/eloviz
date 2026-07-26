@@ -132,3 +132,11 @@ completed: 2026-07-22
 - Deployed commit `7690bb7` to production as `dpl_8YCudqoQDCg2mWAFMqP7zAc2CuT1`.
 - Normalized 11 existing stored labels and automatically finalized the one eligible staged document: the repaired `Teszt.pdf` revision now has seven accepted candidates, seven canonical references, and remains a draft study.
 - Re-ran the normalization with zero changes, confirming the production data migration is idempotent.
+
+## Compact admin relationships and automatic slugs — 2026-07-26
+
+- Removed the visible URL-slug field from the shared topic, study, and video editor; new records derive it from the title while existing records submit their stable slug invisibly.
+- Removed slug text from the topic index and changed the shared index search prompt to title-oriented language.
+- Placed topic and related-video/study pickers side-by-side on wider screens, reduced picker chrome and list height, and retained a single-column mobile layout.
+- Kept search, result counts, publication-state metadata, empty states, keyboard labels, and multi-select behavior intact.
+- Passed lint, strict TypeScript, and the Next.js production build.

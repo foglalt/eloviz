@@ -53,7 +53,7 @@ export function AdminContentIndex({
         {selectedId ? <input type="hidden" name="edit" value={selectedId} /> : null}
         <label htmlFor={searchId}>Keresés</label>
         <div>
-          <input id={searchId} name="q" type="search" defaultValue={search} placeholder="Cím vagy slug" />
+          <input id={searchId} name="q" type="search" defaultValue={search} placeholder="Keresés cím alapján" />
           <button type="submit">Keresés</button>
         </div>
         {search ? <Link href={indexHref(basePath, selectedId, "", 1)}>Szűrés törlése</Link> : null}
