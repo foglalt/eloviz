@@ -8,7 +8,7 @@
 **Status:** Completed; final verification recorded
 **Progress:** 100%
 **Last Activity:** 2026-07-26
-**Last Activity Description:** Compacted admin relationship pickers and hid automatically managed URL slugs
+**Last Activity Description:** Deployed compact admin relationship pickers and hidden automatic URL slugs
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -43,6 +43,7 @@
 - All-66-book Hungarian reference formatting, alias deduplication, automatic transactional PDF finalization, review-layer removal, six regression suites, lint, strict TypeScript, and production build: passed.
 - Production deployment `dpl_8YCudqoQDCg2mWAFMqP7zAc2CuT1`: READY; 11 stored labels normalized and the repaired `Teszt.pdf` revision finalized with seven accepted canonical references.
 - Compact topic/related-content admin sections, hidden stable slugs, lint, strict TypeScript, and production build: passed.
+- Production deployment `dpl_Hu8c6msEvrNEQJVd4CTaSFtJ1V1V`: READY; authenticated study/video editors passed 1440/390 px layout and overflow checks.
 
 ## Next Decision Gate
 
@@ -56,5 +57,5 @@
 ## Session
 
 **Last Date:** 2026-07-26T11:25:04+02:00
-**Stopped At:** Compact admin relationships and hidden automatic slugs implemented and verified
+**Stopped At:** Compact admin relationships and hidden automatic slugs deployed and verified
 **Resume File:** None

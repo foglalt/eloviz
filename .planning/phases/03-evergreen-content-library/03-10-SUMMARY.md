@@ -140,3 +140,5 @@ completed: 2026-07-22
 - Placed topic and related-video/study pickers side-by-side on wider screens, reduced picker chrome and list height, and retained a single-column mobile layout.
 - Kept search, result counts, publication-state metadata, empty states, keyboard labels, and multi-select behavior intact.
 - Passed lint, strict TypeScript, and the Next.js production build.
+- Deployed commit `bb5e321` to production as `dpl_Hu8c6msEvrNEQJVd4CTaSFtJ1V1V`.
+- Verified the authenticated study and video editors in production: no visible slug control, equal two-column relationship layout at 1440 px, stacked layout at 390 px, and no horizontal overflow.

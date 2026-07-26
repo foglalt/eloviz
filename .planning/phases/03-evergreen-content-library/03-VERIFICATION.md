@@ -84,3 +84,7 @@ Route (app)
 - Relationship layout inspection: topic plus related video/study groups share a two-column wrapper, 190 px scroll-bounded option lists, and a one-column breakpoint below 560 px.
 - Accessibility inspection: picker search labels remain available to assistive technology and each input now uses its section-specific search prompt.
 - `scripts/gtd.ps1 health`: PASS.
+- Vercel production deployment `dpl_Hu8c6msEvrNEQJVd4CTaSFtJ1V1V`: READY from commit `bb5e321`.
+- Authenticated production study editor at 1440 px: two equal relationship columns (~380 px each), 295 px combined section height, no visible slug input, and no horizontal overflow.
+- Authenticated production study editor at 390 px: one 304 px relationship column, no visible slug input, and document width remained within the viewport.
+- Authenticated production video editor: compact topic and related-study groups present with accessible search controls and no slug field.
