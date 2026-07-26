@@ -8,7 +8,7 @@
 **Status:** Completed; final verification recorded
 **Progress:** 100%
 **Last Activity:** 2026-07-26
-**Last Activity Description:** Verification completed (passed)
+**Last Activity Description:** Deployed canonical Hungarian Scripture labels, automatic PDF finalization, and normalized production data
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -41,6 +41,7 @@
 - Automatic Egyéb fallback topic, orphan-study categorization, accented/accent-free search, sitemap/canonical metadata, reserved slug, admin guidance, five focused tests, and 390/1440 px route checks: passed.
 - Production PDF.js/canvas dependency tracing, native-PDF extraction regression, deployed `Teszt.pdf` seven-candidate repair, authenticated PDF response, lint, strict TypeScript, and production build: passed.
 - All-66-book Hungarian reference formatting, alias deduplication, automatic transactional PDF finalization, review-layer removal, six regression suites, lint, strict TypeScript, and production build: passed.
+- Production deployment `dpl_8YCudqoQDCg2mWAFMqP7zAc2CuT1`: READY; 11 stored labels normalized and the repaired `Teszt.pdf` revision finalized with seven accepted canonical references.
 
 ## Next Decision Gate
 
@@ -53,6 +54,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-26T10:56:36+02:00
-**Stopped At:** Verification completed
+**Last Date:** 2026-07-26T10:59:57+02:00
+**Stopped At:** Canonical Hungarian references and automatic PDF finalization deployed; production data normalized
 **Resume File:** None

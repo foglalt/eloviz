@@ -88,3 +88,8 @@ Route (app)
 - Static inspection: no manual finalization action, third-step review UI, pending-review dashboard queue, or manual-review copy remains in application code.
 - Upload integrity: extraction/short-text failures return before storage; successful document, candidate, finalized-reference, and current-pointer writes use one Neon transaction.
 - `scripts/gtd.ps1 health`: PASS.
+- Vercel production deployment `dpl_8YCudqoQDCg2mWAFMqP7zAc2CuT1`: READY from commit `7690bb7`.
+- Production normalization: 11 stored labels changed to the canonical Hungarian format; one staged complete document finalized with seven accepted references.
+- `Teszt.pdf` state: extraction `complete`, current document pointer set, `reference_reviewed=true`, study status still `draft`, and all seven candidates accepted.
+- `Teszt.pdf` canonical labels: `Zsid 8:4`, `Zsid 11:1`, `1Kor 5:8`, `1Kor 8:5`, `1Kor 8:1`, `2Móz 12:1-28`, and `2Móz 13:28-30`.
+- Idempotence: second `npm run db:normalize-references` run reported zero normalized labels, zero finalized documents, and zero finalized references.

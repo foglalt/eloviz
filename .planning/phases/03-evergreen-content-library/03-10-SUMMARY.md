@@ -129,3 +129,6 @@ completed: 2026-07-22
 - Removed the third-step review editor, its server action, the pending-review dashboard queue, and obsolete review-specific styles.
 - Updated bundled seed labels and current product/memory documentation to the canonical Hungarian format and automatic workflow.
 - Passed the reference suite, all five regression suites, lint, strict TypeScript through the production build, and the Next.js production build.
+- Deployed commit `7690bb7` to production as `dpl_8YCudqoQDCg2mWAFMqP7zAc2CuT1`.
+- Normalized 11 existing stored labels and automatically finalized the one eligible staged document: the repaired `Teszt.pdf` revision now has seven accepted candidates, seven canonical references, and remains a draft study.
+- Re-ran the normalization with zero changes, confirming the production data migration is idempotent.
