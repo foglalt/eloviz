@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "16mb",
     },
   },
-  serverExternalPackages: ["pdfjs-dist"],
+  serverExternalPackages: ["pdfjs-dist", "@napi-rs/canvas"],
   async redirects() {
     return [
       { source: "/studies", destination: "/tanulmanyok", permanent: true },

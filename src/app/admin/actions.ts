@@ -163,7 +163,15 @@ export async function uploadStudyPdfAction(formData: FormData) {
         extractionStatus = "manual_required";
         extractionError = "A PDF-ben kevés géppel olvasható szöveg található. Az igehelyeket kézzel ellenőrizd.";
       }
-    } catch {
+    } catch (error) {
+      console.error(JSON.stringify({
+        level: "error",
+        message: "PDF text extraction failed",
+        studyId,
+        filename,
+        byteSize: buffer.length,
+        error: error instanceof Error ? error.message : String(error),
+      }));
       extractionStatus = "failed";
       extractionError = "A szöveg automatikus kiolvasása nem sikerült. Az igehelyek kézzel megadhatók.";
     }

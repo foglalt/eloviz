@@ -7,8 +7,8 @@
 **Total Plans in Phase:** 10
 **Status:** Completed; final verification recorded
 **Progress:** 100%
-**Last Activity:** 2026-07-24
-**Last Activity Description:** Added the system-managed Egyéb topic for published studies without an explicit topic and verified public/admin behavior
+**Last Activity:** 2026-07-26
+**Last Activity Description:** Fixed production PDF text extraction packaging and added native-PDF regression coverage
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -39,6 +39,7 @@
 - Direct published topic/study deletion, current-PDF automatic draft fallback, immediate editor refresh, cascade cleanup, five publication tests, and authenticated desktop/mobile UI checks: passed.
 - Shared topic/study/video workspace, common content fields and danger zone, 30-item searchable/paginated indexes, lightweight relation options, real selection/search interaction, and 390/1440 px responsive checks: passed.
 - Automatic Egyéb fallback topic, orphan-study categorization, accented/accent-free search, sitemap/canonical metadata, reserved slug, admin guidance, five focused tests, and 390/1440 px route checks: passed.
+- Production PDF.js/canvas dependency tracing, native-PDF extraction regression, `Teszt.pdf` seven-candidate reproduction, lint, strict TypeScript, and production build: passed locally.
 
 ## Next Decision Gate
 
@@ -51,6 +52,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-24T16:04:17+02:00
-**Stopped At:** Automatic Egyéb topic implemented and verified
+**Last Date:** 2026-07-26T10:23:17+02:00
+**Stopped At:** Production PDF extraction dependency hotfix implemented and locally verified
 **Resume File:** None

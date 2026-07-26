@@ -2,6 +2,9 @@
   "name": "eloviz",
   "private": true,
   "version": "0.1.0",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -14,9 +17,11 @@
     "test:storage": "node --experimental-strip-types --test src/lib/blob-storage-config.test.ts",
     "test:publication": "node --experimental-strip-types --test src/lib/study-publication.test.ts",
     "test:search": "node --experimental-strip-types --test src/lib/catalog-search.test.ts",
-    "test:topics": "node --experimental-strip-types --test src/lib/other-topic.test.ts"
+    "test:topics": "node --experimental-strip-types --test src/lib/other-topic.test.ts",
+    "test:pdf": "node --experimental-strip-types --test src/lib/pdf-extract.test.ts"
   },
   "dependencies": {
+    "@napi-rs/canvas": "^1.0.2",
     "@neondatabase/serverless": "^1.0.2",
     "@vercel/blob": "^2.6.1",
     "next": "16.2.1",

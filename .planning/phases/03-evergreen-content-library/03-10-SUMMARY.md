@@ -108,3 +108,12 @@ completed: 2026-07-22
 - Reserved the `egyeb` slug from manually created topics and added an explanatory hint beside the study topic picker.
 - Preserved explicitly categorized studies outside the fallback and made the zero-unassigned-study state a valid, indexable empty collection.
 - Added five focused fallback tests and passed all existing tests, lint, strict TypeScript, three production builds, GTD verification/health, and desktop/mobile Chrome route, search, sitemap, metadata, console, and overflow checks.
+
+## Production PDF extraction dependency hotfix — 2026-07-26
+
+- Reproduced the failed `Teszt.pdf` upload against production data: Vercel stored the revision with zero extracted characters after PDF.js could not load `@napi-rs/canvas`, even though the file had a valid native text layer.
+- Promoted `@napi-rs/canvas` from an optional transitive package to a direct production dependency, externalized it with PDF.js, initialized the required Node globals before importing PDF.js, and pinned Node 24.
+- Added structured extraction-error logging so future runtime failures retain the actual exception instead of only the manual-entry fallback message.
+- Added a native-PDF extraction regression test that confirms four normalized ranges from the bundled study fixture.
+- Re-ran the fixed extraction path against `Teszt.pdf`: one page, 150 extracted characters, and seven unique candidate references.
+- Passed all focused test suites, lint, strict TypeScript, the production build, and Next.js output-trace inspection confirming PDF.js, the canvas package, and its native binding are packaged with the study admin function.
