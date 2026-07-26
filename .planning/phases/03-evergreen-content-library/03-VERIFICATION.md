@@ -1,5 +1,5 @@
 ---
-generated: 2026-07-26T10:23:17+02:00
+generated: 2026-07-26T10:31:00+02:00
 status: passed
 ---
 
@@ -30,6 +30,10 @@ status: passed
 - `npx tsc --noEmit`: PASS.
 - `npm run build`: PASS with Next.js 16.2.1.
 - Next.js function trace: PASS; the study admin function includes PDF.js, `@napi-rs/canvas`, and the native canvas binding.
+- Vercel production deployment `dpl_BzLLiAbKWMjhn4XLKBsKeHBCNB4f`: READY from commit `a445158`.
+- Original failed staged revision repaired in place: `complete`, 150 extracted characters, seven candidates, and no extraction error; it remained unpublished.
+- Authenticated production editor: PASS; visible seven-candidate evidence, populated OSIS textarea, no extraction-error notice, no horizontal overflow, and the staged PDF opened successfully.
+- New-deployment runtime scan: no PDF.js, canvas, `DOMMatrix`, or `Path2D` error. The document route still emits a separate pre-existing `Buffer()` deprecation warning.
 
 ### npm run lint
 

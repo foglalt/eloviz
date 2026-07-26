@@ -117,3 +117,4 @@ completed: 2026-07-22
 - Added a native-PDF extraction regression test that confirms four normalized ranges from the bundled study fixture.
 - Re-ran the fixed extraction path against `Teszt.pdf`: one page, 150 extracted characters, and seven unique candidate references.
 - Passed all focused test suites, lint, strict TypeScript, the production build, and Next.js output-trace inspection confirming PDF.js, the canvas package, and its native binding are packaged with the study admin function.
+- Deployed commit `a445158`, repaired the original failed staged revision without deleting or publishing it, and verified production now shows extracted text, seven evidence-backed candidates, a populated OSIS review list, and a working authenticated PDF response.

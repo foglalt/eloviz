@@ -8,7 +8,7 @@
 **Status:** Completed; final verification recorded
 **Progress:** 100%
 **Last Activity:** 2026-07-26
-**Last Activity Description:** Fixed production PDF text extraction packaging and added native-PDF regression coverage
+**Last Activity Description:** Deployed the PDF extraction runtime fix and repaired the failed `Teszt.pdf` revision with seven candidates
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -39,12 +39,12 @@
 - Direct published topic/study deletion, current-PDF automatic draft fallback, immediate editor refresh, cascade cleanup, five publication tests, and authenticated desktop/mobile UI checks: passed.
 - Shared topic/study/video workspace, common content fields and danger zone, 30-item searchable/paginated indexes, lightweight relation options, real selection/search interaction, and 390/1440 px responsive checks: passed.
 - Automatic Egyéb fallback topic, orphan-study categorization, accented/accent-free search, sitemap/canonical metadata, reserved slug, admin guidance, five focused tests, and 390/1440 px route checks: passed.
-- Production PDF.js/canvas dependency tracing, native-PDF extraction regression, `Teszt.pdf` seven-candidate reproduction, lint, strict TypeScript, and production build: passed locally.
+- Production PDF.js/canvas dependency tracing, native-PDF extraction regression, deployed `Teszt.pdf` seven-candidate repair, authenticated PDF response, lint, strict TypeScript, and production build: passed.
 
 ## Next Decision Gate
 
 - Before Phase 04, select and document one Hungarian Bible translation whose full text may legally be stored and displayed.
-- After deployment, smoke-test one PDF upload against the connected private Vercel Blob store; the implemented database fallback remains durable when Blob credentials are unavailable.
+- On the next new PDF revision, confirm the deployed upload action performs extraction directly in Vercel; the repaired `Teszt.pdf` row and packaged runtime are already verified.
 
 ## Workflow Preference
 
@@ -52,6 +52,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-26T10:23:17+02:00
-**Stopped At:** Production PDF extraction dependency hotfix implemented and locally verified
+**Last Date:** 2026-07-26T10:31:00+02:00
+**Stopped At:** Production PDF extraction fix deployed and failed revision repaired
 **Resume File:** None
