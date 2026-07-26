@@ -45,6 +45,7 @@
 - Compact topic/related-content admin sections, hidden stable slugs, lint, strict TypeScript, and production build: passed.
 - Production deployment `dpl_Hu8c6msEvrNEQJVd4CTaSFtJ1V1V`: READY; authenticated study/video editors passed 1440/390 px layout and overflow checks.
 - Fixed-height relationship panels, authenticated YouTube title/channel derivation, speaker storage/search, migration 003, focused metadata/search tests, lint, migrated-schema build, GTD verification, and repository health: passed.
+- Production deployment `dpl_6Z7y7jiGgpHo88pHif5rnpxP84C3`: READY; authenticated metadata derivation and fixed 240 px relationship panels passed desktop/390 px responsive checks without overflow.
 
 ## Next Decision Gate
 
@@ -58,5 +59,5 @@
 ## Session
 
 **Last Date:** 2026-07-26T12:57:26+02:00
-**Stopped At:** Video metadata and speaker workflow implemented and locally verified; production rollout pending
+**Stopped At:** Video metadata and speaker workflow deployed and verified
 **Resume File:** None

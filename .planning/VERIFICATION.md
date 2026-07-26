@@ -19,6 +19,14 @@ status: passed
 | `npm run db:migrate` | 0 | PASS — migration 003 applied |
 | `npm run lint` | 0 | PASS |
 | `npm run build` | 0 | PASS |
+| Production deployment `dpl_6Z7y7jiGgpHo88pHif5rnpxP84C3` | — | READY |
+| Authenticated desktop and 390×844 editor checks | — | PASS |
+
+## Production UI Evidence
+
+- A valid YouTube link derived the title `Áttekintés: Jeremiás` and channel `BibleProject - Hungarian / Magyarország` in the editor.
+- Both topic/related-study pickers measured 240 px at desktop and 390 px viewport widths.
+- The mobile relationship layout resolved to one column with no horizontal overflow.
 
 ## Detailed Output
 

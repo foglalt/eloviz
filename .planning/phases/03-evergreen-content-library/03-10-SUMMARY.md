@@ -150,3 +150,5 @@ completed: 2026-07-22
 - Added an independent optional speaker field to the video schema, migration, seed path, admin editor, public detail/list presentation, and both admin and public catalogue search.
 - Preserved a safe metadata fallback for temporary YouTube failures while preventing a changed link from silently retaining stale client-side title/channel values.
 - Applied production migration `003_add_video_speaker`; YouTube metadata tests, speaker-search tests, lint, the migrated-schema production build, GTD verification, and memory health passed.
+- Deployed commit `0a6a76d` to production as `dpl_6Z7y7jiGgpHo88pHif5rnpxP84C3`.
+- Verified the authenticated production editor: the sample link derived `Áttekintés: Jeremiás` and `BibleProject - Hungarian / Magyarország`, both relationship panels measured 240 px at desktop and 390 px mobile width, the mobile layout stacked cleanly, and no horizontal overflow appeared.
