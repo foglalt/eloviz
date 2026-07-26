@@ -16,6 +16,14 @@ status: passed
 |---|---:|---|
 | `npm run lint` | 0 | PASS |
 | `npm run build` | 0 | PASS |
+| Production deployment `dpl_3wsRUW6oq8nu9UW2RfA5Jg4gZtEd` | — | READY |
+| Authenticated video save and success acknowledgement | — | PASS |
+
+## Production UI Evidence
+
+- A real video save completed through the shared submit component and redirected with the expected success message.
+- The native `Mentés kész` dialog displayed `A videó mentve.` and focused its `Rendben` acknowledgement.
+- Dismissing the dialog closed it and removed the consumed `message` query parameter without a page reload.
 
 ## Detailed Output
 

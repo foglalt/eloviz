@@ -160,3 +160,5 @@ completed: 2026-07-22
 - Replaced transient success notices in content workspaces with a native confirmation dialog that displays the returned server message, returns focus safely, and removes the consumed message from the browser URL when dismissed.
 - Kept validation and server errors as persistent inline notices so corrective context remains visible.
 - Passed the React best-practices review, lint, the production build, GTD verification, and repository health.
+- Deployed commit `6c05050` to production as `dpl_3wsRUW6oq8nu9UW2RfA5Jg4gZtEd`.
+- Verified an authenticated production video save: the server action completed normally, the `Mentés kész` modal displayed `A videó mentve.`, its acknowledgement button received focus, and dismissal closed the modal and removed the consumed `message` query parameter without reloading.
