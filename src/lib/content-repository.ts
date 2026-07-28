@@ -1,5 +1,6 @@
 import "server-only";
 import {
+  CATALOG_SEARCH_KINDS,
   CATALOG_SEARCH_LIMIT,
   foldCatalogSearchText,
   normalizeCatalogSearchQuery,
@@ -230,7 +231,10 @@ function mapSearchItem(kind: CatalogSearchItem["kind"], row: Row): CatalogSearch
   };
 }
 
-export async function searchPublicCatalog(rawQuery: string): Promise<CatalogSearchResults> {
+export async function searchPublicCatalog(
+  rawQuery: string,
+  selectedKinds: readonly CatalogSearchItem["kind"][] = CATALOG_SEARCH_KINDS,
+): Promise<CatalogSearchResults> {
   const query = normalizeCatalogSearchQuery(rawQuery);
   const foldedQuery = foldCatalogSearchText(query);
   const emptyResults = { query, topics: [], studies: [], videos: [], total: 0 };
@@ -239,10 +243,11 @@ export async function searchPublicCatalog(rawQuery: string): Promise<CatalogSear
 
   const sql = getSql();
   if (!sql) {
-    return searchBundledCatalog(query, defaultTopics, defaultStudies, defaultVideos);
+    return searchBundledCatalog(query, defaultTopics, defaultStudies, defaultVideos, selectedKinds);
   }
 
   try {
+    const includedKinds = new Set(selectedKinds);
     const fallbackSearchText = `Egyéb egyeb ${createOtherTopic(0).description}`;
     const topicSearchText = foldedSqlText("concat_ws(' ', t.title, t.slug, t.description)");
     const studySearchText = foldedSqlText(
@@ -252,14 +257,14 @@ export async function searchPublicCatalog(rawQuery: string): Promise<CatalogSear
       "concat_ws(' ', v.title, v.slug, v.description, v.channel_name, v.speaker, topic_data.search_topics)",
     );
 
-    const otherTopicMatches = searchBundledCatalog(
+    const otherTopicMatches = includedKinds.has("topic") && searchBundledCatalog(
       query,
       [createOtherTopic(0)],
       [],
       [],
     ).topics.length > 0;
     const [topicRows, studyRows, videoRows, unassignedCountRows] = await Promise.all([
-      sql.query(`
+      includedKinds.has("topic") ? sql.query(`
         SELECT t.id::text, t.slug, t.title, t.description,
           concat(
             (SELECT count(*) FROM study_topics st JOIN studies s ON s.id = st.study_id
@@ -282,8 +287,8 @@ export async function searchPublicCatalog(rawQuery: string): Promise<CatalogSear
           t.sort_order,
           t.title
         LIMIT $2
-      `, [foldedQuery, CATALOG_SEARCH_LIMIT]),
-      sql.query(`
+      `, [foldedQuery, CATALOG_SEARCH_LIMIT]) : Promise.resolve([]),
+      includedKinds.has("study") ? sql.query(`
         SELECT s.id::text, s.slug, s.title, s.summary AS description,
           COALESCE(topic_data.topic_names, 'Egyéb') AS meta
         FROM studies s
@@ -308,8 +313,8 @@ export async function searchPublicCatalog(rawQuery: string): Promise<CatalogSear
           s.sort_order,
           s.title
         LIMIT $2
-      `, [foldedQuery, CATALOG_SEARCH_LIMIT, fallbackSearchText]),
-      sql.query(`
+      `, [foldedQuery, CATALOG_SEARCH_LIMIT, fallbackSearchText]) : Promise.resolve([]),
+      includedKinds.has("video") ? sql.query(`
         SELECT v.id::text, v.slug, v.title, v.description,
           COALESCE(
             NULLIF(concat_ws(' · ', NULLIF(v.speaker, ''), NULLIF(v.channel_name, '')), ''),
@@ -334,7 +339,7 @@ export async function searchPublicCatalog(rawQuery: string): Promise<CatalogSear
           v.sort_order,
           v.title
         LIMIT $2
-      `, [foldedQuery, CATALOG_SEARCH_LIMIT]),
+      `, [foldedQuery, CATALOG_SEARCH_LIMIT]) : Promise.resolve([]),
       otherTopicMatches
         ? sql.query(unassignedPublicStudyCountQuery)
         : Promise.resolve([]),
@@ -365,7 +370,7 @@ export async function searchPublicCatalog(rawQuery: string): Promise<CatalogSear
     };
   } catch (error) {
     console.error("Unable to search the catalogue; using bundled content.", error);
-    return searchBundledCatalog(query, defaultTopics, defaultStudies, defaultVideos);
+    return searchBundledCatalog(query, defaultTopics, defaultStudies, defaultVideos, selectedKinds);
   }
 }
 

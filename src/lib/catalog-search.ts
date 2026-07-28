@@ -2,7 +2,23 @@ import type { StudySummary, TopicSummary, VideoSummary } from "./content-types";
 
 export const CATALOG_SEARCH_LIMIT = 12;
 
-export type CatalogSearchKind = "topic" | "study" | "video";
+export const CATALOG_SEARCH_KINDS = ["topic", "study", "video"] as const;
+
+export type CatalogSearchKind = (typeof CATALOG_SEARCH_KINDS)[number];
+
+export function normalizeCatalogSearchKinds(value?: string | string[]) {
+  const requested = new Set(Array.isArray(value) ? value : value ? [value] : []);
+  const selected = CATALOG_SEARCH_KINDS.filter((kind) => requested.has(kind));
+  return selected.length ? selected : [...CATALOG_SEARCH_KINDS];
+}
+
+export function catalogSearchKindsForPathname(pathname: string | null) {
+  const section = pathname?.split("/").filter(Boolean)[0];
+  if (section === "temak") return ["topic"] satisfies CatalogSearchKind[];
+  if (section === "tanulmanyok") return ["study"] satisfies CatalogSearchKind[];
+  if (section === "videok") return ["video"] satisfies CatalogSearchKind[];
+  return [...CATALOG_SEARCH_KINDS];
+}
 
 export type CatalogSearchItem = {
   id: string;
@@ -62,6 +78,7 @@ export function searchBundledCatalog(
   topics: TopicSummary[],
   studies: StudySummary[],
   videos: VideoSummary[],
+  selectedKinds: readonly CatalogSearchKind[] = CATALOG_SEARCH_KINDS,
 ): CatalogSearchResults {
   const query = normalizeCatalogSearchQuery(rawQuery);
   const foldedQuery = foldCatalogSearchText(query);
@@ -71,8 +88,9 @@ export function searchBundledCatalog(
   }
 
   const haystacks = new Map<string, string>();
+  const includedKinds = new Set(selectedKinds);
 
-  const topicResults = topics.flatMap<CatalogSearchItem>((topic) => {
+  const topicResults = includedKinds.has("topic") ? topics.flatMap<CatalogSearchItem>((topic) => {
     const match = matches(foldedQuery, [topic.title, topic.slug, topic.description]);
     if (!match.matches) return [];
     haystacks.set(`topic:${topic.id}`, match.haystack);
@@ -84,9 +102,9 @@ export function searchBundledCatalog(
       description: topic.description,
       meta: `${topic.studyCount ?? 0} tanulmány · ${topic.videoCount ?? 0} videó`,
     }];
-  });
+  }) : [];
 
-  const studyResults = studies.flatMap<CatalogSearchItem>((study) => {
+  const studyResults = includedKinds.has("study") ? studies.flatMap<CatalogSearchItem>((study) => {
     const topicText = study.topics.map((topic) => `${topic.title} ${topic.description}`).join(" ");
     const match = matches(foldedQuery, [study.title, study.slug, study.summary, topicText]);
     if (!match.matches) return [];
@@ -99,9 +117,9 @@ export function searchBundledCatalog(
       description: study.summary,
       meta: study.topics.map((topic) => topic.title).join(" · ") || "PDF-tanulmány",
     }];
-  });
+  }) : [];
 
-  const videoResults = videos.flatMap<CatalogSearchItem>((video) => {
+  const videoResults = includedKinds.has("video") ? videos.flatMap<CatalogSearchItem>((video) => {
     const topicText = video.topics.map((topic) => `${topic.title} ${topic.description}`).join(" ");
     const match = matches(foldedQuery, [
       video.title,
@@ -121,7 +139,7 @@ export function searchBundledCatalog(
       description: video.description,
       meta: [video.speaker, video.channelName].filter(Boolean).join(" · ") || "Videóajánló",
     }];
-  });
+  }) : [];
 
   const sorter = bySearchRank(
     foldedQuery,

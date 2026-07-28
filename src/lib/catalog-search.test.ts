@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  catalogSearchKindsForPathname,
   foldCatalogSearchText,
+  normalizeCatalogSearchKinds,
   normalizeCatalogSearchQuery,
   searchBundledCatalog,
 } from "./catalog-search.ts";
@@ -77,4 +79,40 @@ test("finds videos by speaker", () => {
 
   assert.ok(results.videos.some((item) => item.slug === "attekintes-jeremias"));
   assert.match(results.videos[0]?.meta ?? "", /Kovács János/);
+});
+
+test("normalizes one or more content-type filters in canonical order", () => {
+  assert.deepEqual(normalizeCatalogSearchKinds(undefined), ["topic", "study", "video"]);
+  assert.deepEqual(normalizeCatalogSearchKinds("video"), ["video"]);
+  assert.deepEqual(
+    normalizeCatalogSearchKinds(["video", "study", "video", "unknown"]),
+    ["study", "video"],
+  );
+  assert.deepEqual(normalizeCatalogSearchKinds(["unknown"]), ["topic", "study", "video"]);
+});
+
+test("derives compact search filters from catalogue routes", () => {
+  assert.deepEqual(catalogSearchKindsForPathname("/temak"), ["topic"]);
+  assert.deepEqual(catalogSearchKindsForPathname("/temak/szovetseg"), ["topic"]);
+  assert.deepEqual(catalogSearchKindsForPathname("/tanulmanyok"), ["study"]);
+  assert.deepEqual(catalogSearchKindsForPathname("/tanulmanyok/a-paszka"), ["study"]);
+  assert.deepEqual(catalogSearchKindsForPathname("/videok"), ["video"]);
+  assert.deepEqual(catalogSearchKindsForPathname("/videok/jeremias"), ["video"]);
+  assert.deepEqual(catalogSearchKindsForPathname("/"), ["topic", "study", "video"]);
+  assert.deepEqual(catalogSearchKindsForPathname("/kereses"), ["topic", "study", "video"]);
+});
+
+test("searches only the selected content types", () => {
+  const results = searchBundledCatalog(
+    "szövetség",
+    [topic],
+    [study],
+    [video],
+    ["study", "video"],
+  );
+
+  assert.equal(results.topics.length, 0);
+  assert.ok(results.studies.length > 0);
+  assert.ok(results.videos.length > 0);
+  assert.equal(results.total, results.studies.length + results.videos.length);
 });

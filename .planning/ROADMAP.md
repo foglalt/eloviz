@@ -26,6 +26,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 10. [x] **03-10: Migrate routes and verify the rebuild** — Legacy redirects/removal, regression checks, PDF/reference fixtures, accessibility, and final verification evidence.
 11. [x] **03-11: Finalize search launch setup** — Align the canonical `www` host, public canonicals, sitemap, robots, and raw-PDF indexing signals, then verify the production rollout.
 12. [x] **03-12: Remove redundant resource type labels** — Let explicit list and search-group headings carry the content type instead of repeating it above every item.
+13. [x] **03-13: Add route-aware multi-type search filters** — Scope compact searches to their current catalogue section and let visitors search any one, two, or all three content types.
 
 ## Phase 04 Proposed Plans
 
@@ -51,7 +52,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 |---|---:|---|---|
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
-| 03 Evergreen Content Library | 12/12 | Completed | 2026-07-28 |
+| 03 Evergreen Content Library | 13/13 | Completed | 2026-07-28 |
 | 04 Simple Bible Reader | 0/4 proposed | Gated by one translation licence/source | — |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 

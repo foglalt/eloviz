@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CatalogSearchResults } from "@/components/catalog-search-results";
 import { PublicSearchForm } from "@/components/public-search-form";
+import { normalizeCatalogSearchKinds } from "@/lib/catalog-search";
 import { searchPublicCatalog } from "@/lib/content-repository";
 
 export const metadata: Metadata = {
@@ -10,13 +11,17 @@ export const metadata: Metadata = {
 };
 
 type SearchPageProps = {
-  searchParams: Promise<{ q?: string | string[] }>;
+  searchParams: Promise<{
+    q?: string | string[];
+    tipus?: string | string[];
+  }>;
 };
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const params = await searchParams;
   const rawQuery = Array.isArray(params.q) ? params.q[0] : params.q ?? "";
-  const results = await searchPublicCatalog(rawQuery);
+  const selectedKinds = normalizeCatalogSearchKinds(params.tipus);
+  const results = await searchPublicCatalog(rawQuery, selectedKinds);
   const hasValidQuery = results.query.length >= 2;
 
   return (
@@ -25,9 +30,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         <p className="eyebrow">Központi keresés</p>
         <h1>Találd meg, amit keresel</h1>
         <p className="lead">
-          Keress egyszerre a közzétett témák, PDF-tanulmányok és videóajánlók között.
+          Keress a közzétett témák, PDF-tanulmányok és videóajánlók között, akár egyszerre több tartalomtípusban.
         </p>
-        <PublicSearchForm defaultValue={results.query} variant="page" />
+        <PublicSearchForm
+          defaultKinds={selectedKinds}
+          defaultValue={results.query}
+          key={selectedKinds.join("-")}
+          variant="page"
+        />
       </header>
 
       {!hasValidQuery ? (
