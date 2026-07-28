@@ -19,6 +19,8 @@ completed: 2026-07-28
 - The Next.js production build passed.
 - Local production HTTP rendering confirmed zero repeated type labels in the study and video listings.
 - A live local search returned four items and confirmed zero item-level eyebrow labels beneath the explicit result-group headings.
+- Production deployment `dpl_2iSZuVKTWo5FD6no5bFH4PDdaQkm` reached READY.
+- Live checks on `www.eloviz.hu` returned HTTP 200 and confirmed zero repeated item-level type labels across the study list, video list, and four grouped search results.
 
 ---
 *Completed: 2026-07-28*
