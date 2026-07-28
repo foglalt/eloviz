@@ -316,10 +316,7 @@ export async function searchPublicCatalog(
       `, [foldedQuery, CATALOG_SEARCH_LIMIT, fallbackSearchText]) : Promise.resolve([]),
       includedKinds.has("video") ? sql.query(`
         SELECT v.id::text, v.slug, v.title, v.description,
-          COALESCE(
-            NULLIF(concat_ws(' · ', NULLIF(v.speaker, ''), NULLIF(v.channel_name, '')), ''),
-            'Videóajánló'
-          ) AS meta
+          NULLIF(v.speaker, '') AS meta
         FROM videos v
         LEFT JOIN LATERAL (
           SELECT string_agg(concat_ws(' ', t.title, t.description), ' ') AS search_topics

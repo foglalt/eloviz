@@ -16,7 +16,7 @@ export function StudyRows({ studies }: { studies: StudySummary[] }) {
   return <div className="resource-list">{studies.map((study) => (
     <Link className="resource-item" href={`/tanulmanyok/${study.slug}`} key={study.id}>
       <span><h3>{study.title}</h3><span className="tag-list">{study.topics.map((topic) => <span className="tag" key={topic.id}>{topic.title}</span>)}</span></span>
-      <span className="resource-item__summary">{study.summary}<span className="meta-line">{study.references.slice(0, 2).map((reference) => <span key={reference.osisStart}>{reference.label}</span>)}</span></span>
+      <span className="resource-item__summary"><span className="preview-description">{study.summary}</span><span className="meta-line">{study.references.slice(0, 2).map((reference) => <span key={reference.osisStart}>{reference.label}</span>)}</span></span>
     </Link>
   ))}</div>;
 }
@@ -27,11 +27,10 @@ export function VideoRows({ videos }: { videos: VideoSummary[] }) {
     <Link className="resource-item" href={`/videok/${video.slug}`} key={video.id}>
       <span><h3>{video.title}</h3><span className="tag-list">{video.topics.map((topic) => <span className="tag" key={topic.id}>{topic.title}</span>)}</span></span>
       <span className="resource-item__summary">
-        {video.description}
-        {(video.speaker || video.channelName) ? (
+        <span className="preview-description">{video.description}</span>
+        {video.speaker ? (
           <span className="meta-line">
-            {video.speaker ? <span>Előadó: {video.speaker}</span> : null}
-            {video.channelName ? <span>{video.channelName}</span> : null}
+            <span>Előadó: {video.speaker}</span>
           </span>
         ) : null}
       </span>

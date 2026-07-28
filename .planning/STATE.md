@@ -3,12 +3,12 @@
 **Project:** Élő Víz
 **Current Phase:** 03
 **Current Phase Name:** Evergreen Content Library
-**Current Plan:** 03-13
-**Total Plans in Phase:** 13
-**Status:** Completed; production rollout verified
+**Current Plan:** 03-14
+**Total Plans in Phase:** 14
+**Status:** Completed; production rollout pending
 **Progress:** 100%
 **Last Activity:** 2026-07-28
-**Last Activity Description:** Deployed and verified route-aware multi-type public search filters
+**Last Activity Description:** Verification completed (passed)
 **Paused At:** Awaiting the next small quality-of-life improvement to prioritize
 
 ## Delivered
@@ -54,6 +54,7 @@
 - Production deployment `dpl_2iSZuVKTWo5FD6no5bFH4PDdaQkm`: READY; live study, video, and grouped search results contain no repeated item-level type labels.
 - Route-aware topic/study/video search defaults, accessible multi-select controls, filtered database queries, URL persistence, seven focused tests, production build, and desktop/mobile browser checks: passed.
 - Production deployment `dpl_Ev3WxPrZ9GPVurmvaXpUMQLZtn6S`: READY; live single- and multi-type search URLs retain their checked filters and show only selected result groups.
+- Three-line public preview descriptions, hidden video-channel preview metadata, retained speaker/detail metadata and channel search matching, eight focused tests, production build, and desktop/mobile browser checks: passed.
 
 ## Next Decision Gate
 
@@ -67,6 +68,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-28T11:18:45+02:00
-**Stopped At:** Route-aware multi-type search filters deployed and verified; awaiting the next QoL task
+**Last Date:** 2026-07-28T11:48:39+02:00
+**Stopped At:** Verification completed
 **Resume File:** None

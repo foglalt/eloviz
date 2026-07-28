@@ -32,7 +32,7 @@ export function CatalogSearchResults({ heading, items }: SearchResultGroupProps)
               <span className="search-result__title">{item.title}</span>
               {item.meta ? <span className="search-result__meta">{item.meta}</span> : null}
             </span>
-            <span className="search-result__description">{item.description}</span>
+            <span className="search-result__description preview-description">{item.description}</span>
             <span aria-hidden="true" className="search-result__arrow">↗</span>
           </Link>
         ))}

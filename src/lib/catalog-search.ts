@@ -137,7 +137,7 @@ export function searchBundledCatalog(
       slug: video.slug,
       title: video.title,
       description: video.description,
-      meta: [video.speaker, video.channelName].filter(Boolean).join(" · ") || "Videóajánló",
+      meta: video.speaker?.trim() || null,
     }];
   }) : [];
 

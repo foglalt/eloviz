@@ -79,6 +79,14 @@ test("finds videos by speaker", () => {
 
   assert.ok(results.videos.some((item) => item.slug === "attekintes-jeremias"));
   assert.match(results.videos[0]?.meta ?? "", /Kovács János/);
+  assert.doesNotMatch(results.videos[0]?.meta ?? "", /BibleProject/);
+});
+
+test("finds videos by channel without exposing the channel in result metadata", () => {
+  const results = searchBundledCatalog("bibleproject", [topic], [study], [video]);
+
+  assert.ok(results.videos.some((item) => item.slug === "attekintes-jeremias"));
+  assert.equal(results.videos[0]?.meta, "Kovács János");
 });
 
 test("normalizes one or more content-type filters in canonical order", () => {
