@@ -5,11 +5,11 @@
 **Current Phase Name:** Evergreen Content Library
 **Current Plan:** 03-11
 **Total Plans in Phase:** 11
-**Status:** Implementation verified; production deployment pending
+**Status:** Completed; production rollout verified
 **Progress:** 100%
 **Last Activity:** 2026-07-28
-**Last Activity Description:** Aligned canonical host and raw-PDF indexing signals; local verification passed
-**Paused At:** Phase 04 translation licence/source decision
+**Last Activity Description:** Deployed and verified canonical-host and PDF-indexing alignment
+**Paused At:** Owner Google Search Console DNS verification, then Phase 04 translation licence/source decision
 
 ## Delivered
 
@@ -49,9 +49,11 @@
 - Modal save/PDF-processing lock, disabled submit state, explicit success confirmation, React review, lint, production build, GTD verification, and repository health: passed.
 - Production deployment `dpl_3wsRUW6oq8nu9UW2RfA5Jg4gZtEd`: READY; authenticated save redirect, focused success acknowledgement, modal dismissal, and URL cleanup passed.
 - Canonical `www` host, self-referential public canonicals, crawl-visible PDF noindex/canonical headers, sitemap/robots alignment, all focused tests, lint, strict TypeScript, production build, and local HTTP checks: passed.
+- Production deployment `dpl_2exBRBmQCD3rfWw39dGGCZTafRCz`: READY; `www` canonicals, sitemap/robots host alignment, and raw-PDF indexing headers passed live HTTP checks.
 
 ## Next Decision Gate
 
+- The owner must verify the `eloviz.hu` Domain property in Google Search Console through a DNS TXT record, submit the `www` sitemap, and request initial indexing.
 - Before Phase 04, select and document one Hungarian Bible translation whose full text may legally be stored and displayed.
 - On the next new PDF revision, confirm the deployed upload action performs extraction and automatic finalization directly in Vercel; the repaired `Teszt.pdf` row and packaged runtime are already verified.
 
@@ -62,5 +64,5 @@
 ## Session
 
 **Last Date:** 2026-07-28T10:13:27+02:00
-**Stopped At:** SEO launch implementation verified; production deployment pending
-**Resume File:** 03-evergreen-content-library\03-11-PLAN.md
+**Stopped At:** SEO launch setup deployed; awaiting owner Search Console verification
+**Resume File:** None
