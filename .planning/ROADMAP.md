@@ -24,6 +24,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 8. [x] **03-08: Build the editorial admin** — Hardened CRUD, automatic PDF revision processing, publication, and relationships.
 9. [x] **03-09: Complete technical SEO and discoverability** — Dynamic metadata, canonicals, structured data, robots, sitemap, raw-PDF indexing policy, and social previews.
 10. [x] **03-10: Migrate routes and verify the rebuild** — Legacy redirects/removal, regression checks, PDF/reference fixtures, accessibility, and final verification evidence.
+11. [x] **03-11: Finalize search launch setup** — Align the canonical `www` host, public canonicals, sitemap, robots, and raw-PDF indexing signals, then verify the production rollout.
 
 ## Phase 04 Proposed Plans
 
@@ -39,15 +40,19 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 3. **05-03: Lemma, morphology, and occurrence concordance.**
 4. **05-04: Optional Hungarian alignment proof** — a separate high-complexity linguistic project, not required for concordance.
 
+## V2 Candidate
+
+- **PDF-derived HTML study pages** — Keep the original PDF as the editorial upload and downloadable source, generate a structured article draft from it, let an editor review the result, and publish semantic HTML as the primary public reading experience.
+
 ## Progress
 
 | Phase | Plans complete | Status | Completed |
 |---|---:|---|---|
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
-| 03 Evergreen Content Library | 10/10 | Completed | 2026-07-22 |
+| 03 Evergreen Content Library | 11/11 | Completed | 2026-07-28 |
 | 04 Simple Bible Reader | 0/4 proposed | Gated by one translation licence/source | — |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 
 ---
-*Last updated: 2026-07-22*
+*Last updated: 2026-07-28*

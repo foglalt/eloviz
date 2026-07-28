@@ -47,6 +47,7 @@ Make thoughtful, Scripture-oriented Hungarian material easy to explore, share, a
 | Link references to a translation-independent canonical verse structure | Lets one reference list power the simple reader and future translations | completed |
 | Retire the Easter microsite after local backup and permanent redirects | The user explicitly approved complete legacy replacement | completed |
 | Build a one-translation Bible reader before concordances | Delivers the useful reader and verse-to-study discovery with substantially less data complexity | planned |
+| Defer PDF-derived HTML study pages to V2 | Reliable semantic conversion needs layout-aware extraction and editorial review; the current release remains PDF-first while smaller quality-of-life improvements take priority | deferred |
 
 ---
-*Last updated: 2026-07-22*
+*Last updated: 2026-07-28*

@@ -8,8 +8,8 @@
 **Status:** Completed; production rollout verified
 **Progress:** 100%
 **Last Activity:** 2026-07-28
-**Last Activity Description:** Deployed and verified canonical-host and PDF-indexing alignment
-**Paused At:** Owner Google Search Console DNS verification, then Phase 04 translation licence/source decision
+**Last Activity Description:** Deferred PDF-derived HTML articles to V2 and shifted the near-term focus to small quality-of-life improvements
+**Paused At:** Awaiting the next small quality-of-life improvement to prioritize
 
 ## Delivered
 
@@ -53,7 +53,7 @@
 
 ## Next Decision Gate
 
-- The owner must verify the `eloviz.hu` Domain property in Google Search Console through a DNS TXT record, submit the `www` sitemap, and request initial indexing.
+- PDF-derived HTML study pages are deferred to V2; the current PDF-first publishing workflow remains in place while smaller quality-of-life improvements take priority.
 - Before Phase 04, select and document one Hungarian Bible translation whose full text may legally be stored and displayed.
 - On the next new PDF revision, confirm the deployed upload action performs extraction and automatic finalization directly in Vercel; the repaired `Teszt.pdf` row and packaged runtime are already verified.
 
@@ -63,6 +63,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-28T10:13:27+02:00
-**Stopped At:** SEO launch setup deployed; awaiting owner Search Console verification
+**Last Date:** 2026-07-28
+**Stopped At:** Phase 03 is complete; PDF-derived HTML is deferred to V2 and the next QoL task is awaiting selection
 **Resume File:** None
