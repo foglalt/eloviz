@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
+import { SITE_URL } from "@/lib/site-config";
 import "./globals.css";
 
 const siteFont = Nunito({
@@ -10,7 +11,7 @@ const siteFont = Nunito({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://eloviz.hu"),
+  metadataBase: new URL(SITE_URL),
   applicationName: "Élő Víz",
   title: { default: "Élő Víz – Bibliatanulmányok magyarul", template: "%s | Élő Víz" },
   description: "Magyar nyelvű bibliatanulmányok és gondosan válogatott videók, témák szerint rendezve.",

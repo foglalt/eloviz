@@ -1,15 +1,21 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { JsonLd } from "@/components/json-ld";
 import { StudyRows, TopicRows, VideoRows } from "@/components/resource-lists";
 import { listPublicStudies, listPublicTopics, listPublicVideos } from "@/lib/content-repository";
+import { SITE_URL } from "@/lib/site-config";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default async function HomePage() {
   const [topics, studies, videos] = await Promise.all([listPublicTopics(), listPublicStudies(), listPublicVideos()]);
   const featuredStudy = studies.find((study) => study.featured) ?? studies[0];
 
   return <>
-    <JsonLd data={{ "@context": "https://schema.org", "@type": "WebSite", name: "Élő Víz", url: "https://eloviz.hu", inLanguage: "hu" }} />
+    <JsonLd data={{ "@context": "https://schema.org", "@type": "WebSite", name: "Élő Víz", url: SITE_URL, inLanguage: "hu" }} />
     <section className="hero">
       <Image className="hero__image" src="/river-of-life-hero.webp" alt="A kristálytiszta élet folyója a tróntól, zöld mezők és az élet fája között" fill priority sizes="100vw" />
       <div className="hero__content">

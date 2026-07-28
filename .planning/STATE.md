@@ -3,12 +3,12 @@
 **Project:** Élő Víz
 **Current Phase:** 03
 **Current Phase Name:** Evergreen Content Library
-**Current Plan:** 03-10
-**Total Plans in Phase:** 10
-**Status:** Completed; final verification recorded
+**Current Plan:** 03-11
+**Total Plans in Phase:** 11
+**Status:** Implementation verified; production deployment pending
 **Progress:** 100%
-**Last Activity:** 2026-07-26
-**Last Activity Description:** Added blocking save progress and explicit success confirmation dialogs
+**Last Activity:** 2026-07-28
+**Last Activity Description:** Aligned canonical host and raw-PDF indexing signals; local verification passed
 **Paused At:** Phase 04 translation licence/source decision
 
 ## Delivered
@@ -48,6 +48,7 @@
 - Production deployment `dpl_6Z7y7jiGgpHo88pHif5rnpxP84C3`: READY; authenticated metadata derivation and fixed 240 px relationship panels passed desktop/390 px responsive checks without overflow.
 - Modal save/PDF-processing lock, disabled submit state, explicit success confirmation, React review, lint, production build, GTD verification, and repository health: passed.
 - Production deployment `dpl_3wsRUW6oq8nu9UW2RfA5Jg4gZtEd`: READY; authenticated save redirect, focused success acknowledgement, modal dismissal, and URL cleanup passed.
+- Canonical `www` host, self-referential public canonicals, crawl-visible PDF noindex/canonical headers, sitemap/robots alignment, all focused tests, lint, strict TypeScript, production build, and local HTTP checks: passed.
 
 ## Next Decision Gate
 
@@ -60,6 +61,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-26T13:17:44+02:00
-**Stopped At:** Blocking admin save feedback deployed and verified
-**Resume File:** None
+**Last Date:** 2026-07-28T10:13:27+02:00
+**Stopped At:** SEO launch implementation verified; production deployment pending
+**Resume File:** 03-evergreen-content-library\03-11-PLAN.md

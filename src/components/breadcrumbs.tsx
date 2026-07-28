@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { absoluteSiteUrl } from "@/lib/site-config";
 
 export type BreadcrumbItem = { label: string; href?: string };
 
@@ -16,6 +17,6 @@ export function breadcrumbJsonLd(items: Required<BreadcrumbItem>[]) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: items.map((item, index) => ({ "@type": "ListItem", position: index + 1, name: item.label, item: `https://eloviz.hu${item.href}` })),
+    itemListElement: items.map((item, index) => ({ "@type": "ListItem", position: index + 1, name: item.label, item: absoluteSiteUrl(item.href) })),
   };
 }

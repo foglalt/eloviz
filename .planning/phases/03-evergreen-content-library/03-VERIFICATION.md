@@ -1,5 +1,5 @@
 ---
-generated: 2026-07-26T11:25:03+02:00
+generated: 2026-07-28T10:13:27+02:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-07-26T11:25:03+02:00
+- Timestamp: 2026-07-28T10:13:27+02:00
 
 ## Checks
 
@@ -42,15 +42,15 @@ Exit code: 0
   · serverActions
 
   Creating an optimized production build ...
-✓ Compiled successfully in 3.3s
+✓ Compiled successfully in 18.6s
   Running TypeScript ...
-  Finished TypeScript in 4.4s ...
+  Finished TypeScript in 10.3s ...
   Collecting page data using 11 workers ...
-  Generating static pages using 11 workers (0/10) ...
-  Generating static pages using 11 workers (2/10)
-  Generating static pages using 11 workers (4/10)
-  Generating static pages using 11 workers (7/10)
-✓ Generating static pages using 11 workers (10/10) in 447ms
+  Generating static pages using 11 workers (0/11) ...
+  Generating static pages using 11 workers (2/11)
+  Generating static pages using 11 workers (5/11)
+  Generating static pages using 11 workers (8/11)
+✓ Generating static pages using 11 workers (11/11) in 1720ms
   Finalizing page optimization ...
 
 Route (app)
@@ -61,6 +61,7 @@ Route (app)
 ├ ƒ /admin/temak
 ├ ƒ /admin/videok
 ├ ƒ /api/documents/[id]
+├ ƒ /api/youtube-metadata
 ├ ƒ /kereses
 ├ ○ /robots.txt
 ├ ○ /sitemap.xml
@@ -75,16 +76,3 @@ Route (app)
 ○  (Static)   prerendered as static content
 ƒ  (Dynamic)  server-rendered on demand
 ```
-
-## Additional evidence
-
-- `npx tsc --noEmit`: PASS.
-- Shared editor inspection: visible URL-slug input removed for topics, studies, and videos; existing slugs remain hidden form values and new records still derive slugs in their server actions.
-- Topic index inspection: URL fragments removed and replaced with bounded description text.
-- Relationship layout inspection: topic plus related video/study groups share a two-column wrapper, 190 px scroll-bounded option lists, and a one-column breakpoint below 560 px.
-- Accessibility inspection: picker search labels remain available to assistive technology and each input now uses its section-specific search prompt.
-- `scripts/gtd.ps1 health`: PASS.
-- Vercel production deployment `dpl_Hu8c6msEvrNEQJVd4CTaSFtJ1V1V`: READY from commit `bb5e321`.
-- Authenticated production study editor at 1440 px: two equal relationship columns (~380 px each), 295 px combined section height, no visible slug input, and no horizontal overflow.
-- Authenticated production study editor at 390 px: one 304 px relationship column, no visible slug input, and document width remained within the viewport.
-- Authenticated production video editor: compact topic and related-study groups present with accessible search controls and no slug field.

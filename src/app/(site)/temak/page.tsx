@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { TopicRows } from "@/components/resource-lists";
 import { listPublicTopics } from "@/lib/content-repository";
 
-export const metadata: Metadata = { title: "Bibliai témák", description: "Bibliatanulmányok és videóajánlók bibliai témák szerint rendezve." };
+export const metadata: Metadata = {
+  title: "Bibliai témák",
+  description: "Bibliatanulmányok és videóajánlók bibliai témák szerint rendezve.",
+  alternates: { canonical: "/temak" },
+};
 
 export default async function TopicsPage() {
   const topics = await listPublicTopics();
