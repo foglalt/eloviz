@@ -3,12 +3,12 @@
 **Project:** Élő Víz
 **Current Phase:** 03
 **Current Phase Name:** Evergreen Content Library
-**Current Plan:** 03-11
-**Total Plans in Phase:** 11
-**Status:** Completed; production rollout verified
+**Current Plan:** 03-12
+**Total Plans in Phase:** 12
+**Status:** Completed; production rollout pending
 **Progress:** 100%
 **Last Activity:** 2026-07-28
-**Last Activity Description:** Deferred PDF-derived HTML articles to V2 and shifted the near-term focus to small quality-of-life improvements
+**Last Activity Description:** Verification completed (passed)
 **Paused At:** Awaiting the next small quality-of-life improvement to prioritize
 
 ## Delivered
@@ -50,6 +50,7 @@
 - Production deployment `dpl_3wsRUW6oq8nu9UW2RfA5Jg4gZtEd`: READY; authenticated save redirect, focused success acknowledgement, modal dismissal, and URL cleanup passed.
 - Canonical `www` host, self-referential public canonicals, crawl-visible PDF noindex/canonical headers, sitemap/robots alignment, all focused tests, lint, strict TypeScript, production build, and local HTTP checks: passed.
 - Production deployment `dpl_2exBRBmQCD3rfWw39dGGCZTafRCz`: READY; `www` canonicals, sitemap/robots host alignment, and raw-PDF indexing headers passed live HTTP checks.
+- Redundant list-item type labels removed while section headings and useful metadata remain; lint, strict TypeScript, production build, and local rendered-page checks passed.
 
 ## Next Decision Gate
 
@@ -63,6 +64,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-28
-**Stopped At:** Phase 03 is complete; PDF-derived HTML is deferred to V2 and the next QoL task is awaiting selection
+**Last Date:** 2026-07-28T11:08:07+02:00
+**Stopped At:** Verification completed
 **Resume File:** None

@@ -1,12 +1,6 @@
 import Link from "next/link";
 import type { CatalogSearchItem, CatalogSearchKind } from "@/lib/catalog-search";
 
-const resultLabels: Record<CatalogSearchKind, string> = {
-  topic: "Téma",
-  study: "PDF-tanulmány",
-  video: "Videóajánló",
-};
-
 const resultPaths: Record<CatalogSearchKind, string> = {
   topic: "/temak",
   study: "/tanulmanyok",
@@ -35,7 +29,6 @@ export function CatalogSearchResults({ heading, items }: SearchResultGroupProps)
             key={`${item.kind}:${item.id}`}
           >
             <span>
-              <span className="eyebrow">{resultLabels[item.kind]}</span>
               <span className="search-result__title">{item.title}</span>
               {item.meta ? <span className="search-result__meta">{item.meta}</span> : null}
             </span>
