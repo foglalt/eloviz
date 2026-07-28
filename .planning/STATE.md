@@ -5,10 +5,10 @@
 **Current Phase Name:** Evergreen Content Library
 **Current Plan:** 03-14
 **Total Plans in Phase:** 14
-**Status:** Completed; production rollout pending
+**Status:** Completed; production rollout verified
 **Progress:** 100%
 **Last Activity:** 2026-07-28
-**Last Activity Description:** Verification completed (passed)
+**Last Activity Description:** Deployed and verified public preview sizing and video-channel visibility
 **Paused At:** Awaiting the next small quality-of-life improvement to prioritize
 
 ## Delivered
@@ -55,6 +55,7 @@
 - Route-aware topic/study/video search defaults, accessible multi-select controls, filtered database queries, URL persistence, seven focused tests, production build, and desktop/mobile browser checks: passed.
 - Production deployment `dpl_Ev3WxPrZ9GPVurmvaXpUMQLZtn6S`: READY; live single- and multi-type search URLs retain their checked filters and show only selected result groups.
 - Three-line public preview descriptions, hidden video-channel preview metadata, retained speaker/detail metadata and channel search matching, eight focused tests, production build, and desktop/mobile browser checks: passed.
+- Production deployment `dpl_HfVCERfTUa7LFtDabf4cQqvAYG2d`: READY; live preview clamp, hidden list/search channel metadata, channel-based matching, and selected-video channel display passed.
 
 ## Next Decision Gate
 
@@ -69,5 +70,5 @@
 ## Session
 
 **Last Date:** 2026-07-28T11:48:39+02:00
-**Stopped At:** Verification completed
+**Stopped At:** Preview sizing and metadata refinement deployed and verified; awaiting the next QoL task
 **Resume File:** None

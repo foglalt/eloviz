@@ -21,6 +21,8 @@ completed: 2026-07-28
 - A channel-name query still returned the matching video without a channel metadata line.
 - The selected video detail page still displayed its channel.
 - The browser console contained no errors.
+- Production deployment `dpl_HfVCERfTUa7LFtDabf4cQqvAYG2d` reached READY.
+- Live `www.eloviz.hu` checks confirmed the three-line clamp is shipped, video listings and search results omit channel metadata, channel-name search still returns the video, and the selected video page retains the full channel.
 
 ---
 *Completed: 2026-07-28*
