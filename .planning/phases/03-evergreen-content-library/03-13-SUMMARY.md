@@ -21,6 +21,8 @@ completed: 2026-07-28
 - Selecting “Témák” as well produced `tipus=topic&tipus=study`, persisted both checked controls, and rendered only topic and study groups.
 - At a 390 px viewport, the form and filter controls fit without horizontal overflow.
 - The browser console contained no errors.
+- Production deployment `dpl_Ev3WxPrZ9GPVurmvaXpUMQLZtn6S` reached READY.
+- Live `www.eloviz.hu` checks confirmed study-only and topic-plus-study URLs persist the checked filters and render only their selected result groups.
 
 ---
 *Completed: 2026-07-28*
