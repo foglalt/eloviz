@@ -118,14 +118,19 @@ export async function saveStudyAction(formData: FormData) {
       Boolean(readiness[0]?.has_published_document),
     );
     const status = id ? publication.status : "draft";
-    const rows = id
-      ? await sql.query(`UPDATE studies SET slug=$2,title=$3,summary=$4,seo_title=NULLIF($5,''),seo_description=NULLIF($6,''),status=$7,featured=$8,sort_order=$9,updated_at=now(),published_at=CASE WHEN $7='published' THEN COALESCE(published_at,now()) ELSE published_at END WHERE id=$1 RETURNING id::text`, [id, parsed.data.slug, parsed.data.title, parsed.data.summary, parsed.data.seoTitle, parsed.data.seoDescription, status, parsed.data.featured, parsed.data.sortOrder])
-      : await sql.query(`INSERT INTO studies(slug,title,summary,seo_title,seo_description,status,featured,sort_order) VALUES($1,$2,$3,NULLIF($4,''),NULLIF($5,''),$6,$7,$8) RETURNING id::text`, [parsed.data.slug, parsed.data.title, parsed.data.summary, parsed.data.seoTitle, parsed.data.seoDescription, status, parsed.data.featured, parsed.data.sortOrder]);
-    const studyId = String(rows[0].id);
-    await sql.query("DELETE FROM study_topics WHERE study_id=$1", [studyId]);
-    for (const [index, topicId] of parsed.data.topicIds.entries()) await sql.query("INSERT INTO study_topics(study_id,topic_id,sort_order) VALUES($1,$2,$3)", [studyId, topicId, index]);
-    await sql.query("DELETE FROM study_videos WHERE study_id=$1", [studyId]);
-    for (const [index, videoId] of parsed.data.relatedVideoIds.entries()) await sql.query("INSERT INTO study_videos(study_id,video_id,sort_order) VALUES($1,$2,$3)", [studyId, videoId, index]);
+    const studyId = id ?? randomUUID();
+    const [rows] = await sql.transaction((transaction) => [
+      id
+        ? transaction.query(`UPDATE studies SET slug=$2,title=$3,summary=$4,seo_title=NULLIF($5,''),seo_description=NULLIF($6,''),status=$7,featured=$8,sort_order=$9,updated_at=now(),published_at=CASE WHEN $7='published' THEN COALESCE(published_at,now()) ELSE published_at END WHERE id=$1 RETURNING id::text`, [studyId, parsed.data.slug, parsed.data.title, parsed.data.summary, parsed.data.seoTitle, parsed.data.seoDescription, status, parsed.data.featured, parsed.data.sortOrder])
+        : transaction.query(`INSERT INTO studies(id,slug,title,summary,seo_title,seo_description,status,featured,sort_order) VALUES($1,$2,$3,$4,NULLIF($5,''),NULLIF($6,''),$7,$8,$9) RETURNING id::text`, [studyId, parsed.data.slug, parsed.data.title, parsed.data.summary, parsed.data.seoTitle, parsed.data.seoDescription, status, parsed.data.featured, parsed.data.sortOrder]),
+      transaction.query("DELETE FROM study_topics WHERE study_id=$1", [studyId]),
+      ...parsed.data.topicIds.map((topicId, index) =>
+        transaction.query("INSERT INTO study_topics(study_id,topic_id,sort_order) VALUES($1,$2,$3)", [studyId, topicId, index])),
+      transaction.query("DELETE FROM study_videos WHERE study_id=$1", [studyId]),
+      ...parsed.data.relatedVideoIds.map((videoId, index) =>
+        transaction.query("INSERT INTO study_videos(study_id,video_id,sort_order) VALUES($1,$2,$3)", [studyId, videoId, index])),
+    ]);
+    if (!rows[0]?.id) throw new Error("A mentendő tanulmány nem található.");
     refreshPublicContent();
     const message = !id
       ? "A tanulmány vázlata létrejött. Most feltöltheted a PDF-et."
@@ -309,14 +314,19 @@ export async function saveVideoAction(formData: FormData) {
   if (!parsed.success) redirect(destination("/admin/videok", "error", validationMessage(parsed.error.issues), id));
   const sql = requireSql();
   try {
-    const rows = id
-      ? await sql.query(`UPDATE videos SET slug=$2,title=$3,description=$4,youtube_url=$5,youtube_id=$6,channel_name=NULLIF($7,''),speaker=NULLIF($8,''),seo_title=NULLIF($9,''),seo_description=NULLIF($10,''),status=$11,featured=$12,sort_order=$13,updated_at=now(),published_at=CASE WHEN $11='published' THEN COALESCE(published_at,now()) ELSE published_at END WHERE id=$1 RETURNING id::text`, [id, parsed.data.slug, parsed.data.title, parsed.data.description, parsed.data.youtubeUrl, parsed.data.youtubeId, parsed.data.channelName, parsed.data.speaker, parsed.data.seoTitle, parsed.data.seoDescription, parsed.data.status, parsed.data.featured, parsed.data.sortOrder])
-      : await sql.query(`INSERT INTO videos(slug,title,description,youtube_url,youtube_id,channel_name,speaker,seo_title,seo_description,status,featured,sort_order,published_at) VALUES($1,$2,$3,$4,$5,NULLIF($6,''),NULLIF($7,''),NULLIF($8,''),NULLIF($9,''),$10,$11,$12,CASE WHEN $10='published' THEN now() END) RETURNING id::text`, [parsed.data.slug, parsed.data.title, parsed.data.description, parsed.data.youtubeUrl, parsed.data.youtubeId, parsed.data.channelName, parsed.data.speaker, parsed.data.seoTitle, parsed.data.seoDescription, parsed.data.status, parsed.data.featured, parsed.data.sortOrder]);
-    const videoId = String(rows[0].id);
-    await sql.query("DELETE FROM video_topics WHERE video_id=$1", [videoId]);
-    for (const [index, topicId] of parsed.data.topicIds.entries()) await sql.query("INSERT INTO video_topics(video_id,topic_id,sort_order) VALUES($1,$2,$3)", [videoId, topicId, index]);
-    await sql.query("DELETE FROM study_videos WHERE video_id=$1", [videoId]);
-    for (const [index, studyId] of parsed.data.relatedStudyIds.entries()) await sql.query("INSERT INTO study_videos(study_id,video_id,sort_order) VALUES($1,$2,$3)", [studyId, videoId, index]);
+    const videoId = id ?? randomUUID();
+    const [rows] = await sql.transaction((transaction) => [
+      id
+        ? transaction.query(`UPDATE videos SET slug=$2,title=$3,description=$4,youtube_url=$5,youtube_id=$6,channel_name=NULLIF($7,''),speaker=NULLIF($8,''),seo_title=NULLIF($9,''),seo_description=NULLIF($10,''),status=$11,featured=$12,sort_order=$13,updated_at=now(),published_at=CASE WHEN $11='published' THEN COALESCE(published_at,now()) ELSE published_at END WHERE id=$1 RETURNING id::text`, [videoId, parsed.data.slug, parsed.data.title, parsed.data.description, parsed.data.youtubeUrl, parsed.data.youtubeId, parsed.data.channelName, parsed.data.speaker, parsed.data.seoTitle, parsed.data.seoDescription, parsed.data.status, parsed.data.featured, parsed.data.sortOrder])
+        : transaction.query(`INSERT INTO videos(id,slug,title,description,youtube_url,youtube_id,channel_name,speaker,seo_title,seo_description,status,featured,sort_order,published_at) VALUES($1,$2,$3,$4,$5,$6,NULLIF($7,''),NULLIF($8,''),NULLIF($9,''),NULLIF($10,''),$11,$12,$13,CASE WHEN $11='published' THEN now() END) RETURNING id::text`, [videoId, parsed.data.slug, parsed.data.title, parsed.data.description, parsed.data.youtubeUrl, parsed.data.youtubeId, parsed.data.channelName, parsed.data.speaker, parsed.data.seoTitle, parsed.data.seoDescription, parsed.data.status, parsed.data.featured, parsed.data.sortOrder]),
+      transaction.query("DELETE FROM video_topics WHERE video_id=$1", [videoId]),
+      ...parsed.data.topicIds.map((topicId, index) =>
+        transaction.query("INSERT INTO video_topics(video_id,topic_id,sort_order) VALUES($1,$2,$3)", [videoId, topicId, index])),
+      transaction.query("DELETE FROM study_videos WHERE video_id=$1", [videoId]),
+      ...parsed.data.relatedStudyIds.map((studyId, index) =>
+        transaction.query("INSERT INTO study_videos(study_id,video_id,sort_order) VALUES($1,$2,$3)", [studyId, videoId, index])),
+    ]);
+    if (!rows[0]?.id) throw new Error("A mentendő videó nem található.");
     refreshPublicContent();
     redirect(destination("/admin/videok", "message", "A videó mentve.", videoId));
   } catch (error) {
