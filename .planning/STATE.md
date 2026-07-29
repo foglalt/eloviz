@@ -3,13 +3,13 @@
 **Project:** Élő Víz
 **Current Phase:** 03
 **Current Phase Name:** Evergreen Content Library
-**Current Plan:** 03-15
-**Total Plans in Phase:** 15
+**Current Plan:** 03-16
+**Total Plans in Phase:** 16
 **Status:** Plan complete
 **Progress:** 100%
 **Last Activity:** 2026-07-29
 **Last Activity Description:** Verification completed (passed)
-**Paused At:** Plan 03-15 complete and verified
+**Paused At:** Plan 03-16 complete and verified
 
 ## Delivered
 
@@ -57,6 +57,7 @@
 - Three-line public preview descriptions, hidden video-channel preview metadata, retained speaker/detail metadata and channel search matching, eight focused tests, production build, and desktop/mobile browser checks: passed.
 - Production deployment `dpl_HfVCERfTUa7LFtDabf4cQqvAYG2d`: READY; live preview clamp, hidden list/search channel metadata, channel-based matching, and selected-video channel display passed.
 - Atomic study/video record-and-relationship saves, rollback probe, publication/YouTube tests, lint, strict TypeScript, production build, and warm round-trip comparison: passed.
+- Ctrl/Cmd+S content-save shortcut, native validation, duplicate suppression, pending modal, exclusion scope, four focused tests, lint, strict TypeScript, production build, and authenticated browser checks: passed.
 
 ## Next Decision Gate
 
@@ -70,6 +71,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-29T10:35:00+02:00
+**Last Date:** 2026-07-29T10:50:26+02:00
 **Stopped At:** Verification completed
 **Resume File:** None

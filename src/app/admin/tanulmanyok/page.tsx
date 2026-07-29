@@ -136,7 +136,7 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
             </div>
           </AdminContentFormFields>
           <div className="form-actions field--full">
-            <AdminFormSubmit label="Adatok mentése" />
+            <AdminFormSubmit label="Adatok mentése" enableSaveShortcut />
           </div>
         </form>
       </AdminEditorPanel>

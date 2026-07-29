@@ -120,7 +120,7 @@ export default async function AdminVideosPage({ searchParams }: Props) {
             </div>
           </AdminContentFormFields>
           <div className="form-actions field--full">
-            <AdminFormSubmit label="Mentés" />
+            <AdminFormSubmit label="Mentés" enableSaveShortcut />
           </div>
         </form>
       </AdminEditorPanel>
