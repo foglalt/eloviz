@@ -5,7 +5,6 @@ import { useId, useState } from "react";
 type RelationOption = {
   id: string;
   label: string;
-  meta?: string;
 };
 
 type Props = {
@@ -29,8 +28,7 @@ export function AdminRelationPicker({
   const normalizedQuery = query.trim().toLocaleLowerCase("hu-HU");
   const matches = (option: RelationOption) =>
     !normalizedQuery
-    || option.label.toLocaleLowerCase("hu-HU").includes(normalizedQuery)
-    || option.meta?.toLocaleLowerCase("hu-HU").includes(normalizedQuery);
+    || option.label.toLocaleLowerCase("hu-HU").includes(normalizedQuery);
   const visibleCount = options.filter(matches).length;
 
   return (
@@ -58,7 +56,7 @@ export function AdminRelationPicker({
                 value={option.id}
                 defaultChecked={selectedIds.includes(option.id)}
               />
-              <span>{option.label}{option.meta ? <small>{option.meta}</small> : null}</span>
+              <span>{option.label}</span>
             </label>
           );
         })}

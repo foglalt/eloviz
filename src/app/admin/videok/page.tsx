@@ -95,7 +95,6 @@ export default async function AdminVideosPage({ searchParams }: Props) {
                   options={topics.map((topic) => ({
                     id: topic.id,
                     label: topic.title,
-                    meta: topic.status === "published" ? "élő" : "vázlat",
                   }))}
                   selectedIds={selected?.topics.map((item) => item.id)}
                   searchLabel="Témák szűrése"
@@ -110,7 +109,6 @@ export default async function AdminVideosPage({ searchParams }: Props) {
                   options={studies.map((study) => ({
                     id: study.id,
                     label: study.title,
-                    meta: study.status === "published" ? "élő" : "vázlat",
                   }))}
                   selectedIds={selected?.relatedStudyIds}
                   searchLabel="Tanulmányok szűrése"

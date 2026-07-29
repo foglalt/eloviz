@@ -101,17 +101,32 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
             </div>
             <div className="relation-fields field--full">
               <fieldset className="field relation-field">
-                <legend>Témák</legend>
-                <small className="field-help">
-                  Üresen hagyva az Egyéb témakörbe kerül.
-                </small>
+                <legend>
+                  Témák
+                  <span className="relation-info">
+                    <button
+                      type="button"
+                      className="relation-info__button"
+                      aria-label="Információ a témák kiválasztásáról"
+                      aria-describedby="study-topics-help"
+                    >
+                      i
+                    </button>
+                    <span
+                      id="study-topics-help"
+                      className="relation-info__tooltip"
+                      role="tooltip"
+                    >
+                      Üresen hagyva az Egyéb témakörbe kerül.
+                    </span>
+                  </span>
+                </legend>
                 <AdminRelationPicker
                   key={`topics-${selected?.id ?? "new"}`}
                   name="topicIds"
                   options={topics.map((topic) => ({
                     id: topic.id,
                     label: topic.title,
-                    meta: topic.status === "published" ? "élő" : "vázlat",
                   }))}
                   selectedIds={selected?.topics.map((item) => item.id)}
                   searchLabel="Témák szűrése"
@@ -126,7 +141,6 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
                   options={videos.map((video) => ({
                     id: video.id,
                     label: video.title,
-                    meta: video.status === "published" ? "élő" : "vázlat",
                   }))}
                   selectedIds={selected?.relatedVideoIds}
                   searchLabel="Videók szűrése"
