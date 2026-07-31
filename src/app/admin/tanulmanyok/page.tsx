@@ -82,7 +82,7 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
     >
       <AdminEditorPanel
         title={selected ? "Tanulmány szerkesztése" : "Új tanulmány"}
-        help="Először mentsd a vázlatot. A feltöltött PDF-ből az igehelyek automatikusan felismerésre és véglegesítésre kerülnek."
+        help="A PDF-feltöltés az első mentés után jelenik meg. Add meg a címet és az összefoglalót, majd mentsd el a tanulmányt; ezután töltheted fel a PDF-et. Az igehelyeket automatikusan felismerjük és véglegesítjük."
       >
         <form
           key={selected ? `${selected.id}:${selected.updatedAt ?? ""}` : "new"}
