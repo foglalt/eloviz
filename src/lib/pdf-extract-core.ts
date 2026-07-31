@@ -5,6 +5,11 @@ async function ensurePdfJsNodeGlobals() {
   runtime.DOMMatrix ??= canvas.DOMMatrix;
   runtime.Path2D ??= canvas.Path2D;
   runtime.ImageData ??= canvas.ImageData;
+
+  // PDF.js falls back to this worker in Node. Keep the import explicit so
+  // Next.js includes it in the deployed server bundle instead of leaving a
+  // runtime-relative import that fails inside a Vercel function.
+  await import("pdfjs-dist/legacy/build/pdf.worker.mjs");
 }
 
 export async function extractPdfPages(buffer: Buffer) {

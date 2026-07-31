@@ -29,4 +29,8 @@ test("extracts native PDF text with the production PDF.js runtime dependencies",
   assert.equal(typeof globalThis.DOMMatrix, "function");
   assert.equal(typeof globalThis.Path2D, "function");
   assert.equal(typeof globalThis.ImageData, "function");
+  const runtime = globalThis as typeof globalThis & {
+    pdfjsWorker?: { WorkerMessageHandler?: unknown };
+  };
+  assert.equal(typeof runtime.pdfjsWorker?.WorkerMessageHandler, "function");
 });

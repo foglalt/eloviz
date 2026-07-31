@@ -7,6 +7,11 @@ const nextConfig: NextConfig = {
     },
   },
   serverExternalPackages: ["pdfjs-dist", "@napi-rs/canvas"],
+  outputFileTracingIncludes: {
+    "/admin/tanulmanyok": [
+      "./node_modules/pdfjs-dist/legacy/build/pdf.worker.mjs",
+    ],
+  },
   async redirects() {
     return [
       { source: "/studies", destination: "/tanulmanyok", permanent: true },
