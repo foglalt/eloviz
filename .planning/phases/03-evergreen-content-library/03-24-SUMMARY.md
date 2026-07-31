@@ -1,7 +1,8 @@
 ---
 phase: 03
 plan: 24
-status: in_progress
+status: completed
+completed: 2026-07-31
 ---
 
 # 03-24 Summary: Bundle PDF.js worker for Vercel parsing
@@ -20,7 +21,8 @@ status: in_progress
   application path: four pages and 6,566 text characters.
 - The focused PDF and Scripture-reference tests, ESLint, strict TypeScript, and
   the Next.js production build passed.
-- Production deployment verification remains pending.
+- Production deployment `dpl_6ds244CStu7Jb4x4Xc1NvE4JqWd1` reached READY,
+  the live admin returned HTTP 200, and its error/fatal runtime-log scan was clean.
 
 ---
-*Implementation checkpoint: 2026-07-31*
+*Completed: 2026-07-31*
