@@ -12,6 +12,7 @@ type CommonRecord = {
 
 type Props = {
   record?: CommonRecord | null;
+  defaultStatus?: "draft" | "published";
   featuredLabel: string;
   statusHelp?: string;
   showTitle?: boolean;
@@ -20,6 +21,7 @@ type Props = {
 
 export function AdminContentFormFields({
   record,
+  defaultStatus = "draft",
   featuredLabel,
   statusHelp,
   showTitle = true,
@@ -50,7 +52,7 @@ export function AdminContentFormFields({
       </div>
       <div className="field">
         <label htmlFor="status">Állapot</label>
-        <select id="status" name="status" defaultValue={record?.status ?? "draft"}>
+        <select id="status" name="status" defaultValue={record?.status ?? defaultStatus}>
           <option value="draft">Vázlat</option>
           <option value="published">Publikált</option>
         </select>

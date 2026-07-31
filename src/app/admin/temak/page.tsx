@@ -56,7 +56,11 @@ export default async function AdminTopicsPage({ searchParams }: Props) {
       <AdminEditorPanel title={selected ? "Téma szerkesztése" : "Új téma"}>
         <form key={selected?.id ?? "new"} action={saveTopicAction} className="form-grid">
           {selected ? <input type="hidden" name="id" value={selected.id} /> : null}
-          <AdminContentFormFields record={selected} featuredLabel="Kiemelt téma">
+          <AdminContentFormFields
+            record={selected}
+            defaultStatus="published"
+            featuredLabel="Kiemelt téma"
+          >
             <div className="field field--full">
               <label htmlFor="description">Leírás</label>
               <textarea id="description" name="description" defaultValue={selected?.description} required />
