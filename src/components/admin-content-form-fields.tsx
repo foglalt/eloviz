@@ -37,19 +37,8 @@ export function AdminContentFormFields({
       ) : null}
       {record?.slug ? <input type="hidden" name="slug" value={record.slug} /> : null}
       {children}
-      <div className="field">
-        <label htmlFor="seoTitle">SEO-cím (max. 70)</label>
-        <input id="seoTitle" name="seoTitle" defaultValue={record?.seoTitle ?? ""} maxLength={70} />
-      </div>
-      <div className="field">
-        <label htmlFor="seoDescription">SEO-leírás (max. 170)</label>
-        <textarea
-          id="seoDescription"
-          name="seoDescription"
-          defaultValue={record?.seoDescription ?? ""}
-          maxLength={170}
-        />
-      </div>
+      <input type="hidden" name="seoTitle" value={record?.seoTitle ?? ""} />
+      <input type="hidden" name="seoDescription" value={record?.seoDescription ?? ""} />
       <div className="field">
         <label htmlFor="status">Állapot</label>
         <label className="status-switch" htmlFor="status">
