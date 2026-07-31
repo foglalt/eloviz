@@ -3,13 +3,13 @@
 **Project:** Élő Víz
 **Current Phase:** 03
 **Current Phase Name:** Evergreen Content Library
-**Current Plan:** 03-18
-**Total Plans in Phase:** 18
+**Current Plan:** 03-19
+**Total Plans in Phase:** 19
 **Status:** Plan complete
 **Progress:** 100%
 **Last Activity:** 2026-07-31
 **Last Activity Description:** Verification completed (passed)
-**Paused At:** Plan 03-18 complete and verified
+**Paused At:** Plan 03-19 complete and verified
 
 ## Delivered
 
@@ -60,6 +60,7 @@
 - Ctrl/Cmd+S content-save shortcut, native validation, duplicate suppression, pending modal, exclusion scope, four focused tests, lint, strict TypeScript, production build, and authenticated browser checks: passed.
 - Aligned 240 px relation pickers, accessible topic info control, title-only top-packed rows, correct hidden filtering, lint, strict TypeScript, production build, and authenticated 1440/390 px browser checks: passed.
 - Published new-topic default, preserved existing topic states, unchanged study/video draft defaults, lint, strict TypeScript, production build, and authenticated browser checks: passed.
+- Binary publication switch, exact published/draft form serialization, keyboard operation, 44 px touch target, lint, strict TypeScript, production build, and authenticated desktop/mobile checks: passed.
 
 ## Next Decision Gate
 
@@ -73,6 +74,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-31T15:11:44+02:00
-**Stopped At:** Plan 03-18 complete and verified
+**Last Date:** 2026-07-31T15:19:59+02:00
+**Stopped At:** Plan 03-19 complete and verified
 **Resume File:** None

@@ -52,11 +52,26 @@ export function AdminContentFormFields({
       </div>
       <div className="field">
         <label htmlFor="status">Állapot</label>
-        <select id="status" name="status" defaultValue={record?.status ?? defaultStatus}>
-          <option value="draft">Vázlat</option>
-          <option value="published">Publikált</option>
-        </select>
-        {statusHelp ? <small className="field-help">{statusHelp}</small> : null}
+        <label className="status-switch" htmlFor="status">
+          <input
+            id="status"
+            className="status-switch__control"
+            type="checkbox"
+            role="switch"
+            name="status"
+            value="published"
+            defaultChecked={(record?.status ?? defaultStatus) === "published"}
+            aria-label="Publikálási állapot"
+            aria-describedby={statusHelp ? "status-help" : undefined}
+          />
+          <span className="status-switch__track" aria-hidden="true" />
+          <span className="status-switch__text" aria-hidden="true">
+            <span className="status-switch__draft">Vázlat</span>
+            <span className="status-switch__published">Publikált</span>
+          </span>
+        </label>
+        <input type="hidden" name="status" value="draft" />
+        {statusHelp ? <small id="status-help" className="field-help">{statusHelp}</small> : null}
       </div>
       <div className="field">
         <label htmlFor="sortOrder">Sorrend</label>
