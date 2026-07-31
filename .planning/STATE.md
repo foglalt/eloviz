@@ -3,13 +3,13 @@
 **Project:** Élő Víz
 **Current Phase:** 03
 **Current Phase Name:** Evergreen Content Library
-**Current Plan:** 03-22
-**Total Plans in Phase:** 22
+**Current Plan:** 03-23
+**Total Plans in Phase:** 23
 **Status:** Plan complete
 **Progress:** 100%
 **Last Activity:** 2026-07-31
 **Last Activity Description:** Verification completed (passed)
-**Paused At:** Plan 03-22 complete and verified
+**Paused At:** Plan 03-23 complete and verified
 
 ## Delivered
 
@@ -64,6 +64,7 @@
 - First-party anonymous analytics, all-time/30-day counters, topic/study/video rankings, duplicate/admin/bot/privacy exclusions, migration 004, focused tests, production build, and authenticated desktop/mobile checks: passed.
 - Hidden topic/study/video SEO editors, preserved existing SEO overrides through ordinary saves, retained general metadata fallbacks, lint, strict TypeScript, production build, and authenticated desktop/mobile checks: passed.
 - New-study help now explicitly explains that PDF upload appears after entering the title and summary and completing the first save; lint, strict TypeScript, and production build: passed.
+- Contained, overlapping, and same-chapter adjacent Scripture ranges now finalize as concise continuous ranges while every PDF evidence candidate remains intact; six reference tests, publication tests, lint, strict TypeScript, and production build: passed.
 
 ## Next Decision Gate
 
@@ -77,6 +78,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-31T17:52:36+02:00
+**Last Date:** 2026-07-31T18:53:19+02:00
 **Stopped At:** Verification completed
 **Resume File:** None

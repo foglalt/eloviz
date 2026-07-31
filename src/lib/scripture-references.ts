@@ -1,4 +1,4 @@
-export const DETECTOR_VERSION = "hu-reference-v2";
+export const DETECTOR_VERSION = "hu-reference-v3";
 
 type BookDefinition = {
   code: string;
@@ -115,6 +115,124 @@ export type DetectedReference = {
   pageNumber: number;
   contextSnippet: string;
 };
+
+export type ScriptureReferenceRange = Pick<
+  DetectedReference,
+  | "displayLabel"
+  | "bookCode"
+  | "startChapter"
+  | "startVerse"
+  | "endChapter"
+  | "endVerse"
+  | "osisStart"
+  | "osisEnd"
+>;
+
+type IndexedRange = {
+  range: ScriptureReferenceRange;
+  firstIndex: number;
+};
+
+function comparePoints(
+  leftChapter: number,
+  leftVerse: number,
+  rightChapter: number,
+  rightVerse: number,
+) {
+  return leftChapter - rightChapter || leftVerse - rightVerse;
+}
+
+function canonicalizeRange(range: ScriptureReferenceRange): ScriptureReferenceRange {
+  return {
+    ...range,
+    displayLabel: formatHungarianReference(
+      range.bookCode,
+      range.startChapter,
+      range.startVerse,
+      range.endChapter,
+      range.endVerse,
+    ) ?? range.displayLabel,
+    osisStart: `${range.bookCode}.${range.startChapter}.${range.startVerse}`,
+    osisEnd: `${range.bookCode}.${range.endChapter}.${range.endVerse}`,
+  };
+}
+
+function rangesOverlapOrAreAdjacent(
+  current: ScriptureReferenceRange,
+  next: ScriptureReferenceRange,
+) {
+  const startComparedWithEnd = comparePoints(
+    next.startChapter,
+    next.startVerse,
+    current.endChapter,
+    current.endVerse,
+  );
+  if (startComparedWithEnd <= 0) return true;
+
+  return next.startChapter === current.endChapter
+    && next.startVerse === current.endVerse + 1;
+}
+
+export function mergeScriptureReferenceRanges(
+  references: readonly ScriptureReferenceRange[],
+) {
+  const rangesByBook = new Map<string, IndexedRange[]>();
+
+  references.forEach((reference, index) => {
+    const ranges = rangesByBook.get(reference.bookCode) ?? [];
+    ranges.push({ range: canonicalizeRange(reference), firstIndex: index });
+    rangesByBook.set(reference.bookCode, ranges);
+  });
+
+  const merged: IndexedRange[] = [];
+  for (const ranges of rangesByBook.values()) {
+    ranges.sort((left, right) => (
+      comparePoints(
+        left.range.startChapter,
+        left.range.startVerse,
+        right.range.startChapter,
+        right.range.startVerse,
+      )
+      || comparePoints(
+        left.range.endChapter,
+        left.range.endVerse,
+        right.range.endChapter,
+        right.range.endVerse,
+      )
+    ));
+
+    let current = ranges[0];
+    if (!current) continue;
+
+    for (const next of ranges.slice(1)) {
+      if (!rangesOverlapOrAreAdjacent(current.range, next.range)) {
+        merged.push(current);
+        current = next;
+        continue;
+      }
+
+      const nextExtendsRange = comparePoints(
+        next.range.endChapter,
+        next.range.endVerse,
+        current.range.endChapter,
+        current.range.endVerse,
+      ) > 0;
+      current = {
+        firstIndex: Math.min(current.firstIndex, next.firstIndex),
+        range: canonicalizeRange({
+          ...current.range,
+          endChapter: nextExtendsRange ? next.range.endChapter : current.range.endChapter,
+          endVerse: nextExtendsRange ? next.range.endVerse : current.range.endVerse,
+        }),
+      };
+    }
+    merged.push(current);
+  }
+
+  return merged
+    .sort((left, right) => left.firstIndex - right.firstIndex)
+    .map(({ range }) => range);
+}
 
 export function formatHungarianReference(
   bookCode: string,

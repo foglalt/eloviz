@@ -2,6 +2,7 @@ import { neon } from "@neondatabase/serverless";
 import {
   DETECTOR_VERSION,
   formatOsisReference,
+  mergeScriptureReferenceRanges,
 } from "../src/lib/scripture-references.ts";
 
 const databaseUrl = process.env.DATABASE_URL?.trim();
@@ -82,6 +83,16 @@ for (const document of pendingDocuments) {
     osis_end: string;
     sort_order: number;
   }>;
+  const finalizedReferences = mergeScriptureReferenceRanges(candidates.map((candidate) => ({
+    displayLabel: candidate.display_label,
+    bookCode: candidate.book_code,
+    startChapter: candidate.start_chapter,
+    startVerse: candidate.start_verse,
+    endChapter: candidate.end_chapter,
+    endVerse: candidate.end_verse,
+    osisStart: candidate.osis_start,
+    osisEnd: candidate.osis_end,
+  })));
 
   await sql.transaction((transaction) => [
     transaction.query(
@@ -92,7 +103,7 @@ for (const document of pendingDocuments) {
       "DELETE FROM study_scripture_references WHERE study_id=$1 AND document_id=$2",
       [document.study_id, document.id],
     ),
-    ...candidates.map((candidate) => transaction.query(`
+    ...finalizedReferences.map((reference, index) => transaction.query(`
       INSERT INTO study_scripture_references(
         study_id,document_id,display_label,book_code,start_chapter,start_verse,
         end_chapter,end_verse,osis_start,osis_end,sort_order
@@ -100,15 +111,15 @@ for (const document of pendingDocuments) {
     `, [
       document.study_id,
       document.id,
-      formatOsisReference(candidate.osis_start, candidate.osis_end) ?? candidate.display_label,
-      candidate.book_code,
-      candidate.start_chapter,
-      candidate.start_verse,
-      candidate.end_chapter,
-      candidate.end_verse,
-      candidate.osis_start,
-      candidate.osis_end,
-      candidate.sort_order,
+      reference.displayLabel,
+      reference.bookCode,
+      reference.startChapter,
+      reference.startVerse,
+      reference.endChapter,
+      reference.endVerse,
+      reference.osisStart,
+      reference.osisEnd,
+      index,
     ])),
     transaction.query(
       "UPDATE studies SET published_document_id=$2,reference_reviewed=true,updated_at=now() WHERE id=$1",
@@ -117,7 +128,7 @@ for (const document of pendingDocuments) {
   ]);
 
   finalizedDocumentCount += 1;
-  finalizedReferenceCount += candidates.length;
+  finalizedReferenceCount += finalizedReferences.length;
 }
 
 console.log(JSON.stringify({

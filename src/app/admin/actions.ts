@@ -17,7 +17,11 @@ import {
 import { requireSql } from "@/lib/db";
 import { deleteBlobPdf, MAX_PDF_BYTES, sha256, storePdf, validatePdfBuffer } from "@/lib/document-storage";
 import { extractPdfPages } from "@/lib/pdf-extract";
-import { DETECTOR_VERSION, detectScriptureReferences } from "@/lib/scripture-references";
+import {
+  DETECTOR_VERSION,
+  detectScriptureReferences,
+  mergeScriptureReferenceRanges,
+} from "@/lib/scripture-references";
 import { parseYouTubeId, sanitizePdfFilename, slugifyHungarian, studyInputSchema, topicInputSchema, videoInputSchema } from "@/lib/content-validation";
 import { resolveStudyDocumentRemoval, resolveStudyPublicationStatus } from "@/lib/study-publication";
 import { fetchYouTubeMetadata } from "@/lib/youtube-metadata";
@@ -191,16 +195,15 @@ export async function uploadStudyPdfAction(formData: FormData) {
     const stored = await storePdf(buffer, studyId, filename);
     const documentId = randomUUID();
     const candidates = detectScriptureReferences(pages);
+    const finalizedReferences = mergeScriptureReferenceRanges(candidates);
     try {
       await sql.transaction((transaction) => [
         transaction.query(`INSERT INTO study_documents(id,study_id,version_number,original_filename,byte_size,sha256,storage_kind,storage_key,file_data,extraction_status,extraction_error,extracted_text) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,'complete',NULL,$10)`, [documentId, studyId, version, filename, buffer.length, sha256(buffer), stored.storageKind, stored.storageKey, stored.fileData, pages.join("\n\n")]),
-        ...candidates.flatMap((candidate, index) => {
+        ...candidates.map((candidate, index) => {
           const referenceValues = [documentId, candidate.rawText, candidate.displayLabel, candidate.bookCode, candidate.startChapter, candidate.startVerse, candidate.endChapter, candidate.endVerse, candidate.osisStart, candidate.osisEnd, candidate.pageNumber, candidate.contextSnippet, DETECTOR_VERSION, index];
-          return [
-            transaction.query(`INSERT INTO study_reference_candidates(document_id,raw_text,display_label,book_code,start_chapter,start_verse,end_chapter,end_verse,osis_start,osis_end,page_number,context_snippet,detector_version,review_status,sort_order) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,'accepted',$14)`, referenceValues),
-            transaction.query(`INSERT INTO study_scripture_references(study_id,document_id,display_label,book_code,start_chapter,start_verse,end_chapter,end_verse,osis_start,osis_end,sort_order) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`, [studyId, documentId, candidate.displayLabel, candidate.bookCode, candidate.startChapter, candidate.startVerse, candidate.endChapter, candidate.endVerse, candidate.osisStart, candidate.osisEnd, index]),
-          ];
+          return transaction.query(`INSERT INTO study_reference_candidates(document_id,raw_text,display_label,book_code,start_chapter,start_verse,end_chapter,end_verse,osis_start,osis_end,page_number,context_snippet,detector_version,review_status,sort_order) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,'accepted',$14)`, referenceValues);
         }),
+        ...finalizedReferences.map((reference, index) => transaction.query(`INSERT INTO study_scripture_references(study_id,document_id,display_label,book_code,start_chapter,start_verse,end_chapter,end_verse,osis_start,osis_end,sort_order) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`, [studyId, documentId, reference.displayLabel, reference.bookCode, reference.startChapter, reference.startVerse, reference.endChapter, reference.endVerse, reference.osisStart, reference.osisEnd, index])),
         transaction.query("UPDATE studies SET published_document_id=$2,reference_reviewed=true,updated_at=now() WHERE id=$1", [studyId, documentId]),
       ]);
     } catch (error) {

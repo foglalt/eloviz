@@ -4,6 +4,7 @@ import {
   detectScriptureReferences,
   formatHungarianReference,
   formatOsisReference,
+  mergeScriptureReferenceRanges,
 } from "./scripture-references.ts";
 
 test("detects Hungarian references and ranges", () => {
@@ -31,6 +32,38 @@ test("deduplicates aliases and always uses the canonical Hungarian label", () =>
   assert.equal(references[0].pageNumber, 1);
   assert.equal(references[0].displayLabel, "Zsid 5:8");
   assert.equal(references[0].osisStart, "Heb.5.8");
+});
+
+test("merges contained, overlapping, and adjacent ranges without losing candidates", () => {
+  const candidates = detectScriptureReferences([
+    "Jn 3:1-5; Jn 3:2-6; Jn 3:4; Jn 3:6-8; Jn 3:10-11; Róm 3:4-5.",
+  ]);
+  const references = mergeScriptureReferenceRanges(candidates);
+
+  assert.equal(candidates.length, 6);
+  assert.deepEqual(
+    references.map((reference) => [
+      reference.displayLabel,
+      reference.osisStart,
+      reference.osisEnd,
+    ]),
+    [
+      ["Jn 3:1-8", "John.3.1", "John.3.8"],
+      ["Jn 3:10-11", "John.3.10", "John.3.11"],
+      ["Róm 3:4-5", "Rom.3.4", "Rom.3.5"],
+    ],
+  );
+});
+
+test("keeps first-occurrence order while merging ranges detected out of order", () => {
+  const references = mergeScriptureReferenceRanges(detectScriptureReferences([
+    "Róm 8:1; Jn 3:6-8; Zsid 5:8; Jn 3:1-5.",
+  ]));
+
+  assert.deepEqual(
+    references.map((reference) => reference.displayLabel),
+    ["Róm 8:1", "Jn 3:1-8", "Zsid 5:8"],
+  );
 });
 
 test("formats single verses and ranges from OSIS data", () => {
