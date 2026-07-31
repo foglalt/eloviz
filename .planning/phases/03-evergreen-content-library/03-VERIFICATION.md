@@ -1,5 +1,5 @@
 ---
-generated: 2026-07-31T15:19:59+02:00
+generated: 2026-07-31T15:45:26+02:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-07-31T15:19:59+02:00
+- Timestamp: 2026-07-31T15:45:26+02:00
 
 ## Checks
 
@@ -42,15 +42,15 @@ Exit code: 0
   · serverActions
 
   Creating an optimized production build ...
-✓ Compiled successfully in 16.7s
+✓ Compiled successfully in 22.2s
   Running TypeScript ...
-  Finished TypeScript in 14.8s ...
+  Finished TypeScript in 14.3s ...
   Collecting page data using 11 workers ...
-  Generating static pages using 11 workers (0/11) ...
-  Generating static pages using 11 workers (2/11)
-  Generating static pages using 11 workers (5/11)
-  Generating static pages using 11 workers (8/11)
-✓ Generating static pages using 11 workers (11/11) in 679ms
+  Generating static pages using 11 workers (0/12) ...
+  Generating static pages using 11 workers (3/12)
+  Generating static pages using 11 workers (6/12)
+  Generating static pages using 11 workers (9/12)
+✓ Generating static pages using 11 workers (12/12) in 849ms
   Finalizing page optimization ...
 
 Route (app)
@@ -60,6 +60,7 @@ Route (app)
 ├ ƒ /admin/tanulmanyok
 ├ ƒ /admin/temak
 ├ ƒ /admin/videok
+├ ƒ /api/analytics
 ├ ƒ /api/documents/[id]
 ├ ƒ /api/youtube-metadata
 ├ ƒ /kereses

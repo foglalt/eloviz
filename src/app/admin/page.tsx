@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { AdminAnalytics } from "@/components/admin-analytics";
 import { AdminNotice, AdminShell } from "@/components/admin-shell";
 import { isAdminAuthenticated, isAdminAuthConfigured } from "@/lib/admin-auth";
+import { getAdminAnalyticsOverview } from "@/lib/analytics";
 import { getAdminOverview } from "@/lib/content-repository";
 import { loginAction } from "./actions";
 
@@ -39,7 +41,10 @@ export default async function AdminPage({ searchParams }: Props) {
     );
   }
 
-  const overview = await getAdminOverview();
+  const [overview, analytics] = await Promise.all([
+    getAdminOverview(),
+    getAdminAnalyticsOverview(),
+  ]);
   return (
     <AdminShell>
       <div className="admin-heading">
@@ -52,6 +57,7 @@ export default async function AdminPage({ searchParams }: Props) {
         <Link className="admin-stat" href="/admin/tanulmanyok"><strong>{overview.studyCount}</strong><span>tanulmány</span></Link>
         <Link className="admin-stat" href="/admin/videok"><strong>{overview.videoCount}</strong><span>videó</span></Link>
       </div>
+      <AdminAnalytics overview={analytics} />
     </AdminShell>
   );
 }
