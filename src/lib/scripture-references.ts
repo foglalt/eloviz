@@ -80,6 +80,7 @@ const books: BookDefinition[] = [
 ];
 
 const bookByCode = new Map(books.map((book) => [book.code, book]));
+const bookOrderByCode = new Map(books.map((book, index) => [book.code, index]));
 const aliasToBook = new Map<string, BookDefinition>();
 
 function normalizeAlias(alias: string) {
@@ -262,6 +263,29 @@ export function formatOsisReference(osisStart: string, osisEnd = osisStart) {
     Number(end[2]),
     Number(end[3]),
   );
+}
+
+export function sortScriptureReferencesInBibleOrder<T extends { osisStart: string }>(
+  references: readonly T[],
+) {
+  return references
+    .map((reference, index) => {
+      const point = reference.osisStart.match(osisPointPattern);
+      return {
+        reference,
+        index,
+        bookOrder: point ? (bookOrderByCode.get(point[1]) ?? Number.MAX_SAFE_INTEGER) : Number.MAX_SAFE_INTEGER,
+        chapter: point ? Number(point[2]) : Number.MAX_SAFE_INTEGER,
+        verse: point ? Number(point[3]) : Number.MAX_SAFE_INTEGER,
+      };
+    })
+    .sort((left, right) => (
+      left.bookOrder - right.bookOrder
+      || left.chapter - right.chapter
+      || left.verse - right.verse
+      || left.index - right.index
+    ))
+    .map(({ reference }) => reference);
 }
 
 export function detectScriptureReferences(pages: string[]) {

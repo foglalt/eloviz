@@ -3,13 +3,13 @@
 **Project:** Élő Víz
 **Current Phase:** 03
 **Current Phase Name:** Evergreen Content Library
-**Current Plan:** 03-24
-**Total Plans in Phase:** 24
-**Status:** Plan 03-24 complete and verified
+**Current Plan:** 03-25
+**Total Plans in Phase:** 25
+**Status:** Plan 03-25 complete and locally verified
 **Progress:** 100%
-**Last Activity:** 2026-07-31
-**Last Activity Description:** Completed and deployed plan 03-24
-**Paused At:** Plan 03-24 complete and verified
+**Last Activity:** 2026-08-02
+**Last Activity Description:** Verification completed (passed)
+**Paused At:** Plan 03-25 complete; production deployment pending
 
 ## Delivered
 
@@ -67,6 +67,7 @@
 - Contained, overlapping, and same-chapter adjacent Scripture ranges now finalize as concise continuous ranges while every PDF evidence candidate remains intact; six reference tests, publication tests, lint, strict TypeScript, and production build: passed.
 - Explicit PDF.js worker initialization and route-scoped output tracing now protect Vercel PDF parsing; the originally rejected four-page PDF, focused tests, lint, strict TypeScript, and production build: passed locally.
 - Production deployment `dpl_6ds244CStu7Jb4x4Xc1NvE4JqWd1`: READY; live admin HTTP check and deployment-scoped error/fatal log scan passed.
+- Public study references now render in canonical Bible book, chapter, and verse order without changing stored detection evidence; seven reference tests, lint, strict TypeScript, and production build: passed.
 
 ## Next Decision Gate
 
@@ -80,6 +81,6 @@
 
 ## Session
 
-**Last Date:** 2026-07-31T19:32:18+02:00
-**Stopped At:** Plan 03-24 complete and verified
+**Last Date:** 2026-08-02T10:45:24+02:00
+**Stopped At:** Verification completed
 **Resume File:** None

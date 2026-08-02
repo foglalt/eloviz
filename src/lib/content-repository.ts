@@ -27,7 +27,10 @@ import {
   includeOtherTopic,
   OTHER_TOPIC_SLUG,
 } from "./other-topic";
-import { formatOsisReference } from "./scripture-references";
+import {
+  formatOsisReference,
+  sortScriptureReferencesInBibleOrder,
+} from "./scripture-references";
 
 type Row = Record<string, unknown>;
 
@@ -398,6 +401,7 @@ export async function getStudyBySlug(slug: string): Promise<StudyDetail | null> 
 
   return {
     ...study,
+    references: sortScriptureReferencesInBibleOrder(study.references),
     relatedVideos: relatedIds.length
       ? videos.filter((video) => relatedIds.includes(video.id))
       : videos.filter((video) => video.topics.some((topic) => study.topics.some((item) => item.id === topic.id))).slice(0, 3),

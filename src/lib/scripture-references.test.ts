@@ -5,6 +5,7 @@ import {
   formatHungarianReference,
   formatOsisReference,
   mergeScriptureReferenceRanges,
+  sortScriptureReferencesInBibleOrder,
 } from "./scripture-references.ts";
 
 test("detects Hungarian references and ranges", () => {
@@ -83,4 +84,21 @@ test("recognizes books across the full canon", () => {
     references.map((reference) => reference.displayLabel),
     ["1Krón 12:3", "JSir 2:1", "Filem 1:4", "Júd 1:2"],
   );
+});
+
+test("sorts references by canonical book, chapter, and verse order", () => {
+  const references = [
+    { label: "Jel 22:17", osisStart: "Rev.22.17" },
+    { label: "Jn 3:16", osisStart: "John.3.16" },
+    { label: "1Móz 1:1", osisStart: "Gen.1.1" },
+    { label: "Jn 3:1", osisStart: "John.3.1" },
+    { label: "Zsolt 23:1", osisStart: "Ps.23.1" },
+    { label: "Ismeretlen", osisStart: "Unknown.1.1" },
+  ];
+
+  assert.deepEqual(
+    sortScriptureReferencesInBibleOrder(references).map((reference) => reference.label),
+    ["1Móz 1:1", "Zsolt 23:1", "Jn 3:1", "Jn 3:16", "Jel 22:17", "Ismeretlen"],
+  );
+  assert.equal(references[0].label, "Jel 22:17");
 });
