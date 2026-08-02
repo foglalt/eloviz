@@ -8,7 +8,7 @@
 **Status:** Plan 03-28 complete and verified
 **Progress:** 100%
 **Last Activity:** 2026-08-02
-**Last Activity Description:** Verification completed (passed)
+**Last Activity Description:** Completed and deployed plan 03-28
 **Paused At:** Plan 03-28 complete and verified
 
 ## Delivered
@@ -78,6 +78,8 @@
   study page passed placement, link-target, removed-copy, and runtime-log checks.
 - Study document actions now have 14 px of heading separation, matching sidebar
   list rhythm; lint and the production build passed.
+- Production deployment `dpl_5drA2KM4WkJHSZvKRu5W9Hrq1WAA`: READY; the live
+  scoped spacing rule, document layout, and runtime-log checks passed.
 
 ## Next Decision Gate
 
