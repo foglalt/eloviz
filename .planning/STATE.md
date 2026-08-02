@@ -5,11 +5,11 @@
 **Current Phase Name:** Evergreen Content Library
 **Current Plan:** 03-26
 **Total Plans in Phase:** 26
-**Status:** Plan 03-26 complete and locally verified
+**Status:** Plan 03-26 complete and verified
 **Progress:** 100%
 **Last Activity:** 2026-08-02
-**Last Activity Description:** Verification completed (passed)
-**Paused At:** Plan 03-26 complete; production deployment pending
+**Last Activity Description:** Completed and deployed plan 03-26
+**Paused At:** Plan 03-26 complete and verified
 
 ## Delivered
 
@@ -70,6 +70,7 @@
 - Public study references now render in canonical Bible book, chapter, and verse order without changing stored detection evidence; seven reference tests, lint, strict TypeScript, and production build: passed.
 - Production deployment `dpl_BuB3tdXjNcKfx3SsQS9sgnuXRWB7`: READY; the live 28-reference Páska study rendered in exact canonical order and the deployment error/fatal log scan was clean.
 - Public catalogue search now filters studies by overlapping single-verse or ranged Scripture references, including cross-chapter intervals; focused tests, PostgreSQL-backed route checks, responsive browser checks, lint, strict TypeScript, and production build: passed.
+- Production deployment `dpl_ESeCJpKPutjUbWBCUn5yPRaRriFv`: READY; five live Scripture-search cases passed and the deployment error/fatal log scan was clean.
 
 ## Next Decision Gate
 
@@ -84,5 +85,5 @@
 ## Session
 
 **Last Date:** 2026-08-02T11:04:15+02:00
-**Stopped At:** Verification completed
+**Stopped At:** Plan 03-26 complete and verified
 **Resume File:** None

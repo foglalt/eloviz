@@ -27,6 +27,9 @@ completed: 2026-08-02
   filtering worked, and invalid syntax produced Hungarian guidance.
 - Headless Chrome passed 1440 px and 390 px interaction, URL persistence,
   accessibility state, overflow, and console-error checks.
+- Production deployment `dpl_ESeCJpKPutjUbWBCUn5yPRaRriFv` reached READY.
+  All five live overlap, gap, cross-chapter, combined, and invalid-input checks
+  passed, and its error/fatal runtime-log scan was clean.
 
 ---
 *Completed: 2026-08-02*
