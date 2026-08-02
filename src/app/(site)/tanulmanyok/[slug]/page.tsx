@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs, breadcrumbJsonLd } from "@/components/breadcrumbs";
 import { JsonLd } from "@/components/json-ld";
 import { VideoRows } from "@/components/resource-lists";
+import { StudyArticle } from "@/components/study-article";
 import { getStudyBySlug } from "@/lib/content-repository";
 import { absoluteSiteUrl } from "@/lib/site-config";
 
@@ -53,26 +54,14 @@ export default async function StudyPage({ params }: Props) {
         }}
       />
       <Breadcrumbs items={[...crumbs.slice(0, -1), { label: study.title }]} />
-      <div className="detail-grid">
-        <article className="detail-copy">
-          <p className="eyebrow">PDF bibliatanulmány</p>
-          <h1>{study.title}</h1>
+      <div className="detail-grid study-detail-grid">
+        <div className="detail-copy study-detail__intro">
+          <p className="eyebrow">Bibliatanulmány</p>
+          <h1 id="study-title">{study.title}</h1>
           <p className="lead">{study.summary}</p>
-          {study.references.length ? (
-            <>
-              <h2>Kapcsolódó igeszakaszok</h2>
-              <ul className="reference-list">
-                {study.references.map((reference) => (
-                  <li key={`${reference.osisStart}-${reference.osisEnd}`}>
-                    {reference.label}
-                  </li>
-                ))}
-              </ul>
-            </>
-          ) : null}
-        </article>
-        <aside className="detail-sidebar">
-          <div className="detail-sidebar__section">
+        </div>
+        <aside className="detail-sidebar study-detail__sidebar">
+          <div className="detail-sidebar__section study-detail__topics">
             <h2>Témák</h2>
             <ul>
               {study.topics.map((topic) => (
@@ -85,7 +74,7 @@ export default async function StudyPage({ params }: Props) {
             </ul>
           </div>
           {study.pdfFilename ? (
-            <div className="detail-sidebar__section">
+            <div className="detail-sidebar__section study-detail__document">
               <h2>Dokumentum</h2>
               <a
                 className="button"
@@ -97,7 +86,24 @@ export default async function StudyPage({ params }: Props) {
               </a>
             </div>
           ) : null}
+          {study.references.length ? (
+            <div className="detail-sidebar__section study-detail__references">
+              <h2>Kapcsolódó igeszakaszok</h2>
+              <ul className="sidebar-reference-list">
+                {study.references.map((reference) => (
+                  <li key={`${reference.osisStart}-${reference.osisEnd}`}>
+                    {reference.label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </aside>
+        <article className="detail-copy study-detail__article" aria-labelledby="study-title">
+          {study.article
+            ? <StudyArticle article={study.article} />
+            : <p className="study-article__fallback">A teljes tanulmány jelenleg a PDF-dokumentumban olvasható.</p>}
+        </article>
       </div>
       {study.relatedVideos.length ? (
         <section className="section">

@@ -1,6 +1,8 @@
 import { createHash } from "node:crypto";
 import { readFile, stat } from "node:fs/promises";
 import { neon } from "@neondatabase/serverless";
+import { extractPdfDocument } from "../src/lib/pdf-extract-core.ts";
+import { STUDY_ARTICLE_VERSION } from "../src/lib/study-article.ts";
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
@@ -40,14 +42,19 @@ for (const study of seed.studies) {
   const pdfBuffer = await readFile(pdfFile);
   const pdfStat = await stat(pdfFile);
   const checksum = createHash("sha256").update(pdfBuffer).digest("hex");
+  const extraction = await extractPdfDocument(pdfBuffer, study.title);
 
   await sql.query(`INSERT INTO study_documents
       (id, study_id, version_number, original_filename, mime_type, byte_size, sha256,
-       storage_kind, storage_key, extraction_status, extracted_text)
-    VALUES ($1, $2, 1, $3, 'application/pdf', $4, $5, 'static', $6, 'complete', '')
+       storage_kind, storage_key, extraction_status, extracted_text, article_content,
+       article_extraction_version)
+    VALUES ($1, $2, 1, $3, 'application/pdf', $4, $5, 'static', $6, 'complete', $7, $8::jsonb, $9)
     ON CONFLICT (id) DO UPDATE SET original_filename = EXCLUDED.original_filename,
-      byte_size = EXCLUDED.byte_size, sha256 = EXCLUDED.sha256, storage_key = EXCLUDED.storage_key`,
-    [study.documentId, study.id, `${study.slug}.pdf`, pdfStat.size, checksum, study.pdfPath]);
+      byte_size = EXCLUDED.byte_size, sha256 = EXCLUDED.sha256, storage_key = EXCLUDED.storage_key,
+      extracted_text = EXCLUDED.extracted_text, article_content = EXCLUDED.article_content,
+      article_extraction_version = EXCLUDED.article_extraction_version`,
+    [study.documentId, study.id, `${study.slug}.pdf`, pdfStat.size, checksum, study.pdfPath,
+      extraction.pages.join("\n\n"), JSON.stringify(extraction.article), STUDY_ARTICLE_VERSION]);
 
   await sql.query("UPDATE studies SET published_document_id = $1, reference_reviewed = true WHERE id = $2", [study.documentId, study.id]);
   await sql.query("DELETE FROM study_topics WHERE study_id = $1", [study.id]);

@@ -15,6 +15,7 @@ This phase does not implement the Bible reader or original-language concordances
 - Every topic has a description and dedicated page.
 - Every study and video has its own descriptive, indexable page.
 - Study materials are uploaded PDF files rather than primarily authored as Markdown in the admin.
+- Every text-readable study PDF also produces a versioned semantic HTML reading view; the original PDF remains the editorial source and downloadable document.
 - A PDF upload or replacement triggers Bible-reference detection and automatic finalization when text extraction succeeds.
 - OSIS remains the translation-independent storage format; all detected and stored ranges are displayed with one canonical Hungarian abbreviation format.
 - Videos are YouTube recommendations, not self-hosted media.
@@ -41,7 +42,7 @@ This phase does not implement the Bible reader or original-language concordances
 
 ### Content editing
 
-- The study record contains a plain-text summary/description for its dedicated SEO page; the authored material itself is the attached PDF.
+- The study record contains a plain-text summary/description for its dedicated SEO page; the authored material itself is the attached PDF, from which the public semantic HTML article is generated automatically.
 - Replacing a PDF creates a new immutable document revision; successful extraction and detection atomically make that revision and its finalized reference set current.
 - Text extraction is page-aware where possible. Native-text PDFs receive automatic detection and finalization; scanned/image-only or insufficient-text PDFs are rejected with a clear error, with OCR deferred.
 - Reference detection recognizes an explicit, tested dictionary covering all 66 canonical books, Hungarian book names/abbreviations, and common chapter/verse/range separators.
@@ -55,6 +56,7 @@ This phase does not implement the Bible reader or original-language concordances
 ### Rendering and caching
 
 - Public pages are async Server Components.
+- Study article JSON is validated into a small text-only block model and rendered as React elements; stored raw HTML is never executed.
 - Admin interactivity is kept in small client form boundaries using Server Actions and `useActionState`.
 - Successful writes revalidate the affected detail, index, topic, sitemap, and admin paths.
 - The data layer is server-only and independent of React components.
@@ -73,7 +75,7 @@ This phase does not implement the Bible reader or original-language concordances
 | `/temak` | All published topics |
 | `/temak/[slug]` | Topic description plus its studies and videos |
 | `/tanulmanyok` | All published studies |
-| `/tanulmanyok/[slug]` | Study description, confirmed Scripture references, PDF access, topics, and related videos |
+| `/tanulmanyok/[slug]` | Study description, semantic HTML article, PDF access, confirmed Scripture references, topics, and related videos |
 | `/videok` | All published video recommendations |
 | `/videok/[slug]` | Descriptive watch page, topics, and related studies |
 | `/admin` | Authenticated editorial dashboard |
@@ -134,9 +136,9 @@ The admin uses utility-first product language and a calm operational layout, not
 
 1. Admin creates or opens a study draft and uploads a PDF revision directly to the chosen object store through a constrained signed upload.
 2. The server validates PDF signature/type, size, sanitized filename, and checksum, then records an immutable `study_document` revision.
-3. Text is extracted per page. If extraction fails or yields too little text, the upload is rejected before a document revision is stored.
+3. Text and layout metadata are extracted per page and converted into a versioned semantic article. If extraction fails or yields too little text, the upload is rejected before a document revision is stored.
 4. The detector resolves Hungarian aliases to OSIS, deduplicates identical ranges, and produces canonical Hungarian display labels with page/context evidence.
-5. One database transaction stores the immutable revision, accepted evidence rows, finalized Scripture ranges, and the new current-document pointer.
+5. One database transaction stores the immutable revision, semantic article, accepted evidence rows, finalized Scripture ranges, and the new current-document pointer.
 6. Revalidation updates the study, its topics, sitemap, and—once Phase 04 exists—the affected Bible verse pages.
 
 Files remain private/staged before publication. Published PDFs are served without application cookies and with a deliberate raw-PDF indexing policy so the descriptive HTML page remains canonical.

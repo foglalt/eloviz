@@ -16,7 +16,7 @@ import {
 } from "@/lib/admin-auth";
 import { requireSql } from "@/lib/db";
 import { deleteBlobPdf, MAX_PDF_BYTES, sha256, storePdf, validatePdfBuffer } from "@/lib/document-storage";
-import { extractPdfPages } from "@/lib/pdf-extract";
+import { extractPdfDocument } from "@/lib/pdf-extract";
 import {
   DETECTOR_VERSION,
   detectScriptureReferences,
@@ -160,9 +160,14 @@ export async function uploadStudyPdfAction(formData: FormData) {
     redirect(destination("/admin/tanulmanyok", "error", error instanceof Error ? error.message : "Érvénytelen PDF.", studyId));
   }
   const filename = sanitizePdfFilename(file.name);
-  let pages: string[];
+  const sql = requireSql();
+  const studyRows = await sql.query("SELECT title FROM studies WHERE id=$1", [studyId]);
+  if (!studyRows[0]?.title) {
+    redirect(destination("/admin/tanulmanyok", "error", "A tanulmány nem található.", studyId));
+  }
+  let extraction: Awaited<ReturnType<typeof extractPdfDocument>>;
   try {
-    pages = await extractPdfPages(buffer);
+    extraction = await extractPdfDocument(buffer, String(studyRows[0].title));
   } catch (error) {
     console.error(JSON.stringify({
       level: "error",
@@ -179,6 +184,7 @@ export async function uploadStudyPdfAction(formData: FormData) {
       studyId,
     ));
   }
+  const pages = extraction.pages;
   if (pages.join(" ").trim().length < 40) {
     redirect(destination(
       "/admin/tanulmanyok",
@@ -188,7 +194,6 @@ export async function uploadStudyPdfAction(formData: FormData) {
     ));
   }
 
-  const sql = requireSql();
   try {
     const versionRows = await sql.query("SELECT COALESCE(max(version_number),0)+1 AS next_version FROM study_documents WHERE study_id=$1", [studyId]);
     const version = Number(versionRows[0].next_version);
@@ -198,7 +203,7 @@ export async function uploadStudyPdfAction(formData: FormData) {
     const finalizedReferences = mergeScriptureReferenceRanges(candidates);
     try {
       await sql.transaction((transaction) => [
-        transaction.query(`INSERT INTO study_documents(id,study_id,version_number,original_filename,byte_size,sha256,storage_kind,storage_key,file_data,extraction_status,extraction_error,extracted_text) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,'complete',NULL,$10)`, [documentId, studyId, version, filename, buffer.length, sha256(buffer), stored.storageKind, stored.storageKey, stored.fileData, pages.join("\n\n")]),
+        transaction.query(`INSERT INTO study_documents(id,study_id,version_number,original_filename,byte_size,sha256,storage_kind,storage_key,file_data,extraction_status,extraction_error,extracted_text,article_content,article_extraction_version) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,'complete',NULL,$10,$11::jsonb,$12)`, [documentId, studyId, version, filename, buffer.length, sha256(buffer), stored.storageKind, stored.storageKey, stored.fileData, pages.join("\n\n"), JSON.stringify(extraction.article), extraction.article.version]),
         ...candidates.map((candidate, index) => {
           const referenceValues = [documentId, candidate.rawText, candidate.displayLabel, candidate.bookCode, candidate.startChapter, candidate.startVerse, candidate.endChapter, candidate.endVerse, candidate.osisStart, candidate.osisEnd, candidate.pageNumber, candidate.contextSnippet, DETECTOR_VERSION, index];
           return transaction.query(`INSERT INTO study_reference_candidates(document_id,raw_text,display_label,book_code,start_chapter,start_verse,end_chapter,end_verse,osis_start,osis_end,page_number,context_snippet,detector_version,review_status,sort_order) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,'accepted',$14)`, referenceValues);
@@ -226,7 +231,7 @@ export async function uploadStudyPdfAction(formData: FormData) {
     redirect(destination(
       "/admin/tanulmanyok",
       "message",
-      `${candidates.length} igehely felismerve. A PDF-verzió automatikusan véglegesítve.`,
+      `${candidates.length} igehely felismerve. A HTML olvasási nézet elkészült, a PDF-verzió automatikusan véglegesítve.`,
       studyId,
     ));
   } catch (error) {

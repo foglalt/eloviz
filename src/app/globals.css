@@ -134,6 +134,21 @@ h3 { margin: 0; font-size: clamp(1.45rem, 2.4vw, 2rem); }
 .detail-sidebar ul { margin: 14px 0 0; padding: 0; list-style: none; }
 .detail-sidebar li { margin: 7px 0; }
 .detail-sidebar__section > .button { margin-top: 14px; }
+.study-detail-grid { row-gap: 0; }
+.study-detail__intro { grid-column: 1; grid-row: 1; }
+.study-detail__article { grid-column: 1; grid-row: 2; }
+.study-detail__sidebar { position: static; grid-column: 2; grid-row: 1 / span 2; }
+.sidebar-reference-list li { padding: 0 0 7px; border-bottom: 1px solid var(--sand); color: var(--teal); font-size: .78rem; font-weight: 800; }
+.study-article { margin-top: clamp(48px, 7vw, 76px); }
+.study-article > :first-child { margin-top: 0; }
+.study-article h2 { margin: 58px 0 22px; font-size: clamp(1.75rem, 3vw, 2.45rem); }
+.study-article h3 { margin: 38px 0 14px; color: var(--ink-deep); font-family: var(--font-body), sans-serif; font-size: clamp(1.05rem, 1.6vw, 1.2rem); font-weight: 800; line-height: 1.4; }
+.study-article p, .study-article li { font-size: 1.02rem; line-height: 1.78; }
+.study-article > p { margin: 0 0 24px; }
+.study-article ul, .study-article ol { display: grid; gap: 10px; margin: 0 0 28px; padding-left: 24px; }
+.study-article__scripture { margin: 26px 0; padding: 18px 0 18px 24px; border-left: 3px solid var(--spring); color: var(--ink-deep); }
+.study-article__scripture p { margin: 0; }
+.study-article__fallback { margin-top: 48px; padding: 24px; background: var(--limestone); color: var(--muted); }
 .empty-state { padding: 48px 0; border-block: 1px solid var(--line); color: var(--muted); }
 
 .search-page__intro { max-width: 900px; }
@@ -380,6 +395,13 @@ h3 { margin: 0; font-size: clamp(1.45rem, 2.4vw, 2rem); }
   .editorial-row__description { grid-column: 2 / -1; }
   .resource-item { grid-template-columns: 1fr; gap: 8px; }
   .detail-sidebar { position: static; }
+  .study-detail__intro, .study-detail__article, .study-detail__sidebar { grid-column: auto; grid-row: auto; }
+  .study-detail__sidebar { display: contents; }
+  .study-detail__intro { order: 1; }
+  .study-detail__document { order: 2; }
+  .study-detail__article { order: 3; }
+  .study-detail__topics { order: 4; }
+  .study-detail__references { order: 5; }
   .feature-pair__visual { min-height: 420px; }
   .feature-study { align-items: start; }
   .site-footer__top { flex-direction: column; align-items: start; }

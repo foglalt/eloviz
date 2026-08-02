@@ -4,6 +4,8 @@ import {
   attachOtherTopicToUnassignedStudies,
   includeOtherTopic,
 } from "./other-topic";
+import type { StudyArticle } from "./study-article";
+import { STUDY_ARTICLE_VERSION } from "./study-article";
 
 const content = seed;
 
@@ -32,6 +34,21 @@ const unassignedStudyCount = studies.filter((study) => study.topics.length === 0
 
 export const defaultTopics = includeOtherTopic(topics, unassignedStudyCount);
 export const defaultStudies = attachOtherTopicToUnassignedStudies(studies);
+
+const defaultStudyArticles = new Map<string, StudyArticle>(content.studies.map((study) => [
+  study.slug,
+  {
+    version: STUDY_ARTICLE_VERSION,
+    blocks: study.sections.flatMap((section) => [
+      { type: "heading" as const, level: 2 as const, text: section.title },
+      ...section.paragraphs.map((text) => ({ type: "paragraph" as const, text })),
+    ]),
+  },
+]));
+
+export function getDefaultStudyArticle(slug: string) {
+  return defaultStudyArticles.get(slug) ?? null;
+}
 
 export const defaultVideos: VideoSummary[] = content.videos.map((video) => ({
   id: video.id,

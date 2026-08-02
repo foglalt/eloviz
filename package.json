@@ -12,7 +12,8 @@
     "lint": "eslint src scripts next.config.ts --no-warn-ignored",
     "db:migrate": "node --env-file=.env scripts/migrate.mjs",
     "db:backup-legacy": "node --env-file=.env scripts/backup-legacy.mjs",
-    "db:seed": "node --env-file=.env scripts/seed.mjs",
+    "db:seed": "node --env-file=.env --experimental-strip-types scripts/seed.mjs",
+    "db:backfill-study-articles": "node --env-file=.env --experimental-strip-types scripts/backfill-study-articles.ts",
     "db:normalize-references": "node --env-file=.env --experimental-strip-types scripts/normalize-scripture-labels.ts",
     "test:references": "node --experimental-strip-types --test src/lib/scripture-references.test.ts",
     "test:storage": "node --experimental-strip-types --test src/lib/blob-storage-config.test.ts",
@@ -20,6 +21,7 @@
     "test:search": "node --experimental-strip-types --test src/lib/catalog-search.test.ts",
     "test:topics": "node --experimental-strip-types --test src/lib/other-topic.test.ts",
     "test:pdf": "node --experimental-strip-types --test src/lib/pdf-extract.test.ts",
+    "test:article": "node --experimental-strip-types --test src/lib/study-article.test.ts",
     "test:youtube": "node --experimental-strip-types --test src/lib/youtube-metadata.test.ts",
     "test:admin-shortcut": "node --experimental-strip-types --test src/lib/admin-save-shortcut.test.ts",
     "test:analytics": "node --experimental-strip-types --test src/lib/analytics-core.test.ts"

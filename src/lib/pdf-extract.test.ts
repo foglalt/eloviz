@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
-import { extractPdfPages } from "./pdf-extract-core.ts";
+import { extractPdfDocument, extractPdfPages } from "./pdf-extract-core.ts";
 import { detectScriptureReferences } from "./scripture-references.ts";
 
 test("extracts native PDF text with the production PDF.js runtime dependencies", async () => {
@@ -33,4 +33,17 @@ test("extracts native PDF text with the production PDF.js runtime dependencies",
     pdfjsWorker?: { WorkerMessageHandler?: unknown };
   };
   assert.equal(typeof runtime.pdfjsWorker?.WorkerMessageHandler, "function");
+});
+
+test("derives a semantic HTML article from PDF layout without repeating its title", async () => {
+  const fixture = path.join(process.cwd(), "public", "studies", "a-paszka-tipologiaja.pdf");
+  const extraction = await extractPdfDocument(await readFile(fixture), "A páska tipológiája");
+
+  assert.ok(extraction.article.blocks.length >= 6);
+  assert.equal(
+    extraction.article.blocks.some((block) => "text" in block && block.text === "A páska tipológiája"),
+    false,
+  );
+  assert.ok(extraction.article.blocks.some((block) => block.type === "heading"));
+  assert.ok(extraction.article.blocks.some((block) => block.type === "paragraph"));
 });

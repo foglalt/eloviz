@@ -1,3 +1,3 @@
 import "server-only";
 
-export { extractPdfPages } from "./pdf-extract-core";
+export { extractPdfDocument, extractPdfPages } from "./pdf-extract-core";

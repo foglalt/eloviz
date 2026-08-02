@@ -1,3 +1,5 @@
+import type { StudyArticle } from "./study-article";
+
 export type PublicationStatus = "draft" | "published";
 
 export type TopicSummary = {
@@ -62,6 +64,7 @@ export type VideoSummary = {
 };
 
 export type StudyDetail = StudySummary & {
+  article: StudyArticle | null;
   relatedVideos: VideoSummary[];
 };
 
@@ -89,6 +92,7 @@ export type StudyDocumentAdmin = {
   byteSize: number;
   extractionStatus: "pending" | "complete" | "manual_required" | "failed";
   extractionError: string | null;
+  articleAvailable: boolean;
   createdAt: string;
   candidates: ReferenceCandidate[];
 };

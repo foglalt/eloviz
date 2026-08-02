@@ -8,7 +8,12 @@ import {
   type CatalogSearchItem,
   type CatalogSearchResults,
 } from "./catalog-search";
-import { defaultStudies, defaultTopics, defaultVideos } from "./content-defaults";
+import {
+  defaultStudies,
+  defaultTopics,
+  defaultVideos,
+  getDefaultStudyArticle,
+} from "./content-defaults";
 import type {
   ReferenceCandidate,
   ScriptureReference,
@@ -32,6 +37,7 @@ import {
   sortScriptureReferencesInBibleOrder,
   type ScriptureReferenceRange,
 } from "./scripture-references";
+import { parseStudyArticle } from "./study-article";
 
 type Row = Record<string, unknown>;
 
@@ -432,16 +438,29 @@ export async function getStudyBySlug(slug: string): Promise<StudyDetail | null> 
   if (!study) return null;
 
   let relatedIds: string[] = [];
+  let article = getDefaultStudyArticle(study.slug);
   const sql = getSql();
   if (sql) {
     try {
-      const rows = await sql.query("SELECT video_id::text AS id FROM study_videos WHERE study_id = $1 ORDER BY sort_order", [study.id]);
-      relatedIds = (rows as Row[]).map((row) => String(row.id));
-    } catch { relatedIds = []; }
+      const [relationRows, articleRows] = await Promise.all([
+        sql.query("SELECT video_id::text AS id FROM study_videos WHERE study_id = $1 ORDER BY sort_order", [study.id]),
+        sql.query(`
+          SELECT d.article_content
+          FROM studies s
+          JOIN study_documents d ON d.id = s.published_document_id
+          WHERE s.id = $1
+        `, [study.id]),
+      ]);
+      relatedIds = (relationRows as Row[]).map((row) => String(row.id));
+      article = parseStudyArticle((articleRows as Row[])[0]?.article_content) ?? article;
+    } catch {
+      relatedIds = [];
+    }
   }
 
   return {
     ...study,
+    article,
     references: sortScriptureReferencesInBibleOrder(study.references),
     relatedVideos: relatedIds.length
       ? videos.filter((video) => relatedIds.includes(video.id))
@@ -641,7 +660,7 @@ export async function getAdminStudy(id: string): Promise<AdminStudy | null> {
 
   const documentRows = await sql.query(`
     SELECT d.id::text, d.version_number, d.original_filename, d.byte_size, d.extraction_status,
-      d.extraction_error, d.created_at,
+      d.extraction_error, d.created_at, (d.article_content IS NOT NULL) AS article_available,
       COALESCE((SELECT jsonb_agg(jsonb_build_object(
         'id', c.id::text, 'raw_text', c.raw_text, 'label', c.display_label,
         'osis_start', c.osis_start, 'osis_end', c.osis_end, 'page_number', c.page_number,
@@ -655,6 +674,7 @@ export async function getAdminStudy(id: string): Promise<AdminStudy | null> {
     byteSize: Number(document.byte_size),
     extractionStatus: document.extraction_status as StudyDocumentAdmin["extractionStatus"],
     extractionError: document.extraction_error ? String(document.extraction_error) : null,
+    articleAvailable: Boolean(document.article_available),
     createdAt: String(document.created_at),
     candidates: jsonArray<Row>(document.candidates).map((candidate): ReferenceCandidate => ({
       ...mapReference(candidate),

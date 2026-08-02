@@ -2,7 +2,7 @@
 
 ## Overview
 
-The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as an evergreen library whose study materials are versioned PDF uploads. Each text-readable PDF produces automatically finalized Scripture references with canonical OSIS storage and one normalized Hungarian display format. Phase 04 then adds one simple Bible translation and uses the finalized references to show which published studies contain each verse. Original-language concordances follow later.
+The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as an evergreen library whose study materials are versioned PDF uploads. Each text-readable PDF produces a semantic HTML reading view plus automatically finalized Scripture references with canonical OSIS storage and one normalized Hungarian display format. Phase 04 then adds one simple Bible translation and uses the finalized references to show which published studies contain each verse. Original-language concordances follow later.
 
 ## Phase Checklist
 
@@ -28,6 +28,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 12. [x] **03-12: Remove redundant resource type labels** — Let explicit list and search-group headings carry the content type instead of repeating it above every item.
 13. [x] **03-13: Add route-aware multi-type search filters** — Scope compact searches to their current catalogue section and let visitors search any one, two, or all three content types.
 14. [x] **03-14: Refine public preview metadata and sizing** — Hide video channels until selection and hold public preview descriptions to a consistent three-line height.
+29. [x] **03-29: Publish PDF-derived HTML studies** — Generate a safe semantic article during PDF processing, retain the original download, and place canonical references below the document action in the study sidebar.
 
 ## Phase 04 Proposed Plans
 
@@ -43,19 +44,15 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 3. **05-03: Lemma, morphology, and occurrence concordance.**
 4. **05-04: Optional Hungarian alignment proof** — a separate high-complexity linguistic project, not required for concordance.
 
-## V2 Candidate
-
-- **PDF-derived HTML study pages** — Keep the original PDF as the editorial upload and downloadable source, generate a structured article draft from it, let an editor review the result, and publish semantic HTML as the primary public reading experience.
-
 ## Progress
 
 | Phase | Plans complete | Status | Completed |
 |---|---:|---|---|
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
-| 03 Evergreen Content Library | 14/14 | Completed | 2026-07-28 |
+| 03 Evergreen Content Library | 29/29 | Completed | 2026-08-02 |
 | 04 Simple Bible Reader | 0/4 proposed | Gated by one translation licence/source | — |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 
 ---
-*Last updated: 2026-07-28*
+*Last updated: 2026-08-02*

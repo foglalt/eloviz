@@ -82,7 +82,7 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
     >
       <AdminEditorPanel
         title={selected ? "Tanulmány szerkesztése" : "Új tanulmány"}
-        help="A PDF-feltöltés az első mentés után jelenik meg. Add meg a címet és az összefoglalót, majd mentsd el a tanulmányt; ezután töltheted fel a PDF-et. Az igehelyeket automatikusan felismerjük és véglegesítjük."
+        help="A PDF-feltöltés az első mentés után jelenik meg. Add meg a címet és az összefoglalót, majd mentsd el a tanulmányt; ezután töltheted fel a PDF-et. A feltöltésből automatikusan elkészül a HTML olvasási nézet, az igehelyeket pedig felismerjük és véglegesítjük."
       >
         <form
           key={selected ? `${selected.id}:${selected.updatedAt ?? ""}` : "new"}
@@ -181,7 +181,7 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
                       <span>
                         {Math.round(document.byteSize / 1024)} kB ·{" "}
                         {document.extractionStatus === "complete"
-                          ? `${document.candidates.length} igehely · automatikusan véglegesítve`
+                          ? `${document.candidates.length} igehely · ${document.articleAvailable ? "HTML nézet elkészült · " : ""}automatikusan véglegesítve`
                           : "feldolgozás sikertelen"}
                         {isPublishedDocument ? " · jelenlegi PDF" : ""}
                       </span>
