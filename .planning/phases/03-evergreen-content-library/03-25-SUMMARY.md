@@ -18,6 +18,9 @@ completed: 2026-08-02
 - Seven reference tests passed, including Genesis-to-Revelation ordering,
   same-book chapter/verse ordering, unknown-value fallback, and non-mutation.
 - ESLint, strict TypeScript, and the Next.js production build passed.
+- Production deployment `dpl_BuB3tdXjNcKfx3SsQS9sgnuXRWB7` reached READY.
+  The live 28-reference Páska study rendered in exact canonical book,
+  chapter, and verse order, and its deployment error/fatal log scan was clean.
 
 ---
 *Completed: 2026-08-02*
