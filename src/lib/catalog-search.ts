@@ -1,4 +1,8 @@
 import type { StudySummary, TopicSummary, VideoSummary } from "./content-types";
+import {
+  scriptureReferenceRangesOverlap,
+  type ScriptureReferenceRange,
+} from "./scripture-references.ts";
 
 export const CATALOG_SEARCH_LIMIT = 12;
 
@@ -79,18 +83,20 @@ export function searchBundledCatalog(
   studies: StudySummary[],
   videos: VideoSummary[],
   selectedKinds: readonly CatalogSearchKind[] = CATALOG_SEARCH_KINDS,
+  scriptureFilter: ScriptureReferenceRange | null = null,
 ): CatalogSearchResults {
   const query = normalizeCatalogSearchQuery(rawQuery);
   const foldedQuery = foldCatalogSearchText(query);
+  const hasTextQuery = foldedQuery.length >= 2;
 
-  if (foldedQuery.length < 2) {
+  if (!hasTextQuery && !scriptureFilter) {
     return { query, topics: [], studies: [], videos: [], total: 0 };
   }
 
   const haystacks = new Map<string, string>();
   const includedKinds = new Set(selectedKinds);
 
-  const topicResults = includedKinds.has("topic") ? topics.flatMap<CatalogSearchItem>((topic) => {
+  const topicResults = includedKinds.has("topic") && hasTextQuery ? topics.flatMap<CatalogSearchItem>((topic) => {
     const match = matches(foldedQuery, [topic.title, topic.slug, topic.description]);
     if (!match.matches) return [];
     haystacks.set(`topic:${topic.id}`, match.haystack);
@@ -107,7 +113,11 @@ export function searchBundledCatalog(
   const studyResults = includedKinds.has("study") ? studies.flatMap<CatalogSearchItem>((study) => {
     const topicText = study.topics.map((topic) => `${topic.title} ${topic.description}`).join(" ");
     const match = matches(foldedQuery, [study.title, study.slug, study.summary, topicText]);
-    if (!match.matches) return [];
+    const textMatches = !hasTextQuery || match.matches;
+    const scriptureMatches = !scriptureFilter || study.references.some((reference) => (
+      scriptureReferenceRangesOverlap(reference, scriptureFilter)
+    ));
+    if (!textMatches || !scriptureMatches) return [];
     haystacks.set(`study:${study.id}`, match.haystack);
     return [{
       id: study.id,
@@ -119,7 +129,7 @@ export function searchBundledCatalog(
     }];
   }) : [];
 
-  const videoResults = includedKinds.has("video") ? videos.flatMap<CatalogSearchItem>((video) => {
+  const videoResults = includedKinds.has("video") && hasTextQuery ? videos.flatMap<CatalogSearchItem>((video) => {
     const topicText = video.topics.map((topic) => `${topic.title} ${topic.description}`).join(" ");
     const match = matches(foldedQuery, [
       video.title,
@@ -146,9 +156,13 @@ export function searchBundledCatalog(
     (item) => item.title,
     (item) => haystacks.get(`${item.kind}:${item.id}`) ?? "",
   );
-  const limitedTopics = topicResults.sort(sorter).slice(0, CATALOG_SEARCH_LIMIT);
-  const limitedStudies = studyResults.sort(sorter).slice(0, CATALOG_SEARCH_LIMIT);
-  const limitedVideos = videoResults.sort(sorter).slice(0, CATALOG_SEARCH_LIMIT);
+  const alphabetical = (left: CatalogSearchItem, right: CatalogSearchItem) => (
+    left.title.localeCompare(right.title, "hu")
+  );
+  const activeSorter = hasTextQuery ? sorter : alphabetical;
+  const limitedTopics = topicResults.sort(activeSorter).slice(0, CATALOG_SEARCH_LIMIT);
+  const limitedStudies = studyResults.sort(activeSorter).slice(0, CATALOG_SEARCH_LIMIT);
+  const limitedVideos = videoResults.sort(activeSorter).slice(0, CATALOG_SEARCH_LIMIT);
 
   return {
     query,

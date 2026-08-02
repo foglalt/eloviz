@@ -101,6 +101,11 @@ const referencePattern = new RegExp(
   "giu",
 );
 
+const referenceQueryPattern = new RegExp(
+  `^(${aliasPattern})\\.?\\s+(\\d{1,3})\\s*[:;,]\\s*(\\d{1,3})(?:\\s*[-–—]\\s*(?:(\\d{1,3})\\s*[:;,]\\s*)?(\\d{1,3}))?$`,
+  "iu",
+);
+
 const osisPointPattern = /^([1-3]?[A-Za-z]+)\.(\d{1,3})\.(\d{1,3})$/;
 
 export type DetectedReference = {
@@ -263,6 +268,77 @@ export function formatOsisReference(osisStart: string, osisEnd = osisStart) {
     Number(end[2]),
     Number(end[3]),
   );
+}
+
+export function normalizeScriptureReferenceQuery(value: string) {
+  return value.trim().replace(/\s+/g, " ").slice(0, 80);
+}
+
+export function parseScriptureReferenceQuery(value: string): ScriptureReferenceRange | null {
+  const query = normalizeScriptureReferenceQuery(value);
+  const match = query.match(referenceQueryPattern);
+  if (!match) return null;
+
+  const book = aliasToBook.get(normalizeAlias(match[1]));
+  if (!book) return null;
+
+  const startChapter = Number(match[2]);
+  const startVerse = Number(match[3]);
+  const endChapter = match[4] ? Number(match[4]) : startChapter;
+  const endVerse = match[5] ? Number(match[5]) : startVerse;
+  const displayLabel = formatHungarianReference(
+    book.code,
+    startChapter,
+    startVerse,
+    endChapter,
+    endVerse,
+  );
+  if (!displayLabel) return null;
+
+  return {
+    displayLabel,
+    bookCode: book.code,
+    startChapter,
+    startVerse,
+    endChapter,
+    endVerse,
+    osisStart: `${book.code}.${startChapter}.${startVerse}`,
+    osisEnd: `${book.code}.${endChapter}.${endVerse}`,
+  };
+}
+
+export function scriptureReferenceRangesOverlap(
+  left: { osisStart: string; osisEnd?: string },
+  right: { osisStart: string; osisEnd?: string },
+) {
+  const leftStart = left.osisStart.match(osisPointPattern);
+  const leftEnd = (left.osisEnd ?? left.osisStart).match(osisPointPattern);
+  const rightStart = right.osisStart.match(osisPointPattern);
+  const rightEnd = (right.osisEnd ?? right.osisStart).match(osisPointPattern);
+
+  if (
+    !leftStart
+    || !leftEnd
+    || !rightStart
+    || !rightEnd
+    || leftStart[1] !== leftEnd[1]
+    || rightStart[1] !== rightEnd[1]
+    || leftStart[1] !== rightStart[1]
+  ) {
+    return false;
+  }
+
+  return comparePoints(
+    Number(leftStart[2]),
+    Number(leftStart[3]),
+    Number(rightEnd[2]),
+    Number(rightEnd[3]),
+  ) <= 0 && comparePoints(
+    Number(leftEnd[2]),
+    Number(leftEnd[3]),
+    Number(rightStart[2]),
+    Number(rightStart[3]),
+  ) >= 0;
 }
 
 export function sortScriptureReferencesInBibleOrder<T extends { osisStart: string }>(

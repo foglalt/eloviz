@@ -30,6 +30,7 @@ import {
 import {
   formatOsisReference,
   sortScriptureReferencesInBibleOrder,
+  type ScriptureReferenceRange,
 } from "./scripture-references";
 
 type Row = Record<string, unknown>;
@@ -237,16 +238,25 @@ function mapSearchItem(kind: CatalogSearchItem["kind"], row: Row): CatalogSearch
 export async function searchPublicCatalog(
   rawQuery: string,
   selectedKinds: readonly CatalogSearchItem["kind"][] = CATALOG_SEARCH_KINDS,
+  scriptureFilter: ScriptureReferenceRange | null = null,
 ): Promise<CatalogSearchResults> {
   const query = normalizeCatalogSearchQuery(rawQuery);
   const foldedQuery = foldCatalogSearchText(query);
+  const hasTextQuery = foldedQuery.length >= 2;
   const emptyResults = { query, topics: [], studies: [], videos: [], total: 0 };
 
-  if (foldedQuery.length < 2) return emptyResults;
+  if (!hasTextQuery && !scriptureFilter) return emptyResults;
 
   const sql = getSql();
   if (!sql) {
-    return searchBundledCatalog(query, defaultTopics, defaultStudies, defaultVideos, selectedKinds);
+    return searchBundledCatalog(
+      query,
+      defaultTopics,
+      defaultStudies,
+      defaultVideos,
+      selectedKinds,
+      scriptureFilter,
+    );
   }
 
   try {
@@ -260,14 +270,14 @@ export async function searchPublicCatalog(
       "concat_ws(' ', v.title, v.slug, v.description, v.channel_name, v.speaker, topic_data.search_topics)",
     );
 
-    const otherTopicMatches = includedKinds.has("topic") && searchBundledCatalog(
+    const otherTopicMatches = hasTextQuery && includedKinds.has("topic") && searchBundledCatalog(
       query,
       [createOtherTopic(0)],
       [],
       [],
     ).topics.length > 0;
     const [topicRows, studyRows, videoRows, unassignedCountRows] = await Promise.all([
-      includedKinds.has("topic") ? sql.query(`
+      includedKinds.has("topic") && hasTextQuery ? sql.query(`
         SELECT t.id::text, t.slug, t.title, t.description,
           concat(
             (SELECT count(*) FROM study_topics st JOIN studies s ON s.id = st.study_id
@@ -305,7 +315,22 @@ export async function searchPublicCatalog(
           WHERE st.study_id = s.id
         ) topic_data ON true
         WHERE s.status = 'published'
-          AND position($1 in ${studySearchText}) > 0
+          AND ($1 = '' OR position($1 in ${studySearchText}) > 0)
+          AND ($4::text IS NULL OR EXISTS (
+            SELECT 1
+            FROM study_scripture_references r
+            WHERE r.study_id = s.id
+              AND r.document_id = s.published_document_id
+              AND r.book_code = $4
+              AND (
+                r.start_chapter < $7
+                OR (r.start_chapter = $7 AND r.start_verse <= $8)
+              )
+              AND (
+                r.end_chapter > $5
+                OR (r.end_chapter = $5 AND r.end_verse >= $6)
+              )
+          ))
         ORDER BY
           CASE
             WHEN ${foldedSqlText("s.title")} = $1 THEN 0
@@ -316,8 +341,17 @@ export async function searchPublicCatalog(
           s.sort_order,
           s.title
         LIMIT $2
-      `, [foldedQuery, CATALOG_SEARCH_LIMIT, fallbackSearchText]) : Promise.resolve([]),
-      includedKinds.has("video") ? sql.query(`
+      `, [
+        hasTextQuery ? foldedQuery : "",
+        CATALOG_SEARCH_LIMIT,
+        fallbackSearchText,
+        scriptureFilter?.bookCode ?? null,
+        scriptureFilter?.startChapter ?? null,
+        scriptureFilter?.startVerse ?? null,
+        scriptureFilter?.endChapter ?? null,
+        scriptureFilter?.endVerse ?? null,
+      ]) : Promise.resolve([]),
+      includedKinds.has("video") && hasTextQuery ? sql.query(`
         SELECT v.id::text, v.slug, v.title, v.description,
           NULLIF(v.speaker, '') AS meta
         FROM videos v
@@ -370,7 +404,14 @@ export async function searchPublicCatalog(
     };
   } catch (error) {
     console.error("Unable to search the catalogue; using bundled content.", error);
-    return searchBundledCatalog(query, defaultTopics, defaultStudies, defaultVideos, selectedKinds);
+    return searchBundledCatalog(
+      query,
+      defaultTopics,
+      defaultStudies,
+      defaultVideos,
+      selectedKinds,
+      scriptureFilter,
+    );
   }
 }
 

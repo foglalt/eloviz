@@ -5,6 +5,9 @@ import {
   formatHungarianReference,
   formatOsisReference,
   mergeScriptureReferenceRanges,
+  normalizeScriptureReferenceQuery,
+  parseScriptureReferenceQuery,
+  scriptureReferenceRangesOverlap,
   sortScriptureReferencesInBibleOrder,
 } from "./scripture-references.ts";
 
@@ -101,4 +104,48 @@ test("sorts references by canonical book, chapter, and verse order", () => {
     ["1Móz 1:1", "Zsolt 23:1", "Jn 3:1", "Jn 3:16", "Jel 22:17", "Ismeretlen"],
   );
   assert.equal(references[0].label, "Jel 22:17");
+});
+
+test("parses canonical Scripture search intervals and Hungarian aliases", () => {
+  assert.equal(normalizeScriptureReferenceQuery("  János   3:16-4:2  "), "János 3:16-4:2");
+  assert.deepEqual(parseScriptureReferenceQuery("János 3:16-4:2"), {
+    displayLabel: "Jn 3:16-4:2",
+    bookCode: "John",
+    startChapter: 3,
+    startVerse: 16,
+    endChapter: 4,
+    endVerse: 2,
+    osisStart: "John.3.16",
+    osisEnd: "John.4.2",
+  });
+  assert.equal(parseScriptureReferenceQuery("Jn 3"), null);
+  assert.equal(parseScriptureReferenceQuery("Jn 4:2-3:16"), null);
+});
+
+test("matches overlapping Scripture intervals without treating adjacency as overlap", () => {
+  const stored = { osisStart: "John.3.1", osisEnd: "John.3.5" };
+
+  assert.equal(scriptureReferenceRangesOverlap(stored, {
+    osisStart: "John.3.4",
+    osisEnd: "John.3.8",
+  }), true);
+  assert.equal(scriptureReferenceRangesOverlap(stored, {
+    osisStart: "John.2.1",
+    osisEnd: "John.4.1",
+  }), true);
+  assert.equal(scriptureReferenceRangesOverlap(stored, {
+    osisStart: "John.3.6",
+    osisEnd: "John.3.8",
+  }), false);
+  assert.equal(scriptureReferenceRangesOverlap(stored, {
+    osisStart: "Rom.3.4",
+    osisEnd: "Rom.3.8",
+  }), false);
+  assert.equal(scriptureReferenceRangesOverlap({
+    osisStart: "Exod.1.22",
+    osisEnd: "Exod.2.10",
+  }, {
+    osisStart: "Exod.2.5",
+    osisEnd: "Exod.2.5",
+  }), true);
 });

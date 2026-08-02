@@ -11,12 +11,16 @@ import {
 type PublicSearchFormProps = {
   defaultValue?: string;
   defaultKinds?: readonly CatalogSearchKind[];
+  defaultScriptureValue?: string;
+  scriptureInvalid?: boolean;
   variant?: "header" | "page";
 };
 
 export function PublicSearchForm({
   defaultValue = "",
   defaultKinds,
+  defaultScriptureValue = "",
+  scriptureInvalid = false,
   variant = "header",
 }: PublicSearchFormProps) {
   const isPageSearch = variant === "page";
@@ -66,6 +70,31 @@ export function PublicSearchForm({
           </svg>
         )}
       </button>
+      {isPageSearch ? (
+        <div className="public-search__scripture">
+          <label htmlFor="scripture-filter">Tanulmányok szűrése igehely alapján</label>
+          <input
+            aria-describedby="scripture-filter-hint"
+            aria-invalid={scriptureInvalid}
+            defaultValue={defaultScriptureValue}
+            disabled={!selectedKinds.includes("study")}
+            id="scripture-filter"
+            maxLength={80}
+            name="ige"
+            placeholder="Például: Jn 3:16 vagy Jn 3:1-8"
+            type="text"
+          />
+          <span
+            className={scriptureInvalid ? "public-search__error" : undefined}
+            id="scripture-filter-hint"
+            role={scriptureInvalid ? "alert" : undefined}
+          >
+            {scriptureInvalid
+              ? "Nem felismert igehely. Használd például ezt a formátumot: Jn 3:16-18."
+              : "Azok a tanulmányok jelennek meg, amelyek hivatkozása átfedi a megadott verset vagy tartományt."}
+          </span>
+        </div>
+      ) : null}
       {isPageSearch ? (
         <fieldset className="public-search__filters">
           <legend>Hol keressünk?</legend>

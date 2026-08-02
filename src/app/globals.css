@@ -142,6 +142,14 @@ h3 { margin: 0; font-size: clamp(1.45rem, 2.4vw, 2rem); }
 .public-search--page .public-search__query > svg { left: 20px; width: 21px; height: 21px; }
 .public-search--page .public-search__query input { min-height: 58px; padding: 0 18px 0 54px; background: white; font-size: 1.05rem; }
 .public-search--page button { min-width: 128px; padding: 0 22px; letter-spacing: .06em; text-transform: uppercase; }
+.public-search__scripture { grid-column: 1 / -1; display: grid; gap: 7px; margin-top: 20px; }
+.public-search__scripture label { color: var(--ink-deep); font-size: .82rem; font-weight: 800; }
+.public-search__scripture input { width: 100%; min-height: 48px; padding: 0 15px; border: 1px solid var(--line); border-radius: 5px; background: white; color: var(--ink); outline: none; }
+.public-search__scripture input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(15,113,119,.13); }
+.public-search__scripture input[aria-invalid="true"] { border-color: var(--danger); }
+.public-search__scripture input:disabled { background: var(--limestone); color: var(--muted); cursor: not-allowed; opacity: .7; }
+.public-search__scripture span { color: var(--muted); font-size: .8rem; }
+.public-search__scripture .public-search__error { color: var(--danger); font-weight: 700; }
 .public-search__filters { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 10px 24px; margin: 14px 0 0; padding: 0; border: 0; }
 .public-search__filters legend { margin-bottom: 9px; color: var(--ink-deep); font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
 .public-search__filters label { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); cursor: pointer; font-size: .88rem; font-weight: 700; }

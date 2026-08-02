@@ -8,6 +8,7 @@ import {
   searchBundledCatalog,
 } from "./catalog-search.ts";
 import type { StudySummary, TopicSummary, VideoSummary } from "./content-types.ts";
+import { parseScriptureReferenceQuery } from "./scripture-references.ts";
 
 const topic: TopicSummary = {
   id: "topic-1",
@@ -30,7 +31,11 @@ const study: StudySummary = {
   status: "published",
   pdfUrl: "/studies/a-paszka-tipologiaja.pdf",
   topics: [topic],
-  references: [],
+  references: [{
+    label: "Jn 3:1-5",
+    osisStart: "John.3.1",
+    osisEnd: "John.3.5",
+  }],
 };
 
 const video: VideoSummary = {
@@ -123,4 +128,58 @@ test("searches only the selected content types", () => {
   assert.ok(results.studies.length > 0);
   assert.ok(results.videos.length > 0);
   assert.equal(results.total, results.studies.length + results.videos.length);
+});
+
+test("filters studies by overlapping Scripture ranges without requiring text", () => {
+  const overlapping = parseScriptureReferenceQuery("Jn 3:4-8");
+  const separate = parseScriptureReferenceQuery("Jn 3:6-8");
+  assert.ok(overlapping);
+  assert.ok(separate);
+
+  const matching = searchBundledCatalog(
+    "",
+    [topic],
+    [study],
+    [video],
+    ["topic", "study", "video"],
+    overlapping,
+  );
+  const notMatching = searchBundledCatalog(
+    "",
+    [topic],
+    [study],
+    [video],
+    ["study"],
+    separate,
+  );
+
+  assert.deepEqual(matching.studies.map((item) => item.slug), ["a-paszka-tipologiaja"]);
+  assert.equal(matching.topics.length, 0);
+  assert.equal(matching.videos.length, 0);
+  assert.equal(notMatching.total, 0);
+});
+
+test("combines text and Scripture filters for study results", () => {
+  const filter = parseScriptureReferenceQuery("Jn 3:2");
+  assert.ok(filter);
+
+  const matching = searchBundledCatalog(
+    "paszka",
+    [topic],
+    [study],
+    [video],
+    ["study"],
+    filter,
+  );
+  const textMismatch = searchBundledCatalog(
+    "jeremias",
+    [topic],
+    [study],
+    [video],
+    ["study"],
+    filter,
+  );
+
+  assert.equal(matching.studies.length, 1);
+  assert.equal(textMismatch.studies.length, 0);
 });
