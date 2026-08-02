@@ -437,13 +437,23 @@ export async function getStudyBySlug(slug: string): Promise<StudyDetail | null> 
   const study = studies.find((item) => item.slug === slug);
   if (!study) return null;
 
-  let relatedIds: string[] = [];
+  let relatedVideoIds: string[] = [];
+  let relatedStudyIds: string[] = [];
   let article = getDefaultStudyArticle(study.slug);
   const sql = getSql();
   if (sql) {
     try {
-      const [relationRows, articleRows] = await Promise.all([
+      const [videoRelationRows, studyRelationRows, articleRows] = await Promise.all([
         sql.query("SELECT video_id::text AS id FROM study_videos WHERE study_id = $1 ORDER BY sort_order", [study.id]),
+        sql.query(`
+          SELECT (CASE
+            WHEN study_a_id = $1 THEN study_b_id
+            ELSE study_a_id
+          END)::text AS id
+          FROM study_relations
+          WHERE study_a_id = $1 OR study_b_id = $1
+          ORDER BY sort_order, id
+        `, [study.id]),
         sql.query(`
           SELECT d.article_content
           FROM studies s
@@ -451,10 +461,12 @@ export async function getStudyBySlug(slug: string): Promise<StudyDetail | null> 
           WHERE s.id = $1
         `, [study.id]),
       ]);
-      relatedIds = (relationRows as Row[]).map((row) => String(row.id));
+      relatedVideoIds = (videoRelationRows as Row[]).map((row) => String(row.id));
+      relatedStudyIds = (studyRelationRows as Row[]).map((row) => String(row.id));
       article = parseStudyArticle((articleRows as Row[])[0]?.article_content) ?? article;
     } catch {
-      relatedIds = [];
+      relatedVideoIds = [];
+      relatedStudyIds = [];
     }
   }
 
@@ -462,8 +474,11 @@ export async function getStudyBySlug(slug: string): Promise<StudyDetail | null> 
     ...study,
     article,
     references: sortScriptureReferencesInBibleOrder(study.references),
-    relatedVideos: relatedIds.length
-      ? videos.filter((video) => relatedIds.includes(video.id))
+    relatedStudies: relatedStudyIds.length
+      ? studies.filter((candidate) => relatedStudyIds.includes(candidate.id))
+      : [],
+    relatedVideos: relatedVideoIds.length
+      ? videos.filter((video) => relatedVideoIds.includes(video.id))
       : videos.filter((video) => video.topics.some((topic) => study.topics.some((item) => item.id === topic.id))).slice(0, 3),
   };
 }
@@ -497,6 +512,7 @@ export type AdminStudy = Omit<StudySummary, "pdfUrl"> & {
   publishedDocumentId: string | null;
   referenceReviewed: boolean;
   documents: StudyDocumentAdmin[];
+  relatedStudyIds: string[];
   relatedVideoIds: string[];
 };
 export type AdminStudyIndexItem = {
@@ -652,6 +668,12 @@ export async function getAdminStudy(id: string): Promise<AdminStudy | null> {
       COALESCE(s.seo_title, '') AS seo_title, COALESCE(s.seo_description, '') AS seo_description,
       COALESCE((SELECT jsonb_agg(jsonb_build_object('id', t.id::text, 'slug', t.slug, 'title', t.title, 'description', t.description, 'featured', t.featured, 'sort_order', t.sort_order) ORDER BY t.sort_order) FROM study_topics st JOIN topics t ON t.id = st.topic_id WHERE st.study_id = s.id), '[]'::jsonb) AS topics,
       COALESCE((SELECT jsonb_agg(jsonb_build_object('id', r.id::text, 'label', r.display_label, 'osis_start', r.osis_start, 'osis_end', r.osis_end) ORDER BY r.sort_order) FROM study_scripture_references r WHERE r.study_id = s.id AND r.document_id = s.published_document_id), '[]'::jsonb) AS references,
+      COALESCE((SELECT jsonb_agg(related_id ORDER BY sort_order, related_id) FROM (
+        SELECT (CASE WHEN sr.study_a_id = s.id THEN sr.study_b_id ELSE sr.study_a_id END)::text AS related_id,
+          sr.sort_order
+        FROM study_relations sr
+        WHERE sr.study_a_id = s.id OR sr.study_b_id = s.id
+      ) related), '[]'::jsonb) AS related_study_ids,
       COALESCE((SELECT jsonb_agg(video_id::text ORDER BY sort_order) FROM study_videos WHERE study_id = s.id), '[]'::jsonb) AS related_video_ids
     FROM studies s
     WHERE s.id = $1`, [id]);
@@ -693,6 +715,7 @@ export async function getAdminStudy(id: string): Promise<AdminStudy | null> {
     publishedDocumentId: row.published_document_id ? String(row.published_document_id) : null,
     referenceReviewed: Boolean(row.reference_reviewed),
     documents,
+    relatedStudyIds: jsonArray<string>(row.related_study_ids),
     relatedVideoIds: jsonArray<string>(row.related_video_ids),
   };
 }

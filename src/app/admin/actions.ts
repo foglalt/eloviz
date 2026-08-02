@@ -24,6 +24,7 @@ import {
 } from "@/lib/scripture-references";
 import { parseYouTubeId, sanitizePdfFilename, slugifyHungarian, studyInputSchema, topicInputSchema, videoInputSchema } from "@/lib/content-validation";
 import { resolveStudyDocumentRemoval, resolveStudyPublicationStatus } from "@/lib/study-publication";
+import { canonicalStudyRelationPair } from "@/lib/study-relations";
 import { fetchYouTubeMetadata } from "@/lib/youtube-metadata";
 
 function field(formData: FormData, name: string) {
@@ -109,6 +110,7 @@ export async function saveStudyAction(formData: FormData) {
     seoTitle: field(formData, "seoTitle"), seoDescription: field(formData, "seoDescription"),
     status: field(formData, "status"), featured: formData.get("featured") === "on",
     sortOrder: Number(field(formData, "sortOrder") || 0), topicIds: ids(formData, "topicIds"),
+    relatedStudyIds: ids(formData, "relatedStudyIds"),
     relatedVideoIds: ids(formData, "relatedVideoIds"),
   });
   if (!parsed.success) redirect(destination("/admin/tanulmanyok", "error", validationMessage(parsed.error.issues), id));
@@ -123,6 +125,9 @@ export async function saveStudyAction(formData: FormData) {
     );
     const status = id ? publication.status : "draft";
     const studyId = id ?? randomUUID();
+    const relatedStudyPairs = [...new Set(parsed.data.relatedStudyIds)]
+      .map((relatedStudyId) => canonicalStudyRelationPair(studyId, relatedStudyId))
+      .filter((pair) => pair !== null);
     const [rows] = await sql.transaction((transaction) => [
       id
         ? transaction.query(`UPDATE studies SET slug=$2,title=$3,summary=$4,seo_title=NULLIF($5,''),seo_description=NULLIF($6,''),status=$7,featured=$8,sort_order=$9,updated_at=now(),published_at=CASE WHEN $7='published' THEN COALESCE(published_at,now()) ELSE published_at END WHERE id=$1 RETURNING id::text`, [studyId, parsed.data.slug, parsed.data.title, parsed.data.summary, parsed.data.seoTitle, parsed.data.seoDescription, status, parsed.data.featured, parsed.data.sortOrder])
@@ -133,6 +138,12 @@ export async function saveStudyAction(formData: FormData) {
       transaction.query("DELETE FROM study_videos WHERE study_id=$1", [studyId]),
       ...parsed.data.relatedVideoIds.map((videoId, index) =>
         transaction.query("INSERT INTO study_videos(study_id,video_id,sort_order) VALUES($1,$2,$3)", [studyId, videoId, index])),
+      transaction.query("DELETE FROM study_relations WHERE study_a_id=$1 OR study_b_id=$1", [studyId]),
+      ...relatedStudyPairs.map((pair, index) =>
+        transaction.query(
+          "INSERT INTO study_relations(study_a_id,study_b_id,sort_order) VALUES($1,$2,$3)",
+          [pair.studyAId, pair.studyBId, index],
+        )),
     ]);
     if (!rows[0]?.id) throw new Error("A mentendő tanulmány nem található.");
     refreshPublicContent();

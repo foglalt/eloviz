@@ -43,6 +43,7 @@ export const studyInputSchema = z.object({
   featured: z.boolean(),
   sortOrder: z.number().int().min(0).max(10000),
   topicIds: z.array(z.string().uuid()).max(30),
+  relatedStudyIds: z.array(z.string().uuid()).max(30),
   relatedVideoIds: z.array(z.string().uuid()).max(30),
 });
 

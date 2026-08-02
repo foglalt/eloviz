@@ -11,6 +11,7 @@ import { isAdminAuthenticated } from "@/lib/admin-auth";
 import {
   getAdminStudy,
   listAdminStudyIndex,
+  listAdminStudyOptions,
   listAdminTopicOptions,
   listAdminVideoOptions,
 } from "@/lib/content-repository";
@@ -37,10 +38,11 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
   const query = await searchParams;
   const search = query.q?.trim().slice(0, 120) ?? "";
   const requestedPage = Number.parseInt(query.page ?? "1", 10) || 1;
-  const [studyIndex, selected, topics, videos] = await Promise.all([
+  const [studyIndex, selected, topics, studies, videos] = await Promise.all([
     listAdminStudyIndex(search, requestedPage),
     query.edit ? getAdminStudy(query.edit) : Promise.resolve(null),
     listAdminTopicOptions(),
+    listAdminStudyOptions(),
     listAdminVideoOptions(),
   ]);
   const indexItems = studyIndex.items.map((study) => {
@@ -99,7 +101,7 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
               <label htmlFor="summary">Összefoglaló</label>
               <textarea id="summary" name="summary" defaultValue={selected?.summary} required />
             </div>
-            <div className="relation-fields field--full">
+            <div className="relation-fields relation-fields--three field--full">
               <fieldset className="field relation-field">
                 <legend>
                   Témák
@@ -131,6 +133,22 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
                   selectedIds={selected?.topics.map((item) => item.id)}
                   searchLabel="Témák szűrése"
                   emptyLabel="Nincs ilyen téma."
+                />
+              </fieldset>
+              <fieldset className="field relation-field">
+                <legend>Kapcsolódó tanulmányok</legend>
+                <AdminRelationPicker
+                  key={`studies-${selected?.id ?? "new"}`}
+                  name="relatedStudyIds"
+                  options={studies
+                    .filter((study) => study.id !== selected?.id)
+                    .map((study) => ({
+                      id: study.id,
+                      label: study.title,
+                    }))}
+                  selectedIds={selected?.relatedStudyIds}
+                  searchLabel="Tanulmányok szűrése"
+                  emptyLabel="Nincs ilyen tanulmány."
                 />
               </fieldset>
               <fieldset className="field relation-field">

@@ -20,7 +20,7 @@ This phase does not implement the Bible reader or original-language concordances
 - OSIS remains the translation-independent storage format; all detected and stored ranges are displayed with one canonical Hungarian abbreviation format.
 - Videos are YouTube recommendations, not self-hosted media.
 - Video titles and channel names are derived from the YouTube link; the editor separately records the person speaking.
-- A study and video can be explicitly marked as related when they belong together.
+- Studies can be explicitly related to other studies, and studies and videos can be explicitly related when they belong together; both relation types are bidirectional.
 - Topics, studies, videos, descriptions, and relations are editable through a very simple admin.
 - Published studies without an explicit public topic appear under the system-managed `Egyéb` topic; the fallback is derived and does not create a fake editable relationship.
 - The visual language must be redesigned around “living water.”
@@ -35,7 +35,8 @@ This phase does not implement the Bible reader or original-language concordances
 - `study_documents` stores immutable PDF revisions, object-storage metadata, checksum, extraction state, and which revision is currently published.
 - `canonical_books`, `canonical_chapters`, and `canonical_verses` provide translation-independent verse identities before any Bible text is imported.
 - `study_topics` and `video_topics` provide many-to-many topic membership.
-- `study_videos` provides the requested relationship, with optional editor note and ordering.
+- `study_videos` provides one shared bidirectional study-video relationship row, with optional editor note and ordering.
+- `study_relations` stores one canonical undirected pair for every related-study relationship and rejects self-links or duplicate reverse pairs.
 - `study_reference_candidates` stores automatically accepted detected ranges plus source page, context snippet, detector version, and compatibility review status.
 - `study_scripture_references` stores automatically finalized canonical ranges used by public pages and the future reader.
 - Published queries never return drafts. Admin queries are explicitly authenticated and may return both.
@@ -75,9 +76,9 @@ This phase does not implement the Bible reader or original-language concordances
 | `/temak` | All published topics |
 | `/temak/[slug]` | Topic description plus its studies and videos |
 | `/tanulmanyok` | All published studies |
-| `/tanulmanyok/[slug]` | Study description, semantic HTML article, PDF access, confirmed Scripture references, topics, and related videos |
+| `/tanulmanyok/[slug]` | Study description, semantic HTML article, PDF access, confirmed Scripture references, topics, related studies, and related videos |
 | `/videok` | All published video recommendations |
-| `/videok/[slug]` | Descriptive watch page, topics, and related studies |
+| `/videok/[slug]` | Descriptive watch page with topics and related studies in its sidebar |
 | `/admin` | Authenticated editorial dashboard |
 | `/admin/temak/...` | Topic create/edit workflow |
 | `/admin/tanulmanyok/...` | Study create/edit workflow |

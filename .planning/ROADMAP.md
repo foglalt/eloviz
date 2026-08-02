@@ -29,6 +29,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 13. [x] **03-13: Add route-aware multi-type search filters** — Scope compact searches to their current catalogue section and let visitors search any one, two, or all three content types.
 14. [x] **03-14: Refine public preview metadata and sizing** — Hide video channels until selection and hold public preview descriptions to a consistent three-line height.
 29. [x] **03-29: Publish PDF-derived HTML studies** — Generate a safe semantic article during PDF processing, retain the original download, and place canonical references below the document action in the study sidebar.
+30. [x] **03-30: Add symmetric related content** — Let editors connect studies to studies, preserve bidirectional study-video behavior, and present related links in public detail sidebars.
 
 ## Phase 04 Proposed Plans
 
@@ -50,7 +51,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 |---|---:|---|---|
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
-| 03 Evergreen Content Library | 29/29 | Completed | 2026-08-02 |
+| 03 Evergreen Content Library | 30/30 | Completed | 2026-08-02 |
 | 04 Simple Bible Reader | 0/4 proposed | Gated by one translation licence/source | — |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 

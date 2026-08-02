@@ -65,6 +65,7 @@ export type VideoSummary = {
 
 export type StudyDetail = StudySummary & {
   article: StudyArticle | null;
+  relatedStudies: StudySummary[];
   relatedVideos: VideoSummary[];
 };
 

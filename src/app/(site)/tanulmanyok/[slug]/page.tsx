@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs, breadcrumbJsonLd } from "@/components/breadcrumbs";
 import { JsonLd } from "@/components/json-ld";
-import { VideoRows } from "@/components/resource-lists";
 import { StudyArticle } from "@/components/study-article";
 import { getStudyBySlug } from "@/lib/content-repository";
 import { absoluteSiteUrl } from "@/lib/site-config";
@@ -98,6 +97,34 @@ export default async function StudyPage({ params }: Props) {
               </ul>
             </div>
           ) : null}
+          {study.relatedStudies.length ? (
+            <div className="detail-sidebar__section study-detail__related-studies">
+              <h2>Kapcsolódó tanulmányok</h2>
+              <ul>
+                {study.relatedStudies.map((relatedStudy) => (
+                  <li key={relatedStudy.id}>
+                    <Link className="text-link" href={`/tanulmanyok/${relatedStudy.slug}`}>
+                      {relatedStudy.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+          {study.relatedVideos.length ? (
+            <div className="detail-sidebar__section study-detail__related-videos">
+              <h2>Kapcsolódó videók</h2>
+              <ul>
+                {study.relatedVideos.map((video) => (
+                  <li key={video.id}>
+                    <Link className="text-link" href={`/videok/${video.slug}`}>
+                      {video.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </aside>
         <article className="detail-copy study-detail__article" aria-labelledby="study-title">
           {study.article
@@ -105,18 +132,6 @@ export default async function StudyPage({ params }: Props) {
             : <p className="study-article__fallback">A teljes tanulmány jelenleg a PDF-dokumentumban olvasható.</p>}
         </article>
       </div>
-      {study.relatedVideos.length ? (
-        <section className="section">
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">Kapcsolódó tartalom</p>
-              <h2>Videóajánlók</h2>
-            </div>
-            <p>A tanulmány mellé válogatott előadások.</p>
-          </div>
-          <VideoRows videos={study.relatedVideos} />
-        </section>
-      ) : null}
     </div>
   );
 }
