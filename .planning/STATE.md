@@ -8,7 +8,7 @@
 **Status:** Plan 03-27 complete and verified
 **Progress:** 100%
 **Last Activity:** 2026-08-02
-**Last Activity Description:** Verification completed (passed)
+**Last Activity Description:** Completed and deployed plan 03-27
 **Paused At:** Plan 03-27 complete and verified
 
 ## Delivered
@@ -74,6 +74,8 @@
 - Study pages now present one PDF action under the sidebar document heading, with
   the bare filename and obsolete PDF/reference explanations removed; lint,
   strict TypeScript, production build, and local rendered-page checks passed.
+- Production deployment `dpl_5r8TS6tjGwP3AvauYRMqbwjj7u4Z`: READY; the live
+  study page passed placement, link-target, removed-copy, and runtime-log checks.
 
 ## Next Decision Gate
 

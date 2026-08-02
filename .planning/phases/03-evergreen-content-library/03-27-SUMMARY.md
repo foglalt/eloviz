@@ -20,6 +20,9 @@ completed: 2026-08-02
 - A local rendered-page check for `A Páska tipológiája` returned HTTP 200,
   found exactly one PDF button inside the sidebar, and confirmed that the bare
   filename and both removed explanatory texts were absent.
+- Production deployment `dpl_5r8TS6tjGwP3AvauYRMqbwjj7u4Z` reached READY.
+  The live study page passed the same checks, its PDF button targets the
+  controlled document route, and the deployment error/fatal log scan was clean.
 
 ---
 *Completed: 2026-08-02*
