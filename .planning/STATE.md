@@ -4,12 +4,12 @@
 **Current Phase:** 03
 **Current Phase Name:** Evergreen Content Library
 **Current Plan:** 03-30
-**Total Plans in Phase:** 29
-**Status:** Ready to execute
+**Total Plans in Phase:** 30
+**Status:** Completed and verified
 **Progress:** 100%
 **Last Activity:** 2026-08-02
-**Last Activity Description:** Verification completed (passed)
-**Paused At:** Plan 03-29 complete and verified
+**Last Activity Description:** Added symmetric study relations and compact related-content sidebars
+**Paused At:** Plan 03-30 complete and verified
 
 ## Delivered
 
@@ -20,6 +20,7 @@
 - Five seeded topics, three polished study PDFs, and one verified Hungarian BibleProject video.
 - Legacy code and database tables retired after local private backup; old routes permanently redirected.
 - Text-readable study PDFs now publish a safe semantic HTML reading view while the original PDF remains downloadable.
+- Study-study and study-video relationships are bidirectional, editable from either side, and presented in public detail sidebars.
 
 ## Verification Snapshot
 
@@ -88,6 +89,12 @@
 - Production deployment `dpl_8kT5JCQ4Qjerp1Jr7Nt2XUEo5SQ6`: READY; the live
   Páska study rendered 15 headings, 32 Scripture excerpts, and 28 sidebar
   references, while the original 75,525-byte PDF response remained intact.
+- Canonical undirected study pairs, the three-picker study editor, symmetric
+  study-video verification, and compact public related-content sidebars passed
+  51 focused tests, migration/transaction probes, lint, strict TypeScript,
+  production build, and authenticated desktop/mobile browser checks.
+- Production deployment `dpl_ALdtMfjpJYoJ8tNLtB23qLn8ekjv`: READY; live
+  study/video pages and admin protection passed with clean error/fatal logs.
 
 ## Next Decision Gate
 
@@ -102,6 +109,6 @@
 
 ## Session
 
-**Last Date:** 2026-08-02T16:51:40+02:00
-**Stopped At:** Verification completed
-**Resume File:** None
+**Last Date:** 2026-08-02T17:00:00+02:00
+**Stopped At:** Plan 03-30 complete, deployed, and verified
+**Resume File:** .planning/STATE.md

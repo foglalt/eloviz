@@ -17,6 +17,25 @@ status: passed
 | `npm run lint` | 0 | PASS |
 | `npm run build` | 0 | PASS |
 
+## Plan 03-30 Evidence
+
+- 51 focused tests passed, including three canonical study-relation tests;
+  strict TypeScript also passed.
+- Migration `006_study_relations` applied to production. A transactional probe
+  resolved the same stored pair from both study IDs and removed its temporary
+  records before completion.
+- Authenticated local admin checks confirmed three aligned relation pickers,
+  self-exclusion, study A selecting B and B loading A as selected, and a study
+  selecting a video that the video editor loaded in reverse.
+- Isolated public probe records confirmed bidirectional study links, related
+  study/video sidebar sections, draft filtering, removal of wide related lists,
+  mobile section order, and zero horizontal overflow. All probe studies,
+  documents, videos, and relations were deleted after verification.
+- Production deployment `dpl_ALdtMfjpJYoJ8tNLtB23qLn8ekjv` reached READY.
+  Live study/video pages returned 200, retained their article/embed and compact
+  sidebars, had no browser errors or overflow, and the admin remained protected.
+- Deployment-scoped error/fatal logs and route error clusters were clean.
+
 ## Detailed Output
 
 ### npm run lint
