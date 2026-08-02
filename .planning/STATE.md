@@ -3,13 +3,13 @@
 **Project:** Élő Víz
 **Current Phase:** 03
 **Current Phase Name:** Evergreen Content Library
-**Current Plan:** 03-27
-**Total Plans in Phase:** 27
-**Status:** Plan 03-27 complete and verified
+**Current Plan:** 03-28
+**Total Plans in Phase:** 28
+**Status:** Plan 03-28 complete and verified
 **Progress:** 100%
 **Last Activity:** 2026-08-02
-**Last Activity Description:** Completed and deployed plan 03-27
-**Paused At:** Plan 03-27 complete and verified
+**Last Activity Description:** Verification completed (passed)
+**Paused At:** Plan 03-28 complete and verified
 
 ## Delivered
 
@@ -76,6 +76,8 @@
   strict TypeScript, production build, and local rendered-page checks passed.
 - Production deployment `dpl_5r8TS6tjGwP3AvauYRMqbwjj7u4Z`: READY; the live
   study page passed placement, link-target, removed-copy, and runtime-log checks.
+- Study document actions now have 14 px of heading separation, matching sidebar
+  list rhythm; lint and the production build passed.
 
 ## Next Decision Gate
 
@@ -89,6 +91,6 @@
 
 ## Session
 
-**Last Date:** 2026-08-02T13:25:23+02:00
+**Last Date:** 2026-08-02T13:32:14+02:00
 **Stopped At:** Verification completed
 **Resume File:** None
