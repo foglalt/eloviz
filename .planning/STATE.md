@@ -4,12 +4,12 @@
 **Current Phase:** 03
 **Current Phase Name:** Evergreen Content Library
 **Current Plan:** 03-29
-**Total Plans in Phase:** 28
-**Status:** Ready to execute
+**Total Plans in Phase:** 29
+**Status:** Completed and verified
 **Progress:** 100%
 **Last Activity:** 2026-08-02
-**Last Activity Description:** Verification completed (passed)
-**Paused At:** Plan 03-28 complete and verified
+**Last Activity Description:** Published PDF-derived HTML study pages and verified the production rollout
+**Paused At:** Plan 03-29 complete and verified
 
 ## Delivered
 
@@ -19,6 +19,7 @@
 - Living-water visual identity, Revelation 22:17 invitation, responsive layouts, sitemap, canonicals, structured data, and controlled PDF delivery.
 - Five seeded topics, three polished study PDFs, and one verified Hungarian BibleProject video.
 - Legacy code and database tables retired after local private backup; old routes permanently redirected.
+- Text-readable study PDFs now publish a safe semantic HTML reading view while the original PDF remains downloadable.
 
 ## Verification Snapshot
 
@@ -80,12 +81,20 @@
   list rhythm; lint and the production build passed.
 - Production deployment `dpl_5drA2KM4WkJHSZvKRu5W9Hrq1WAA`: READY; the live
   scoped spacing rule, document layout, and runtime-log checks passed.
+- Layout-aware PDF-to-article conversion, versioned JSON storage, migration 005,
+  upload/seed/backfill integration, semantic public rendering, retained PDF,
+  and sidebar Bible references passed 48 focused tests, lint, strict TypeScript,
+  production build, local responsive Chromium checks, and production backfill.
+- Production deployment `dpl_8kT5JCQ4Qjerp1Jr7Nt2XUEo5SQ6`: READY; the live
+  Páska study rendered 15 headings, 32 Scripture excerpts, and 28 sidebar
+  references, while the original 75,525-byte PDF response remained intact.
 
 ## Next Decision Gate
 
-- PDF-derived HTML study pages are deferred to V2; the current PDF-first publishing workflow remains in place while smaller quality-of-life improvements take priority.
 - Before Phase 04, select and document one Hungarian Bible translation whose full text may legally be stored and displayed.
-- On the next new PDF revision, confirm the deployed upload action performs extraction and automatic finalization directly in Vercel; the repaired `Teszt.pdf` row and packaged runtime are already verified.
+- On the next new PDF revision, spot-check the automatically generated heading
+  and paragraph structure; extraction and storage are automatic, while manual
+  HTML correction remains intentionally out of scope.
 
 ## Workflow Preference
 
@@ -93,6 +102,6 @@
 
 ## Session
 
-**Last Date:** 2026-08-02T14:13:31+02:00
-**Stopped At:** Verification completed
-**Resume File:** None
+**Last Date:** 2026-08-02T14:20:00+02:00
+**Stopped At:** Plan 03-29 complete, deployed, and verified
+**Resume File:** .planning/STATE.md

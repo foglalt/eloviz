@@ -17,6 +17,26 @@ status: passed
 | `npm run lint` | 0 | PASS |
 | `npm run build` | 0 | PASS |
 
+## Plan 03-29 Evidence
+
+- `npm run test:article`: 4/4 passed.
+- `npm run test:pdf`: 2/2 passed against the production PDF.js runtime.
+- Reference, publication, search, storage, topic, YouTube, admin-shortcut,
+  and analytics suites: 42/42 passed.
+- `npx tsc --noEmit`: passed.
+- Migration `005_study_article_content` applied to production and the current
+  Páska document was backfilled into 53 semantic blocks.
+- Local Chromium at 1440 px and 390 px confirmed complete article content,
+  PDF-before-article mobile order, 28 sidebar references, no duplicate title,
+  no browser errors, and no horizontal overflow.
+- Production deployment `dpl_8kT5JCQ4Qjerp1Jr7Nt2XUEo5SQ6` reached READY.
+  The live study returned 200 with 15 headings, 32 Scripture excerpts, 28
+  sidebar references, correct mobile order, and no browser errors or overflow.
+- The retained PDF endpoint returned 200, `application/pdf`, the original
+  75,525-byte payload, and its UTF-8 inline filename. Deployment logs showed
+  no failed request or application exception; the successful PDF request emits
+  one pre-existing Node `Buffer()` dependency deprecation warning.
+
 ## Detailed Output
 
 ### npm run lint
