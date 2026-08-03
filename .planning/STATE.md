@@ -5,11 +5,11 @@
 **Current Phase Name:** Evergreen Content Library
 **Current Plan:** 03-31
 **Total Plans in Phase:** 31
-**Status:** In progress
-**Progress:** 95%
+**Status:** Completed and verified
+**Progress:** 100%
 **Last Activity:** 2026-08-03
-**Last Activity Description:** Corrected Blob credential routing and verified the migration path locally
-**Paused At:** Awaiting connected-project deployment and PDF migration
+**Last Activity Description:** Deployed the Blob credential fix and migrated the existing PDF from Postgres to Blob
+**Paused At:** Plan 03-31 complete, deployed, migrated, and verified
 
 ## Delivered
 
@@ -21,6 +21,9 @@
 - Legacy code and database tables retired after local private backup; old routes permanently redirected.
 - Text-readable study PDFs now publish a safe semantic HTML reading view while the original PDF remains downloadable.
 - Study-study and study-video relationships are bidirectional, editable from either side, and presented in public detail sidebars.
+- Production PDF uploads now use explicit legacy-token or request-context OIDC
+  Blob authentication, cannot silently fall back to Postgres, and include a
+  checksum-verifying migration path for legacy database-backed documents.
 
 ## Verification Snapshot
 
@@ -95,10 +98,12 @@
   production build, and authenticated desktop/mobile browser checks.
 - Production deployment `dpl_ALdtMfjpJYoJ8tNLtB23qLn8ekjv`: READY; live
   study/video pages and admin protection passed with clean error/fatal logs.
-- PDF storage investigation confirmed the current 75,525-byte uploaded PDF is
-  stored in Postgres because the environment-only Blob gate is incompatible
-  with request-context OIDC delivery; valid matching credentials, SDK OIDC
-  precedence, and the empty connected store are recorded in the investigation.
+- PDF storage investigation isolated the environment-only credential gate and
+  request-context OIDC mismatch; the pre-fix evidence and credential validation
+  are preserved in the investigation report.
+- Blob credential routing, production fallback prevention, 53 focused tests,
+  real private-Blob probe, connected deployment, guarded migration, cleared
+  database bytes, exact checksum preservation, and live PDF delivery: passed.
 
 ## Next Decision Gate
 
@@ -114,5 +119,5 @@
 ## Session
 
 **Last Date:** 2026-08-03
-**Stopped At:** Blob fix verified locally; deployment and PDF migration pending
-**Resume File:** .planning/phases/03-evergreen-content-library/03-31-PLAN.md
+**Stopped At:** Plan 03-31 complete, deployed, migrated, and verified
+**Resume File:** .planning/STATE.md

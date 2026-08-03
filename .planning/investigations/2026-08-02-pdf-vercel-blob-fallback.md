@@ -3,6 +3,8 @@
 **Date:** 2026-08-02
 **Scope:** Diagnose why an uploaded PDF was stored in Postgres instead of
 Vercel Blob. No application code or production data was changed.
+**Resolution:** Fixed, deployed, and migrated on 2026-08-03. See
+`03-31-SUMMARY.md`.
 
 ## Finding
 
@@ -100,3 +102,10 @@ real Blob upload or assert that production must use Blob.
    `storage_key`.
 5. Consider removing the silent production fallback or at least logging and
    surfacing it, so a missing Blob connection cannot go unnoticed again.
+
+## Resolution evidence
+
+Plan 03-31 implemented every recommended application change. The connected
+deployment succeeded before the existing PDF was migrated. The database row now
+uses Blob with `file_data` cleared; direct Blob and live-route downloads retain
+the original 75,525-byte size and SHA-256 checksum.

@@ -19,6 +19,17 @@ status: passed
 
 ## Detailed Output
 
+## Plan 03-31 production evidence
+
+- 53 focused tests: PASS.
+- Strict TypeScript (`npx tsc --noEmit`): PASS.
+- Real private Blob upload/read/checksum/delete probe: PASS (64,339 bytes).
+- Connected Vercel deployment for commit `f55cb6c`: SUCCESS.
+- Guarded database-to-Blob migration: PASS (one 75,525-byte document).
+- Post-migration database state: `storage_kind = 'blob'`, `file_data IS NULL`.
+- Direct Blob read and live controlled PDF route: PASS; byte size and SHA-256
+  match the pre-migration document, with live HTTP 200 and `application/pdf`.
+
 ### npm run lint
 
 Exit code: 0
