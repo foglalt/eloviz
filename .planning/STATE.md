@@ -3,13 +3,13 @@
 **Project:** Élő Víz
 **Current Phase:** 03
 **Current Phase Name:** Evergreen Content Library
-**Current Plan:** 03-30
-**Total Plans in Phase:** 30
-**Status:** Completed and verified
-**Progress:** 100%
-**Last Activity:** 2026-08-02
-**Last Activity Description:** Added symmetric study relations and compact related-content sidebars
-**Paused At:** Plan 03-30 complete and verified
+**Current Plan:** 03-31
+**Total Plans in Phase:** 31
+**Status:** In progress
+**Progress:** 95%
+**Last Activity:** 2026-08-03
+**Last Activity Description:** Corrected Blob credential routing and verified the migration path locally
+**Paused At:** Awaiting connected-project deployment and PDF migration
 
 ## Delivered
 
@@ -95,6 +95,10 @@
   production build, and authenticated desktop/mobile browser checks.
 - Production deployment `dpl_ALdtMfjpJYoJ8tNLtB23qLn8ekjv`: READY; live
   study/video pages and admin protection passed with clean error/fatal logs.
+- PDF storage investigation confirmed the current 75,525-byte uploaded PDF is
+  stored in Postgres because the environment-only Blob gate is incompatible
+  with request-context OIDC delivery; valid matching credentials, SDK OIDC
+  precedence, and the empty connected store are recorded in the investigation.
 
 ## Next Decision Gate
 
@@ -109,6 +113,6 @@
 
 ## Session
 
-**Last Date:** 2026-08-02T17:00:00+02:00
-**Stopped At:** Plan 03-30 complete, deployed, and verified
-**Resume File:** .planning/STATE.md
+**Last Date:** 2026-08-03
+**Stopped At:** Blob fix verified locally; deployment and PDF migration pending
+**Resume File:** .planning/phases/03-evergreen-content-library/03-31-PLAN.md

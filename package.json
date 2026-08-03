@@ -14,6 +14,7 @@
     "db:backup-legacy": "node --env-file=.env scripts/backup-legacy.mjs",
     "db:seed": "node --env-file=.env --experimental-strip-types scripts/seed.mjs",
     "db:backfill-study-articles": "node --env-file=.env --experimental-strip-types scripts/backfill-study-articles.ts",
+    "db:migrate-pdf-blobs": "node --env-file=.env --experimental-strip-types scripts/migrate-pdf-blobs.ts",
     "db:normalize-references": "node --env-file=.env --experimental-strip-types scripts/normalize-scripture-labels.ts",
     "test:references": "node --experimental-strip-types --test src/lib/scripture-references.test.ts",
     "test:storage": "node --experimental-strip-types --test src/lib/blob-storage-config.test.ts",

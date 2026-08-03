@@ -248,6 +248,15 @@ export async function uploadStudyPdfAction(formData: FormData) {
   } catch (error) {
     rethrowFrameworkRedirect(error);
     const duplicate = error instanceof Error && error.message.includes("sha256");
+    if (!duplicate) {
+      console.error(JSON.stringify({
+        level: "error",
+        message: "PDF storage or finalization failed",
+        studyId,
+        filename,
+        error: error instanceof Error ? error.message : String(error),
+      }));
+    }
     redirect(destination("/admin/tanulmanyok", "error", duplicate ? "Ugyanez a PDF már fel van töltve ehhez a tanulmányhoz." : "A PDF feldolgozása nem sikerült.", studyId));
   }
 }
