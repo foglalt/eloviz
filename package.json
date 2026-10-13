@@ -26,7 +26,9 @@
     "test:study-relations": "node --experimental-strip-types --test src/lib/study-relations.test.ts",
     "test:youtube": "node --experimental-strip-types --test src/lib/youtube-metadata.test.ts",
     "test:admin-shortcut": "node --experimental-strip-types --test src/lib/admin-save-shortcut.test.ts",
-    "test:analytics": "node --experimental-strip-types --test src/lib/analytics-core.test.ts"
+    "test:analytics": "node --experimental-strip-types --test src/lib/analytics-core.test.ts",
+    "test:newsletter": "node --experimental-strip-types --test src/lib/newsletter-core.test.ts",
+    "test:series": "node --experimental-strip-types --test src/lib/study-series-core.test.ts"
   },
   "dependencies": {
     "@napi-rs/canvas": "^1.0.2",

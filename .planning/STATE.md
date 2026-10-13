@@ -3,13 +3,13 @@
 **Project:** Élő Víz
 **Current Phase:** 03
 **Current Phase Name:** Evergreen Content Library
-**Current Plan:** 03-31
-**Total Plans in Phase:** 31
-**Status:** Completed and verified
+**Current Plan:** 03-33
+**Total Plans in Phase:** 33
+**Status:** Plan 03-33 implemented and verified; release pending
 **Progress:** 100%
-**Last Activity:** 2026-08-03
-**Last Activity Description:** Deployed the Blob credential fix and migrated the existing PDF from Postgres to Blob
-**Paused At:** Plan 03-31 complete, deployed, migrated, and verified
+**Last Activity:** 2026-10-13
+**Last Activity Description:** Verification completed (passed)
+**Paused At:** Plan 03-33 locally complete; pending commit/push and rollout
 
 ## Delivered
 
@@ -24,9 +24,19 @@
 - Production PDF uploads now use explicit legacy-token or request-context OIDC
   Blob authentication, cannot silently fall back to Postgres, and include a
   checksum-verifying migration path for legacy database-backed documents.
+- First-visit development notice, consented email signup, and protected subscriber
+  overview are implemented locally in plan 03-32; automated email delivery remains deferred.
+- Ordered study series, chapter PDFs/URLs, author/source metadata, admin ordering,
+  add-next defaults, contents and previous/next links are implemented in plan 03-33.
 
 ## Verification Snapshot
 
+- Plan 03-33: 64 tests, migration 008, transactional ordering/concurrency/rollback,
+  revision guards, authenticated editor flows, public SEO/publication filters,
+  responsive checks and consecutive confirmations passed; fixtures removed.
+- 2026-10-13 state audit: all 58 automated tests, lint, production build with
+  TypeScript checks, and memory health passed. Live homepage returned HTTP 200;
+  plan 03-32 remains uncommitted with no production rollout recorded.
 - Reference detector tests, lint, strict TypeScript, production build: passed.
 - Chromium route, 404, sitemap, PDF header, responsive overflow, admin protection, and CRUD checks: passed.
 - Complete PDF editorial lifecycle: passed with four detected and published references; test content then safely deleted.
@@ -107,6 +117,8 @@
 
 ## Next Decision Gate
 
+- Finish the plan 03-32 commit/push and verify its production rollout before
+  treating the local email-signup feature as deployed.
 - Before Phase 04, select and document one Hungarian Bible translation whose full text may legally be stored and displayed.
 - On the next new PDF revision, spot-check the automatically generated heading
   and paragraph structure; extraction and storage are automatic, while manual
@@ -118,6 +130,6 @@
 
 ## Session
 
-**Last Date:** 2026-08-03
-**Stopped At:** Plan 03-31 complete, deployed, migrated, and verified
-**Resume File:** .planning/STATE.md
+**Last Date:** 2026-10-13T10:36:37+02:00
+**Stopped At:** Verification completed
+**Resume File:** None

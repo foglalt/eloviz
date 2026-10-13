@@ -21,11 +21,23 @@ This phase does not implement the Bible reader or original-language concordances
 - Videos are YouTube recommendations, not self-hosted media.
 - Video titles and channel names are derived from the YouTube link; the editor separately records the person speaking.
 - Studies can be explicitly related to other studies, and studies and videos can be explicitly related when they belong together; both relation types are bidirectional.
+- Ordered named study series replace the related-study picker as the primary
+  study grouping workflow. One study belongs to at most one series, with its own
+  stable study URL and separate chapter PDF. Legacy undirected links are preserved.
+- Series have an introduction, optional author/source, independent publication,
+  ordered contents, and previous/next links across readable published chapters.
+- Editors can attach existing studies, reorder/remove parts, move membership in
+  the study editor, or create the next chapter with series/position/topics prefilled.
+- The first intended series are Hungarian Stephen Bohr study notes from SUMtv.
+  The user confirms permission to translate/publish and chooses separate chapter
+  PDF uploads; translation/import and automatic PDF splitting are outside plan 03-33.
 - Topics, studies, videos, descriptions, and relations are editable through a very simple admin.
 - Published studies without an explicit public topic appear under the system-managed `Egyéb` topic; the fallback is derived and does not create a fake editable relationship.
 - The visual language must be redesigned around “living water.”
 - Revelation 22:17 may anchor the invitation and brand message.
 - Planning and feasibility work must be complete before product code is edited.
+- First-time visitors are told that the site is still under development and
+  can explicitly consent to future email notifications about new content.
 
 ## Architecture Decisions
 
@@ -37,6 +49,11 @@ This phase does not implement the Bible reader or original-language concordances
 - `study_topics` and `video_topics` provide many-to-many topic membership.
 - `study_videos` provides one shared bidirectional study-video relationship row, with optional editor note and ordering.
 - `study_relations` stores one canonical undirected pair for every related-study relationship and rejects self-links or duplicate reverse pairs.
+- `study_series` stores series metadata and publication; `study_series_parts`
+  has a unique study membership and deferred unique per-series position. A shared
+  transaction lock serializes reorder/move/delete operations; exact timestamp
+  revisions reject stale series-list saves. Public queries exclude drafts and
+  missing PDFs and do not renumber around unpublished editorial chapters.
 - `study_reference_candidates` stores automatically accepted detected ranges plus source page, context snippet, detector version, and compatibility review status.
 - `study_scripture_references` stores automatically finalized canonical ranges used by public pages and the future reader.
 - Published queries never return drafts. Admin queries are explicitly authenticated and may return both.
@@ -157,7 +174,9 @@ Phase 03 creates the canonical verse structure and confirmed study mappings but 
 
 ## Deferred Ideas
 
-- User accounts, bookmarks, reading progress, comments, newsletters, and personalization.
+- User accounts, bookmarks, reading progress, comments, automated newsletter
+  composition/delivery, and personalization. Email collection itself was later
+  authorized and delivered in plan 03-32.
 - Site-wide full-text content search unless the initial catalogue size justifies it during implementation.
 - Broader YouTube Data API synchronization beyond link-time title/channel metadata.
 - General media library, image uploads, audio content, or podcast feeds beyond study PDFs.

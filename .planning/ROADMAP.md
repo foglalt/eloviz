@@ -30,6 +30,9 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 14. [x] **03-14: Refine public preview metadata and sizing** — Hide video channels until selection and hold public preview descriptions to a consistent three-line height.
 29. [x] **03-29: Publish PDF-derived HTML studies** — Generate a safe semantic article during PDF processing, retain the original download, and place canonical references below the document action in the study sidebar.
 30. [x] **03-30: Add symmetric related content** — Let editors connect studies to studies, preserve bidirectional study-video behavior, and present related links in public detail sidebars.
+31. [x] **03-31: Fix Vercel Blob PDF storage** — Route production PDF storage through explicit Blob credentials and safely migrate the legacy database-backed document.
+32. [x] **03-32: Add first-visit email signup** — Explain that the site is growing, collect consented email addresses, and expose the list only in the authenticated editorial area.
+33. [x] **03-33: Add ordered study series** — Group chapter PDFs into named series with editable order, add-next shortcuts, independent chapter URLs, contents and previous/next navigation.
 
 ## Phase 04 Proposed Plans
 
@@ -51,9 +54,9 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 |---|---:|---|---|
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
-| 03 Evergreen Content Library | 30/30 | Completed | 2026-08-02 |
+| 03 Evergreen Content Library | 33/33 | Implemented and verified locally; rollout pending | 2026-10-13 |
 | 04 Simple Bible Reader | 0/4 proposed | Gated by one translation licence/source | — |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 
 ---
-*Last updated: 2026-08-02*
+*Last updated: 2026-10-13*

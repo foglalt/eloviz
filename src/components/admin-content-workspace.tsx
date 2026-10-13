@@ -7,6 +7,7 @@ type Props = {
   title: string;
   message?: string;
   error?: string;
+  successKey?: string;
   index: ReactNode;
   children: ReactNode;
 };
@@ -16,6 +17,7 @@ export function AdminContentWorkspace({
   title,
   message,
   error,
+  successKey,
   index,
   children,
 }: Props) {
@@ -24,7 +26,7 @@ export function AdminContentWorkspace({
       <div className="admin-heading">
         <div><p className="eyebrow">{eyebrow}</p><h1>{title}</h1></div>
       </div>
-      <AdminSuccessDialog message={message} />
+      <AdminSuccessDialog key={successKey} message={message} />
       <AdminNotice error={error} />
       <div className="admin-grid">
         {index}

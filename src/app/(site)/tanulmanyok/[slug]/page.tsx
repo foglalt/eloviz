@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs, breadcrumbJsonLd } from "@/components/breadcrumbs";
 import { JsonLd } from "@/components/json-ld";
 import { StudyArticle } from "@/components/study-article";
+import { StudySeriesContents, StudySeriesNavigation } from "@/components/study-series-navigation";
 import { getStudyBySlug } from "@/lib/content-repository";
 import { absoluteSiteUrl } from "@/lib/site-config";
 
@@ -35,6 +36,7 @@ export default async function StudyPage({ params }: Props) {
   const crumbs = [
     { label: "Kezdőlap", href: "/" },
     { label: "Tanulmányok", href: "/tanulmanyok" },
+    ...(study.series ? [{ label: study.series.title, href: `/sorozatok/${study.series.slug}` }] : []),
     { label: study.title, href: `/tanulmanyok/${study.slug}` },
   ];
 
@@ -50,16 +52,22 @@ export default async function StudyPage({ params }: Props) {
           inLanguage: "hu",
           mainEntityOfPage: absoluteSiteUrl(`/tanulmanyok/${study.slug}`),
           publisher: { "@type": "Organization", name: "Élő Víz" },
+          ...(study.series ? {
+            isPartOf: { "@type": "CreativeWorkSeries", "@id": absoluteSiteUrl(`/sorozatok/${study.series.slug}`), name: study.series.title },
+            ...(study.series.author ? { author: { "@type": "Person", name: study.series.author } } : {}),
+          } : {}),
         }}
       />
       <Breadcrumbs items={[...crumbs.slice(0, -1), { label: study.title }]} />
       <div className="detail-grid study-detail-grid">
         <div className="detail-copy study-detail__intro">
-          <p className="eyebrow">Bibliatanulmány</p>
+          <p className="eyebrow">{study.series ? `${study.series.parts.find((part) => part.id === study.id)?.position}. rész` : "Bibliatanulmány"}</p>
+          {study.series ? <Link className="text-link study-series-link" href={`/sorozatok/${study.series.slug}`}>{study.series.title}</Link> : null}
           <h1 id="study-title">{study.title}</h1>
           <p className="lead">{study.summary}</p>
         </div>
         <aside className="detail-sidebar study-detail__sidebar">
+          {study.series ? <div className="detail-sidebar__section study-detail__series"><h2>A sorozat részei</h2><Link className="text-link" href={`/sorozatok/${study.series.slug}`}>{study.series.title}</Link><StudySeriesContents series={study.series} currentStudyId={study.id} /></div> : null}
           <div className="detail-sidebar__section study-detail__topics">
             <h2>Témák</h2>
             <ul>
@@ -97,7 +105,7 @@ export default async function StudyPage({ params }: Props) {
               </ul>
             </div>
           ) : null}
-          {study.relatedStudies.length ? (
+          {!study.series && study.relatedStudies.length ? (
             <div className="detail-sidebar__section study-detail__related-studies">
               <h2>Kapcsolódó tanulmányok</h2>
               <ul>
@@ -130,6 +138,7 @@ export default async function StudyPage({ params }: Props) {
           {study.article
             ? <StudyArticle article={study.article} />
             : <p className="study-article__fallback">A teljes tanulmány jelenleg a PDF-dokumentumban olvasható.</p>}
+          {study.series ? <StudySeriesNavigation series={study.series} studyId={study.id} /> : null}
         </article>
       </div>
     </div>

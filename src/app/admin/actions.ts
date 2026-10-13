@@ -22,7 +22,8 @@ import {
   detectScriptureReferences,
   mergeScriptureReferenceRanges,
 } from "@/lib/scripture-references";
-import { parseYouTubeId, sanitizePdfFilename, slugifyHungarian, studyInputSchema, topicInputSchema, videoInputSchema } from "@/lib/content-validation";
+import { parseYouTubeId, sanitizePdfFilename, slugifyHungarian, studyInputSchema, studySeriesInputSchema, topicInputSchema, videoInputSchema } from "@/lib/content-validation";
+import { COMPACT_SERIES_POSITIONS, SERIES_EDIT_LOCK, seriesMembershipQueries } from "@/lib/study-series-editing";
 import { resolveStudyDocumentRemoval, resolveStudyPublicationStatus } from "@/lib/study-publication";
 import { canonicalStudyRelationPair } from "@/lib/study-relations";
 import { fetchYouTubeMetadata } from "@/lib/youtube-metadata";
@@ -54,7 +55,10 @@ async function requireAdmin() {
 }
 
 function refreshPublicContent() {
-  for (const path of ["/", "/temak", "/tanulmanyok", "/videok", "/sitemap.xml"]) revalidatePath(path);
+  for (const path of ["/", "/temak", "/tanulmanyok", "/sorozatok", "/videok", "/sitemap.xml"]) revalidatePath(path);
+  for (const path of ["/tanulmanyok/[slug]", "/sorozatok/[slug]"]) revalidatePath(path, "page");
+  revalidatePath("/admin/tanulmanyok");
+  revalidatePath("/admin/sorozatok");
 }
 
 export async function loginAction(formData: FormData) {
@@ -112,6 +116,8 @@ export async function saveStudyAction(formData: FormData) {
     sortOrder: Number(field(formData, "sortOrder") || 0), topicIds: ids(formData, "topicIds"),
     relatedStudyIds: ids(formData, "relatedStudyIds"),
     relatedVideoIds: ids(formData, "relatedVideoIds"),
+    seriesId: field(formData, "seriesId") || null,
+    seriesPosition: Number(field(formData, "seriesPosition") || 1),
   });
   if (!parsed.success) redirect(destination("/admin/tanulmanyok", "error", validationMessage(parsed.error.issues), id));
   const sql = requireSql();
@@ -128,7 +134,8 @@ export async function saveStudyAction(formData: FormData) {
     const relatedStudyPairs = [...new Set(parsed.data.relatedStudyIds)]
       .map((relatedStudyId) => canonicalStudyRelationPair(studyId, relatedStudyId))
       .filter((pair) => pair !== null);
-    const [rows] = await sql.transaction((transaction) => [
+    const [, rows] = await sql.transaction((transaction) => [
+      transaction.query(SERIES_EDIT_LOCK),
       id
         ? transaction.query(`UPDATE studies SET slug=$2,title=$3,summary=$4,seo_title=NULLIF($5,''),seo_description=NULLIF($6,''),status=$7,featured=$8,sort_order=$9,updated_at=now(),published_at=CASE WHEN $7='published' THEN COALESCE(published_at,now()) ELSE published_at END WHERE id=$1 RETURNING id::text`, [studyId, parsed.data.slug, parsed.data.title, parsed.data.summary, parsed.data.seoTitle, parsed.data.seoDescription, status, parsed.data.featured, parsed.data.sortOrder])
         : transaction.query(`INSERT INTO studies(id,slug,title,summary,seo_title,seo_description,status,featured,sort_order) VALUES($1,$2,$3,$4,NULLIF($5,''),NULLIF($6,''),$7,$8,$9) RETURNING id::text`, [studyId, parsed.data.slug, parsed.data.title, parsed.data.summary, parsed.data.seoTitle, parsed.data.seoDescription, status, parsed.data.featured, parsed.data.sortOrder]),
@@ -144,6 +151,7 @@ export async function saveStudyAction(formData: FormData) {
           "INSERT INTO study_relations(study_a_id,study_b_id,sort_order) VALUES($1,$2,$3)",
           [pair.studyAId, pair.studyBId, index],
         )),
+      ...seriesMembershipQueries(transaction, studyId, parsed.data.seriesId, parsed.data.seriesPosition),
     ]);
     if (!rows[0]?.id) throw new Error("A mentendő tanulmány nem található.");
     refreshPublicContent();
@@ -157,6 +165,53 @@ export async function saveStudyAction(formData: FormData) {
     rethrowFrameworkRedirect(error);
     const message = error instanceof Error && error.message.includes("unique") ? "Ez a slug már használatban van." : "A tanulmány mentése nem sikerült.";
     redirect(destination("/admin/tanulmanyok", "error", message, id));
+  }
+}
+
+export async function saveStudySeriesAction(formData: FormData) {
+  await requireAdmin();
+  const id = field(formData, "id") || undefined;
+  const title = field(formData, "title");
+  const parsed = studySeriesInputSchema.safeParse({
+    id, title, slug: field(formData, "slug") || slugifyHungarian(title),
+    description: field(formData, "description"), author: field(formData, "author"),
+    sourceUrl: field(formData, "sourceUrl"), status: field(formData, "status"),
+    partIds: ids(formData, "partIds"),
+  });
+  if (!parsed.success) redirect(destination("/admin/sorozatok", "error", validationMessage(parsed.error.issues), id));
+  const sql = requireSql();
+  const seriesId = id ?? randomUUID();
+  const expectedUpdatedAt = field(formData, "expectedUpdatedAt");
+  try {
+    await sql.transaction((transaction) => [
+      transaction.query(SERIES_EDIT_LOCK),
+      // Abort stale edits before changing any part. Study membership saves bump this timestamp too.
+      ...(id ? [transaction.query(`SELECT 1/count(*)::int AS version_guard
+        FROM study_series WHERE id=$1 AND updated_at=$2::timestamptz`, [id, expectedUpdatedAt])] : []),
+      id
+        ? transaction.query(`UPDATE study_series SET title=$2,slug=$3,description=$4,
+          author=NULLIF($5,''),source_url=NULLIF($6,''),status=$7,updated_at=now() WHERE id=$1`,
+          [seriesId, parsed.data.title, parsed.data.slug, parsed.data.description, parsed.data.author, parsed.data.sourceUrl, parsed.data.status])
+        : transaction.query(`INSERT INTO study_series(id,title,slug,description,author,source_url,status)
+          VALUES($1,$2,$3,$4,NULLIF($5,''),NULLIF($6,''),$7)`,
+          [seriesId, parsed.data.title, parsed.data.slug, parsed.data.description, parsed.data.author, parsed.data.sourceUrl, parsed.data.status]),
+      transaction.query("DELETE FROM study_series_parts WHERE series_id=$1", [seriesId]),
+      ...parsed.data.partIds.map((studyId, index) => transaction.query(
+        "INSERT INTO study_series_parts(study_id,series_id,position) VALUES($1,$2,$3)", [studyId, seriesId, index + 1],
+      )),
+    ]);
+    refreshPublicContent();
+    redirect(destination("/admin/sorozatok", "message", "A sorozat és a részek sorrendje mentve.", seriesId));
+  } catch (error) {
+    rethrowFrameworkRedirect(error);
+    const message = error instanceof Error && error.message.includes("division by zero")
+      ? "A sorozat közben megváltozott. Frissítsd az oldalt, majd próbáld újra."
+      : error instanceof Error && error.message.includes("study_series_parts_pkey")
+        ? "Az egyik tanulmány már másik sorozat része. Előbb helyezd át a tanulmány szerkesztőjében."
+        : error instanceof Error && error.message.includes("unique")
+          ? "Ez a sorozatcímhez tartozó webcím már használatban van."
+          : "A sorozat mentése nem sikerült.";
+    redirect(destination("/admin/sorozatok", "error", message, id));
   }
 }
 
@@ -386,7 +441,17 @@ export async function deleteContentAction(formData: FormData) {
       const blobs = await sql.query("SELECT storage_key FROM study_documents WHERE study_id=$1 AND storage_kind='blob'", [id]);
       for (const blob of blobs) await deleteBlobPdf(String(blob.storage_key));
     }
-    await sql.query(`DELETE FROM ${definition.table} WHERE id=$1`, [id]);
+    if (entity === "study") {
+      await sql.transaction((transaction) => [
+        transaction.query(SERIES_EDIT_LOCK),
+        transaction.query(`UPDATE study_series SET updated_at=now()
+          WHERE id IN (SELECT series_id FROM study_series_parts WHERE study_id=$1)`, [id]),
+        transaction.query("DELETE FROM studies WHERE id=$1", [id]),
+        transaction.query(COMPACT_SERIES_POSITIONS),
+      ]);
+    } else {
+      await sql.query(`DELETE FROM ${definition.table} WHERE id=$1`, [id]);
+    }
     refreshPublicContent();
     redirect(destination(definition.path, "message", `A ${definition.label} törölve.`));
   } catch (error) {

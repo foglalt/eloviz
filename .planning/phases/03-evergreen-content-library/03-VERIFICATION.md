@@ -1,5 +1,5 @@
 ---
-generated: 2026-08-03T08:52:50+02:00
+generated: 2026-10-13T10:36:37+02:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-08-03T08:52:50+02:00
+- Timestamp: 2026-10-13T10:36:37+02:00
 
 ## Checks
 
@@ -18,17 +18,6 @@ status: passed
 | `npm run build` | 0 | PASS |
 
 ## Detailed Output
-
-## Plan 03-31 production evidence
-
-- 53 focused tests: PASS.
-- Strict TypeScript (`npx tsc --noEmit`): PASS.
-- Real private Blob upload/read/checksum/delete probe: PASS (64,339 bytes).
-- Connected Vercel deployment for commit `f55cb6c`: SUCCESS.
-- Guarded database-to-Blob migration: PASS (one 75,525-byte document).
-- Post-migration database state: `storage_kind = 'blob'`, `file_data IS NULL`.
-- Direct Blob read and live controlled PDF route: PASS; byte size and SHA-256
-  match the pre-migration document, with live HTTP 200 and `application/pdf`.
 
 ### npm run lint
 
@@ -53,21 +42,23 @@ Exit code: 0
   · serverActions
 
   Creating an optimized production build ...
-✓ Compiled successfully in 6.0s
+✓ Compiled successfully in 13.0s
   Running TypeScript ...
-  Finished TypeScript in 6.3s ...
+  Finished TypeScript in 10.9s ...
   Collecting page data using 11 workers ...
   Generating static pages using 11 workers (0/12) ...
   Generating static pages using 11 workers (3/12)
   Generating static pages using 11 workers (6/12)
   Generating static pages using 11 workers (9/12)
-✓ Generating static pages using 11 workers (12/12) in 644ms
+✓ Generating static pages using 11 workers (12/12) in 547ms
   Finalizing page optimization ...
 
 Route (app)
 ┌ ○ /
 ├ ○ /_not-found
 ├ ƒ /admin
+├ ƒ /admin/feliratkozok
+├ ƒ /admin/sorozatok
 ├ ƒ /admin/tanulmanyok
 ├ ƒ /admin/temak
 ├ ƒ /admin/videok
@@ -77,6 +68,8 @@ Route (app)
 ├ ƒ /kereses
 ├ ○ /robots.txt
 ├ ○ /sitemap.xml
+├ ƒ /sorozatok
+├ ƒ /sorozatok/[slug]
 ├ ○ /tanulmanyok
 ├ ƒ /tanulmanyok/[slug]
 ├ ○ /temak

@@ -22,7 +22,9 @@ Make thoughtful, Scripture-oriented Hungarian material easy to explore, share, a
 - The public experience is calm, readable, accessible, and unmistakably connected to the “living water” theme.
 - Editorial work stays simple enough for a non-technical administrator.
 - Content is never destroyed during migration without an explicit decision.
-- Automatically detected Scripture references are suggestions until an editor confirms them.
+- Successful PDF processing automatically finalizes detected Scripture references
+  while preserving their source evidence.
+- Long studies can be published as ordered series with independent chapter pages.
 
 ## Technical Constraints
 
@@ -43,11 +45,12 @@ Make thoughtful, Scripture-oriented Hungarian material easy to explore, share, a
 | Keep a one-password admin for V1 | Matches the requested operational simplicity | completed |
 | Treat versioned PDF files as the primary study material | Matches the real editorial workflow and preserves authored document layout | completed |
 | Extract candidate Scripture references from each PDF | Makes verse-to-study discovery practical without requiring manual entry from scratch | completed |
-| Require editorial confirmation of detected references | Reference syntax is ambiguous and automated extraction must not silently publish errors | completed |
+| Automatically finalize detected references with preserved evidence | Keeps the current PDF editorial workflow simple and auditable | completed |
 | Link references to a translation-independent canonical verse structure | Lets one reference list power the simple reader and future translations | completed |
 | Retire the Easter microsite after local backup and permanent redirects | The user explicitly approved complete legacy replacement | completed |
 | Build a one-translation Bible reader before concordances | Delivers the useful reader and verse-to-study discovery with substantially less data complexity | planned |
-| Defer PDF-derived HTML study pages to V2 | Reliable semantic conversion needs layout-aware extraction and editorial review; the current release remains PDF-first while smaller quality-of-life improvements take priority | deferred |
+| Publish PDF-derived HTML study pages | Layout-aware extraction gives readable chapters while preserving the original document | completed |
+| Group separate chapter PDFs into ordered study series | Supports Hungarian Stephen Bohr material and lets readers jump to a chapter or read in order | implementing |
 
 ---
-*Last updated: 2026-07-28*
+*Last updated: 2026-10-13*

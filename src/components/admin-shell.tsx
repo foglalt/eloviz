@@ -11,7 +11,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
           <nav className="admin-nav" aria-label="Szerkesztői navigáció">
             <Link href="/admin/temak">Témák</Link>
             <Link href="/admin/tanulmanyok">Tanulmányok</Link>
+            <Link href="/admin/sorozatok">Sorozatok</Link>
             <Link href="/admin/videok">Videók</Link>
+            <Link href="/admin/feliratkozok">Feliratkozók</Link>
             <Link href="/" target="_blank">Nyilvános oldal ↗</Link>
             <form action={logoutAction}><button className="admin-link-button" type="submit">Kilépés</button></form>
           </nav>

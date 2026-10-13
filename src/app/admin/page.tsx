@@ -4,6 +4,7 @@ import { AdminNotice, AdminShell } from "@/components/admin-shell";
 import { isAdminAuthenticated, isAdminAuthConfigured } from "@/lib/admin-auth";
 import { getAdminAnalyticsOverview } from "@/lib/analytics";
 import { getAdminOverview } from "@/lib/content-repository";
+import { getNewsletterSubscriberCount } from "@/lib/newsletter";
 import { loginAction } from "./actions";
 
 type Props = { searchParams: Promise<{ message?: string; error?: string }> };
@@ -41,9 +42,10 @@ export default async function AdminPage({ searchParams }: Props) {
     );
   }
 
-  const [overview, analytics] = await Promise.all([
+  const [overview, analytics, subscriberCount] = await Promise.all([
     getAdminOverview(),
     getAdminAnalyticsOverview(),
+    getNewsletterSubscriberCount(),
   ]);
   return (
     <AdminShell>
@@ -52,10 +54,11 @@ export default async function AdminPage({ searchParams }: Props) {
         <p>Az itt véglegesített tartalom azonnal megjelenik a nyilvános oldalon.</p>
       </div>
       <AdminNotice message={query.message} error={query.error} />
-      <div className="admin-stat-grid">
+      <div className="admin-stat-grid admin-stat-grid--four">
         <Link className="admin-stat" href="/admin/temak"><strong>{overview.topicCount}</strong><span>téma</span></Link>
         <Link className="admin-stat" href="/admin/tanulmanyok"><strong>{overview.studyCount}</strong><span>tanulmány</span></Link>
         <Link className="admin-stat" href="/admin/videok"><strong>{overview.videoCount}</strong><span>videó</span></Link>
+        <Link className="admin-stat" href="/admin/feliratkozok"><strong>{subscriberCount}</strong><span>feliratkozó</span></Link>
       </div>
       <AdminAnalytics overview={analytics} />
     </AdminShell>

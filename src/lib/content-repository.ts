@@ -38,6 +38,7 @@ import {
   type ScriptureReferenceRange,
 } from "./scripture-references";
 import { parseStudyArticle } from "./study-article";
+import { getStudySeries } from "./study-series-repository";
 
 type Row = Record<string, unknown>;
 
@@ -94,7 +95,7 @@ function mapStudy(row: Row): StudySummary {
     status: row.status === "draft" ? "draft" : "published",
     pdfUrl: row.document_id ? `/api/documents/${row.document_id}` : String(row.pdf_url ?? ""),
     pdfFilename: row.original_filename ? String(row.original_filename) : undefined,
-    updatedAt: row.updated_at ? String(row.updated_at) : null,
+    updatedAt: row.updated_at instanceof Date ? row.updated_at.toISOString() : row.updated_at ? String(row.updated_at) : null,
     topics: jsonArray<Row>(row.topics).map(mapTopic),
     references: jsonArray<Row>(row.references).map(mapReference),
   };
@@ -473,6 +474,7 @@ export async function getStudyBySlug(slug: string): Promise<StudyDetail | null> 
   return {
     ...study,
     article,
+    series: await getStudySeries(study.id),
     references: sortScriptureReferencesInBibleOrder(study.references),
     relatedStudies: relatedStudyIds.length
       ? studies.filter((candidate) => relatedStudyIds.includes(candidate.id))
@@ -514,6 +516,8 @@ export type AdminStudy = Omit<StudySummary, "pdfUrl"> & {
   documents: StudyDocumentAdmin[];
   relatedStudyIds: string[];
   relatedVideoIds: string[];
+  seriesId: string | null;
+  seriesPosition: number;
 };
 export type AdminStudyIndexItem = {
   id: string;
@@ -665,6 +669,8 @@ export async function getAdminStudy(id: string): Promise<AdminStudy | null> {
   const rows = await sql.query(`
     SELECT s.id::text, s.slug, s.title, s.summary, s.status, s.featured, s.sort_order,
       s.updated_at, s.published_document_id::text, s.reference_reviewed,
+      (SELECT series_id::text FROM study_series_parts WHERE study_id=s.id) AS series_id,
+      (SELECT position FROM study_series_parts WHERE study_id=s.id) AS series_position,
       COALESCE(s.seo_title, '') AS seo_title, COALESCE(s.seo_description, '') AS seo_description,
       COALESCE((SELECT jsonb_agg(jsonb_build_object('id', t.id::text, 'slug', t.slug, 'title', t.title, 'description', t.description, 'featured', t.featured, 'sort_order', t.sort_order) ORDER BY t.sort_order) FROM study_topics st JOIN topics t ON t.id = st.topic_id WHERE st.study_id = s.id), '[]'::jsonb) AS topics,
       COALESCE((SELECT jsonb_agg(jsonb_build_object('id', r.id::text, 'label', r.display_label, 'osis_start', r.osis_start, 'osis_end', r.osis_end) ORDER BY r.sort_order) FROM study_scripture_references r WHERE r.study_id = s.id AND r.document_id = s.published_document_id), '[]'::jsonb) AS references,
@@ -717,6 +723,8 @@ export async function getAdminStudy(id: string): Promise<AdminStudy | null> {
     documents,
     relatedStudyIds: jsonArray<string>(row.related_study_ids),
     relatedVideoIds: jsonArray<string>(row.related_video_ids),
+    seriesId: row.series_id ? String(row.series_id) : null,
+    seriesPosition: Number(row.series_position ?? 1),
   };
 }
 

@@ -45,6 +45,19 @@ export const studyInputSchema = z.object({
   topicIds: z.array(z.string().uuid()).max(30),
   relatedStudyIds: z.array(z.string().uuid()).max(30),
   relatedVideoIds: z.array(z.string().uuid()).max(30),
+  seriesId: z.string().uuid().nullable().optional().default(null),
+  seriesPosition: z.number().int().min(1).max(10000).optional().default(1),
+});
+
+export const studySeriesInputSchema = z.object({
+  id: z.string().uuid().optional(),
+  title: z.string().trim().min(2, "A cím legalább 2 karakter legyen.").max(160),
+  slug: z.string().trim().regex(slugPattern).max(120),
+  description: z.string().trim().min(30, "A leírás legalább 30 karakter legyen.").max(3000),
+  author: z.string().trim().max(160).default(""),
+  sourceUrl: z.union([z.literal(""), z.string().url().refine((url) => /^https?:\/\//i.test(url), "A forrás HTTP vagy HTTPS hivatkozás legyen.")]).default(""),
+  status: z.enum(["draft", "published"]),
+  partIds: z.array(z.string().uuid()).max(1000).refine((ids) => new Set(ids).size === ids.length, "Egy tanulmány csak egyszer szerepelhet a sorozatban."),
 });
 
 export const videoInputSchema = z.object({

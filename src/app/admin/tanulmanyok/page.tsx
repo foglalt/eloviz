@@ -7,11 +7,12 @@ import { AdminDeletePanel } from "@/components/admin-delete-panel";
 import { AdminEditorPanel } from "@/components/admin-editor-panel";
 import { AdminFormSubmit } from "@/components/admin-form-submit";
 import { AdminRelationPicker } from "@/components/admin-relation-picker";
+import { AdminStudySeriesFields } from "@/components/admin-study-series-fields";
+import { getSeriesDefaultTopicIds, listAdminSeries } from "@/lib/study-series-repository";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import {
   getAdminStudy,
   listAdminStudyIndex,
-  listAdminStudyOptions,
   listAdminTopicOptions,
   listAdminVideoOptions,
 } from "@/lib/content-repository";
@@ -28,6 +29,7 @@ type Props = {
     error?: string;
     q?: string;
     page?: string;
+    series?: string;
   }>;
 };
 
@@ -38,13 +40,15 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
   const query = await searchParams;
   const search = query.q?.trim().slice(0, 120) ?? "";
   const requestedPage = Number.parseInt(query.page ?? "1", 10) || 1;
-  const [studyIndex, selected, topics, studies, videos] = await Promise.all([
+  const [studyIndex, selected, topics, series, videos] = await Promise.all([
     listAdminStudyIndex(search, requestedPage),
     query.edit ? getAdminStudy(query.edit) : Promise.resolve(null),
     listAdminTopicOptions(),
-    listAdminStudyOptions(),
+    listAdminSeries(),
     listAdminVideoOptions(),
   ]);
+  const newSeries = !selected ? series.find((item) => item.id === query.series) : undefined;
+  const defaultTopicIds = newSeries ? await getSeriesDefaultTopicIds(newSeries.id) : [];
   const indexItems = studyIndex.items.map((study) => {
     const documentState = study.documentCount === 0
       ? "nincs PDF"
@@ -66,6 +70,7 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
       title="Tanulmányok"
       message={query.message}
       error={query.error}
+      successKey={selected ? `${selected.id}:${selected.updatedAt}` : undefined}
       index={(
         <AdminContentIndex
           basePath="/admin/tanulmanyok"
@@ -87,7 +92,7 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
         help="A PDF-feltöltés az első mentés után jelenik meg. Add meg a címet és az összefoglalót, majd mentsd el a tanulmányt; ezután töltheted fel a PDF-et. A feltöltésből automatikusan elkészül a HTML olvasási nézet, az igehelyeket pedig felismerjük és véglegesítjük."
       >
         <form
-          key={selected ? `${selected.id}:${selected.updatedAt ?? ""}` : "new"}
+          key={selected ? `${selected.id}:${selected.updatedAt ?? ""}` : `new:${newSeries?.id ?? ""}`}
           action={saveStudyAction}
           className="form-grid"
         >
@@ -101,7 +106,13 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
               <label htmlFor="summary">Összefoglaló</label>
               <textarea id="summary" name="summary" defaultValue={selected?.summary} required />
             </div>
-            <div className="relation-fields relation-fields--three field--full">
+            <AdminStudySeriesFields
+              options={series.map((item) => ({ id: item.id, title: item.title, nextPosition: item.parts.length + 1 }))}
+              initialSeriesId={selected?.seriesId ?? newSeries?.id}
+              initialPosition={selected?.seriesPosition ?? (newSeries ? newSeries.parts.length + 1 : 1)}
+            />
+            {(selected?.relatedStudyIds ?? []).map((id) => <input key={id} type="hidden" name="relatedStudyIds" value={id} />)}
+            <div className="relation-fields field--full">
               <fieldset className="field relation-field">
                 <legend>
                   Témák
@@ -130,25 +141,9 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
                     id: topic.id,
                     label: topic.title,
                   }))}
-                  selectedIds={selected?.topics.map((item) => item.id)}
+                  selectedIds={selected?.topics.map((item) => item.id) ?? defaultTopicIds}
                   searchLabel="Témák szűrése"
                   emptyLabel="Nincs ilyen téma."
-                />
-              </fieldset>
-              <fieldset className="field relation-field">
-                <legend>Kapcsolódó tanulmányok</legend>
-                <AdminRelationPicker
-                  key={`studies-${selected?.id ?? "new"}`}
-                  name="relatedStudyIds"
-                  options={studies
-                    .filter((study) => study.id !== selected?.id)
-                    .map((study) => ({
-                      id: study.id,
-                      label: study.title,
-                    }))}
-                  selectedIds={selected?.relatedStudyIds}
-                  searchLabel="Tanulmányok szűrése"
-                  emptyLabel="Nincs ilyen tanulmány."
                 />
               </fieldset>
               <fieldset className="field relation-field">
@@ -169,6 +164,7 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
           </AdminContentFormFields>
           <div className="form-actions field--full">
             <AdminFormSubmit label="Adatok mentése" enableSaveShortcut />
+            {selected?.seriesId ? <Link className="text-link" href={`/admin/tanulmanyok?series=${selected.seriesId}`}>+ Következő rész létrehozása</Link> : null}
           </div>
         </form>
       </AdminEditorPanel>

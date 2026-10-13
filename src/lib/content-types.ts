@@ -1,4 +1,5 @@
 import type { StudyArticle } from "./study-article";
+import type { StudySeries } from "./study-series-repository";
 
 export type PublicationStatus = "draft" | "published";
 
@@ -64,6 +65,7 @@ export type VideoSummary = {
 };
 
 export type StudyDetail = StudySummary & {
+  series: StudySeries | null;
   article: StudyArticle | null;
   relatedStudies: StudySummary[];
   relatedVideos: VideoSummary[];
