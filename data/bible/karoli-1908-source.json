@@ -1,0 +1,31 @@
+{
+  "id": "karoli-1908",
+  "name": "Revideált Károli Biblia (1908)",
+  "abbreviation": "Károli 1908",
+  "language": "hu",
+  "editionYear": 1908,
+  "licence": "Public Domain",
+  "licenceUrl": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=HunKar",
+  "sourceUrl": "https://github.com/krisek/HunKar",
+  "sourceCommit": "0e244494dd190e4a6b132c1afddfa307e73792f8",
+  "downloadUrl": "https://raw.githubusercontent.com/krisek/HunKar/0e244494dd190e4a6b132c1afddfa307e73792f8/hunkaroli_rev.osis.xml",
+  "sourceSha256": "d54b72e4a0f7d63f464835a2ee0a988f386eccd40c0bc1dc56dec41e00b2b7bd",
+  "versification": "Calvin",
+  "parserVersion": "karoli-osis-v1",
+  "textSha256": "6119e14ad2f654678428fe406e586e1bc2908d5b44dd32a7f0555857f184ac9b",
+  "bookCount": 66,
+  "chapterCount": 1189,
+  "verseCount": 31171,
+  "attribution": "Revideált Károli Biblia (1908), közkincs. Szövegforrás: CrossWire HunKar. A digitális forrás három hiányzó versét ellenőrzött Károli-szövegből pótoltuk.",
+  "supplement": {
+    "sourceUrl": "https://github.com/thiagobodruk/bible",
+    "sourceCommit": "093b4727bf632181c9e096f4cf4141cc387371d0",
+    "downloadUrl": "https://raw.githubusercontent.com/thiagobodruk/bible/093b4727bf632181c9e096f4cf4141cc387371d0/json/hu_hunk.json",
+    "sourceSha256": "183c1abff5068116e69dfae2224154af7898df539649f5871c82b170fd9936f6",
+    "verses": [
+      { "osis": "John.21.1", "bookIndex": 42, "chapter": 21, "verse": 1, "verificationUrl": "https://abibliamindenkie.hu/karoli/JHN/21" },
+      { "osis": "Acts.12.6", "bookIndex": 43, "chapter": 12, "verse": 6, "verificationUrl": "https://abibliamindenkie.hu/karoli/ACT/12" },
+      { "osis": "Acts.15.18", "bookIndex": 43, "chapter": 15, "verse": 18, "verificationUrl": "https://abibliamindenkie.hu/karoli/ACT/15" }
+    ]
+  }
+}

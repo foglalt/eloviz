@@ -11,6 +11,7 @@
     "start": "next start",
     "lint": "eslint src scripts next.config.ts --no-warn-ignored",
     "db:migrate": "node --env-file=.env scripts/migrate.mjs",
+    "db:import-bible": "node --env-file=.env --experimental-strip-types scripts/import-bible.ts",
     "db:backup-legacy": "node --env-file=.env scripts/backup-legacy.mjs",
     "db:seed": "node --env-file=.env --experimental-strip-types scripts/seed.mjs",
     "db:backfill-study-articles": "node --env-file=.env --experimental-strip-types scripts/backfill-study-articles.ts",
@@ -28,7 +29,9 @@
     "test:admin-shortcut": "node --experimental-strip-types --test src/lib/admin-save-shortcut.test.ts",
     "test:analytics": "node --experimental-strip-types --test src/lib/analytics-core.test.ts",
     "test:newsletter": "node --experimental-strip-types --test src/lib/newsletter-core.test.ts src/lib/newsletter-delivery-core.test.ts",
-    "test:series": "node --experimental-strip-types --test src/lib/study-series-core.test.ts"
+    "test:series": "node --experimental-strip-types --test src/lib/study-series-core.test.ts",
+    "test:bible-import": "node --experimental-strip-types --test scripts/bible-import-core.test.ts",
+    "test:bible": "node --experimental-strip-types --test src/lib/bible-core.test.ts"
   },
   "dependencies": {
     "@napi-rs/canvas": "^1.0.2",
@@ -45,6 +48,7 @@
     "@types/node": "^20.19.22",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@xmldom/xmldom": "^0.9.12",
     "eslint": "^9.39.4",
     "eslint-config-next": "16.2.1",
     "typescript": "^5.9.3"

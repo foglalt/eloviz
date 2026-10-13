@@ -9,7 +9,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 - [x] **Phase 01: Foundation** — Establish the original project baseline and memory workflow.
 - [x] **Phase 02: Deliver V1** — Deliver and refine the Hungarian Easter microsite, quiz, studies, contact, and admin features.
 - [x] **Phase 03: Evergreen Content Library** — Rebuilt Élő Víz around topics, PDF studies, videos, confirmed Scripture references, relations, SEO, and a simple editorial admin.
-- [ ] **Phase 04: Simple Bible Reader** — Add one licensed/open Hungarian translation and per-verse links to matching studies.
+- [x] **Phase 04: Simple Bible Reader** — Verified Károli 1908 text, Hungarian book/chapter reader, and reciprocal per-verse study links.
 - [ ] **Phase 05: Greek and Hebrew Concordances** — Add original-language text, lemmas, morphology, and occurrence search after the reader is stable.
 
 ## Phase 03 Plans
@@ -35,12 +35,14 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 33. [x] **03-33: Add ordered study series** — Group chapter PDFs into named series with editable order, add-next shortcuts, independent chapter URLs, contents and previous/next navigation.
 34. [x] **03-34: Deliver weekly email digests** — Add confirmed signup, signed unsubscribe synchronization, automatic Sunday digests, and verified Resend/Vercel production configuration.
 
-## Phase 04 Proposed Plans
+## Phase 04 Plans
 
-1. **04-01: Confirm one translation and ingest canonical text** — Record licence/provenance, import books/chapters/verses, and validate versification against the Phase 03 canonical structure.
-2. **04-02: Build the simple Bible reader** — Hungarian book/chapter navigation, readable verse anchors, canonical URLs, basic reference search, and responsive typography.
-3. **04-03: Connect verses to studies** — On each verse, query overlapping confirmed study-reference ranges and show links to the matching published study pages.
-4. **04-04: Add optional additional translations** — Only when each translation’s display, storage, caching, and attribution rights are documented.
+1. [x] **04-01: Confirm one translation and ingest canonical text** — Reviewed Public Domain declarations; pinned source/checksums, three verified omission supplements, complete 66-book/1189-chapter/31171-verse transactional import.
+2. [x] **04-02: Build the simple Bible reader** — Hungarian book/chapter navigation, verse anchors, canonical URLs, reference lookup, attribution and responsive reading.
+3. [x] **04-03: Connect verses to studies** — Inclusive finalized current-document ranges, publication filtering, per-verse study links and reverse study references.
+
+Deferred: **04-04 optional additional translations**, only after separate product
+selection and documented reuse rights; outside this completed one-version scope.
 
 ## Phase 05 Proposed Plans
 
@@ -56,7 +58,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
 | 03 Evergreen Content Library | 34/34 | Completed, deployed and verified | 2026-10-13 |
-| 04 Simple Bible Reader | 0/4 proposed | Gated by one translation licence/source | — |
+| 04 Simple Bible Reader | 3/3 | Implemented and verified locally; production release pending | 2026-10-13 |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 
 ---

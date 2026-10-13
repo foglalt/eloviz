@@ -30,7 +30,7 @@
 ## V2 Feasibility Requirement
 
 - [x] **REQ-26**: Research and document the feasibility, licensing risks, data model, and staged scope for multiple Bible translations plus Greek/Hebrew concordances.
-- [ ] **REQ-31**: In Phase 04, deliver one simple licensed/open Hungarian Bible reader with per-verse links to matching published studies before adding concordances.
+- [x] **REQ-31**: In Phase 04, deliver one simple licensed/open Hungarian Bible reader with per-verse links to matching published studies before adding concordances.
 
 ## Explicitly Out of Scope for V1
 
@@ -57,7 +57,7 @@
 | REQ-27–REQ-30 | 03-01, 03-05, 03-06, 03-08 | Completed |
 | REQ-32 | Phase 03 post-launch refinement | Completed |
 | REQ-33 | Phase 03 post-launch refinement | Completed |
-| REQ-31 | Phase 04 plans 04-01 through 04-03 | Planned |
+| REQ-31 | Phase 04 plans 04-01 through 04-03 | Implemented and verified |
 
 ---
 *Last updated: 2026-07-26*

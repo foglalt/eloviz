@@ -1,18 +1,24 @@
 # Project State
 
 **Project:** Élő Víz
-**Current Phase:** 03
-**Current Phase Name:** Evergreen Content Library
-**Current Plan:** 03-34
-**Total Plans in Phase:** 34
-**Status:** Plan 03-34 complete, committed, pushed and verified in production
+**Current Phase:** 04
+**Current Phase Name:** Simple Bible Reader
+**Current Plan:** 04-03
+**Total Plans in Phase:** 3
+**Status:** Phase 04 implemented and verified locally; production release pending
 **Progress:** 100%
 **Last Activity:** 2026-10-13
-**Last Activity Description:** Resume audit passed: 70 tests, lint/build/TypeScript and memory health; roadmap corrected to 34 completed plans
-**Paused At:** Phase 03 complete; Phase 04 awaits the user's Hungarian Bible translation choice
+**Last Activity Description:** Verification completed (passed)
+**Paused At:** None; releasing the verified Károli reader and reciprocal study links
 
 ## Delivered
 
+- Phase 04-02/03: Hungarian book/chapter reader, reference lookup, exact verse
+  anchors, SEO/sitemap, visible attribution, inclusive current-document study
+  matching, draft/obsolete-reference exclusions and reciprocal study links.
+- Phase 04-01: reviewed Károli 1908 Public Domain sources, pinned checksums and
+  three verified omission supplements; 66 books/1189 chapters/31171 verses
+  imported transactionally into production with exact read-back verification.
 - Hungarian topic, PDF-study, and YouTube-video library with dedicated public pages and relations.
 - Versioned PDF upload with validation, extraction, evidence-backed automatic reference finalization, canonical OSIS ranges, and normalized Hungarian display labels.
 - Password-protected editorial admin with publication lifecycle, ordering, SEO fields, relations, and safe deletion.
@@ -31,6 +37,10 @@
 
 ## Verification Snapshot
 
+- Phase 04: 79 tests, lint/build/TypeScript, source hash/full-text read-back,
+  production import/idempotency, isolated rollback and real rendered publication/
+  range probes, reciprocal browser navigation and 320/390/1440 px checks passed.
+  Evidence: phase 04 verification and source research files.
 - Resume audit (2026-10-13): zero incomplete plans, clean initial working tree,
   70/70 tests, lint, production build/TypeScript, and memory health passed.
   Roadmap now includes completed plan 03-34 and reports 34/34; compact confirmed
@@ -126,7 +136,9 @@
 
 ## Next Decision Gate
 
-- Before Phase 04, select and document one Hungarian Bible translation whose full text may legally be stored and displayed.
+- Károli 1908 chosen on 2026-10-13; source/reuse verification complete in
+  `.planning/research/2026-10-13-karoli-1908-source.md`. Reader is implemented;
+  Phase 05 concordances and additional translations await product prioritization.
 - On the next new PDF revision, spot-check the automatically generated heading
   and paragraph structure; extraction and storage are automatic, while manual
   HTML correction remains intentionally out of scope.
@@ -137,6 +149,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-13T12:21:53+02:00
-**Stopped At:** All assigned plans complete; awaiting Phase 04 translation decision
+**Last Date:** 2026-10-13T12:55:25+02:00
+**Stopped At:** Verification completed
 **Resume File:** None

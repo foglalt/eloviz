@@ -5,6 +5,7 @@ import { PublicSearchForm } from "./public-search-form";
 
 const links = [
   ["Témák", "/temak"], ["Tanulmányok", "/tanulmanyok"], ["Videók", "/videok"],
+  ["Biblia", "/biblia"],
 ] as const;
 
 export function SiteHeader() {

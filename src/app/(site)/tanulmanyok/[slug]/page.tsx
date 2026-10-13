@@ -7,6 +7,8 @@ import { StudyArticle } from "@/components/study-article";
 import { StudySeriesContents, StudySeriesNavigation } from "@/components/study-series-navigation";
 import { getStudyBySlug } from "@/lib/content-repository";
 import { absoluteSiteUrl } from "@/lib/site-config";
+import { bibleVerseHref } from "@/lib/bible-core";
+import { readableBiblePoints } from "@/lib/bible-repository";
 
 type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -32,6 +34,7 @@ export default async function StudyPage({ params }: Props) {
   const study = await getStudyBySlug(slug);
 
   if (!study) notFound();
+  const readablePoints = await readableBiblePoints(study.references.flatMap((reference)=>[reference.osisStart,reference.osisEnd]));
 
   const crumbs = [
     { label: "Kezdőlap", href: "/" },
@@ -99,7 +102,9 @@ export default async function StudyPage({ params }: Props) {
               <ul className="sidebar-reference-list">
                 {study.references.map((reference) => (
                   <li key={`${reference.osisStart}-${reference.osisEnd}`}>
-                    {reference.label}
+                    {readablePoints.has(reference.osisStart) && readablePoints.has(reference.osisEnd) && bibleVerseHref(reference.osisStart)
+                      ? <a href={bibleVerseHref(reference.osisStart)!}>{reference.label}</a>
+                      : reference.label}
                   </li>
                 ))}
               </ul>
