@@ -1,7 +1,10 @@
 "use server";
 
 import { parseNewsletterSignup } from "@/lib/newsletter-core";
-import { saveNewsletterSubscriber } from "@/lib/newsletter";
+import { headers } from "next/headers";
+import { confirmNewsletterSubscription, requestNewsletterConfirmation } from "@/lib/newsletter";
+import { CONFIRMATION_MESSAGE } from "@/lib/newsletter-delivery-core";
+import { redirect } from "next/navigation";
 
 export type NewsletterActionState = {
   status: "idle" | "error" | "success";
@@ -20,22 +23,34 @@ export async function subscribeToNewsletterAction(
 
   if (!parsed.success) {
     if (parsed.reason === "bot") {
-      return { status: "success", message: "Köszönjük! Feliratkozásodat rögzítettük." };
+      return { status: "success", message: CONFIRMATION_MESSAGE };
     }
     return { status: "error", message: parsed.message };
   }
 
   try {
-    await saveNewsletterSubscriber(parsed.email);
+    const requestHeaders = await headers();
+    await requestNewsletterConfirmation(parsed.email, requestHeaders.get("x-vercel-forwarded-for") ?? requestHeaders.get("x-real-ip") ?? "local");
     return {
       status: "success",
-      message: "Köszönjük! Értesítünk, amikor új tartalommal bővül az oldal.",
+      message: CONFIRMATION_MESSAGE,
     };
   } catch (error) {
-    console.error("Newsletter signup failed.", error);
+    console.error("Newsletter signup failed.", error instanceof Error ? error.message : "Unknown error");
     return {
       status: "error",
       message: "A feliratkozást most nem tudtuk rögzíteni. Kérjük, próbáld meg később.",
     };
   }
+}
+
+export async function confirmNewsletterAction(formData: FormData) {
+  const token = formData.get("token");
+  let result = "expired";
+  try {
+    if (typeof token === "string" && await confirmNewsletterSubscription(token)) result = "confirmed";
+  } catch {
+    result = "error";
+  }
+  redirect(`/feliratkozas?result=${result}`);
 }

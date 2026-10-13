@@ -1,5 +1,5 @@
 ---
-generated: 2026-10-13T10:36:37+02:00
+generated: 2026-10-13T11:52:21+02:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-10-13T10:36:37+02:00
+- Timestamp: 2026-10-13T11:52:21+02:00
 
 ## Checks
 
@@ -16,14 +16,6 @@ status: passed
 |---|---:|---|
 | `npm run lint` | 0 | PASS |
 | `npm run build` | 0 | PASS |
-| All automated tests | 0 | PASS: 64 tests |
-| PostgreSQL series transaction/revision probes | 0 | PASS |
-| Responsive authenticated/public browser workflows | — | PASS |
-| Connected production deployment for `de50aab` | — | READY |
-| Live routes, sitemap, admin protection and original PDF checksum | — | PASS |
-| Deployment-scoped error/fatal logs | — | Clean |
-
-Detailed series evidence: [03-33-VERIFICATION.md](03-33-VERIFICATION.md).
 
 ## Detailed Output
 
@@ -50,15 +42,15 @@ Exit code: 0
   · serverActions
 
   Creating an optimized production build ...
-✓ Compiled successfully in 13.0s
+✓ Compiled successfully in 5.6s
   Running TypeScript ...
-  Finished TypeScript in 10.9s ...
+  Finished TypeScript in 4.8s ...
   Collecting page data using 11 workers ...
-  Generating static pages using 11 workers (0/12) ...
-  Generating static pages using 11 workers (3/12)
-  Generating static pages using 11 workers (6/12)
-  Generating static pages using 11 workers (9/12)
-✓ Generating static pages using 11 workers (12/12) in 547ms
+  Generating static pages using 11 workers (0/14) ...
+  Generating static pages using 11 workers (3/14)
+  Generating static pages using 11 workers (6/14)
+  Generating static pages using 11 workers (10/14)
+✓ Generating static pages using 11 workers (14/14) in 620ms
   Finalizing page optimization ...
 
 Route (app)
@@ -71,8 +63,12 @@ Route (app)
 ├ ƒ /admin/temak
 ├ ƒ /admin/videok
 ├ ƒ /api/analytics
+├ ƒ /api/cron/newsletter
 ├ ƒ /api/documents/[id]
+├ ƒ /api/newsletter/webhook
 ├ ƒ /api/youtube-metadata
+├ ƒ /feliratkozas
+├ ƒ /feliratkozas/megerosites
 ├ ƒ /kereses
 ├ ○ /robots.txt
 ├ ○ /sitemap.xml

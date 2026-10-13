@@ -38,6 +38,10 @@ This phase does not implement the Bible reader or original-language concordances
 - Planning and feasibility work must be complete before product code is edited.
 - First-time visitors are told that the site is still under development and
   can explicitly consent to future email notifications about new content.
+- Plan 03-34 authorizes an automatic weekly digest of new published studies and
+  videos, double opt-in, permanent signup, and unsubscribe synchronization using
+  the user's existing Resend account. Sunday evening is the default schedule;
+  weeks with no new content send nothing.
 
 ## Architecture Decisions
 
@@ -174,9 +178,9 @@ Phase 03 creates the canonical verse structure and confirmed study mappings but 
 
 ## Deferred Ideas
 
-- User accounts, bookmarks, reading progress, comments, automated newsletter
-  composition/delivery, and personalization. Email collection itself was later
-  authorized and delivered in plan 03-32.
+- User accounts, bookmarks, reading progress, comments, and personalization.
+  Email collection was authorized in 03-32; weekly composition/delivery was
+  subsequently authorized in 03-34.
 - Site-wide full-text content search unless the initial catalogue size justifies it during implementation.
 - Broader YouTube Data API synchronization beyond link-time title/channel metadata.
 - General media library, image uploads, audio content, or podcast feeds beyond study PDFs.

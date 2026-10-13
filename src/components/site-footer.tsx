@@ -9,7 +9,7 @@ export function SiteFooter() {
           <div>
             <Link className="brand" href="/"><BrandMark />Élő Víz</Link>
             <nav className="footer-nav" aria-label="Lábléc navigáció">
-              <Link href="/temak">Témák</Link><Link href="/tanulmanyok">Tanulmányok</Link><Link href="/videok">Videók</Link>
+              <Link href="/temak">Témák</Link><Link href="/tanulmanyok">Tanulmányok</Link><Link href="/videok">Videók</Link><Link href="/feliratkozas">Heti értesítő</Link>
             </nav>
           </div>
           <p className="site-footer__verse">„Aki szomjúhozik, jöjjön el; és aki akarja, vegye az élet vizét ingyen.” - Jelenések 22:17</p>

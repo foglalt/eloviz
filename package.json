@@ -27,7 +27,7 @@
     "test:youtube": "node --experimental-strip-types --test src/lib/youtube-metadata.test.ts",
     "test:admin-shortcut": "node --experimental-strip-types --test src/lib/admin-save-shortcut.test.ts",
     "test:analytics": "node --experimental-strip-types --test src/lib/analytics-core.test.ts",
-    "test:newsletter": "node --experimental-strip-types --test src/lib/newsletter-core.test.ts",
+    "test:newsletter": "node --experimental-strip-types --test src/lib/newsletter-core.test.ts src/lib/newsletter-delivery-core.test.ts",
     "test:series": "node --experimental-strip-types --test src/lib/study-series-core.test.ts"
   },
   "dependencies": {
@@ -38,6 +38,7 @@
     "pdfjs-dist": "^6.1.200",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "resend": "^6.32.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {

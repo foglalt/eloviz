@@ -10,6 +10,7 @@ Magyar nyelvű, örökzöld bibliatanulmány-gyűjtemény Next.js 16 és React 1
 - Magyar igehelyek automatikus felismerése oldal- és szövegkörnyezet-bizonyítékkal.
 - Automatikusan véglegesített OSIS-hivatkozások és PDF-ből készülő HTML olvasási nézet.
 - Sorrendbe rendezett tanulmánysorozatok, önálló fejezetoldalak, tartalomjegyzék és előző/következő rész.
+- Heti értesítő új tanulmányokról és videókról, e-mailes megerősítés, leiratkozás, admin előnézet és küldési előzmények.
 - Egyszerű, jelszóval védett admin témákhoz, tanulmányokhoz és videókhoz.
 - Magyar metaadatok, canonical URL-ek, strukturált adatok, sitemap és robots szabályok.
 
@@ -62,6 +63,58 @@ nem vesznek el, de a sorozat tagságát és sorrendjét a szerkesztő határozza
 Ellenőrzés: `npm run test:series`. A `node --env-file=.env --experimental-strip-types scripts/verify-study-series.ts`
 parancs ideiglenes adatbázis-rekordokon ellenőrzi a beszúrást, átrendezést,
 áthelyezést, visszagörgetést és párhuzamos mentést, majd eltávolítja a tesztadatokat.
+
+## Heti e-mailes értesítő
+
+A látogatók a `/feliratkozas` oldalon vagy az első látogatási ablakban kérhetik
+az értesítőt. A 72 órás megerősítő link megnyitása után külön gombbal erősítik meg
+a feliratkozást. Csak megerősített cím kerül a Resend külön Élő Víz-listájára.
+A leiratkozási linket a Resend kezeli; aláírt webhook frissíti az adatbázist.
+
+A Vercel vasárnap 18:00 UTC-kor indítja az értesítőt (Budapesten télen 19, nyáron
+20 óra; a Hobby időzítés az adott órán belül indulhat). Az előző hét új, publikált,
+PDF-fel rendelkező tanulmányai és videói szerepelnek benne. Sorozatrészeknél a
+sorozat neve és a rész száma is megjelenik, a részek sorrendje megmarad. Üres hét
+vagy megerősített feliratkozó nélküli lista esetén nem küldünk levelet.
+A közzététel későbbi szerkesztése vagy új PDF-je önmagában nem új megjelenés.
+
+Beállítás a meglévő Resend-fiókkal:
+
+1. A titkokat a figyelmen kívül hagyott `.env` fájlba írd: `RESEND_API_KEY`
+   teljes hozzáféréssel és `NEWSLETTER_FROM_EMAIL` ellenőrzött domainről.
+2. Futtasd: `node scripts/setup-newsletter.mjs`. Ez külön listát és
+   `contact.updated`/`contact.deleted` webhookot állít be, és biztonságosan menti
+   a listaazonosítót, a webhook titkát és a véletlen `CRON_SECRET` értéket.
+3. Ugyanezeket a szerveroldali értékeket állítsd be Vercel production
+   környezetben. Tesztelés után `NEWSLETTER_ENABLED=true` kapcsolja be a küldést.
+   Preview környezetben a küldés akkor is tiltott, ha a kapcsoló igaz.
+
+Ingyenes Resend Marketing: 1000 névjegy, korlátlan értesítő; a külön megerősítő
+levelekre napi 100 és havi 3000 a szolgáltatói keret. Az oldal napi legfeljebb
+80 megerősítést kér, egy címre 10 percenként, egy hálózati címről óránként ötször.
+A keretek a teljes Resend-fiókra vonatkoznak. Nincs automatikus fizetős csomagváltás.
+Aktuális díjak: https://resend.com/pricing.
+
+Az admin `/admin/feliratkozok` oldala az állapotokat, a következő heti előnézetet
+és az előzményeket mutatja. A már elfogadott levél újra nem indul el. Bizonytalan
+szolgáltatói válasznál ellenőrzés szükséges a Resendben; vakon nem ismétlünk küldést.
+A titkosított cron végpont: `/api/cron/newsletter` (Bearer `CRON_SECRET`).
+
+A domain DNS-ében a Resend által megadott `resend._domainkey` TXT rekord és a
+küldési CNAME rekordok szükségesek. A beállító szkript függőben lévő domainnél is
+előkészíti a kapcsolatot, de a küldést kikapcsolva tartja. A korábbi, kifejezetten
+hozzájárult címeket a külön listára átvezeti; szolgáltatói leiratkozást nem aktivál újra.
+
+Ellenőrzések: `npm run test:newsletter`, valamint
+`node --env-file=.env --conditions=react-server --experimental-strip-types scripts/verify-newsletter.mjs`.
+Az utóbbi valódi Postgres-rekordokat használ, de a Resend-hívásokat kizárólag a
+tesztben helyettesíti, levelet nem küld; a tesztadatokat a végén eltávolítja.
+
+Valódi szolgáltatói próba:
+`node --env-file=.env --conditions=react-server --experimental-strip-types scripts/verify-newsletter-provider.mjs --send-provider-tests`.
+Ez kizárólag címkézett `delivered@resend.dev` tesztcímre küld, külön ideiglenes
+listát használ, és eltávolítja a tesztfeliratkozót, listát és adatbázisrekordokat.
+Az ingyenes csomag három listájából ehhez egy szabad hely szükséges.
 
 ## Adat- és verziómodell
 
