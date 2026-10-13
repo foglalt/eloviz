@@ -36,6 +36,12 @@ export default async function NewsletterSubscribersPage() {
         <p>Resend Marketing: az ingyenes csomag 1000 névjegyet és korlátlan hírlevélküldést tartalmaz. A megerősítő levelek külön kerete napi 100, havi 3000 levél; az oldal legfeljebb napi 80 megerősítést indít. A keretek a teljes Resend-fiókra vonatkoznak.</p>
         {!configuration.enabled ? <p role="status">A küldéshez teljes hozzáférésű Resend-kulcs, ellenőrzött feladó, külön értesítési lista és leiratkozási kapcsolat szükséges. Beállítás után az automatikus küldést külön kapcsoljuk be.</p> : null}
       </section>
+      <section className="admin-panel newsletter-admin-panel" aria-labelledby="newsletter-export-title">
+        <h2 id="newsletter-export-title">Adatok mentése szolgáltatóváltáshoz</h2>
+        <p>A mentés minden feliratkozást, a hozzájárulás és megerősítés idejét, a leiratkozásokat, a Resend által letiltott címeket és a küldési előzményeket tartalmazza. A még meg nem erősített és letiltott címek külön jelölést kapnak.</p>
+        <p><a className="button" href="/admin/feliratkozok/export">Teljes mentés letöltése</a></p>
+        <p>A mentés nem vált szolgáltatót és nem küld levelet. A tényleges váltás előtt szüneteltetni kell a küldést, és újra ellenőrizni kell a legfrissebb leiratkozásokat.</p>
+      </section>
       <section className="admin-panel newsletter-admin-panel" aria-labelledby="newsletter-preview-title">
         <h2 id="newsletter-preview-title">A következő értesítő előnézete</h2>
         <p>A hét közben közzétett új tartalmakkal bővül. Következő zárás: {dateFormat.format(overview.end)}.</p>

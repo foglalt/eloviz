@@ -66,6 +66,13 @@ parancs ideiglenes adatbázis-rekordokon ellenőrzi a beszúrást, átrendezést
 
 ## Heti e-mailes értesítő
 
+Szolgáltatóváltás előkészítéséhez az admin **Feliratkozók → Teljes mentés
+letöltése** gombja a saját hozzájárulási adatokat a Resend leiratkozási/tiltási
+listáival egyeztetett, verziózott JSON-fájlba menti. A mentés nem változtat
+szolgáltatót. A lépések, régi leiratkozási linkek és visszaállás kezelése a
+[hírlevél-migrációs útmutatóban](docs/newsletter-migration.md) található.
+Olvasási próba: `node --env-file=.env --experimental-strip-types scripts/verify-newsletter-export.mjs`.
+
 A látogatók a `/feliratkozas` oldalon vagy az első látogatási ablakban kérhetik
 az értesítőt. A 72 órás megerősítő link megnyitása után külön gombbal erősítik meg
 a feliratkozást. Csak megerősített cím kerül a Resend külön Élő Víz-listájára.

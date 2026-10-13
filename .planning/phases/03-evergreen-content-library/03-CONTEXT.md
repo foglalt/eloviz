@@ -42,6 +42,9 @@ This phase does not implement the Bible reader or original-language concordances
   videos, double opt-in, permanent signup, and unsubscribe synchronization using
   the user's existing Resend account. Sunday evening is the default schedule;
   weeks with no new content send nothing.
+- Plan 03-35 prepares a provider-neutral subscriber/consent/delivery export and
+  an explicit safe migration procedure. Resend remains the live delivery provider;
+  no replacement service or pricing commitment is selected.
 
 ## Architecture Decisions
 

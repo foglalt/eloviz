@@ -28,7 +28,7 @@
     "test:youtube": "node --experimental-strip-types --test src/lib/youtube-metadata.test.ts",
     "test:admin-shortcut": "node --experimental-strip-types --test src/lib/admin-save-shortcut.test.ts",
     "test:analytics": "node --experimental-strip-types --test src/lib/analytics-core.test.ts",
-    "test:newsletter": "node --experimental-strip-types --test src/lib/newsletter-core.test.ts src/lib/newsletter-delivery-core.test.ts",
+    "test:newsletter": "node --experimental-strip-types --test src/lib/newsletter-core.test.ts src/lib/newsletter-delivery-core.test.ts src/lib/newsletter-export-core.test.ts",
     "test:series": "node --experimental-strip-types --test src/lib/study-series-core.test.ts",
     "test:bible-import": "node --experimental-strip-types --test scripts/bible-import-core.test.ts",
     "test:bible": "node --experimental-strip-types --test src/lib/bible-core.test.ts"

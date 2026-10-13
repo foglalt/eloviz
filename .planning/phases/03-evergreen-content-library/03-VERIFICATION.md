@@ -1,5 +1,5 @@
 ---
-generated: 2026-10-13T12:21:53+02:00
+generated: 2026-10-13T15:41:37+02:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-10-13T12:21:53+02:00
+- Timestamp: 2026-10-13T15:41:37+02:00
 
 ## Checks
 
@@ -42,15 +42,15 @@ Exit code: 0
   · serverActions
 
   Creating an optimized production build ...
-✓ Compiled successfully in 10.0s
+✓ Compiled successfully in 5.6s
   Running TypeScript ...
-  Finished TypeScript in 5.3s ...
+  Finished TypeScript in 5.1s ...
   Collecting page data using 11 workers ...
-  Generating static pages using 11 workers (0/14) ...
-  Generating static pages using 11 workers (3/14)
-  Generating static pages using 11 workers (6/14)
-  Generating static pages using 11 workers (10/14)
-✓ Generating static pages using 11 workers (14/14) in 573ms
+  Generating static pages using 11 workers (0/16) ...
+  Generating static pages using 11 workers (4/16)
+  Generating static pages using 11 workers (8/16)
+  Generating static pages using 11 workers (12/16)
+✓ Generating static pages using 11 workers (16/16) in 561ms
   Finalizing page optimization ...
 
 Route (app)
@@ -58,6 +58,7 @@ Route (app)
 ├ ○ /_not-found
 ├ ƒ /admin
 ├ ƒ /admin/feliratkozok
+├ ƒ /admin/feliratkozok/export
 ├ ƒ /admin/sorozatok
 ├ ƒ /admin/tanulmanyok
 ├ ƒ /admin/temak
@@ -67,6 +68,10 @@ Route (app)
 ├ ƒ /api/documents/[id]
 ├ ƒ /api/newsletter/webhook
 ├ ƒ /api/youtube-metadata
+├ ƒ /biblia
+├ ƒ /biblia/karoli-1908/[book]
+├ ƒ /biblia/karoli-1908/[book]/[chapter]
+├ ƒ /biblia/megnyitas
 ├ ƒ /feliratkozas
 ├ ƒ /feliratkozas/megerosites
 ├ ƒ /kereses
@@ -85,16 +90,3 @@ Route (app)
 ○  (Static)   prerendered as static content
 ƒ  (Dynamic)  server-rendered on demand
 ```
-
-## Resumption audit
-
-- `node --experimental-strip-types --test src/lib/*.test.ts`: exit 0;
-  70 tests passed, zero failed, cancelled, skipped, or todo.
-- `scripts/gtd.ps1 progress`: zero incomplete plans; Phase 03 complete.
-- `scripts/gtd.ps1 health`: passed.
-- `scripts/gtd.ps1 compact`: no compaction needed (138 lines <= 220
-  before the audit entry); no entries archived.
-- Roadmap completion count repaired from 33/33 to 34/34 and the completed
-  newsletter plan added. Phase 04 translation selection remains outstanding.
-- Existing production evidence is preserved in `03-34-VERIFICATION.md`.
-  This audit changed only planning files and did not repeat production mutations.

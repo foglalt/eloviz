@@ -1,15 +1,15 @@
 # Project State
 
 **Project:** Élő Víz
-**Current Phase:** 04
-**Current Phase Name:** Simple Bible Reader
-**Current Plan:** 04-03
-**Total Plans in Phase:** 3
-**Status:** Phase 04 complete, committed, pushed and verified in production
-**Progress:** 100%
+**Current Phase:** 03
+**Current Phase Name:** Evergreen Content Library
+**Current Plan:** 03-35
+**Total Plans in Phase:** 35
+**Status:** Plan 03-35 verified; production rollout in progress
+**Progress:** 97%
 **Last Activity:** 2026-10-13
-**Last Activity Description:** Károli 1908 reader deployed; exact source/full text, reciprocal study links, responsive browser and live SEO/runtime checks passed
-**Paused At:** Phase 04 complete; optional translations and Phase 05 await product prioritization
+**Last Activity Description:** Migration export passed 86 tests, read-only provider probe and authenticated responsive download checks
+**Paused At:** Continue 03-35 verification/rollout; Phase 04 remains complete
 
 ## Delivered
 
@@ -152,6 +152,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-13T13:02:04+02:00
-**Stopped At:** Phase 04 complete in production
+**Last Date:** 2026-10-13T15:41:37+02:00
+**Stopped At:** Plan 03-35 verified; committing and deploying
 **Resume File:** None
