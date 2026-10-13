@@ -33,6 +33,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 31. [x] **03-31: Fix Vercel Blob PDF storage** — Route production PDF storage through explicit Blob credentials and safely migrate the legacy database-backed document.
 32. [x] **03-32: Add first-visit email signup** — Explain that the site is growing, collect consented email addresses, and expose the list only in the authenticated editorial area.
 33. [x] **03-33: Add ordered study series** — Group chapter PDFs into named series with editable order, add-next shortcuts, independent chapter URLs, contents and previous/next navigation.
+34. [x] **03-34: Deliver weekly email digests** — Add confirmed signup, signed unsubscribe synchronization, automatic Sunday digests, and verified Resend/Vercel production configuration.
 
 ## Phase 04 Proposed Plans
 
@@ -54,7 +55,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 |---|---:|---|---|
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
-| 03 Evergreen Content Library | 33/33 | Completed, deployed and verified | 2026-10-13 |
+| 03 Evergreen Content Library | 34/34 | Completed, deployed and verified | 2026-10-13 |
 | 04 Simple Bible Reader | 0/4 proposed | Gated by one translation licence/source | — |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 

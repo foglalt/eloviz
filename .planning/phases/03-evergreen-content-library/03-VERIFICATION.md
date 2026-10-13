@@ -1,5 +1,5 @@
 ---
-generated: 2026-10-13T11:52:21+02:00
+generated: 2026-10-13T12:21:53+02:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-10-13T11:52:21+02:00
+- Timestamp: 2026-10-13T12:21:53+02:00
 
 ## Checks
 
@@ -42,15 +42,15 @@ Exit code: 0
   · serverActions
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.6s
+✓ Compiled successfully in 10.0s
   Running TypeScript ...
-  Finished TypeScript in 4.8s ...
+  Finished TypeScript in 5.3s ...
   Collecting page data using 11 workers ...
   Generating static pages using 11 workers (0/14) ...
   Generating static pages using 11 workers (3/14)
   Generating static pages using 11 workers (6/14)
   Generating static pages using 11 workers (10/14)
-✓ Generating static pages using 11 workers (14/14) in 620ms
+✓ Generating static pages using 11 workers (14/14) in 573ms
   Finalizing page optimization ...
 
 Route (app)
@@ -85,3 +85,16 @@ Route (app)
 ○  (Static)   prerendered as static content
 ƒ  (Dynamic)  server-rendered on demand
 ```
+
+## Resumption audit
+
+- `node --experimental-strip-types --test src/lib/*.test.ts`: exit 0;
+  70 tests passed, zero failed, cancelled, skipped, or todo.
+- `scripts/gtd.ps1 progress`: zero incomplete plans; Phase 03 complete.
+- `scripts/gtd.ps1 health`: passed.
+- `scripts/gtd.ps1 compact`: no compaction needed (138 lines <= 220
+  before the audit entry); no entries archived.
+- Roadmap completion count repaired from 33/33 to 34/34 and the completed
+  newsletter plan added. Phase 04 translation selection remains outstanding.
+- Existing production evidence is preserved in `03-34-VERIFICATION.md`.
+  This audit changed only planning files and did not repeat production mutations.

@@ -83,3 +83,16 @@ Plan 03-34 is complete. Next Sunday closure is 2026-10-18 at 18:00 UTC (20:00 in
 Budapest); only a nonempty week with confirmed subscribers produces a newsletter.
 Continue ordinary content publication. Phase 04 still needs the Bible translation
 decision recorded in STATE.md.
+
+## Resumption audit — 2026-10-13
+
+- User requested continuation; GTD progress found no incomplete plans and the
+  checkout matched origin/main with no local edits.
+- All 70 tests, lint, production build/TypeScript, and GTD memory health passed.
+  Fresh lint/build output is stored in `03-VERIFICATION.md`; the separate
+  `03-34-VERIFICATION.md` retains the newsletter production evidence.
+- Corrected ROADMAP.md to include plan 03-34 and count 34/34 completed plans.
+  GTD compact found state below its configured 220-line threshold; no archive
+  was needed. No application code or production data changed.
+- Asked the user to select Phase 04's Hungarian translation; no selection has
+  been recorded. Reader implementation remains at the existing product gate.
