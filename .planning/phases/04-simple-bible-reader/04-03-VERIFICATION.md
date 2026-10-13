@@ -26,4 +26,16 @@ Screenshots: ignored `output/playwright/bible-{desktop,mobile,320}.png`.
 
 ## Production release
 
-Pending commit/push and exact-deployment HTTP/console/runtime verification.
+- Commit `43f34b55d9c9f91492d946a754a8ba7eb9981136` pushed to origin/main.
+- Deployment `dpl_7psPihE7tHYHExGn1WUX7kT4PEHM`: READY, exact SHA matched,
+  `www.eloviz.hu` alias verified through the connected Vercel deployment API.
+- Live HTTP verification passed: 66-book index; John 3 exact text/36 anchors;
+  Psalm 119/176 anchors; reciprocal Páska/Exodus 12 links; 1189 chapter sitemap
+  URLs; self-canonical; invalid chapter 404; valid/invalid lookup 303 redirects.
+- Live Chromium desktop/390 px rendering, anchor highlight, no overflow and
+  zero browser errors/warnings passed.
+- Deployment-scoped error/fatal runtime logs: none in the final verification
+  window (2026-10-13T10:50:31Z–11:00:31Z).
+- Owned local browser/dev server stopped. Browser artifacts moved under ignored
+  output/playwright; temporary branch credentials removed locally. Isolated Neon
+  branch remains scheduled to expire on 2026-10-14T10:28:13Z after restored probes.

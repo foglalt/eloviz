@@ -58,7 +58,7 @@ selection and documented reuse rights; outside this completed one-version scope.
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
 | 03 Evergreen Content Library | 34/34 | Completed, deployed and verified | 2026-10-13 |
-| 04 Simple Bible Reader | 3/3 | Implemented and verified locally; production release pending | 2026-10-13 |
+| 04 Simple Bible Reader | 3/3 | Completed, deployed and verified | 2026-10-13 |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 
 ---

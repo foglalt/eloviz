@@ -5,11 +5,11 @@
 **Current Phase Name:** Simple Bible Reader
 **Current Plan:** 04-03
 **Total Plans in Phase:** 3
-**Status:** Phase 04 implemented and verified locally; production release pending
+**Status:** Phase 04 complete, committed, pushed and verified in production
 **Progress:** 100%
 **Last Activity:** 2026-10-13
-**Last Activity Description:** Verification completed (passed)
-**Paused At:** None; releasing the verified Károli reader and reciprocal study links
+**Last Activity Description:** Károli 1908 reader deployed; exact source/full text, reciprocal study links, responsive browser and live SEO/runtime checks passed
+**Paused At:** Phase 04 complete; optional translations and Phase 05 await product prioritization
 
 ## Delivered
 
@@ -41,6 +41,9 @@
   production import/idempotency, isolated rollback and real rendered publication/
   range probes, reciprocal browser navigation and 320/390/1440 px checks passed.
   Evidence: phase 04 verification and source research files.
+- Commit 43f34b5 / deployment dpl_7psPihE7tHYHExGn1WUX7kT4PEHM: READY,
+  www alias and exact SHA confirmed; live 66-book/1189-chapter routes, references,
+  reciprocal study links, 404s, canonicals, mobile fit and clean runtime logs passed.
 - Resume audit (2026-10-13): zero incomplete plans, clean initial working tree,
   70/70 tests, lint, production build/TypeScript, and memory health passed.
   Roadmap now includes completed plan 03-34 and reports 34/34; compact confirmed
@@ -149,6 +152,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-13T12:55:25+02:00
-**Stopped At:** Verification completed
+**Last Date:** 2026-10-13T13:02:04+02:00
+**Stopped At:** Phase 04 complete in production
 **Resume File:** None
