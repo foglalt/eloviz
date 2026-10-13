@@ -101,4 +101,9 @@ Route (app)
   schema version 1 and sending-enabled blocker verified. Actual download and
   320/390/1440px admin fit passed. Screenshot visually reviewed.
 - No database schema change, subscriber mutation, email, provider switch or billing change.
-- Production rollout verification pending.
+- Commit `e7e3058541150de584540479d77b35d3abc59ee4` / deployment
+  `dpl_43CMawMyHbT3n9tf4jYTvZjuJv38`: READY, exact SHA and www alias confirmed.
+- Live export: 401 with private/no-store when logged out. Admin: login redirect
+  307. Signup and Bible reader: 200. Authenticated attachment tested locally.
+- Deployment-scoped error/fatal logs empty. Memory health passed; local test auth
+  and downloaded snapshot removed. No emails or subscriber mutations occurred.

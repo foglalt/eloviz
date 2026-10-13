@@ -5,13 +5,17 @@
 **Current Phase Name:** Evergreen Content Library
 **Current Plan:** 03-35
 **Total Plans in Phase:** 35
-**Status:** Plan 03-35 verified; production rollout in progress
-**Progress:** 97%
+**Status:** Plan 03-35 complete, committed, pushed and verified in production
+**Progress:** 100%
 **Last Activity:** 2026-10-13
-**Last Activity Description:** Migration export passed 86 tests, read-only provider probe and authenticated responsive download checks
-**Paused At:** Continue 03-35 verification/rollout; Phase 04 remains complete
+**Last Activity Description:** Newsletter migration export/guide deployed; 86 tests, download/read-only provider checks and live access protection passed
+**Paused At:** No unfinished plans; Resend remains live, future switch requires chosen provider; Phase 04 complete
 
 ## Delivered
+
+- Plan 03-35: protected portable newsletter export reconciles own consent records
+  with provider opt-outs/blocks and delivery history; migration/rollback guide.
+  Resend still sends weekly; actual replacement remains a future scoped task.
 
 - Phase 04-02/03: Hungarian book/chapter reader, reference lookup, exact verse
   anchors, SEO/sitemap, visible attribution, inclusive current-document study
@@ -36,6 +40,11 @@
   add-next defaults, contents and previous/next links are implemented in plan 03-33.
 
 ## Verification Snapshot
+
+- Plan 03-35: 86 tests, lint/build, real read-only export, authenticated download
+  and 320/390/1440px fit passed. Commit e7e3058 / deployment
+  dpl_43CMawMyHbT3n9tf4jYTvZjuJv38 READY; live export 401/no-store, login
+  protection, signup/Bible routes and clean error/fatal logs verified.
 
 - Phase 04: 79 tests, lint/build/TypeScript, source hash/full-text read-back,
   production import/idempotency, isolated rollback and real rendered publication/
@@ -152,6 +161,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-13T15:41:37+02:00
-**Stopped At:** Plan 03-35 verified; committing and deploying
+**Last Date:** 2026-10-13T15:46:09+02:00
+**Stopped At:** Plan 03-35 complete in production
 **Resume File:** None

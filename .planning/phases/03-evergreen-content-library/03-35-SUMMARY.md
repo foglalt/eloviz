@@ -2,7 +2,7 @@
 phase: 03
 plan: 35
 title: Newsletter migration readiness
-status: verified-awaiting-rollout
+status: complete
 ---
 
 # Plan 03-35: Newsletter migration readiness
@@ -34,11 +34,17 @@ status: verified-awaiting-rollout
   200, private/no-store headers, versioned schema and cutover warning. Actual
   download button and 320/390/1440px admin fit passed; screenshot visually reviewed.
 - GTD lint/build report passed and was read; no schema migration or DB mutation.
+- Commit `e7e3058541150de584540479d77b35d3abc59ee4` pushed to origin/main;
+  production `dpl_43CMawMyHbT3n9tf4jYTvZjuJv38` READY with exact SHA and www alias.
+- Live export rejects unauthenticated requests with 401/private,no-store;
+  newsletter admin redirects to login (307). Signup/Bible routes return 200.
+  Authenticated attachment and real provider reconciliation were tested locally.
+- Deployment-scoped error/fatal logs empty. Memory health passed; local auth and
+  temporary downloaded snapshot removed; browser session closed.
 
 ## Remaining
 
-- Finish commit/push and exact-commit production checks. Resend continues sending
-  on the existing Sunday schedule.
+- Plan complete and deployed. Resend continues sending on the existing schedule.
 - A future provider replacement needs its own implementation and tests; existing
   Resend links require retaining the old account/webhook and forwarding opt-outs.
 - Phase 04 Bible reader remains complete and deployed; this is scoped follow-up
