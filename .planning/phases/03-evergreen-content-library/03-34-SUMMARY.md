@@ -2,10 +2,10 @@
 phase: 03
 plan: 34
 title: Weekly email digests and subscription lifecycle
-status: verified-awaiting-production-rollout
+status: complete
 ---
 
-# Plan 03-34 implementation and remaining rollout
+# Plan 03-34: Weekly email digests and subscription lifecycle
 
 ## Changes
 
@@ -57,7 +57,21 @@ status: verified-awaiting-production-rollout
   Rackhost and authoritative DNS show the change; Resend verifies all records.
 - Six server-only production settings stored securely; secrets never printed or
   committed. `NEWSLETTER_ENABLED=true` after real provider tests.
-- Commit/push and exact-commit production verification are next.
+- Commit `a4d8ef303c96c2e9e79da993c147c516b281db8b` pushed to `origin/main`.
+  Production deployment `dpl_CNm8kJbn2t2FBuPdD2GhR8mbZp1o` READY with that exact
+  SHA and `www.eloviz.hu` alias.
+- Live Opera signup delivered a real confirmation to a reserved test sink;
+  GET left it pending, explicit confirmation activated its Resend membership.
+  A real provider opt-out arrived through the signed production webhook and
+  marked it unsubscribed. Owned test subscriber/contact then removed.
+- Cron rejects missing authorization (401); webhook rejects unsigned payloads
+  (400); authenticated zero-subscriber run skipped correctly. Vercel's actual
+  project configuration confirms the enabled `/api/cron/newsletter` schedule
+  `0 18 * * 0` attached to the verified production deployment.
+- Production admin rejects unauthenticated access; authenticated admin UI was
+  verified locally. Deployment-scoped production error/fatal logs are empty.
+- No real subscriber mail blast occurred. No application/test fixtures remain;
+  account has zero contacts after cleanup. Provider test mail history is retained.
 - Pricing checked 2026-10-13: Marketing Free 1000 account-wide contacts/unlimited
   broadcasts; confirmations use transactional Free 100/day and 3000/month.
   Existing services: Vercel hosting/Cron, Neon Postgres (Launch shared account),
@@ -65,6 +79,7 @@ status: verified-awaiting-production-rollout
 
 ## Resume
 
-Finish commit/push and verify deployment, live browser signup with a reserved
-recipient, signed live webhook and protected cron. Record deployment evidence and
-mark plan/state complete.
+Plan 03-34 is complete. Next Sunday closure is 2026-10-18 at 18:00 UTC (20:00 in
+Budapest); only a nonempty week with confirmed subscribers produces a newsletter.
+Continue ordinary content publication. Phase 04 still needs the Bible translation
+decision recorded in STATE.md.

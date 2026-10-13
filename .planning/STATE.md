@@ -5,11 +5,11 @@
 **Current Phase Name:** Evergreen Content Library
 **Current Plan:** 03-34
 **Total Plans in Phase:** 34
-**Status:** Plan 03-34 verified; production rollout in progress
-**Progress:** 97%
+**Status:** Plan 03-34 complete, committed, pushed and verified in production
+**Progress:** 100%
 **Last Activity:** 2026-10-13
-**Last Activity Description:** Weekly digest passed 70 tests and real confirmation/newsletter delivery; production configured and rollout next
-**Paused At:** Continuing plan 03-34 production commit/push and live verification
+**Last Activity Description:** Weekly newsletter deployed; live signup, confirmation, signed unsubscribe and registered cron verified
+**Paused At:** Plan 03-34 complete; no pending newsletter configuration
 
 ## Delivered
 
@@ -25,11 +25,13 @@
   Blob authentication, cannot silently fall back to Postgres, and include a
   checksum-verifying migration path for legacy database-backed documents.
 - First-visit development notice, consented email signup, and protected subscriber
-  overview are deployed; automated weekly email delivery is being implemented in 03-34.
+  overview are deployed; confirmed signup, weekly Resend delivery, native unsubscribe, and Vercel scheduling are live in 03-34.
 - Ordered study series, chapter PDFs/URLs, author/source metadata, admin ordering,
   add-next defaults, contents and previous/next links are implemented in plan 03-33.
 
 ## Verification Snapshot
+
+- Plan 03-34: 70 tests, migration 009, lint/build, real provider and live signup/confirmation/unsubscribe, cron 401/skip, unsigned webhook 400 and clean logs passed. Commit a4d8ef3 / deployment dpl_CNm8kJbn2t2FBuPdD2GhR8mbZp1o READY; Sunday 18:00 UTC cron enabled; test recipients removed.
 
 - Plan 03-33: 64 tests, migration 008, transactional ordering/concurrency/rollback,
   revision guards, authenticated editor flows, public SEO/publication filters,
@@ -130,6 +132,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-13T11:52:21+02:00
-**Stopped At:** Local and real-provider checks passed; commit/push and live verification next
+**Last Date:** 2026-10-13T12:06:33+02:00
+**Stopped At:** Plan 03-34 complete in production
 **Resume File:** None

@@ -103,4 +103,23 @@ Route (app)
   and Resend verification passed. User selected Élő Víz <hirlevel@eloviz.hu>.
 - Dedicated segment, signed unsubscribe webhook and production configuration ready.
   Secrets never printed or tracked; sensitive production storage confirmed.
-- Production rollout is pending exact-commit live verification.
+- Production rollout passed: exact commit `a4d8ef303c96c2e9e79da993c147c516b281db8b`
+  in READY deployment `dpl_CNm8kJbn2t2FBuPdD2GhR8mbZp1o`, alias `www.eloviz.hu`.
+
+## Production evidence
+
+- Live browser signup confirmation email delivered to a reserved Resend sink;
+  database stayed pending after confirmation-page GET, then became subscribed
+  with linked provider contact after explicit button submission.
+- Real Resend contact opt-out produced a signed webhook; database became
+  unsubscribed with provider_event_at recorded. Owned test subscriber/contact removed.
+- Unauthorized cron: 401. Forged webhook: 400. Authenticated cron with zero
+  subscribers: skipped, no broadcast. Actual Vercel project crons are enabled and
+  list `/api/cron/newsletter` with `0 18 * * 0` for the verified deployment.
+- Production admin protection passed; local authenticated admin UI passed.
+- Deployment-scoped error/fatal logs: none. All database and provider contact/
+  segment fixtures removed; zero subscribers/contacts remain after testing.
+- Sender domain DKIM/SPF verified. Account limits read from real Resend usage:
+  contacts 1000, broadcasts unlimited, transactional 100/day and 3000/month,
+  segments 3, domains 3, API 10 requests/second. Six transactional emails used
+  at final account check; marketing test broadcasts use the separate unlimited pool.
