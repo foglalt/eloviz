@@ -50,7 +50,7 @@ Make thoughtful, Scripture-oriented Hungarian material easy to explore, share, a
 | Retire the Easter microsite after local backup and permanent redirects | The user explicitly approved complete legacy replacement | completed |
 | Build a one-translation Bible reader before concordances | Delivers the useful reader and verse-to-study discovery with substantially less data complexity | planned |
 | Publish PDF-derived HTML study pages | Layout-aware extraction gives readable chapters while preserving the original document | completed |
-| Group separate chapter PDFs into ordered study series | Supports Hungarian Stephen Bohr material and lets readers jump to a chapter or read in order | implementing |
+| Group separate chapter PDFs into ordered study series | Supports Hungarian Stephen Bohr material and lets readers jump to a chapter or read in order | completed |
 
 ---
 *Last updated: 2026-10-13*

@@ -16,6 +16,14 @@ status: passed
 |---|---:|---|
 | `npm run lint` | 0 | PASS |
 | `npm run build` | 0 | PASS |
+| All automated tests | 0 | PASS: 64 tests |
+| PostgreSQL series transaction/revision probes | 0 | PASS |
+| Responsive authenticated/public browser workflows | — | PASS |
+| Connected production deployment for `de50aab` | — | READY |
+| Live routes, sitemap, admin protection and original PDF checksum | — | PASS |
+| Deployment-scoped error/fatal logs | — | Clean |
+
+Detailed series evidence: [03-33-VERIFICATION.md](03-33-VERIFICATION.md).
 
 ## Detailed Output
 

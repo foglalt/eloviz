@@ -42,3 +42,11 @@ completed: 2026-08-21
 - Implementation is still uncommitted. No plan 03-32 production rollout is
   recorded; the live homepage returned HTTP 200 but lacked the local notice markup.
 - This audit did not repeat the recorded database migration or browser checks.
+
+## Release — 2026-10-13
+
+- Accepted signup changes were included in commit `de50aab` with plan 03-33,
+  pushed to `main`, and deployed through the connected Vercel project.
+- Deployment `dpl_DRzEst1fqvPYtV5xG1KpXmDLgNhS` reached READY. Live homepage
+  contains the first-visit notice; subscriber administration redirects anonymous
+  users to login. No notification emails were sent.

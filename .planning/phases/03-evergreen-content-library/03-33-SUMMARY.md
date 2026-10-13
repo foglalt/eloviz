@@ -44,5 +44,9 @@ completed: 2026-10-13
 
 ## Release
 
-- Commit/push and connected Vercel rollout pending after local verification.
+- Commit `de50aab` pushed to `main`; connected production deployment
+  `dpl_DRzEst1fqvPYtV5xG1KpXmDLgNhS` reached READY and serves `www.eloviz.hu`.
+- Live public routes, series discovery, sitemap, protected admin routes,
+  first-visit notice and removed-fixture 404 passed. Original PDF remained
+  byte-identical (75,525 bytes); deployment error/fatal log scan was clean.
 - Release also includes the previously accepted, uncommitted plan 03-32 signup.

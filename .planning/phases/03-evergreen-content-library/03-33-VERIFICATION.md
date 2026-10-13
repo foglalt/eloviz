@@ -32,4 +32,18 @@ were read. SUMtv reference: https://sumtv.org/study-notes (2026-10-13).
 
 ## Production
 
-Connected Git rollout and live route/runtime checks pending.
+- Source commit: `de50aab2bb465b394c42514f22f47f28969f276d`, pushed to `main`.
+- Vercel project/team matched `.vercel/project.json`; connected production
+  deployment `dpl_DRzEst1fqvPYtV5xG1KpXmDLgNhS` reached READY with this exact SHA
+  and the `www.eloviz.hu` alias, without alias errors.
+- Live `/`, `/sorozatok`, `/tanulmanyok` and `/sitemap.xml`: HTTP 200; signup
+  notice, series discovery link and sitemap index entry present; fixtures absent.
+- `/admin/sorozatok` and `/admin/feliratkozok` redirect anonymous users to login.
+- Removed test-series detail returns HTTP 404; own fixture-ID cleanup query
+  confirms zero remaining browser-created studies/series.
+- Existing public document `8d15afcc-2456-40da-b1c8-224adcd9f86c`: HTTP 200,
+  application/pdf, 75,525 bytes and unchanged SHA-256
+  `7479188792bc75b8bdcc02d93a48a9034594e67b51075ea4bfe2bd6005bc3f4f`.
+- Deployment-scoped production error/fatal log scan: no matching entries.
+- Authenticated editing was verified locally with temporary credentials;
+  production was checked through read-only public/anonymous requests.

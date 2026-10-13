@@ -5,11 +5,11 @@
 **Current Phase Name:** Evergreen Content Library
 **Current Plan:** 03-33
 **Total Plans in Phase:** 33
-**Status:** Plan 03-33 implemented and verified; release pending
+**Status:** Completed, deployed and verified
 **Progress:** 100%
 **Last Activity:** 2026-10-13
-**Last Activity Description:** Verification completed (passed)
-**Paused At:** Plan 03-33 locally complete; pending commit/push and rollout
+**Last Activity Description:** Deployed ordered study series and accepted email signup; live checks passed
+**Paused At:** Plan 03-33 complete, committed, pushed and verified in production
 
 ## Delivered
 
@@ -25,7 +25,7 @@
   Blob authentication, cannot silently fall back to Postgres, and include a
   checksum-verifying migration path for legacy database-backed documents.
 - First-visit development notice, consented email signup, and protected subscriber
-  overview are implemented locally in plan 03-32; automated email delivery remains deferred.
+  overview are deployed; automated email delivery remains deferred.
 - Ordered study series, chapter PDFs/URLs, author/source metadata, admin ordering,
   add-next defaults, contents and previous/next links are implemented in plan 03-33.
 
@@ -34,9 +34,11 @@
 - Plan 03-33: 64 tests, migration 008, transactional ordering/concurrency/rollback,
   revision guards, authenticated editor flows, public SEO/publication filters,
   responsive checks and consecutive confirmations passed; fixtures removed.
-- 2026-10-13 state audit: all 58 automated tests, lint, production build with
-  TypeScript checks, and memory health passed. Live homepage returned HTTP 200;
-  plan 03-32 remains uncommitted with no production rollout recorded.
+- Commit `de50aab` / production deployment `dpl_DRzEst1fqvPYtV5xG1KpXmDLgNhS`:
+  READY; live series/signup routes, sitemap, admin protection, original PDF
+  checksum and deployment-scoped error/fatal logs passed.
+- Initial 2026-10-13 audit: 58 tests, lint, build/TypeScript and memory health
+  passed; the previously uncommitted plan 03-32 was subsequently released with 03-33.
 - Reference detector tests, lint, strict TypeScript, production build: passed.
 - Chromium route, 404, sitemap, PDF header, responsive overflow, admin protection, and CRUD checks: passed.
 - Complete PDF editorial lifecycle: passed with four detected and published references; test content then safely deleted.
@@ -117,8 +119,6 @@
 
 ## Next Decision Gate
 
-- Finish the plan 03-32 commit/push and verify its production rollout before
-  treating the local email-signup feature as deployed.
 - Before Phase 04, select and document one Hungarian Bible translation whose full text may legally be stored and displayed.
 - On the next new PDF revision, spot-check the automatically generated heading
   and paragraph structure; extraction and storage are automatic, while manual
@@ -130,6 +130,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-13T10:36:37+02:00
-**Stopped At:** Verification completed
+**Last Date:** 2026-10-13T10:44:14+02:00
+**Stopped At:** Plan 03-33 production verification completed
 **Resume File:** None

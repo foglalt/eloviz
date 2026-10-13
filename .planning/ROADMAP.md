@@ -54,7 +54,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 |---|---:|---|---|
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
-| 03 Evergreen Content Library | 33/33 | Implemented and verified locally; rollout pending | 2026-10-13 |
+| 03 Evergreen Content Library | 33/33 | Completed, deployed and verified | 2026-10-13 |
 | 04 Simple Bible Reader | 0/4 proposed | Gated by one translation licence/source | — |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 
