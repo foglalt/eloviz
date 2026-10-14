@@ -64,7 +64,7 @@ h1, h2, h3 { font-family: var(--font-heading), sans-serif; color: var(--ink-deep
 h1 { margin: 0; font-size: clamp(3rem, 6.5vw, 6rem); font-weight: 600; }
 h2 { margin: 0; font-size: clamp(2.15rem, 4vw, 3.8rem); font-weight: 600; }
 h3 { margin: 0; font-size: clamp(1.45rem, 2.4vw, 2rem); }
-.lead { max-width: 700px; margin: 24px 0 0; color: var(--muted); font-size: clamp(1.03rem, 1.5vw, 1.22rem); }
+.lead { max-width: 700px; margin: 24px 0 0; color: var(--muted); font-size: clamp(1.03rem, 1.5vw, 1.22rem); white-space: pre-line; }
 
 .hero { position: relative; min-height: min(860px, calc(100svh - 72px)); display: grid; align-items: end; overflow: hidden; color: white; background: var(--ink-deep); }
 .hero__image { object-fit: cover; object-position: center 47%; filter: saturate(.94) contrast(1.02); transform: scale(1.015); animation: hero-image 1.5s cubic-bezier(.2,.8,.2,1) both; }

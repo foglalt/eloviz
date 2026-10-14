@@ -3,15 +3,17 @@
 **Project:** Élő Víz
 **Current Phase:** 04
 **Current Phase Name:** Simple Bible Reader
-**Current Plan:** 04-09
-**Total Plans in Phase:** 9
-**Status:** Plan04-09 complete; deployed and verified in production
+**Current Plan:** 04-10
+**Total Plans in Phase:** 10
+**Status:** Plan04-10 verified locally; introduction formatting release in progress
 **Progress:** 100%
 **Last Activity:** 2026-10-14
-**Last Activity Description:** Optional full-height reader live; normal sidebar, reopen and scroll/focus verified
+**Last Activity Description:** Introduction line breaks preserved; desktop/mobile and build passed
 **Paused At:** No unfinished plans; edition selection before any translation ingestion
 
 ## Delivered
+
+- Plan04-10: full introduction/summary newlines preserved; text unchanged, checks passed.
 
 - Plan04-09: normal sidebar restored when reader closed; full available height
   when open, close/Escape, retained passage, scroll/focus and mobile checks passed.
@@ -46,10 +48,7 @@
   Build, responsive rendering, asset delivery and contrast passed; deployed 0c99fcc
   / dpl_BZXh5DfMq4frfcvieNgdW5wkmrvj READY, live checks/logs passed.
 
-- Plan 03-37: A/B/C proposals plus D/E/F refinements saved in
-  assets/brand/icon-candidates. User likes B's structure with A's larger stars and
-  orbit; user prefers F. Revised f-full-orbits.png wraps all three trails around
-  the droplet. Selection and header/footer/favicon integration completed in 03-38.
+- Plan03-37: revised F icon selected; assets retained, integrated in03-38.
 
 - Plan 03-36: actual Gmail Inbox receipt and built-in browser confirmation work.
   Open Gmail view was stale; no sending failure reproduced. Both authorized test
@@ -215,6 +214,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-14T12:36:49+02:00
-**Stopped At:** Plan04-09 complete; live sidebar and desktop/mobile checks passed
+**Last Date:** 2026-10-14T12:38:44+02:00
+**Stopped At:** Plan04-10 verified locally; releasing introduction formatting
 **Resume File:** None
