@@ -8,14 +8,15 @@
 **Status:** Plan 03-37 icon proposals complete; awaiting user's design choice
 **Progress:** 100%
 **Last Activity:** 2026-10-14
-**Last Activity Description:** B structure combined with A's larger stars/orbit in D/E/F samples; visually verified; user choice pending
-**Paused At:** Choose refined D/E/F icon; selected-icon site integration next; Phase 04 complete
+**Last Activity Description:** User preferred F; lowest trail extended around droplet; revised F with three wrapping orbits saved and visually verified
+**Paused At:** Revised F preview ready; site integration remains next; Phase 04 complete
 
 ## Delivered
 
 - Plan 03-37: A/B/C proposals plus D/E/F refinements saved in
   assets/brand/icon-candidates. User likes B's structure with A's larger stars and
-  orbit; gentle, wrapped and compact curve samples await final selection.
+  orbit; user prefers F. Revised f-full-orbits.png wraps all three trails around
+  the droplet. Preview complete; header/footer/favicon integration remains next.
 
 - Plan 03-36: actual Gmail Inbox receipt and built-in browser confirmation work.
   Open Gmail view was stale; no sending failure reproduced. Both authorized test
@@ -160,7 +161,7 @@
 
 ## Next Decision Gate
 
-- Choose D gentle curves, E wrapped orbits or F compact orbits; then
+- Revised F is the latest preferred icon preview; next
   refine small-size output and integrate header/footer/favicon with live checks.
 
 - Károli 1908 chosen on 2026-10-13; source/reuse verification complete in
@@ -177,5 +178,5 @@
 ## Session
 
 **Last Date:** 2026-10-14T08:40:19+02:00
-**Stopped At:** Refined D/E/F previews ready; user choice pending before integration
+**Stopped At:** Revised F preview ready with all three orbital wraps
 **Resume File:** None

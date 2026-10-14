@@ -25,3 +25,11 @@
 - All three requested final samples saved with distinct filenames. No app code,
   package, config or public asset changed; lint/build were not unnecessarily rerun.
 - Small-size refinement/browser favicon checks await final design selection.
+
+## Revised F
+
+- Actual built-in edit output inspected: lowest trail now extends outside the
+  left droplet boundary, curls around it and crosses in front with a clean gap.
+  Upper two trails and three-star compact formation retained; three wrapping arcs.
+- Saved assets/brand/icon-candidates/f-full-orbits.png; original F preserved.
+- No application code/public asset changed; prior lint/build remain applicable.

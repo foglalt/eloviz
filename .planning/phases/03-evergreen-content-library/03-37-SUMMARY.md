@@ -28,3 +28,12 @@ status: complete
   initial E incorrectly had four stars and was corrected before delivery.
 - Selected design remains pending. No runtime implementation or deployment
   changes in this refinement; existing application verification remains valid.
+
+## F refinement: third orbital wrap
+
+- User chose F as closest and requested its lowest trail also circle the droplet.
+  Built-in targeted edit extends that trail around the outer-left edge with the
+  same curved hook/foreground crossing as the upper two, preserving the formation.
+- Saved f-full-orbits.png non-destructively; actual output visually verified:
+  exactly three stars, all three trails wrap left of the aqua droplet.
+- Preview refinement only; live icon integration has not been performed.

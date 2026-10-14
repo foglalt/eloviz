@@ -10,6 +10,7 @@ and alternative parallel diagonal flight lanes with each star slightly behind.
 - D: `d-gentle-curves.png` — enlarged gold stars and three gently curved lanes inside the droplet.
 - E: `e-wrapped-orbits.png` — enlarged gold stars and three full orbital sweeps around the droplet's left edge.
 - F: `f-compact-orbits.png` — enlarged gold stars and short curved sweeps, a compact hybrid of A and B.
+- F revised: `f-full-orbits.png` — same compact formation, lowest trail now also wraps around the droplet's left edge.
 
 Shared prompt: one simple upright outlined droplet; exactly three four-point
 stars, light accents on dark navy rounded square, aqua droplet, no text/literal
@@ -23,6 +24,11 @@ wrapped orbital sweeps and a compact middle-ground, exactly three stars and thre
 trails. E's initial four-star draft was rejected and corrected before saving.
 
 User prefers B's structure combined with A's star size and orbit. D/E/F are the
-current selection set. These are review candidates; no public site asset or
+current selection set. User subsequently preferred F and requested the lowest
+orbit also wrap around the droplet. Built-in edit prompt changed only that lowest
+trail, adding the matching outer-left hook and a clear foreground crossing while
+preserving the three stars, colours, droplet and compact formation. Revised F
+visually verified with three wrapping orbits; original F remains available.
+These are review candidates; no public site asset or
 favicon has been changed. Before integration, refine/export the selected design
 for 16/32px use and verify header/footer contrast and favicon delivery.
