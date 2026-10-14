@@ -3,15 +3,19 @@
 **Project:** Élő Víz
 **Current Phase:** 03
 **Current Phase Name:** Evergreen Content Library
-**Current Plan:** 03-35
-**Total Plans in Phase:** 35
-**Status:** Plan 03-35 complete, committed, pushed and verified in production
+**Current Plan:** 03-36
+**Total Plans in Phase:** 36
+**Status:** Plan 03-36 complete; live Gmail delivery/confirmation verified
 **Progress:** 100%
 **Last Activity:** 2026-10-13
-**Last Activity Description:** Newsletter migration export/guide deployed; 86 tests, download/read-only provider checks and live access protection passed
+**Last Activity Description:** Gmail delivery investigation complete; original/fresh Inbox receipt and both active memberships verified; 18 tests and lint/build passed
 **Paused At:** No unfinished plans; Resend remains live, future switch requires chosen provider; Phase 04 complete
 
 ## Delivered
+
+- Plan 03-36: actual Gmail Inbox receipt and built-in browser confirmation work.
+  Open Gmail view was stale; no sending failure reproduced. Both authorized test
+  accounts remain confirmed and active; no mailbox/DNS configuration changes.
 
 - Plan 03-35: protected portable newsletter export reconciles own consent records
   with provider opt-outs/blocks and delivery history; migration/rollback guide.
@@ -40,6 +44,10 @@
   add-next defaults, contents and previous/next links are implemented in plan 03-33.
 
 ## Verification Snapshot
+
+- Plan 03-36: actual original/fresh Gmail Inbox receipt, built-in confirmation,
+  both active local/provider memberships, 18 newsletter tests, lint/build and
+  clean runtime logs passed. No code/configuration fix needed; notes recorded.
 
 - Plan 03-35: 86 tests, lint/build, real read-only export, authenticated download
   and 320/390/1440px fit passed. Commit e7e3058 / deployment
@@ -161,6 +169,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-13T15:46:09+02:00
-**Stopped At:** Plan 03-35 complete in production
+**Last Date:** 2026-10-13T16:07:11+02:00
+**Stopped At:** Plan 03-36 complete; Gmail investigation recorded
 **Resume File:** None
