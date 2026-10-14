@@ -3,15 +3,19 @@
 **Project:** Élő Víz
 **Current Phase:** 03
 **Current Phase Name:** Evergreen Content Library
-**Current Plan:** 03-36
-**Total Plans in Phase:** 36
-**Status:** Plan 03-36 complete; live Gmail delivery/confirmation verified
+**Current Plan:** 03-37
+**Total Plans in Phase:** 37
+**Status:** Plan 03-37 icon proposals complete; awaiting user's design choice
 **Progress:** 100%
-**Last Activity:** 2026-10-13
-**Last Activity Description:** Gmail delivery investigation complete; original/fresh Inbox receipt and both active memberships verified; 18 tests and lint/build passed
-**Paused At:** No unfinished plans; Resend remains live, future switch requires chosen provider; Phase 04 complete
+**Last Activity:** 2026-10-14
+**Last Activity Description:** Three icon proposals saved and visually reviewed; lint/build passed; awaiting user's choice before integration
+**Paused At:** Product choice: A/B/C icon or refinement; selected-icon site integration next; Phase 04 complete
 
 ## Delivered
+
+- Plan 03-37: three living-water droplet/three-angel icon proposals saved in
+  assets/brand/icon-candidates; warm/light stars with curved or parallel trails.
+  User selection pending; header/footer/favicon integration follows that choice.
 
 - Plan 03-36: actual Gmail Inbox receipt and built-in browser confirmation work.
   Open Gmail view was stale; no sending failure reproduced. Both authorized test
@@ -156,6 +160,9 @@
 
 ## Next Decision Gate
 
+- Choose A orange orbit, B gold parallel or C ivory parallel droplet icon; then
+  refine small-size output and integrate header/footer/favicon with live checks.
+
 - Károli 1908 chosen on 2026-10-13; source/reuse verification complete in
   `.planning/research/2026-10-13-karoli-1908-source.md`. Reader is implemented;
   Phase 05 concordances and additional translations await product prioritization.
@@ -169,6 +176,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-13T16:07:11+02:00
-**Stopped At:** Plan 03-36 complete; Gmail investigation recorded
+**Last Date:** 2026-10-14T08:40:19+02:00
+**Stopped At:** Icon previews ready; user choice pending before site integration
 **Resume File:** None

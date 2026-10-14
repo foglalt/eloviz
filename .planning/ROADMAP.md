@@ -36,6 +36,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 34. [x] **03-34: Deliver weekly email digests** — Add confirmed signup, signed unsubscribe synchronization, automatic Sunday digests, and verified Resend/Vercel production configuration.
 35. [x] **03-35: Prepare newsletter migration** — Portable consent/exclusion/delivery export and safe cutover/rollback guide; existing Resend delivery retained.
 36. [x] **03-36: Investigate Gmail confirmations** — Actual Inbox receipt and full built-in browser signup/confirmation verified; no sending defect reproduced.
+37. [x] **03-37: Propose living-water icons** — Three lighter-accent droplet/three-angel designs saved and reviewed; selection pending before site integration.
 
 ## Phase 04 Plans
 
@@ -59,7 +60,7 @@ selection and documented reuse rights; outside this completed one-version scope.
 |---|---:|---|---|
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
-| 03 Evergreen Content Library | 36/36 | Completed, deployed and verified | 2026-10-13 |
+| 03 Evergreen Content Library | 37/37 | Icon proposals complete; design selection pending | 2026-10-14 |
 | 04 Simple Bible Reader | 3/3 | Completed, deployed and verified | 2026-10-13 |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 
