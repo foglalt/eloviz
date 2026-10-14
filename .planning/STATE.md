@@ -3,15 +3,18 @@
 **Project:** Élő Víz
 **Current Phase:** 04
 **Current Phase Name:** Simple Bible Reader
-**Current Plan:** 04-07
-**Total Plans in Phase:** 7
-**Status:** Plan04-07 complete; committed, pushed, reviewed and verified in production
+**Current Plan:** 04-08
+**Total Plans in Phase:** 8
+**Status:** Plan04-08 complete; modern translation linking research recorded
 **Progress:** 100%
 **Last Activity:** 2026-10-14
-**Last Activity Description:** Study passage reader live;100tests/build, canonical data and desktop/mobile scroll/focus checks passed
+**Last Activity Description:** Owner links distinguished from text display; modern translation permissions researched
 **Paused At:** No unfinished plans; edition selection before any translation ingestion
 
 ## Delivered
+
+- Plan04-08: authorized modern-reader links recommended; attribution/API access
+  does not clear onsite text. See research/2026-10-14-modern-bible-links-and-permissions.md.
 
 - Plan04-07: clickable study references, sticky Bible inspector/mobile modal,
   chapter context and arbitrary lookup; canonical data and scroll/focus verified.
@@ -198,8 +201,6 @@
   Biblica open NT recommended for modern wording; historical full/NT candidates
   have separate corpus/canon/numbering audit needs. Current reader correction live.
 
-- Revised F approved and deployed in 03-38; complete.
-
 - Károli 1908 chosen on 2026-10-13; source/reuse verification complete in
   `.planning/research/2026-10-13-karoli-1908-source.md`. Reader is implemented;
   Phase 05 concordances and additional translations await product prioritization.
@@ -213,6 +214,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-14T12:07:19+02:00
-**Stopped At:** Plan04-07 complete; production verified and reviewed
+**Last Date:** 2026-10-14T12:12:04+02:00
+**Stopped At:** Plan04-08 research complete; no translation integration added
 **Resume File:** None

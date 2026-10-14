@@ -50,6 +50,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 5. [x] **04-05: Toggle inline studies from the sidebar** — Correct clarified placement: one global sidebar button shows all studies beside their verses; no sidebar results list. Deployed and verified.
 6. [x] **04-06: Research open Hungarian editions** — Current licence/coverage/source shortlist, recommendation and ingestion prerequisites recorded; no new translation imported.
 7. [x] **04-07: Read passages inside studies** — Clickable occurrences, sticky desktop Bible inspector/mobile modal, contextual highlights and arbitrary lookup; deployed, reviewed and verified live.
+8. [x] **04-08: Research modern translation links** — External reader links versus attribution, API display, quotation and framing permissions documented; no integration added.
 
 Deferred: **Optional additional translations**, only after separate product
 selection and documented reuse rights; outside this completed one-version scope.
@@ -68,7 +69,7 @@ selection and documented reuse rights; outside this completed one-version scope.
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
 | 03 Evergreen Content Library | 39/39 | Complete; deployed and verified live | 2026-10-14 |
-| 04 Simple Bible Reader | 7/7 | Complete; study inspector deployed and verified | 2026-10-14 |
+| 04 Simple Bible Reader | 8/8 | Complete; inspector live and modern-link research recorded | 2026-10-14 |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 
 ---
