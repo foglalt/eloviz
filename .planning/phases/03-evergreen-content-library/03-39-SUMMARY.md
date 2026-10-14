@@ -2,7 +2,7 @@
 phase: 03
 plan: 39
 title: Repair series study list and reference presentation
-status: implemented
+status: complete
 ---
 
 # Plan 03-39: Study conversion and series presentation
@@ -29,5 +29,10 @@ status: implemented
   list/valid block markup, compact title scale and short Sorozatok heading; layout
   fits mobile without splitting the previous long heading into a stranded ending.
 - 95 tests, lint/build/strict TypeScript passed; real local responsive browser and
-  PDF checks passed. Production code rollout pending. Approved icon/palette from
-  03-38 remains deployed and unchanged.
+  PDF checks passed. Code commit cae4459758dbff53ec0f9fd575ef98815debc442 pushed;
+  production dpl_BgdgydiEUyXiZtXro1e3hS6GWCSV READY with exact SHA and www alias.
+  Live HTTP checks passed for study lists/quotes/references, summary/body labels,
+  index/detail navigation and exact original PDF checksum. Built-in browser
+  verified study 1440/390px and series 390/320px, no overflow or console errors;
+  deployment error/fatal logs empty. Production screenshots visually inspected.
+  Approved icon/palette from 03-38 remains deployed and unchanged.

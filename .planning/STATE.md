@@ -5,17 +5,18 @@
 **Current Phase Name:** Evergreen Content Library
 **Current Plan:** 03-39
 **Total Plans in Phase:** 39
-**Status:** Plan 03-39 implemented and verified locally; production code rollout pending
+**Status:** Plan 03-39 complete; committed, pushed and verified in production
 **Progress:** 100%
 **Last Activity:** 2026-10-14
-**Last Activity Description:** 95 tests/build passed; target repaired with four lists/no false quotes/69 correct references; summary divider and series index verified
-**Paused At:** Publish and verify plan 03-39 production code; Phase 04 complete
+**Last Activity Description:** Study lists/references and summary/series layout repaired; 95 tests/build and live desktop/mobile/PDF checks passed
+**Paused At:** No unfinished plans; Phase 04 complete; await next product priority
 
 ## Delivered
 
 - Plan 03-39: PDF list/quote and reference-list rules fixed, target source-preserving
   regeneration done, summary/body separation and series index improved. 95 tests,
-  build and actual responsive browser checks passed; code rollout pending.
+  build and actual responsive browser checks passed. Deployed cae4459 /
+  dpl_BgdgydiEUyXiZtXro1e3hS6GWCSV READY; live browser/HTTP/PDF/log checks passed.
 
 - Plan 03-38: approved revised F used in header/footer and browser/touch icons;
   restrained navy/gold palette with existing light reading layout retained.
@@ -25,7 +26,7 @@
 - Plan 03-37: A/B/C proposals plus D/E/F refinements saved in
   assets/brand/icon-candidates. User likes B's structure with A's larger stars and
   orbit; user prefers F. Revised f-full-orbits.png wraps all three trails around
-  the droplet. Preview complete; header/footer/favicon integration remains next.
+  the droplet. Selection and header/footer/favicon integration completed in 03-38.
 
 - Plan 03-36: actual Gmail Inbox receipt and built-in browser confirmation work.
   Open Gmail view was stale; no sending failure reproduced. Both authorized test
@@ -58,6 +59,10 @@
   add-next defaults, contents and previous/next links are implemented in plan 03-33.
 
 ## Verification Snapshot
+
+- Plan 03-39: 95 tests, lint/build/TypeScript, source-faithful atomic repair,
+  69 references, live lists/no quotes, summary divider and responsive series index
+  passed. Exact production SHA/alias, unchanged PDF and clean runtime logs verified.
 
 - Plan 03-36: actual original/fresh Gmail Inbox receipt, built-in confirmation,
   both active local/provider memberships, 18 newsletter tests, lint/build and
@@ -185,6 +190,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-14T09:48:40+02:00
-**Stopped At:** Plan 03-39 ready for production code rollout
+**Last Date:** 2026-10-14T10:03:00+02:00
+**Stopped At:** Plan 03-39 complete; production verified; no unfinished plans
 **Resume File:** None

@@ -35,8 +35,19 @@
 - React review: Server Components, no new effects/state, valid list/link hierarchy,
   Hungarian copy, existing URLs/accessibility and publication filtering retained.
 - No schema changes, file replacement, publication-date changes, provider changes,
-  email sends or unrelated document regeneration. Production rollout pending.
+  email sends or unrelated document regeneration.
+- PASS production code commit cae4459758dbff53ec0f9fd575ef98815debc442 pushed;
+  deployment dpl_BgdgydiEUyXiZtXro1e3hS6GWCSV READY, exact SHA and www.eloviz.hu
+  alias confirmed with Vercel deployment inspection.
+- PASS live HTTP: study has four lists 22/15/10/14, zero blockquotes, both summary
+  and body labels, corrected/inherited reference ranges and intact wrapped book
+  name; index/detail routes and original PDF exact SHA256 pass.
+- PASS live built-in browser: study at1440/390px, series at390/320px, no overflow;
+  series title26.4px at390. Production summary divider and compact index screenshots
+  visually inspected. Browser console errors empty; deployment-scoped error/fatal
+  logs empty for the final 15-minute interval. Temporary viewport reset.
 
 Screenshots in ignored output/: study-after-local-desktop.png,
 study-after-local-mobile.png, study-lists-after-local.png,
-series-index-after-local-mobile.png, series-index-after-local-desktop.png.
+series-index-after-local-mobile.png, series-index-after-local-desktop.png,
+study-after-production.png, series-index-after-production-mobile.png.
