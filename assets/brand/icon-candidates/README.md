@@ -29,6 +29,7 @@ orbit also wrap around the droplet. Built-in edit prompt changed only that lowes
 trail, adding the matching outer-left hook and a clear foreground crossing while
 preserving the three stars, colours, droplet and compact formation. Revised F
 visually verified with three wrapping orbits; original F remains available.
-These are review candidates; no public site asset or
-favicon has been changed. Before integration, refine/export the selected design
-for 16/32px use and verify header/footer contrast and favicon delivery.
+The user approved revised F for the site. Plan 03-38 uses f-full-orbits.png as
+the source for compact runtime exports; scripts/export-brand-icons.mjs produces
+the public/brand PNGs and self-contained SVG favicon. Header/footer and touch/icon
+metadata use these exports. Earlier candidates remain design history only.

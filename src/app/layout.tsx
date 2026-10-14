@@ -15,7 +15,13 @@ export const metadata: Metadata = {
   applicationName: "Élő Víz",
   title: { default: "Élő Víz – Bibliatanulmányok magyarul", template: "%s | Élő Víz" },
   description: "Magyar nyelvű bibliatanulmányok és gondosan válogatott videók, témák szerint rendezve.",
-  icons: { icon: "/favicon.svg" },
+  icons: {
+    icon: [
+      { url: "/brand/living-water-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon.svg?v=living-water-3-angels", type: "image/svg+xml", sizes: "any" },
+    ],
+    apple: { url: "/brand/living-water-180.png", sizes: "180x180", type: "image/png" },
+  },
   openGraph: {
     type: "website",
     locale: "hu_HU",
