@@ -1,17 +1,21 @@
 # Project State
 
 **Project:** Élő Víz
-**Current Phase:** 03
-**Current Phase Name:** Evergreen Content Library
-**Current Plan:** 03-39
-**Total Plans in Phase:** 39
-**Status:** Plan 03-39 complete; committed, pushed and verified in production
+**Current Phase:** 04
+**Current Phase Name:** Simple Bible Reader
+**Current Plan:** 04-04
+**Total Plans in Phase:** 4
+**Status:** Plan 04-04 implemented and verified locally; production rollout pending
 **Progress:** 100%
 **Last Activity:** 2026-10-14
-**Last Activity Description:** Study lists/references and summary/series layout repaired; 95 tests/build and live desktop/mobile/PDF checks passed
-**Paused At:** No unfinished plans; Phase 04 complete; await next product priority
+**Last Activity Description:** Bible study links moved into verse-grouped sidebar; four tests/build and actual responsive/keyboard checks passed
+**Paused At:** Publish and verify plan 04-04 production rollout
 
 ## Delivered
+
+- Plan 04-04: collapsed sidebar discovery replaces inline Bible study controls;
+  all verse groups and matches retained, empty state and viewport-bound scrolling.
+  Local data equality, keyboard, fragment links and responsive checks passed.
 
 - Plan 03-39: PDF list/quote and reference-list rules fixed, target source-preserving
   regeneration done, summary/body separation and series index improved. 95 tests,
@@ -190,6 +194,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-14T10:03:00+02:00
-**Stopped At:** Plan 03-39 complete; production verified; no unfinished plans
+**Last Date:** 2026-10-14T11:11:32+02:00
+**Stopped At:** Verification completed
 **Resume File:** None

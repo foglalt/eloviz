@@ -24,7 +24,13 @@ Import one permitted Hungarian Bible, provide book/chapter navigation and verse 
 
 ## Deferred Ideas
 
-- Additional translations (04-04), accounts, reading progress, full-text concordance and Greek/Hebrew features.
+- Additional translations, accounts, reading progress, full-text concordance and Greek/Hebrew features.
+
+## Reader refinement (2026-10-14)
+
+- User requested connected study discovery in the left sidebar instead of within
+  Bible text. Plan 04-04 retains every current published match grouped by verse
+  behind one collapsed show/hide control; mobile navigation remains above text.
 
 ---
 *Phase: 04-simple-bible-reader*
