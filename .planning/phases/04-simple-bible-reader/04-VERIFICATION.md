@@ -1,5 +1,5 @@
 ---
-generated: 2026-10-14T11:23:38+02:00
+generated: 2026-10-14T11:58:20+02:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-10-14T11:23:38+02:00
+- Timestamp: 2026-10-14T11:58:20+02:00
 
 ## Checks
 
@@ -42,15 +42,15 @@ Exit code: 0
   · serverActions
 
   Creating an optimized production build ...
-✓ Compiled successfully in 6.6s
+✓ Compiled successfully in 7.8s
   Running TypeScript ...
-  Finished TypeScript in 6.5s ...
+  Finished TypeScript in 6.2s ...
   Collecting page data using 11 workers ...
-  Generating static pages using 11 workers (0/16) ...
-  Generating static pages using 11 workers (4/16)
-  Generating static pages using 11 workers (8/16)
-  Generating static pages using 11 workers (12/16)
-✓ Generating static pages using 11 workers (16/16) in 618ms
+  Generating static pages using 11 workers (0/17) ...
+  Generating static pages using 11 workers (4/17)
+  Generating static pages using 11 workers (8/17)
+  Generating static pages using 11 workers (12/17)
+✓ Generating static pages using 11 workers (17/17) in 529ms
   Finalizing page optimization ...
 
 Route (app)
@@ -64,6 +64,7 @@ Route (app)
 ├ ƒ /admin/temak
 ├ ƒ /admin/videok
 ├ ƒ /api/analytics
+├ ƒ /api/bible/passage
 ├ ƒ /api/cron/newsletter
 ├ ƒ /api/documents/[id]
 ├ ƒ /api/newsletter/webhook

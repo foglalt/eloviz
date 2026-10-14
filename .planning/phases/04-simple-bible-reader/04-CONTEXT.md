@@ -33,5 +33,10 @@ Import one permitted Hungarian Bible, provide book/chapter navigation and verse 
   no separate sidebar results list or repeated per-verse toggle. Plan04-05 corrects
   the earlier interpretation; navigation remains above text on mobile.
 
+- Study references now also open a contextual Károli reader without leaving the
+  study. Sticky desktop inspector replaces its reference list; mobile uses a modal
+  with scroll/focus restoration. Arbitrary verse/chapter lookup and neighbours are
+  in scope; user authorized retaining after practical review. Plan04-07.
+
 ---
 *Phase: 04-simple-bible-reader*

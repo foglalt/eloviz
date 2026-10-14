@@ -3,15 +3,19 @@
 **Project:** Élő Víz
 **Current Phase:** 04
 **Current Phase Name:** Simple Bible Reader
-**Current Plan:** 04-06
-**Total Plans in Phase:** 6
-**Status:** Plan04-05 live;04-06 translation-licence research complete
+**Current Plan:** 04-07
+**Total Plans in Phase:** 7
+**Status:** Plan04-07 implemented and verified locally; production rollout pending
 **Progress:** 100%
 **Last Activity:** 2026-10-14
-**Last Activity Description:** Correct inline toggle verified live; open Hungarian edition shortlist and source/coverage conditions recorded
-**Paused At:** No unfinished plans; edition selection before any translation ingestion
+**Last Activity Description:** Study passage reader reviewed;100tests/build, canonical API data and desktop/mobile scroll checks passed
+**Paused At:** Publish and verify04-07; edition selection before any translation ingestion
 
 ## Delivered
+
+- Plan04-07: clickable study references, sticky Bible inspector/mobile modal,
+  chapter context and arbitrary lookup; canonical data and scroll/focus verified.
+  Reviewed as useful; release pending. No translation or stored-study changes.
 
 - Plan04-06: open Biblica NT and historical Hungarian candidate licences/coverage
   researched and documented with source-quality/numbering audit prerequisites;
@@ -208,6 +212,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-14T11:32:00+02:00
-**Stopped At:** Inline toggle correction live; translation research complete
+**Last Date:** 2026-10-14T11:58:20+02:00
+**Stopped At:** Verification completed
 **Resume File:** None

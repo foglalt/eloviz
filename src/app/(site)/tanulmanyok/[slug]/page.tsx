@@ -4,11 +4,11 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs, breadcrumbJsonLd } from "@/components/breadcrumbs";
 import { JsonLd } from "@/components/json-ld";
 import { StudyArticle } from "@/components/study-article";
+import { ScriptureText } from "@/components/scripture-text";
+import { StudyBibleReader, StudyBibleWorkspace } from "@/components/study-bible-reader";
 import { StudySeriesContents, StudySeriesNavigation } from "@/components/study-series-navigation";
 import { getStudyBySlug } from "@/lib/content-repository";
 import { absoluteSiteUrl } from "@/lib/site-config";
-import { bibleVerseHref } from "@/lib/bible-core";
-import { readableBiblePoints } from "@/lib/bible-repository";
 
 type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -34,7 +34,6 @@ export default async function StudyPage({ params }: Props) {
   const study = await getStudyBySlug(slug);
 
   if (!study) notFound();
-  const readablePoints = await readableBiblePoints(study.references.flatMap((reference)=>[reference.osisStart,reference.osisEnd]));
 
   const crumbs = [
     { label: "Kezdőlap", href: "/" },
@@ -62,12 +61,13 @@ export default async function StudyPage({ params }: Props) {
         }}
       />
       <Breadcrumbs items={[...crumbs.slice(0, -1), { label: study.title }]} />
+      <StudyBibleWorkspace key={study.id}>
       <div className="detail-grid study-detail-grid">
         <div className="detail-copy study-detail__intro">
           <p className="eyebrow">{study.series ? `${study.series.parts.find((part) => part.id === study.id)?.position}. rész` : "Bibliatanulmány"}</p>
           {study.series ? <Link className="text-link study-series-link" href={`/sorozatok/${study.series.slug}`}>{study.series.title}</Link> : null}
           <h1 id="study-title">{study.title}</h1>
-          <div className="study-summary"><p className="study-summary__label">Összefoglaló</p><p className="lead">{study.summary}</p></div>
+          <div className="study-summary"><p className="study-summary__label">Összefoglaló</p><p className="lead"><ScriptureText text={study.summary} /></p></div>
         </div>
         <aside className="detail-sidebar study-detail__sidebar">
           {study.series ? <div className="detail-sidebar__section study-detail__series"><h2>A sorozat részei</h2><Link className="text-link" href={`/sorozatok/${study.series.slug}`}>{study.series.title}</Link><StudySeriesContents series={study.series} currentStudyId={study.id} /></div> : null}
@@ -94,20 +94,6 @@ export default async function StudyPage({ params }: Props) {
               >
                 PDF megnyitása
               </a>
-            </div>
-          ) : null}
-          {study.references.length ? (
-            <div className="detail-sidebar__section study-detail__references">
-              <h2>Kapcsolódó igeszakaszok</h2>
-              <ul className="sidebar-reference-list">
-                {study.references.map((reference) => (
-                  <li key={`${reference.osisStart}-${reference.osisEnd}`}>
-                    {readablePoints.has(reference.osisStart) && readablePoints.has(reference.osisEnd) && bibleVerseHref(reference.osisStart)
-                      ? <a href={bibleVerseHref(reference.osisStart)!}>{reference.label}</a>
-                      : reference.label}
-                  </li>
-                ))}
-              </ul>
             </div>
           ) : null}
           {!study.series && study.relatedStudies.length ? (
@@ -138,6 +124,7 @@ export default async function StudyPage({ params }: Props) {
               </ul>
             </div>
           ) : null}
+          <StudyBibleReader references={study.references.map(({ label, osisStart, osisEnd }) => ({ label, osisStart, osisEnd }))} />
         </aside>
         <article className="detail-copy study-detail__article" aria-labelledby="study-title">
           <h2 className="study-body-heading">Tanulmány</h2>
@@ -147,6 +134,7 @@ export default async function StudyPage({ params }: Props) {
           {study.series ? <StudySeriesNavigation series={study.series} studyId={study.id} /> : null}
         </article>
       </div>
+      </StudyBibleWorkspace>
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import "server-only";
 import { cache } from "react";
 import { getSql } from "./db";
-import { BIBLE_BOOKS, BIBLE_TRANSLATION_ID, bibleBookBySlug, parseBibleChapter } from "./bible-core";
+import { BIBLE_BOOKS, BIBLE_TRANSLATION_ID, BIBLE_TRANSLATION_NAME, bibleBookByCode, bibleBookBySlug, bibleChapterNeighbours, bibleVerseHref, parseBibleChapter } from "./bible-core";
+import type { BiblePassage, BiblePassageRequest } from "./bible-passage-core";
 
 export type BibleStudy = { id: string; slug: string; title: string };
 export type BibleChapter = {
@@ -60,3 +61,44 @@ export const listBibleChapters = cache(async () => {
     return book ? [{ slug: book.slug, chapter: Number(row.chapter_number) }] : [];
   });
 });
+
+export async function getBiblePassage(range: BiblePassageRequest): Promise<BiblePassage | null> {
+  const sql = getSql();
+  const book = bibleBookByCode(range.bookCode);
+  if (!sql || !book) return null;
+  const [rows, edition, books] = await Promise.all([
+    sql.query(`SELECT c.osis,c.chapter_number,c.verse_number,v.text
+      FROM canonical_verses c JOIN bible_verses v ON v.osis=c.osis
+      WHERE v.translation_id=$1 AND c.book_code=$2 AND c.chapter_number BETWEEN $3 AND $4
+      ORDER BY c.chapter_number,c.verse_number LIMIT 2000`,
+    [BIBLE_TRANSLATION_ID, book.code, range.startChapter, range.endChapter]),
+    getBibleEdition(), listBibleBooks(),
+  ]);
+  if (!edition || !rows.length || !rows.some((row) => row.osis === range.osisStart)
+    || (!range.wholeChapter && !rows.some((row) => row.osis === range.osisEnd))) return null;
+  const selectedEnd = range.wholeChapter ? String(rows[rows.length - 1].osis) : range.osisEnd;
+  const chapters: BiblePassage["chapters"] = [];
+  for (const row of rows) {
+    const chapter = Number(row.chapter_number);
+    const number = Number(row.verse_number);
+    let current = chapters[chapters.length - 1];
+    if (!current || current.number !== chapter) {
+      current = { number: chapter, label: `${book.name} ${chapter}`, verses: [] };
+      chapters.push(current);
+    }
+    current.verses.push({ osis: String(row.osis), number, text: String(row.text),
+      selected: range.wholeChapter || (chapter * 1000 + number >= range.startChapter * 1000 + range.startVerse
+        && chapter * 1000 + number <= range.endChapter * 1000 + range.endVerse) });
+  }
+  const counts = new Map(books.map((item) => [item.slug, item.chapters]));
+  const previous = bibleChapterNeighbours(book.slug, range.startChapter, counts).previous;
+  const next = bibleChapterNeighbours(book.slug, range.endChapter, counts).next;
+  const neighbour = (point: typeof previous) => point ? {
+    label: `${bibleBookBySlug(point.slug)!.name} ${point.chapter}`,
+    query: `${bibleBookBySlug(point.slug)!.name} ${point.chapter}`,
+  } : null;
+  return { label: range.wholeChapter ? `${book.name} ${range.startChapter}` : range.displayLabel,
+    translation: BIBLE_TRANSLATION_NAME, attribution: edition.attribution, sourceUrl: edition.sourceUrl,
+    href: bibleVerseHref(range.osisStart)!, selectedStart: range.osisStart, selectedEnd,
+    chapters, previous: neighbour(previous), next: neighbour(next) };
+}

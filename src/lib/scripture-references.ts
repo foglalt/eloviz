@@ -373,7 +373,16 @@ export function sortScriptureReferencesInBibleOrder<T extends { osisStart: strin
     .map(({ reference }) => reference);
 }
 
-export function detectScriptureReferences(pages: string[]) {
+export type ScriptureReferenceMention = ScriptureReferenceRange & { start: number; end: number };
+
+export function findScriptureReferenceMentions(text: string) {
+  const mentions: ScriptureReferenceMention[] = [];
+  detectScriptureReferences([text], (mention) => mentions.push(mention));
+  return mentions.sort((left, right) => left.start - right.start)
+    .filter((mention, index, all) => index === 0 || mention.start >= all[index - 1].end);
+}
+
+export function detectScriptureReferences(pages: string[], onMention?: (mention: ScriptureReferenceMention) => void) {
   const found = new Map<string, DetectedReference>();
 
   pages.forEach((pageText, pageIndex) => {
@@ -393,6 +402,9 @@ export function detectScriptureReferences(pages: string[]) {
         const end = `${book.code}.1.${endVerse}`;
         const key = `${start}-${end}`;
         const index = match.index ?? 0;
+        onMention?.({ start: index, end: index + match[0].length, displayLabel: label,
+          bookCode: book.code, startChapter: 1, startVerse: verse, endChapter: 1,
+          endVerse, osisStart: start, osisEnd: end });
         if (!found.has(key)) found.set(key, {
           rawText: match[0], displayLabel: label, bookCode: book.code,
           startChapter: 1, startVerse: verse, endChapter: 1, endVerse,
@@ -421,6 +433,8 @@ export function detectScriptureReferences(pages: string[]) {
       const osisEnd = `${book.code}.${endChapter}.${endVerse}`;
       const key = `${osisStart}-${osisEnd}`;
       const index = match.index ?? 0;
+      onMention?.({ start: index, end: index + match[0].length, displayLabel,
+        bookCode: book.code, startChapter, startVerse, endChapter, endVerse, osisStart, osisEnd });
       const snippet = pageText
         .slice(Math.max(0, index - 55), Math.min(pageText.length, index + match[0].length + 75))
         .replace(/\s+/g, " ")
@@ -457,10 +471,14 @@ export function detectScriptureReferences(pages: string[]) {
         const lastVerse = continuation[5] ? Number(continuation[5]) : verse;
         const label = formatHungarianReference(book.code, chapter, verse, lastChapter, lastVerse);
         if (!label) break;
+        const numberStart = cursor + continuation[0].search(/\d/u);
         cursor += continuation[0].length;
         const start = `${book.code}.${chapter}.${verse}`;
         const end = `${book.code}.${lastChapter}.${lastVerse}`;
         const continuationKey = `${start}-${end}`;
+        onMention?.({ start: numberStart, end: cursor, displayLabel: label,
+          bookCode: book.code, startChapter: chapter, startVerse: verse,
+          endChapter: lastChapter, endVerse: lastVerse, osisStart: start, osisEnd: end });
         if (!found.has(continuationKey)) {
           found.set(continuationKey, {
             rawText: pageText.slice(index, cursor), displayLabel: label, bookCode: book.code,

@@ -1,4 +1,5 @@
 import type { StudyArticle as StudyArticleContent } from "@/lib/study-article";
+import { ScriptureText } from "./scripture-text";
 
 type Props = {
   article: StudyArticleContent;
@@ -11,13 +12,13 @@ export function StudyArticle({ article }: Props) {
         const key = `${block.type}-${index}`;
         if (block.type === "heading") {
           return block.level === 2
-            ? <h2 key={key}>{block.text}</h2>
-            : <h3 key={key}>{block.text}</h3>;
+            ? <h2 key={key}><ScriptureText text={block.text} /></h2>
+            : <h3 key={key}><ScriptureText text={block.text} /></h3>;
         }
         if (block.type === "scripture") {
           return (
             <blockquote key={key} className="study-article__scripture">
-              <p>{block.text}</p>
+              <p><ScriptureText text={block.text} /></p>
             </blockquote>
           );
         }
@@ -26,12 +27,12 @@ export function StudyArticle({ article }: Props) {
           return (
             <List key={key}>
               {block.items.map((item, itemIndex) => (
-                <li key={`${key}-${itemIndex}`}>{item}</li>
+                <li key={`${key}-${itemIndex}`}><ScriptureText text={item} /></li>
               ))}
             </List>
           );
         }
-        return <p key={key}>{block.text}</p>;
+        return <p key={key}><ScriptureText text={block.text} /></p>;
       })}
     </div>
   );
