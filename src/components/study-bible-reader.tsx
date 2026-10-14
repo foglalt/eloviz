@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import type { BiblePassage } from "@/lib/bible-passage-core";
+import { bibleVerseHref } from "@/lib/bible-core";
 
 type Reference = { label: string; osisStart: string; osisEnd: string };
 type Selection = Reference | { query: string };
@@ -13,8 +14,9 @@ type ReaderContext = {
   setQuery: (query: string) => void;
   load: (selection: Selection) => void;
   retry: () => void;
-  modalOpen: boolean;
-  setModalOpen: (open: boolean) => void;
+  readerOpen: boolean;
+  openReader: (origin?: HTMLElement) => void;
+  closeReader: () => void;
 };
 const ReaderContext = createContext<ReaderContext | null>(null);
 
@@ -23,12 +25,30 @@ export function StudyBibleWorkspace({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<ReaderContext["status"]>("idle");
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
+  const [readerOpen, setReaderOpen] = useState(false);
+  const opener = useRef<HTMLElement | null>(null);
   const pending = useRef<AbortController | null>(null);
   const lastSelection = useRef<Selection | null>(null);
   useEffect(() => () => pending.current?.abort(), []);
 
-  async function load(selection: Selection) {
+  function openReader(origin?: HTMLElement) {
+    if (!readerOpen) opener.current = origin ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
+    setReaderOpen(true);
+  }
+
+  function closeReader() {
+    const scrollY = window.scrollY;
+    setReaderOpen(false);
+    if (!window.matchMedia("(max-width: 820px)").matches) {
+      requestAnimationFrame(() => {
+        const target = opener.current?.isConnected ? opener.current : document.querySelector<HTMLElement>(".study-bible-open");
+        target?.focus({ preventScroll: true });
+        window.scrollTo(0, scrollY);
+      });
+    }
+  }
+
+  async function load(selection: Selection, origin?: HTMLElement) {
     pending.current?.abort();
     const controller = new AbortController();
     pending.current = controller;
@@ -37,7 +57,7 @@ export function StudyBibleWorkspace({ children }: { children: ReactNode }) {
     setData(null);
     setError("");
     setStatus("loading");
-    if (window.matchMedia("(max-width: 820px)").matches) setModalOpen(true);
+    openReader(origin);
     const params = "query" in selection ? new URLSearchParams({ q: selection.query })
       : new URLSearchParams({ start: selection.osisStart, end: selection.osisEnd });
     try {
@@ -60,12 +80,12 @@ export function StudyBibleWorkspace({ children }: { children: ReactNode }) {
     if (!anchor?.dataset.bibleStart || !anchor.dataset.bibleEnd) return;
     event.preventDefault();
     void load({ osisStart: anchor.dataset.bibleStart, osisEnd: anchor.dataset.bibleEnd,
-      label: anchor.dataset.bibleLabel ?? anchor.textContent ?? "" });
+      label: anchor.dataset.bibleLabel ?? anchor.textContent ?? "" }, anchor);
   }
 
   return <ReaderContext value={{ data, status, error, query, setQuery, load,
-    retry: () => { if (lastSelection.current) void load(lastSelection.current); }, modalOpen, setModalOpen }}>
-    <div className="study-bible-workspace" data-bible-active={status !== "idle"} onClick={openReference}>{children}</div>
+    retry: () => { if (lastSelection.current) void load(lastSelection.current); }, readerOpen, openReader, closeReader }}>
+    <div className="study-bible-workspace" data-bible-active={readerOpen} onClick={openReference}>{children}</div>
   </ReaderContext>;
 }
 
@@ -75,7 +95,30 @@ function useReader() {
   return value;
 }
 
-function ReaderPanel({ references, onClose }: { references: Reference[]; onClose?: () => void }) {
+function sizeDesktopReader(reader: HTMLElement) {
+  let frame = 0;
+  const update = () => {
+    const top = Math.max(96, reader.getBoundingClientRect().top);
+    reader.style.setProperty("--study-reader-top", `${top}px`);
+  };
+  const schedule = () => {
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(update);
+  };
+  update();
+  const observer = new ResizeObserver(schedule);
+  observer.observe(reader);
+  window.addEventListener("scroll", schedule, { passive: true });
+  window.addEventListener("resize", schedule);
+  return () => {
+    cancelAnimationFrame(frame);
+    observer.disconnect();
+    window.removeEventListener("scroll", schedule);
+    window.removeEventListener("resize", schedule);
+  };
+}
+
+function ReaderPanel({ references, onClose, modal = false }: { references: Reference[]; onClose: () => void; modal?: boolean }) {
   const { data, status, error, query, setQuery, load, retry } = useReader();
   const versesRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -88,13 +131,13 @@ function ReaderPanel({ references, onClose }: { references: Reference[]; onClose
   const selectedKey = data ? `${data.selectedStart}-${data.selectedEnd}` : "";
 
   return <div className="study-bible-panel">
-    <header className="study-bible-panel__header"><div><h2 id={onClose ? "study-bible-modal-title" : "study-bible-title"}>Biblia</h2><p>Károli 1908</p></div>
-      {onClose ? <button type="button" className="study-bible-close" aria-label="Biblia bezárása" onClick={onClose}>×</button> : null}
+    <header className="study-bible-panel__header"><div><h2 id={modal ? "study-bible-modal-title" : "study-bible-title"}>Biblia</h2><p>Károli 1908</p></div>
+      <button type="button" className="study-bible-close" aria-label="Biblia bezárása" onClick={onClose}>×</button>
     </header>
     <div className="study-bible-controls">
       <form onSubmit={(event) => { event.preventDefault(); load({ query }); }}>
-        <label htmlFor={onClose ? "bible-modal-query" : "bible-sidebar-query"}>Igeszakasz</label>
-        <div><input id={onClose ? "bible-modal-query" : "bible-sidebar-query"} value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Pl. Jn 3:16 vagy Jn 3" maxLength={100} required />
+        <label htmlFor={modal ? "bible-modal-query" : "bible-sidebar-query"}>Igeszakasz</label>
+        <div><input id={modal ? "bible-modal-query" : "bible-sidebar-query"} value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Pl. Jn 3:16 vagy Jn 3" maxLength={100} required />
           <button type="submit" disabled={status === "loading"}>Megnyitás</button></div>
       </form>
       {references.length ? <label>A tanulmány igeszakaszai<select value={references.some((reference) => `${reference.osisStart}-${reference.osisEnd}` === selectedKey) ? selectedKey : ""}
@@ -133,19 +176,19 @@ function ReaderPanel({ references, onClose }: { references: Reference[]; onClose
 }
 
 export function StudyBibleReader({ references }: { references: Reference[] }) {
-  const { modalOpen, setModalOpen } = useReader();
+  const { readerOpen, openReader, closeReader } = useReader();
   const [mobile, setMobile] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const media = window.matchMedia("(max-width: 820px)");
-    const update = () => { setMobile(media.matches); if (!media.matches) setModalOpen(false); };
+    const update = () => setMobile(media.matches);
     update();
     media.addEventListener("change", update);
     return () => media.removeEventListener("change", update);
-  }, [setModalOpen]);
+  }, []);
   useEffect(() => {
     const dialog = dialogRef.current;
-    if (!mobile || !modalOpen || !dialog) return;
+    if (!mobile || !readerOpen || !dialog) return;
     const scrollY = window.scrollY;
     const body = document.body;
     const previous = { position: body.style.position, top: body.style.top, width: body.style.width, overflow: body.style.overflow };
@@ -159,16 +202,27 @@ export function StudyBibleReader({ references }: { references: Reference[] }) {
       window.scrollTo(0, scrollY);
       document.documentElement.style.scrollBehavior = scrollBehavior;
     };
-  }, [mobile, modalOpen]);
+  }, [mobile, readerOpen]);
 
-  return mobile ? <>
-    <button className="study-bible-launcher" type="button" onClick={() => setModalOpen(true)} aria-haspopup="dialog">Biblia megnyitása</button>
+  return <>
+    {mobile || !readerOpen ? <section className="detail-sidebar__section study-detail__references" aria-label="Bibliai hivatkozások">
+      <h2>Bibliai hivatkozások</h2>
+      <button className="button study-bible-open" type="button" onClick={(event) => openReader(event.currentTarget)} aria-haspopup={mobile ? "dialog" : undefined}>Biblia megnyitása</button>
+      {references.length ? <ul>{references.map((reference) => <li key={`${reference.osisStart}-${reference.osisEnd}`}>
+        <a className="text-link" href={bibleVerseHref(reference.osisStart) ?? "/biblia"}
+          data-bible-start={reference.osisStart} data-bible-end={reference.osisEnd} data-bible-label={reference.label}>{reference.label}</a>
+      </li>)}</ul> : null}
+    </section> : null}
+    {mobile ? <>
+    <button className="study-bible-launcher" type="button" onClick={(event) => openReader(event.currentTarget)} aria-haspopup="dialog">Biblia megnyitása</button>
     <dialog className="study-bible-modal" ref={dialogRef} aria-labelledby="study-bible-modal-title"
-      onCancel={(event) => { event.preventDefault(); setModalOpen(false); }}
-      onClick={(event) => { const rect = event.currentTarget.getBoundingClientRect(); if (event.target === event.currentTarget && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) setModalOpen(false); }}>
-      <ReaderPanel references={references} onClose={() => setModalOpen(false)} />
+      onCancel={(event) => { event.preventDefault(); closeReader(); }}
+      onClick={(event) => { const rect = event.currentTarget.getBoundingClientRect(); if (event.target === event.currentTarget && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) closeReader(); }}>
+      <ReaderPanel references={references} onClose={closeReader} modal />
     </dialog>
-  </> : <section className="detail-sidebar__section study-detail__references study-bible-reader" aria-labelledby="study-bible-title">
-    <ReaderPanel references={references} />
-  </section>;
+  </> : readerOpen ? <section ref={sizeDesktopReader} className="detail-sidebar__section study-detail__references study-bible-reader" aria-labelledby="study-bible-title"
+    onKeyDown={(event) => { if (event.key === "Escape") { event.stopPropagation(); closeReader(); } }}>
+    <ReaderPanel references={references} onClose={closeReader} />
+  </section> : null}
+  </>;
 }

@@ -3,15 +3,19 @@
 **Project:** Élő Víz
 **Current Phase:** 04
 **Current Phase Name:** Simple Bible Reader
-**Current Plan:** 04-08
-**Total Plans in Phase:** 8
-**Status:** Plan04-08 complete; modern translation linking research recorded
+**Current Plan:** 04-09
+**Total Plans in Phase:** 9
+**Status:** Plan04-09 verified locally; production release in progress
 **Progress:** 100%
 **Last Activity:** 2026-10-14
-**Last Activity Description:** Owner links distinguished from text display; modern translation permissions researched
+**Last Activity Description:** Optional full-height Bible reader verified; releasing
 **Paused At:** No unfinished plans; edition selection before any translation ingestion
 
 ## Delivered
+
+- Plan04-09: normal sidebar restored when reader closed; full available height
+  when open, close/Escape, retained passage, scroll/focus and mobile checks passed.
+  Lint/build passed; production evidence in04-09-VERIFICATION.md.
 
 - Plan04-08: authorized modern-reader links recommended; attribution/API access
   does not clear onsite text. See research/2026-10-14-modern-bible-links-and-permissions.md.
@@ -29,11 +33,8 @@
   inline beside verses; no sidebar results. Deployed17e6bb3 /
   dpl_7NuXswbKmpu8b8KUPN7DgvJGULYS READY; build and live browser/log checks passed.
 
-- Plan 04-04: collapsed sidebar discovery replaces inline Bible study controls;
-  all verse groups and matches retained, empty state and viewport-bound scrolling.
-  Data equality, keyboard, fragment links and responsive checks passed. Deployed
-  9668e96 / dpl_G1t71oW6YZqwyyvMuVwT2ojgTfJb READY; live link/fit/log checks passed.
-  This placement was superseded by the clarified global inline toggle in04-05.
+- Plan04-04: verified sidebar results placement superseded by04-05;
+  original deployment and checks retained in its summary/verification.
 
 - Plan 03-39: PDF list/quote and reference-list rules fixed, target source-preserving
   regeneration done, summary/body separation and series index improved. 95 tests,
@@ -214,6 +215,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-14T12:12:04+02:00
-**Stopped At:** Plan04-08 research complete; no translation integration added
+**Last Date:** 2026-10-14T12:33:28+02:00
+**Stopped At:** Plan04-09 local checks passed; production release in progress
 **Resume File:** None

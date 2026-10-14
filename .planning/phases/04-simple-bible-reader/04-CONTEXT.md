@@ -38,5 +38,9 @@ Import one permitted Hungarian Bible, provide book/chapter navigation and verse 
   with scroll/focus restoration. Arbitrary verse/chapter lookup and neighbours are
   in scope; user authorized retaining after practical review. Plan04-07.
 
+- Plan04-09: reader is optional and closed initially. Opening replaces regular
+  desktop sidebar sections and fills the available viewport height; close restores
+  normal sections/references and preserves study position and last passage.
+
 ---
 *Phase: 04-simple-bible-reader*

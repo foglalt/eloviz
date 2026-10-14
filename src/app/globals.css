@@ -142,11 +142,14 @@ h3 { margin: 0; font-size: clamp(1.45rem, 2.4vw, 2rem); }
 .study-summary .lead { margin-top: 12px; }
 .study-detail__article .study-article { margin-top: 24px; }
 .study-detail__sidebar { position: static; grid-column: 2; grid-row: 1 / span 2; align-self: stretch; display: flex; flex-direction: column; min-width: 0; }
-.study-bible-workspace[data-bible-active="true"] .study-bible-reader { order: -1; }
+@media (min-width: 821px) {
+  .study-bible-workspace[data-bible-active="true"] .study-detail__sidebar > .detail-sidebar__section:not(.study-bible-reader) { display: none; }
+}
 html:has(.study-bible-workspace) { scroll-behavior: auto; }
 .study-scripture-link { color: var(--teal); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 .study-scripture-link:hover { color: var(--ink-deep); }
-.study-bible-reader { position: sticky; top: 96px; height: min(680px, calc(100svh - 120px)); flex: 0 0 auto; padding: 18px 0; background: var(--paper); z-index: 1; }
+.study-bible-reader { position: sticky; top: 96px; height: calc(100dvh - var(--study-reader-top, 96px) - 16px); flex: 0 0 auto; padding: 18px 0; background: var(--paper); z-index: 1; }
+.study-bible-open { cursor: pointer; }
 .study-bible-panel { height: 100%; min-height: 0; display: flex; flex-direction: column; gap: 14px; }
 .study-bible-panel__header { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .study-bible-panel__header h2 { margin: 0; font-family: var(--font-body), sans-serif; font-size: 1rem; text-transform: none; letter-spacing: 0; }
