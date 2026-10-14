@@ -15,4 +15,11 @@
 
 ## Production
 
-- Release and live checks follow the verified implementation commit.
+- PASS code6f7b8351c846cc57a20c55d7dc9271334eab22c6 pushed;
+  dpl_HxEPfJ9fVxJFzDXKuJaZdG4SXcxB READY, exact SHA/www.eloviz.hu alias.
+- PASS live existing series: white-space:pre-line,285.075px desktop height,
+  textContent exactly equal to pre-change baseline; saved five lines/blank line
+  visible and no horizontal overflow. Live browser errors empty.
+- Screenshot output/series-introduction-line-breaks-production.png saved and
+  visually reviewed. Local server stopped; temporary viewport reset.
+- Memory health/whitespace checks passed; no stored content edits.

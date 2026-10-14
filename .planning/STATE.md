@@ -5,15 +5,15 @@
 **Current Phase Name:** Simple Bible Reader
 **Current Plan:** 04-10
 **Total Plans in Phase:** 10
-**Status:** Plan04-10 verified locally; introduction formatting release in progress
+**Status:** Plan04-10 complete; introduction formatting deployed and verified
 **Progress:** 100%
 **Last Activity:** 2026-10-14
-**Last Activity Description:** Introduction line breaks preserved; desktop/mobile and build passed
+**Last Activity Description:** Introduction newlines live; unchanged text, desktop/mobile and build verified
 **Paused At:** No unfinished plans; edition selection before any translation ingestion
 
 ## Delivered
 
-- Plan04-10: full introduction/summary newlines preserved; text unchanged, checks passed.
+- Plan04-10: full intro/summary newlines live;6f7b835 verified, text unchanged.
 
 - Plan04-09: normal sidebar restored when reader closed; full available height
   when open, close/Escape, retained passage, scroll/focus and mobile checks passed.
@@ -214,6 +214,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-14T12:38:44+02:00
-**Stopped At:** Plan04-10 verified locally; releasing introduction formatting
+**Last Date:** 2026-10-14T12:41:44+02:00
+**Stopped At:** Plan04-10 complete; live introduction formatting verified
 **Resume File:** None
