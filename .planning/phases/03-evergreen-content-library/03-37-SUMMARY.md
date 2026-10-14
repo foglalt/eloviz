@@ -18,3 +18,13 @@ status: complete
 - No runtime code, favicon, DNS or subscriber changes. Site icon is still the
   original until selection. Next: apply chosen design, refine small-size export,
   verify header/footer/favicon and production rollout.
+
+## Refinement: A + B combination
+
+- User prefers B but asks for A's larger stars and curved orbit within B's compact
+  staggered structure. Three gold-on-navy samples saved alongside A/B/C: D gentle
+  interior curves, E stronger three-lane orbital wrap, F compact orbital hybrid.
+- All final samples inspected: exactly three enlarged stars and curved trails;
+  initial E incorrectly had four stars and was corrected before delivery.
+- Selected design remains pending. No runtime implementation or deployment
+  changes in this refinement; existing application verification remains valid.

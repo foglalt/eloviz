@@ -8,14 +8,14 @@
 **Status:** Plan 03-37 icon proposals complete; awaiting user's design choice
 **Progress:** 100%
 **Last Activity:** 2026-10-14
-**Last Activity Description:** Three icon proposals saved and visually reviewed; lint/build passed; awaiting user's choice before integration
-**Paused At:** Product choice: A/B/C icon or refinement; selected-icon site integration next; Phase 04 complete
+**Last Activity Description:** B structure combined with A's larger stars/orbit in D/E/F samples; visually verified; user choice pending
+**Paused At:** Choose refined D/E/F icon; selected-icon site integration next; Phase 04 complete
 
 ## Delivered
 
-- Plan 03-37: three living-water droplet/three-angel icon proposals saved in
-  assets/brand/icon-candidates; warm/light stars with curved or parallel trails.
-  User selection pending; header/footer/favicon integration follows that choice.
+- Plan 03-37: A/B/C proposals plus D/E/F refinements saved in
+  assets/brand/icon-candidates. User likes B's structure with A's larger stars and
+  orbit; gentle, wrapped and compact curve samples await final selection.
 
 - Plan 03-36: actual Gmail Inbox receipt and built-in browser confirmation work.
   Open Gmail view was stale; no sending failure reproduced. Both authorized test
@@ -160,7 +160,7 @@
 
 ## Next Decision Gate
 
-- Choose A orange orbit, B gold parallel or C ivory parallel droplet icon; then
+- Choose D gentle curves, E wrapped orbits or F compact orbits; then
   refine small-size output and integrate header/footer/favicon with live checks.
 
 - Károli 1908 chosen on 2026-10-13; source/reuse verification complete in
@@ -177,5 +177,5 @@
 ## Session
 
 **Last Date:** 2026-10-14T08:40:19+02:00
-**Stopped At:** Icon previews ready; user choice pending before site integration
+**Stopped At:** Refined D/E/F previews ready; user choice pending before integration
 **Resume File:** None
