@@ -5,17 +5,17 @@
 **Current Phase Name:** Simple Bible Reader
 **Current Plan:** 04-09
 **Total Plans in Phase:** 9
-**Status:** Plan04-09 verified locally; production release in progress
+**Status:** Plan04-09 complete; deployed and verified in production
 **Progress:** 100%
 **Last Activity:** 2026-10-14
-**Last Activity Description:** Optional full-height Bible reader verified; releasing
+**Last Activity Description:** Optional full-height reader live; normal sidebar, reopen and scroll/focus verified
 **Paused At:** No unfinished plans; edition selection before any translation ingestion
 
 ## Delivered
 
 - Plan04-09: normal sidebar restored when reader closed; full available height
   when open, close/Escape, retained passage, scroll/focus and mobile checks passed.
-  Lint/build passed; production evidence in04-09-VERIFICATION.md.
+  Lint/build passed; f2a90a1 / dpl_58xC65MqsdUU9qSVocYrAeoAFj2V live verified.
 
 - Plan04-08: authorized modern-reader links recommended; attribution/API access
   does not clear onsite text. See research/2026-10-14-modern-bible-links-and-permissions.md.
@@ -215,6 +215,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-14T12:33:28+02:00
-**Stopped At:** Plan04-09 local checks passed; production release in progress
+**Last Date:** 2026-10-14T12:36:49+02:00
+**Stopped At:** Plan04-09 complete; live sidebar and desktop/mobile checks passed
 **Resume File:** None

@@ -27,4 +27,17 @@ full-height Bible inspector -> close -> restored sidebar without losing reading.
 
 ## Production
 
-- Release and live checks follow the verified implementation commit.
+- PASS code f2a90a12e08667677bf42e359ec5628a01f63d93 pushed;
+  dpl_58xC65MqsdUU9qSVocYrAeoAFj2V READY, exact SHA and www.eloviz.hu alias.
+- PASS live initial regular sections/reference list and11447character article;
+  Gen3:15 opens with normal sections hidden and close control present.
+- PASS live default1280x720: top96, height608, bottom704;
+  tall1440x1080: top96, height968, bottom1064, beyond old680px cap.
+- PASS live native close keepsY1066.4 and focus on opening reference; all normal
+  sections restored. Explicit reopen retains1Móz3:15. Phone390 modal closes with
+  body styles restored, no horizontal overflow and preservedY362.4.
+- PASS live browser error console and deployment-scoped error/fatal logs empty.
+  Screenshots output/study-sidebar-closed-production.png and
+  output/study-sidebar-open-production.png saved; layout visually reviewed.
+- Temporary viewport reset, local server stopped; live study tab retained.
+  Memory health/whitespace checks passed before documentation commit.
