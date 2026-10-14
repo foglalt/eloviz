@@ -1,7 +1,7 @@
 ---
 phase: 04
 plan: 07
-status: implemented
+status: complete
 ---
 
 # 04-07 Summary
@@ -25,4 +25,8 @@ status: implemented
   mobile/keyboard/pointer/fast-switch/empty-error-recovery checks passed.
 - No data migrations/writes, PDF replacement or additional translation ingestion.
   User requested discretion to retain after review; reviewed as useful and retained.
-  Production release verification pending.
+  Released d5784901ae2d6fef34d84cf3951ba283ba16dcc2 /
+  dpl_HhFofN5DQoG9MMypUwmM819SaHuq READY, exact SHA/www alias inspected.
+  Live canonical API checks, unchanged study text, selected ranges, desktop
+  independent wheel scroll and mobile exact scroll/focus restoration passed;
+  production screenshots inspected, console/runtime errors empty.

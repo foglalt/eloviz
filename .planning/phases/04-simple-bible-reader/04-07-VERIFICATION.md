@@ -57,4 +57,19 @@ context in sticky inspector/mobile modal, without leaving or repositioning study
 
 ## Production
 
-Pending commit/push and exact deployment/alias/live API/browser/runtime checks.
+- PASS code d5784901ae2d6fef34d84cf3951ba283ba16dcc2 committed/pushed;
+  dpl_HhFofN5DQoG9MMypUwmM819SaHuq READY, exact code SHA/www.eloviz.hu alias.
+- PASS live API probe: same exact canonical text, chapter contexts/highlights,
+  first/last neighbours, malformed/missing range statuses and cache/noindex headers.
+- PASS live study text still exactly equals11447character baseline. Rev12:1–5
+  selects exactly5verses; load keeps pageY1095.2. Reader sticky96px; pointer wheel
+  keeps pageY1095.2 while pane51.2->771.2px. No horizontal overflow.
+- PASS live390px tapJohn3:16: native modal, exact selected text,337px scroll pane;
+  close restores pageY9976, original body styles and focus to János3:16.
+  Live320px modal has243px text pane/no overflow; close/reset completes cleanup.
+- PASS production desktop/mobile screenshots visually inspected:
+  output/study-bible-reader-production-desktop.png and production-mobile.png.
+  Console and deployment-scoped error/fatal logs empty. Local server stopped,
+  temporary viewport reset; deliverable live study tab retained.
+- Memory health/whitespace checks passed. All requested implementation/review and
+  production verification complete; no data/translation changes.

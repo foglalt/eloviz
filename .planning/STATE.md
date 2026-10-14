@@ -5,17 +5,18 @@
 **Current Phase Name:** Simple Bible Reader
 **Current Plan:** 04-07
 **Total Plans in Phase:** 7
-**Status:** Plan04-07 implemented and verified locally; production rollout pending
+**Status:** Plan04-07 complete; committed, pushed, reviewed and verified in production
 **Progress:** 100%
 **Last Activity:** 2026-10-14
-**Last Activity Description:** Study passage reader reviewed;100tests/build, canonical API data and desktop/mobile scroll checks passed
-**Paused At:** Publish and verify04-07; edition selection before any translation ingestion
+**Last Activity Description:** Study passage reader live;100tests/build, canonical data and desktop/mobile scroll/focus checks passed
+**Paused At:** No unfinished plans; edition selection before any translation ingestion
 
 ## Delivered
 
 - Plan04-07: clickable study references, sticky Bible inspector/mobile modal,
   chapter context and arbitrary lookup; canonical data and scroll/focus verified.
-  Reviewed as useful; release pending. No translation or stored-study changes.
+  Reviewed as useful; d578490 / dpl_HhFofN5DQoG9MMypUwmM819SaHuq READY,
+  live API/browser/console/runtime checks passed. No stored-study/translation changes.
 
 - Plan04-06: open Biblica NT and historical Hungarian candidate licences/coverage
   researched and documented with source-quality/numbering audit prerequisites;
@@ -212,6 +213,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-14T11:58:20+02:00
-**Stopped At:** Verification completed
+**Last Date:** 2026-10-14T12:07:19+02:00
+**Stopped At:** Plan04-07 complete; production verified and reviewed
 **Resume File:** None
