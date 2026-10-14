@@ -1,7 +1,7 @@
 ---
 phase: 04
 plan: 04
-status: implemented
+status: complete
 ---
 
 # 04-04 Summary
@@ -17,4 +17,8 @@ status: implemented
 - Four Bible-core tests, lint/build/TypeScript, actual before/after equality of all
   18 verses and 14 links in Jelenések12, keyboard/fragment/navigation/empty-state
   checks and default desktop/390/320px fit passed. Screenshots visually inspected.
-- Production release and final verification pending.
+- Code commit9668e9677f64926977a85acbea52d73dbe160b7b pushed; production
+  dpl_G1t71oW6YZqwyyvMuVwT2ojgTfJb READY with exact SHA and www alias verified.
+  Live all-verse/all-link equality, sidebar-only controls, actual study navigation,
+  desktop/mobile fit, browser console and deployment error/fatal logs passed.
+  Evidence and production screenshots recorded; memory health passed.

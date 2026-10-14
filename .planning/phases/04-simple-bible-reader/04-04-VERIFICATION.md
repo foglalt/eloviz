@@ -10,7 +10,7 @@ Bible text stays continuous. Existing database query is unchanged.
   strict TypeScript and production compilation successful; report read.
 - PASS actual production baseline vs local build using the same database:
   Jelenések12 has18 verses, nine matched verse groups and14 study links. Full verse
-  text and every grouped study ID/URL/title/order exactly equal the baseline.
+  text and every grouped study URL/title/order exactly equal the baseline.
   Verses1–5 have both A Páska tipológiája and Mítosz vagy történelem?; 7/8/9/17
   have one study. Zero study disclosures or study links inside verse text.
 - PASS native summary keyboard Enter opens / Space closes; label switches from
@@ -27,4 +27,14 @@ Bible text stays continuous. Existing database query is unchanged.
   links, native details semantics and focusable results region; all matches kept.
 - Local server output and browser console errors empty. No database writes,
   migrations, dependency changes or unrelated newsletter actions.
-- Production rollout pending.
+- PASS production commit9668e9677f64926977a85acbea52d73dbe160b7b pushed;
+  deployment dpl_G1t71oW6YZqwyyvMuVwT2ojgTfJb READY, exact code SHA and
+  www.eloviz.hu alias confirmed by Vercel inspection.
+- PASS live Jelenések12: exact before/after equality for all18 verses and all14
+  study links across nine groups; zero inline study controls or study links,
+  desktop and390px fit. Sidebar link opened Mítosz vagy történelem? and its
+  visible heading confirmed. Browser console and deployment error/fatal logs
+  empty; local server stopped and temporary viewport reset.
+- Production screenshots output/bible-sidebar-production.png and
+  bible-sidebar-production-mobile.png; desktop visually inspected. Memory health
+  and whitespace checks passed. No new dependencies or database writes.

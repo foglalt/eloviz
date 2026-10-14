@@ -46,7 +46,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 2. [x] **04-02: Build the simple Bible reader** — Hungarian book/chapter navigation, verse anchors, canonical URLs, reference lookup, attribution and responsive reading.
 3. [x] **04-03: Connect verses to studies** — Inclusive finalized current-document ranges, publication filtering, per-verse study links and reverse study references.
 
-4. [ ] **04-04: Move connected studies into the sidebar** — Collapsed show/hide control with every matching study grouped by verse; uninterrupted Bible text.
+4. [x] **04-04: Move connected studies into the sidebar** — Collapsed show/hide control with every matching study grouped by verse; uninterrupted Bible text. Deployed and verified.
 
 Deferred: **Optional additional translations**, only after separate product
 selection and documented reuse rights; outside this completed one-version scope.
@@ -65,8 +65,8 @@ selection and documented reuse rights; outside this completed one-version scope.
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
 | 03 Evergreen Content Library | 39/39 | Complete; deployed and verified live | 2026-10-14 |
-| 04 Simple Bible Reader | 3/4 | Sidebar study discovery in progress | — |
+| 04 Simple Bible Reader | 4/4 | Complete; deployed and verified | 2026-10-14 |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 
 ---
-*Last updated: 2026-10-13*
+*Last updated: 2026-10-14*

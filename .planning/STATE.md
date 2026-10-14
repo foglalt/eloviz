@@ -5,17 +5,18 @@
 **Current Phase Name:** Simple Bible Reader
 **Current Plan:** 04-04
 **Total Plans in Phase:** 4
-**Status:** Plan 04-04 implemented and verified locally; production rollout pending
+**Status:** Plan 04-04 complete; committed, pushed and verified in production
 **Progress:** 100%
 **Last Activity:** 2026-10-14
-**Last Activity Description:** Bible study links moved into verse-grouped sidebar; four tests/build and actual responsive/keyboard checks passed
-**Paused At:** Publish and verify plan 04-04 production rollout
+**Last Activity Description:** Sidebar study discovery deployed; four tests/build, exact verse/link preservation and live browser checks passed
+**Paused At:** No unfinished plans; await next product priority
 
 ## Delivered
 
 - Plan 04-04: collapsed sidebar discovery replaces inline Bible study controls;
   all verse groups and matches retained, empty state and viewport-bound scrolling.
-  Local data equality, keyboard, fragment links and responsive checks passed.
+  Data equality, keyboard, fragment links and responsive checks passed. Deployed
+  9668e96 / dpl_G1t71oW6YZqwyyvMuVwT2ojgTfJb READY; live link/fit/log checks passed.
 
 - Plan 03-39: PDF list/quote and reference-list rules fixed, target source-preserving
   regeneration done, summary/body separation and series index improved. 95 tests,
@@ -194,6 +195,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-14T11:11:32+02:00
-**Stopped At:** Verification completed
+**Last Date:** 2026-10-14T11:17:19+02:00
+**Stopped At:** Plan 04-04 complete; production verified; no unfinished plans
 **Resume File:** None
