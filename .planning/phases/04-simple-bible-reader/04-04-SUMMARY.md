@@ -6,6 +6,9 @@ status: complete
 
 # 04-04 Summary
 
+User clarified placement afterward;04-05 supersedes this layout with one sidebar
+button that reveals study links inline beside verses instead of sidebar results.
+
 - Moved connected-study discovery from each Bible verse into one collapsed native
   details control below the left chapter navigation. Show/hide labels Hungarian.
 - Every matching study remains available grouped by verse with counts, exact verse

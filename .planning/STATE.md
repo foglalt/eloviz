@@ -3,15 +3,18 @@
 **Project:** Élő Víz
 **Current Phase:** 04
 **Current Phase Name:** Simple Bible Reader
-**Current Plan:** 04-04
-**Total Plans in Phase:** 4
-**Status:** Plan 04-04 complete; committed, pushed and verified in production
+**Current Plan:** 04-05
+**Total Plans in Phase:** 5
+**Status:** Plan 04-05 implemented and verified locally; production rollout pending
 **Progress:** 100%
 **Last Activity:** 2026-10-14
-**Last Activity Description:** Sidebar study discovery deployed; four tests/build, exact verse/link preservation and live browser checks passed
-**Paused At:** No unfinished plans; await next product priority
+**Last Activity Description:** Clarified single sidebar button now toggles all inline study links; build/data equality/keyboard/mobile checks passed
+**Paused At:** Release and verify04-05; then finish open-license Hungarian translation research
 
 ## Delivered
+
+- Plan04-05 corrects04-04 placement: one sidebar button reveals all study links
+  inline beside verses; no sidebar results. Local verification passed.
 
 - Plan 04-04: collapsed sidebar discovery replaces inline Bible study controls;
   all verse groups and matches retained, empty state and viewport-bound scrolling.
@@ -195,6 +198,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-14T11:17:19+02:00
-**Stopped At:** Plan 04-04 complete; production verified; no unfinished plans
+**Last Date:** 2026-10-14T11:23:38+02:00
+**Stopped At:** Verification completed
 **Resume File:** None
