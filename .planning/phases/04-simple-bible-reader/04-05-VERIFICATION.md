@@ -18,4 +18,11 @@ one small client sidebar button changes their visibility without additional fetc
 - PASS local screenshots visually inspected: output/bible-inline-local.png and
   bible-inline-local-mobile.png. Existing chapter links, attribution and verse IDs
   retained. Small client state only; server data/query unchanged, no effects/API.
-- No database writes, new dependencies or translation ingestion. Release pending.
+- No database writes, new dependencies or translation ingestion.
+- PASS release17e6bb35fc199e3f0d2786af0abaea909d0bb089 pushed;
+  dpl_7NuXswbKmpu8b8KUPN7DgvJGULYS READY, exact code SHA/www alias inspected.
+  Live initial hidden/zero sidebar links, show nine inline groups, exact18verse/
+  14study-link equality and keyboard hide passed.390px no overflow; actual inline
+  link opened study and heading confirmed. Console and deployment error/fatal
+  logs empty. Screenshot output/bible-inline-production.png inspected; viewport
+  reset, local server stopped. Memory health passed.

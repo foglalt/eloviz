@@ -1,7 +1,7 @@
 ---
 phase: 04
 plan: 05
-status: implemented
+status: complete
 ---
 
 # 04-05 Summary
@@ -18,6 +18,9 @@ status: implemented
 - Lint/build/TypeScript passed; actual all18verses/all14links equality, nine inline
   groups, one sidebar button, zero sidebar study links, keyboard Enter/Space,
   show/hide, chapter reset, real study navigation and default/390/320px fit verified.
-  Screenshots inspected; browser errors empty. Production release pending.
-- Additional Hungarian translation research is deferred until this correction is
-  live. No translations added or database changes performed.
+  Screenshots inspected; browser errors empty. Code17e6bb35fc199e3f0d2786af0abaea909d0bb089
+  pushed; dpl_7NuXswbKmpu8b8KUPN7DgvJGULYS READY, exact SHA/www alias verified.
+  Live default hidden/show/hide, exact all-verse/all-link preservation, mobile
+  fit, actual study navigation and clean console/runtime logs passed.
+- Additional Hungarian translation research resumes after this verified release.
+  No translations added or database changes performed.

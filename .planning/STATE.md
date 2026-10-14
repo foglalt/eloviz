@@ -3,23 +3,29 @@
 **Project:** Élő Víz
 **Current Phase:** 04
 **Current Phase Name:** Simple Bible Reader
-**Current Plan:** 04-05
-**Total Plans in Phase:** 5
-**Status:** Plan 04-05 implemented and verified locally; production rollout pending
+**Current Plan:** 04-06
+**Total Plans in Phase:** 6
+**Status:** Plan04-05 live;04-06 translation-licence research complete
 **Progress:** 100%
 **Last Activity:** 2026-10-14
-**Last Activity Description:** Clarified single sidebar button now toggles all inline study links; build/data equality/keyboard/mobile checks passed
-**Paused At:** Release and verify04-05; then finish open-license Hungarian translation research
+**Last Activity Description:** Correct inline toggle verified live; open Hungarian edition shortlist and source/coverage conditions recorded
+**Paused At:** No unfinished plans; edition selection before any translation ingestion
 
 ## Delivered
 
+- Plan04-06: open Biblica NT and historical Hungarian candidate licences/coverage
+  researched and documented with source-quality/numbering audit prerequisites;
+  no new translation ingested. See research/2026-10-14-hungarian-open-bible-editions.md.
+
 - Plan04-05 corrects04-04 placement: one sidebar button reveals all study links
-  inline beside verses; no sidebar results. Local verification passed.
+  inline beside verses; no sidebar results. Deployed17e6bb3 /
+  dpl_7NuXswbKmpu8b8KUPN7DgvJGULYS READY; build and live browser/log checks passed.
 
 - Plan 04-04: collapsed sidebar discovery replaces inline Bible study controls;
   all verse groups and matches retained, empty state and viewport-bound scrolling.
   Data equality, keyboard, fragment links and responsive checks passed. Deployed
   9668e96 / dpl_G1t71oW6YZqwyyvMuVwT2ojgTfJb READY; live link/fit/log checks passed.
+  This placement was superseded by the clarified global inline toggle in04-05.
 
 - Plan 03-39: PDF list/quote and reference-list rules fixed, target source-preserving
   regeneration done, summary/body separation and series index improved. 95 tests,
@@ -183,6 +189,10 @@
 
 ## Next Decision Gate
 
+- Additional-edition shortlist ready; select editions before implementation.
+  Biblica open NT recommended for modern wording; historical full/NT candidates
+  have separate corpus/canon/numbering audit needs. Current reader correction live.
+
 - Revised F approved and deployed in 03-38; complete.
 
 - Károli 1908 chosen on 2026-10-13; source/reuse verification complete in
@@ -198,6 +208,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-14T11:23:38+02:00
-**Stopped At:** Verification completed
+**Last Date:** 2026-10-14T11:32:00+02:00
+**Stopped At:** Inline toggle correction live; translation research complete
 **Resume File:** None
