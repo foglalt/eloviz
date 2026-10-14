@@ -2,7 +2,7 @@
 phase: 03
 plan: 38
 title: Apply droplet icon and align palette
-status: implemented
+status: complete
 ---
 
 # Plan 03-38: Approved icon and palette alignment
@@ -22,4 +22,7 @@ status: implemented
 - Lint/build/strict TypeScript passed; actual local browser at 1440/390/320px,
   loaded header/footer, mobile-menu navigation and light Bible page checked.
   Exact HTTP bytes/metadata/dimensions and colour contrast passed.
-- Production rollout pending; no database/provider/subscriber mutation.
+- Commit 0c99fcc286d51351f5fa09ffc31c213711c94131 pushed; production
+  dpl_BZXh5DfMq4frfcvieNgdW5wkmrvj READY with exact SHA and www alias.
+  Live asset byte/dimension/metadata checks, rendered palette/logo and 390px fit
+  passed; deployment error/fatal logs empty. No data/provider mutation.

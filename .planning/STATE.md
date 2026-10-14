@@ -5,17 +5,18 @@
 **Current Phase Name:** Evergreen Content Library
 **Current Plan:** 03-38
 **Total Plans in Phase:** 38
-**Status:** Plan 03-38 implemented and locally verified; production rollout pending
+**Status:** Plan 03-38 complete, pushed and verified in production
 **Progress:** 100%
 **Last Activity:** 2026-10-14
-**Last Activity Description:** Approved droplet icon, browser/touch exports and restrained navy/gold palette implemented; lint/build and responsive/contrast checks passed
-**Paused At:** Publish verified plan 03-38 and check live production; Phase 04 complete
+**Last Activity Description:** Approved icon and navy/gold palette deployed; live exact asset/metadata checks and responsive/contrast checks passed
+**Paused At:** User requests new series/list/verse styling and study separation investigation; Phase 04 complete
 
 ## Delivered
 
 - Plan 03-38: approved revised F used in header/footer and browser/touch icons;
   restrained navy/gold palette with existing light reading layout retained.
-  Local build, responsive rendering, asset delivery and contrast passed.
+  Build, responsive rendering, asset delivery and contrast passed; deployed 0c99fcc
+  / dpl_BZXh5DfMq4frfcvieNgdW5wkmrvj READY, live checks/logs passed.
 
 - Plan 03-37: A/B/C proposals plus D/E/F refinements saved in
   assets/brand/icon-candidates. User likes B's structure with A's larger stars and
@@ -165,7 +166,7 @@
 
 ## Next Decision Gate
 
-- Revised F approved and implemented in 03-38; production rollout pending.
+- Revised F approved and deployed in 03-38; complete.
 
 - Károli 1908 chosen on 2026-10-13; source/reuse verification complete in
   `.planning/research/2026-10-13-karoli-1908-source.md`. Reader is implemented;
@@ -181,5 +182,5 @@
 ## Session
 
 **Last Date:** 2026-10-14T09:09:19+02:00
-**Stopped At:** Verification completed
+**Stopped At:** Icon rollout complete; inspect user's new study series next
 **Resume File:** None

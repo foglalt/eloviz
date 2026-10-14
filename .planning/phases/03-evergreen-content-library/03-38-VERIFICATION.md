@@ -25,7 +25,18 @@ browser/touch icon metadata → readable desktop/mobile site → production roll
 - Browser favicon is a small rendition: droplet/three-flight formation remains the
   identity; 16px cannot retain the full-size artwork's fine detail.
 - No business-logic changes or new mirroring unit tests; asset/render checks are
-  appropriate. Production verification remains outstanding before completion.
+  appropriate.
+
+## Production
+
+- Commit 0c99fcc286d51351f5fa09ffc31c213711c94131 / deployment
+  dpl_BZXh5DfMq4frfcvieNgdW5wkmrvj READY, exact Git SHA and www alias confirmed.
+- Live HTTP verification passed for all six PNGs, exact bytes/dimensions/types,
+  self-contained SVG, both shared marks and browser/touch metadata.
+- Built-in browser live page renders /brand/living-water-128.png, navy #102c47
+  and gold #f6cb67; default desktop and 390px have no horizontal overflow.
+  Header artwork loaded. Production screenshot output/icon-theme-production.png.
+- Deployment error/fatal logs empty for 15-minute rollout/test window.
 
 Ignored screenshots: output/icon-theme-local-desktop.png, local-footer.png,
 local-mobile.png, local-reading.png (prefix icon-theme- on each).
