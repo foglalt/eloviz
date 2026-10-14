@@ -3,15 +3,19 @@
 **Project:** Élő Víz
 **Current Phase:** 03
 **Current Phase Name:** Evergreen Content Library
-**Current Plan:** 03-38
-**Total Plans in Phase:** 38
-**Status:** Plan 03-38 complete, pushed and verified in production
+**Current Plan:** 03-39
+**Total Plans in Phase:** 39
+**Status:** Plan 03-39 implemented and verified locally; production code rollout pending
 **Progress:** 100%
 **Last Activity:** 2026-10-14
-**Last Activity Description:** Approved icon and navy/gold palette deployed; live exact asset/metadata checks and responsive/contrast checks passed
-**Paused At:** User requests new series/list/verse styling and study separation investigation; Phase 04 complete
+**Last Activity Description:** 95 tests/build passed; target repaired with four lists/no false quotes/69 correct references; summary divider and series index verified
+**Paused At:** Publish and verify plan 03-39 production code; Phase 04 complete
 
 ## Delivered
+
+- Plan 03-39: PDF list/quote and reference-list rules fixed, target source-preserving
+  regeneration done, summary/body separation and series index improved. 95 tests,
+  build and actual responsive browser checks passed; code rollout pending.
 
 - Plan 03-38: approved revised F used in header/footer and browser/touch icons;
   restrained navy/gold palette with existing light reading layout retained.
@@ -181,6 +185,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-14T09:09:19+02:00
-**Stopped At:** Icon rollout complete; inspect user's new study series next
+**Last Date:** 2026-10-14T09:48:40+02:00
+**Stopped At:** Plan 03-39 ready for production code rollout
 **Resume File:** None

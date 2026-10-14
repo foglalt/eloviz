@@ -1,4 +1,4 @@
-export const DETECTOR_VERSION = "hu-reference-v3";
+export const DETECTOR_VERSION = "hu-reference-v4";
 
 type BookDefinition = {
   code: string;
@@ -64,8 +64,8 @@ const books: BookDefinition[] = [
   defineBook("Col", "Kol", "Kolossé"),
   defineBook("1Thess", "1Thessz", "1Thesszalonika", "1 Thesszalonika", "1 Thessz"),
   defineBook("2Thess", "2Thessz", "2Thesszalonika", "2 Thesszalonika", "2 Thessz"),
-  defineBook("1Tim", "1Tim", "1Timóteus", "1 Timóteus", "1 Tim"),
-  defineBook("2Tim", "2Tim", "2Timóteus", "2 Timóteus", "2 Tim"),
+  defineBook("1Tim", "1Tim", "1Timóteus", "1 Timóteus", "1Timótheus", "1 Timótheus", "1 Tim"),
+  defineBook("2Tim", "2Tim", "2Timóteus", "2 Timóteus", "2Timótheus", "2 Timótheus", "2 Tim"),
   defineBook("Titus", "Tit", "Titusz"),
   defineBook("Phlm", "Filem", "Filemon", "Filemón"),
   defineBook("Heb", "Zsid", "Zsidók"),
@@ -97,7 +97,7 @@ const aliasPattern = [...aliasToBook.keys()]
   .join("|");
 
 const referencePattern = new RegExp(
-  `(?<![\\p{L}\\p{N}])(${aliasPattern})\\.?\\s+(\\d{1,3})\\s*[:;,]\\s*(\\d{1,3})(?:\\s*[-–—]\\s*(?:(\\d{1,3})\\s*[:;,]\\s*)?(\\d{1,3}))?`,
+  `(?<![\\p{L}\\p{N}])(${aliasPattern})\\.?\\s*\\)?\\s+(\\d{1,3})\\s*[:;,]\\s*(\\d{1,3})(?:\\s*[-–—]\\s*(?:(\\d{1,3})\\s*:\\s*)?(\\d{1,3}))?`,
   "giu",
 );
 
@@ -107,6 +107,15 @@ const referenceQueryPattern = new RegExp(
 );
 
 const osisPointPattern = /^([1-3]?[A-Za-z]+)\.(\d{1,3})\.(\d{1,3})$/;
+const referenceStartPattern = new RegExp(`^${referencePattern.source}`, "iu");
+const referenceContinuationPattern = /^\s*([,;])\s*(\d{1,3})(?:\s*:\s*(\d{1,3}))?(?:\s*[-–—]\s*(?:(\d{1,3})\s*:\s*)?(\d{1,3}))?(?!\d)/u;
+const singleChapterBooks = new Set(["Obad", "Phlm", "2John", "3John", "Jude"]);
+const singleChapterAliases = books.filter((book) => singleChapterBooks.has(book.code))
+  .flatMap((book) => book.aliases).sort((left, right) => right.length - left.length)
+  .map((alias) => alias.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s*")).join("|");
+const singleChapterReferencePattern = new RegExp(
+  `(?<![\\p{L}\\p{N}])(${singleChapterAliases})\\.?\\s+(\\d{1,3})(?:\\s*[-–—]\\s*(\\d{1,3}))?(?![\\p{L}\\p{N}]|\\s*[:;,]\\s*\\d)`, "giu",
+);
 
 export type DetectedReference = {
   rawText: string;
@@ -368,7 +377,30 @@ export function detectScriptureReferences(pages: string[]) {
   const found = new Map<string, DetectedReference>();
 
   pages.forEach((pageText, pageIndex) => {
-    for (const match of pageText.matchAll(referencePattern)) {
+    const matches = [
+      ...[...pageText.matchAll(referencePattern)].map((match) => ({ match, singleChapter: false })),
+      ...[...pageText.matchAll(singleChapterReferencePattern)].map((match) => ({ match, singleChapter: true })),
+    ].sort((left, right) => (left.match.index ?? 0) - (right.match.index ?? 0));
+    for (const { match, singleChapter } of matches) {
+      if (singleChapter) {
+        const book = aliasToBook.get(normalizeAlias(match[1]));
+        if (!book) continue;
+        const verse = Number(match[2]);
+        const endVerse = Number(match[3] ?? match[2]);
+        const label = formatHungarianReference(book.code, 1, verse, 1, endVerse);
+        if (!label) continue;
+        const start = `${book.code}.1.${verse}`;
+        const end = `${book.code}.1.${endVerse}`;
+        const key = `${start}-${end}`;
+        const index = match.index ?? 0;
+        if (!found.has(key)) found.set(key, {
+          rawText: match[0], displayLabel: label, bookCode: book.code,
+          startChapter: 1, startVerse: verse, endChapter: 1, endVerse,
+          osisStart: start, osisEnd: end, pageNumber: pageIndex + 1,
+          contextSnippet: pageText.slice(Math.max(0, index - 55), index + match[0].length + 75).replace(/\s+/g, " ").trim(),
+        });
+        continue;
+      }
       const book = aliasToBook.get(normalizeAlias(match[1]));
       if (!book) continue;
 
@@ -408,6 +440,36 @@ export function detectScriptureReferences(pages: string[]) {
           pageNumber: pageIndex + 1,
           contextSnippet: snippet,
         });
+      }
+
+      // Commas list verses; semicolons introduce another chapter in the same
+      // book. Neither may become the end chapter of the preceding range.
+      let cursor = index + match[0].length;
+      let inheritedChapter = endChapter;
+      for (let continuationIndex = 0; continuationIndex < 100; continuationIndex += 1) {
+        const remainder = pageText.slice(cursor);
+        if (referenceStartPattern.test(remainder.replace(/^\s*[,;]\s*/u, ""))) break;
+        const continuation = remainder.match(referenceContinuationPattern);
+        if (!continuation || (continuation[1] === ";" && !continuation[3])) break;
+        const chapter = continuation[3] ? Number(continuation[2]) : inheritedChapter;
+        const verse = Number(continuation[3] ?? continuation[2]);
+        const lastChapter = continuation[4] ? Number(continuation[4]) : chapter;
+        const lastVerse = continuation[5] ? Number(continuation[5]) : verse;
+        const label = formatHungarianReference(book.code, chapter, verse, lastChapter, lastVerse);
+        if (!label) break;
+        cursor += continuation[0].length;
+        const start = `${book.code}.${chapter}.${verse}`;
+        const end = `${book.code}.${lastChapter}.${lastVerse}`;
+        const continuationKey = `${start}-${end}`;
+        if (!found.has(continuationKey)) {
+          found.set(continuationKey, {
+            rawText: pageText.slice(index, cursor), displayLabel: label, bookCode: book.code,
+            startChapter: chapter, startVerse: verse, endChapter: lastChapter, endVerse: lastVerse,
+            osisStart: start, osisEnd: end, pageNumber: pageIndex + 1,
+            contextSnippet: pageText.slice(Math.max(0, index - 55), cursor + 75).replace(/\s+/g, " ").trim(),
+          });
+        }
+        inheritedChapter = lastChapter;
       }
     }
   });

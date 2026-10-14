@@ -67,7 +67,7 @@ export default async function StudyPage({ params }: Props) {
           <p className="eyebrow">{study.series ? `${study.series.parts.find((part) => part.id === study.id)?.position}. rész` : "Bibliatanulmány"}</p>
           {study.series ? <Link className="text-link study-series-link" href={`/sorozatok/${study.series.slug}`}>{study.series.title}</Link> : null}
           <h1 id="study-title">{study.title}</h1>
-          <p className="lead">{study.summary}</p>
+          <div className="study-summary"><p className="study-summary__label">Összefoglaló</p><p className="lead">{study.summary}</p></div>
         </div>
         <aside className="detail-sidebar study-detail__sidebar">
           {study.series ? <div className="detail-sidebar__section study-detail__series"><h2>A sorozat részei</h2><Link className="text-link" href={`/sorozatok/${study.series.slug}`}>{study.series.title}</Link><StudySeriesContents series={study.series} currentStudyId={study.id} /></div> : null}
@@ -140,6 +140,7 @@ export default async function StudyPage({ params }: Props) {
           ) : null}
         </aside>
         <article className="detail-copy study-detail__article" aria-labelledby="study-title">
+          <h2 className="study-body-heading">Tanulmány</h2>
           {study.article
             ? <StudyArticle article={study.article} />
             : <p className="study-article__fallback">A teljes tanulmány jelenleg a PDF-dokumentumban olvasható.</p>}

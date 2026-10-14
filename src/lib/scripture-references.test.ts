@@ -38,6 +38,50 @@ test("deduplicates aliases and always uses the canonical Hungarian label", () =>
   assert.equal(references[0].osisStart, "Heb.5.8");
 });
 
+test("keeps semicolon-separated book references out of preceding range endpoints", () => {
+  const references = detectScriptureReferences(["Máté 24:37-39; 2 Péter 2:5. Róma 5:12-21; 1 Korinthus 15:45-49."]);
+  assert.deepEqual(references.map((r) => [r.osisStart,r.osisEnd]), [
+    ["Matt.24.37","Matt.24.39"],["2Pet.2.5","2Pet.2.5"],
+    ["Rom.5.12","Rom.5.21"],["1Cor.15.45","1Cor.15.49"],
+  ]);
+});
+
+test("recognizes verse and chapter lists without inventing giant chapter spans", () => {
+  const references = detectScriptureReferences(["1 Mózes 1:26-28; 2:7. Jelenések 12:1-5, 17. 1 Mózes 2:23; 3:7, 21."]);
+  assert.deepEqual(references.map((r) => [r.osisStart,r.osisEnd]), [
+    ["Gen.1.26","Gen.1.28"],["Gen.2.7","Gen.2.7"],
+    ["Rev.12.1","Rev.12.5"],["Rev.12.17","Rev.12.17"],
+    ["Gen.2.23","Gen.2.23"],["Gen.3.7","Gen.3.7"],["Gen.3.21","Gen.3.21"],
+  ]);
+});
+
+test("preserves real cross-chapter ranges and does not consume numbered books after commas", () => {
+  const references=detectScriptureReferences(["2Móz 1:22-2:10; 2 Korinthus 11:3, 1 János 3:12."]);
+  assert.deepEqual(references.map((r)=>[r.osisStart,r.osisEnd]),[
+    ["Exod.1.22","Exod.2.10"],["2Cor.11.3","2Cor.11.3"],["1John.3.12","1John.3.12"],
+  ]);
+});
+
+test("recognizes the actual chapter's parenthesized book name and Timótheus spelling", () => {
+  const references=detectScriptureReferences(["Teremtés (1 Mózes) 28:12-15; Éva (1 Timótheus 2:13-14)."]);
+  assert.deepEqual(references.map((r)=>[r.osisStart,r.osisEnd]),[
+    ["Gen.28.12","Gen.28.15"],["1Tim.2.13","1Tim.2.14"],
+  ]);
+});
+
+test("recognizes omitted chapter numbers only for single-chapter books", () => {
+  const references=detectScriptureReferences(["Júdás 14-15; Filemon 4; János 3; Júdás 1:2."]);
+  assert.deepEqual(references.map((r)=>[r.osisStart,r.osisEnd]),[
+    ["Jude.1.14","Jude.1.15"],["Phlm.1.4","Phlm.1.4"],["Jude.1.2","Jude.1.2"],
+  ]);
+});
+
+test("keeps first occurrence order across full and single-chapter citations", () => {
+  assert.deepEqual(detectScriptureReferences(["Jn 3:16; Júdás 14; Róm 5:8."]).map((r)=>r.osisStart),[
+    "John.3.16","Jude.1.14","Rom.5.8",
+  ]);
+});
+
 test("merges contained, overlapping, and adjacent ranges without losing candidates", () => {
   const candidates = detectScriptureReferences([
     "Jn 3:1-5; Jn 3:2-6; Jn 3:4; Jn 3:6-8; Jn 3:10-11; Róm 3:4-5.",

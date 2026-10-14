@@ -97,3 +97,35 @@ test("accepts generated article data and rejects unsafe malformed blocks", () =>
     blocks: [{ type: "html", text: "<script>alert(1)</script>" }],
   }), null);
 });
+
+test("keeps tightly spaced bullet items and wrapped reference names inside their list", () => {
+  const article = buildStudyArticle([[
+    line(1, 700, "● Teremtés (Máté 19:4-6)"),
+    line(1, 685, "● Ábrahám (Zsidók 11:8-12; Apostolok"),
+    line(1, 670, "Cselekedetei 7:2)"),
+    line(1, 655, "● Sára (Zsidók 11:11)"),
+  ]]);
+  assert.deepEqual(article.blocks, [{ type: "list", ordered: false, items: [
+    "Teremtés (Máté 19:4-6)", "Ábrahám (Zsidók 11:8-12; Apostolok Cselekedetei 7:2)",
+    "Sára (Zsidók 11:11)",
+  ] }]);
+});
+
+test("does not style bare references or partial book names as Bible quotations", () => {
+  const article = buildStudyArticle([[
+    line(1, 700, "János 3:16"),
+    line(1, 665, "Cselekedetei 7:2)"),
+    line(1, 630, "János 3:16; Róma 5:8"),
+  ]]);
+  assert.ok(article.blocks.every((block) => block.type !== "scripture"));
+});
+
+test("merges a wrapped list item over a page break without merging the following bullet", () => {
+  const article = buildStudyArticle([
+    [line(1, 650, "● Ábrahám (Apostolok")],
+    [line(2, 650, "Cselekedetei 7:2)"), line(2, 635, "● Sára (Zsidók 11:11)")],
+  ]);
+  assert.deepEqual(article.blocks, [{type:"list",ordered:false,items:[
+    "Ábrahám (Apostolok Cselekedetei 7:2)","Sára (Zsidók 11:11)",
+  ]}]);
+});

@@ -1,4 +1,6 @@
-export const STUDY_ARTICLE_VERSION = "pdf-layout-v1";
+import { detectScriptureReferences } from "./scripture-references.ts";
+
+export const STUDY_ARTICLE_VERSION = "pdf-layout-v2";
 
 export type StudyArticleBlock =
   | { type: "heading"; level: 2 | 3; text: string }
@@ -60,7 +62,18 @@ function endsSentence(value: string) {
 
 export function looksLikeScriptureReferenceStart(value: string) {
   const text = cleanText(value);
-  return /^(?:\d{1,3}:\d|(?:(?:[1-5]|I{1,3})\s+)?[\p{L}][\p{L}.]*(?:\s+[\p{L}][\p{L}.]*){0,2}\s+\d{1,3}(?::|,)\d)/u.test(text);
+  const reference = detectScriptureReferences([text])[0];
+  return Boolean(reference && text.toLocaleLowerCase("hu-HU").startsWith(reference.rawText.toLocaleLowerCase("hu-HU")));
+}
+
+function looksLikeScriptureExcerpt(value: string) {
+  const text = cleanText(value);
+  if (!looksLikeScriptureReferenceStart(text)) return false;
+  const reference = detectScriptureReferences([text])[0];
+  const remainder = text.slice(reference.rawText.length).replace(/^[\s:–—\-„“”"']+/u, "");
+  // A bare reference or a list of references is not a written Bible passage.
+  return /\p{L}/u.test(remainder) && remainder.length >= 10
+    && detectScriptureReferences([remainder]).length === 0;
 }
 
 function listItem(value: string) {
@@ -115,7 +128,7 @@ function buildPageBlocks(lines: readonly PdfArticleLine[], bodyFontSize: number)
       lines: buffered,
       pageNumber: buffered[0].pageNumber,
       fontSize: Math.max(...buffered.map((line) => line.fontSize)),
-      reference: looksLikeScriptureReferenceStart(text),
+      reference: looksLikeScriptureExcerpt(text),
       largeHeading: Math.max(...buffered.map((line) => line.fontSize)) >= headingThreshold,
       likelySubheading: false,
     });
@@ -128,12 +141,13 @@ function buildPageBlocks(lines: readonly PdfArticleLine[], bodyFontSize: number)
     const next = lines[index + 1];
     const gapBefore = previous ? previous.y - line.y : Number.POSITIVE_INFINITY;
     const largeHeading = line.fontSize >= headingThreshold;
-    const startsReference = looksLikeScriptureReferenceStart(line.text);
+    const startsReference = looksLikeScriptureExcerpt(line.text);
+    const startsListItem = Boolean(listItem(cleanText(line.text)));
     const isolatedBeforeReference = Boolean(
       next
       && !endsSentence(line.text)
       && cleanText(line.text).length <= 180
-      && looksLikeScriptureReferenceStart(next.text),
+      && looksLikeScriptureExcerpt(next.text),
     );
     const bufferedText = joinLines(buffered);
     const isolatedStartsNewBlock = isolatedBeforeReference && (
@@ -143,7 +157,8 @@ function buildPageBlocks(lines: readonly PdfArticleLine[], bodyFontSize: number)
     const startsNewBlock = buffered.length > 0 && (
       gapBefore >= paragraphGap
       || largeHeading
-      || startsReference
+      || startsListItem
+      || (startsReference && !listItem(bufferedText))
       || isolatedStartsNewBlock
     );
 
@@ -171,6 +186,7 @@ function markSubheadings(blocks: RawBlock[], bodyFontSize: number) {
       : Number.POSITIVE_INFINITY;
     const likelySubheading = !block.largeHeading
       && !block.reference
+      && !listItem(block.text)
       && !listItem(block.text)
       && lineCount <= 2
       && block.text.length <= 180
