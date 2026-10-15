@@ -5,13 +5,18 @@
 **Current Phase Name:** Simple Bible Reader
 **Current Plan:** 04-12
 **Total Plans in Phase:** 12
-**Status:** Verifying implementation
-**Progress:** 92%
+**Status:** Complete; deployed and verified live
+**Progress:** 100%
 **Last Activity:** 2026-10-15
-**Last Activity Description:** Plan04-12 local lint/build/107tests and responsive checks passed; release pending
-**Paused At:** Plan04-12 awaiting exact-SHA production verification
+**Last Activity Description:** Plan04-12 compact layouts/visibility and modal scroll lock deployed; live verification passed
+**Paused At:** No unfinished plans; edition selection before any translation ingestion
 
 ## Delivered
+
+- Plan04-12: compact public pages/featured study, earlier series chapters, hidden
+  empty collections with direct URLs retained; subscription background scroll
+  locked.107tests/build/browser pass; d11c5ee /
+  dpl_J98uKM4oBb4neYS4u2Qcu1vNQxgi READY and live verified.
 
 - Plan04-11: red PDF words become bold on new upload;106tests/build and colored
   fixture passed; a073c10 / dpl_HSmxBBC74fagATmaRpcigux9vm58 live verified.
@@ -88,7 +93,7 @@
   responsive article/Bible-link checks and exact production SHA/PDF verified.
 - Phase04-12:107tests and read-only visibility/empty-series fixtures pass; desktop,
   tablet and phone layouts/scroll isolation reviewed; lint/build/TypeScript pass.
-  Production verification pending.
+  Exact-SHA deployment, live HTTP/layout/modal and runtime-log checks pass.
 
 ## Next Decision Gate
 

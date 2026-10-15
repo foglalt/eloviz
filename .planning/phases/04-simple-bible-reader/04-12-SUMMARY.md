@@ -1,7 +1,7 @@
 ---
 phase: 04
 plan: 12
-status: verifying
+status: complete
 ---
 
 # 04-12 Summary
@@ -19,5 +19,8 @@ status: verifying
   scrollable modal contents and exact style/position restoration on close or
   effect cleanup. Escape, close and dismissal behavior retained.
 -107tests, read-only real-data/HTTP checks, repository/render fixtures and
-  responsive browser review passed. Full lint/build/TypeScript pass; release evidence pending in
+  responsive browser review passed. Full lint/build/TypeScript pass; production evidence in
  04-12-VERIFICATION.md. No dependency/schema/editorial-content mutations.
+
+- Released d11c5ee / dpl_J98uKM4oBb4neYS4u2Qcu1vNQxgi READY; canonical
+  live HTTP/browser and fresh-visitor modal checks passed.

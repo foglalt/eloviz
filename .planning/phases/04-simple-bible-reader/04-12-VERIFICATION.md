@@ -42,4 +42,21 @@
 
 ## Release
 
-Pending commit/push and exact-SHA production verification.
+- PASS d11c5ee80fc19d3f506d5a571ec325fa2ae6f414 pushed to origin/main;
+  dpl_J98uKM4oBb4neYS4u2Qcu1vNQxgi READY for exact code SHA, production target,
+  www.eloviz.hu and eloviz-phi.vercel.app aliases verified.
+- PASS all11HTTP checks repeated against www.eloviz.hu: only5topics discoverable,
+  empty/video-only direct pages200, positive search works, empty topic search and
+  sitemap exclusion correct; direct video-only topic still has its video.
+- PASS canonical live browser:48px top gap, first topic row312px, no horizontal
+  overflow;277px featured section, title at top and no verse list. Series desktop
+  contents/introduction alignment visually reviewed. Browser errors empty.
+- PASS fresh-visitor live production alias eloviz-phi.vercel.app: root hidden,
+  body fixed; at390x600inner modal scrolls92px while background staysY0. Escape
+  restores exact styles; normal page scrolling resumes. No signup/email submitted.
+  Production-mode local build also passed the later-dismissal button branch.
+- Screenshots saved/reviewed: output/compact-feature-live.png,
+  output/compact-series-live.png, output/compact-topics-live.png. Test viewport
+  reset. No CDP state changes, test publications or schema changes.
+- Deployment-scoped error/fatal runtime log scan: no matching logs. Memory health
+  and whitespace checks passed. Source/current document content remains intact.
