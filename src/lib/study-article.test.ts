@@ -129,3 +129,31 @@ test("merges a wrapped list item over a page break without merging the following
     "Ábrahám (Apostolok Cselekedetei 7:2)","Sára (Zsidók 11:11)",
   ]}]);
 });
+
+test("keeps red emphasis through line cleanup, dehyphenation, page continuations and list markers", () => {
+  const article = buildStudyArticle([
+    [{ ...line(1, 650, "-  Fontos elvá-"), boldRanges: [{ start: 3, end: 14 }] }],
+    [
+      { ...line(2, 650, "lasztás , megmarad."), boldRanges: [{ start: 0, end: 7 }] },
+      line(2, 635, "- Második elem."),
+      { ...line(2, 620, "- Harmadik piros elem."), boldRanges: [{ start: 11, end: 16 }] },
+    ],
+  ]);
+  assert.equal(article.blocks.length, 1);
+  const list = article.blocks[0];
+  assert.equal(list.type, "list");
+  if (list.type !== "list") return;
+  assert.deepEqual(list.items, ["Fontos elválasztás, megmarad.", "Második elem.", "Harmadik piros elem."]);
+  assert.deepEqual(list.itemBoldRanges?.map((ranges, index) => ranges.map(({ start, end }) => list.items[index].slice(start, end))), [["Fontos elválasztás"], [], ["piros"]]);
+  assert.deepEqual(parseStudyArticle(article), article);
+});
+
+test("validates stored emphasis offsets while still accepting older articles", () => {
+  const base = { version: "pdf-layout-v3", blocks: [{ type: "paragraph", text: "János 3:16", boldRanges: [{ start: 0, end: 5 }] }] };
+  assert.deepEqual(parseStudyArticle(base), base);
+  for (const boldRanges of [[{ start: -1, end: 5 }], [{ start: 3, end: 30 }], [{ start: 5, end: 3 }], [{ start: 0.5, end: 2 }], [{ start: 0, end: 5 }, { start: 4, end: 6 }]]) {
+    assert.equal(parseStudyArticle({ ...base, blocks: [{ ...base.blocks[0], boldRanges }] }), null);
+  }
+  assert.equal(parseStudyArticle({ version: "pdf-layout-v3", blocks: [{ type: "list", ordered: false, items: ["Első"], itemBoldRanges: [] }] }), null);
+  assert.ok(parseStudyArticle({ version: "pdf-layout-v2", blocks: [{ type: "paragraph", text: "Korábbi szöveg." }] }));
+});

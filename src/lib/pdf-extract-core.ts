@@ -3,6 +3,8 @@ import {
   type PdfArticleLine,
   type StudyArticle,
 } from "./study-article.ts";
+import { attachTextColors, extractTextColors } from "./pdf-text-color.ts";
+import { cleanEmphasizedText, concatEmphasizedText, sliceEmphasizedText, type BoldRange } from "./text-emphasis.ts";
 
 async function ensurePdfJsNodeGlobals() {
   const canvas = await import("@napi-rs/canvas");
@@ -23,6 +25,7 @@ type PdfTextItem = {
   transform: number[];
   width: number;
   height: number;
+  boldRanges?: BoldRange[];
 };
 
 function isPdfTextItem(value: unknown): value is PdfTextItem {
@@ -38,15 +41,18 @@ function isPdfTextItem(value: unknown): value is PdfTextItem {
 function joinLineItems(items: PdfTextItem[]) {
   return items.toSorted((left, right) => left.transform[4] - right.transform[4]).reduce(
     (result, item, index, sorted) => {
-      if (!result) return item.str.trim();
+      const start = item.str.length - item.str.trimStart().length;
+      const value = sliceEmphasizedText({ text: item.str, boldRanges: item.boldRanges }, start, item.str.trimEnd().length);
+      if (!result.text) return value;
       const previous = sorted[index - 1];
       const previousEnd = previous.transform[4] + previous.width;
       const gap = item.transform[4] - previousEnd;
-      const needsSpace = gap > 0.75 && !/^\s|^[,.;:!?)]/u.test(item.str);
-      return `${result}${needsSpace ? " " : ""}${item.str.trim()}`;
+      const needsSpace = (/\s$/u.test(previous.str) || /^\s/u.test(item.str) || gap > 0.75)
+        && !/^[,.;:!?)]/u.test(item.str.trimStart());
+      return concatEmphasizedText(result, { text: needsSpace ? " " : "" }, value);
     },
-    "",
-  ).replace(/\s+/g, " ").trim();
+    { text: "" } as { text: string; boldRanges?: BoldRange[] },
+  );
 }
 
 function groupPageLines(
@@ -75,7 +81,7 @@ function groupPageLines(
     x: Math.min(...group.map((item) => item.transform[4])),
     y: medianNumber(group.map((item) => item.transform[5])),
     fontSize: Math.max(...group.map((item) => item.height || Math.abs(item.transform[3]) || 1)),
-    text: joinLineItems(group),
+    ...cleanEmphasizedText(joinLineItems(group), false),
   })).filter((line) => line.text);
 }
 
@@ -111,8 +117,8 @@ export async function extractPdfDocument(
   try {
     for (let pageNumber = 1; pageNumber <= document.numPages; pageNumber += 1) {
       const page = await document.getPage(pageNumber);
-      const textContent = await page.getTextContent();
-      const textItems = textContent.items.filter(isPdfTextItem) as PdfTextItem[];
+      const [textContent, operators] = await Promise.all([page.getTextContent(), page.getOperatorList()]);
+      const textItems = attachTextColors(textContent.items.filter(isPdfTextItem) as PdfTextItem[], extractTextColors(operators, pdfjs.OPS));
       const viewport = page.getViewport({ scale: 1 });
       const lines = groupPageLines(textItems, pageNumber, viewport.height);
       const text = lines

@@ -35,11 +35,12 @@ test("lookup supports an arbitrary compact verse, cross-chapter range and whole 
 });
 
 test("passage requests reject cross-book, reverse, excessive or malformed intervals", () => {
-  for (const params of [
+  const invalidRequests: Record<string, string>[] = [
     { start: "John.3.16", end: "Rev.3.17" }, { start: "John.3.20", end: "John.3.10" },
     { start: "John.1.1", end: "John.11.1" }, { start: "John.03.16" },
     { start: "Unknown.1.1" }, { start: "John.3.201" }, { start: "John.3.16';DROP TABLE verses;" },
     { q: "Jn 1:1-11:1" }, { q: "Jn 3:16" + " ".repeat(100) }, { q: "" },
-  ]) assert.equal(parseBiblePassageRequest(new URLSearchParams(params)), null, JSON.stringify(params));
+  ];
+  for (const params of invalidRequests) assert.equal(parseBiblePassageRequest(new URLSearchParams(params)), null, JSON.stringify(params));
   assert.equal(parseBiblePassageRequest(new URLSearchParams({ start: "John.1.1", end: "John.10.1" }))?.endChapter, 10);
 });

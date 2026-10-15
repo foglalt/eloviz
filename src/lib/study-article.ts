@@ -1,12 +1,13 @@
 import { detectScriptureReferences } from "./scripture-references.ts";
+import { cleanEmphasizedText, concatEmphasizedText, sliceEmphasizedText, validBoldRanges, type BoldRange, type EmphasizedText } from "./text-emphasis.ts";
 
-export const STUDY_ARTICLE_VERSION = "pdf-layout-v2";
+export const STUDY_ARTICLE_VERSION = "pdf-layout-v3";
 
 export type StudyArticleBlock =
-  | { type: "heading"; level: 2 | 3; text: string }
-  | { type: "paragraph"; text: string }
-  | { type: "scripture"; text: string }
-  | { type: "list"; ordered: boolean; items: string[] };
+  | ({ type: "heading"; level: 2 | 3 } & EmphasizedText)
+  | ({ type: "paragraph" } & EmphasizedText)
+  | ({ type: "scripture" } & EmphasizedText)
+  | { type: "list"; ordered: boolean; items: string[]; itemBoldRanges?: BoldRange[][] };
 
 export type StudyArticle = {
   version: string;
@@ -20,6 +21,7 @@ export type PdfArticleLine = {
   y: number;
   fontSize: number;
   text: string;
+  boldRanges?: BoldRange[];
 };
 
 type RawBlock = {
@@ -44,12 +46,7 @@ function median(values: number[]) {
 }
 
 function cleanText(value: string) {
-  return value
-    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "")
-    .replace(/\s+/g, " ")
-    .replace(/\s+([,.;:!?])/g, "$1")
-    .replace(/([.!?])(?=\d+\s)/g, "$1 ")
-    .trim();
+  return cleanEmphasizedText({ text: value }).text;
 }
 
 function normalizeComparable(value: string) {
@@ -84,12 +81,16 @@ function listItem(value: string) {
 }
 
 function joinLines(lines: readonly PdfArticleLine[]) {
-  return cleanText(lines.reduce((result, line) => {
-    const text = cleanText(line.text);
-    if (!result) return text;
-    if (/[-‐]$/u.test(result) && /^\p{Ll}/u.test(text)) return `${result.slice(0, -1)}${text}`;
-    return `${result} ${text}`;
-  }, ""));
+  return joinFormattedLines(lines).text;
+}
+
+function joinFormattedLines(lines: readonly PdfArticleLine[]): EmphasizedText {
+  return cleanEmphasizedText(lines.reduce<EmphasizedText>((result, line) => {
+    const value = cleanEmphasizedText(line);
+    if (!result.text) return value;
+    if (/[-‐]$/u.test(result.text) && /^\p{Ll}/u.test(value.text)) return concatEmphasizedText(sliceEmphasizedText(result, 0, result.text.length - 1), value);
+    return concatEmphasizedText(result, { text: " " }, value);
+  }, { text: "" }));
 }
 
 function removeRepeatedPageFurniture(pages: readonly PdfArticleLine[][]) {
@@ -239,10 +240,14 @@ function combineLists(blocks: StudyArticleBlock[]) {
     }
 
     const previous = combined.at(-1);
+    const itemFormatting = cleanEmphasizedText(sliceEmphasizedText(block, block.text.length - item.text.length));
     if (previous?.type === "list" && previous.ordered === item.ordered) {
+      if (itemFormatting.boldRanges && !previous.itemBoldRanges) previous.itemBoldRanges = previous.items.map(() => []);
       previous.items.push(item.text);
+      previous.itemBoldRanges?.push(itemFormatting.boldRanges ?? []);
     } else {
-      combined.push({ type: "list", ordered: item.ordered, items: [item.text] });
+      combined.push({ type: "list", ordered: item.ordered, items: [item.text],
+        ...(itemFormatting.boldRanges ? { itemBoldRanges: [itemFormatting.boldRanges] } : {}) });
     }
   }
 
@@ -271,10 +276,11 @@ export function buildStudyArticle(
       || (comparableTitle && normalizeComparable(block.text) === comparableTitle)
     );
     if (isDocumentTitle) return [];
-    if (block.largeHeading) return [{ type: "heading", level: 2, text: block.text }];
-    if (block.likelySubheading) return [{ type: "heading", level: 3, text: block.text }];
-    if (block.reference) return [{ type: "scripture", text: block.text }];
-    return [{ type: "paragraph", text: block.text }];
+    const value = joinFormattedLines(block.lines);
+    if (block.largeHeading) return [{ type: "heading", level: 2, ...value }];
+    if (block.likelySubheading) return [{ type: "heading", level: 3, ...value }];
+    if (block.reference) return [{ type: "scripture", ...value }];
+    return [{ type: "paragraph", ...value }];
   });
 
   return { version: STUDY_ARTICLE_VERSION, blocks: combineLists(blocks) };
@@ -302,10 +308,12 @@ export function parseStudyArticle(value: unknown): StudyArticle | null {
   for (const blockValue of candidate.blocks) {
     if (!blockValue || typeof blockValue !== "object") return null;
     const block = blockValue as Record<string, unknown>;
+    if (block.boldRanges !== undefined && (typeof block.text !== "string" || !validBoldRanges(block.boldRanges, block.text))) return null;
+    const emphasis = block.boldRanges ? { boldRanges: block.boldRanges as BoldRange[] } : {};
     if (block.type === "heading" && (block.level === 2 || block.level === 3) && validText(block.text)) {
-      blocks.push({ type: "heading", level: block.level, text: block.text as string });
+      blocks.push({ type: "heading", level: block.level, text: block.text as string, ...emphasis });
     } else if ((block.type === "paragraph" || block.type === "scripture") && validText(block.text)) {
-      blocks.push({ type: block.type, text: block.text as string });
+      blocks.push({ type: block.type, text: block.text as string, ...emphasis });
     } else if (
       block.type === "list"
       && typeof block.ordered === "boolean"
@@ -314,7 +322,11 @@ export function parseStudyArticle(value: unknown): StudyArticle | null {
       && block.items.length <= MAX_LIST_ITEMS
       && block.items.every(validText)
     ) {
-      blocks.push({ type: "list", ordered: block.ordered, items: block.items as string[] });
+      if (block.itemBoldRanges !== undefined && (!Array.isArray(block.itemBoldRanges)
+        || block.itemBoldRanges.length !== block.items.length
+        || !block.itemBoldRanges.every((ranges, index) => validBoldRanges(ranges, (block.items as string[])[index])))) return null;
+      blocks.push({ type: "list", ordered: block.ordered, items: block.items as string[],
+        ...(block.itemBoldRanges ? { itemBoldRanges: block.itemBoldRanges as BoldRange[][] } : {}) });
     } else {
       return null;
     }

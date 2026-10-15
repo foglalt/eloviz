@@ -3,15 +3,18 @@
 **Project:** Élő Víz
 **Current Phase:** 04
 **Current Phase Name:** Simple Bible Reader
-**Current Plan:** 04-10
-**Total Plans in Phase:** 10
-**Status:** Plan04-10 complete; introduction formatting deployed and verified
+**Current Plan:** 04-11
+**Total Plans in Phase:** 11
+**Status:** Plan04-11 verified locally; red PDF emphasis release in progress
 **Progress:** 100%
-**Last Activity:** 2026-10-14
-**Last Activity Description:** Introduction newlines live; unchanged text, desktop/mobile and build verified
+**Last Activity:** 2026-10-15
+**Last Activity Description:** Red PDF text to bold;106tests, build and desktop/mobile checks passed
 **Paused At:** No unfinished plans; edition selection before any translation ingestion
 
 ## Delivered
+
+- Plan04-11: red PDF words become bold on new upload;106tests/build and colored
+  fixture checks passed. Existing articles retained; font family still ignored.
 
 - Plan04-10: full intro/summary newlines live;6f7b835 verified, text unchanged.
 
@@ -34,9 +37,6 @@
 - Plan04-05 corrects04-04 placement: one sidebar button reveals all study links
   inline beside verses; no sidebar results. Deployed17e6bb3 /
   dpl_7NuXswbKmpu8b8KUPN7DgvJGULYS READY; build and live browser/log checks passed.
-
-- Plan04-04: verified sidebar results placement superseded by04-05;
-  original deployment and checks retained in its summary/verification.
 
 - Plan 03-39: PDF list/quote and reference-list rules fixed, target source-preserving
   regeneration done, summary/body separation and series index improved. 95 tests,
@@ -214,6 +214,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-14T12:41:44+02:00
-**Stopped At:** Plan04-10 complete; live introduction formatting verified
+**Last Date:** 2026-10-15T11:04:35+02:00
+**Stopped At:** Plan04-11 verified locally; publishing red PDF emphasis
 **Resume File:** None

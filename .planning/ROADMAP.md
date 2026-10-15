@@ -53,6 +53,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 8. [x] **04-08: Research modern translation links** — External reader links versus attribution, API display, quotation and framing permissions documented; no integration added.
 9. [x] **04-09: Restore optional study reader sidebar** — Normal sidebar when closed, open/close controls and full available desktop height; responsive scroll/focus verified.
 10. [x] **04-10: Preserve introduction line breaks** — Full introductions and summaries retain saved newlines/blank lines; desktop/mobile layout and unchanged text verified.
+11. [x] **04-11: Convert red PDF text to bold** — Color-aware extraction, safe emphasis offsets and intact Bible links;106tests, layout and legacy extraction checks passed.
 
 Deferred: **Optional additional translations**, only after separate product
 selection and documented reuse rights; outside this completed one-version scope.
@@ -71,8 +72,8 @@ selection and documented reuse rights; outside this completed one-version scope.
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
 | 03 Evergreen Content Library | 39/39 | Complete; deployed and verified live | 2026-10-14 |
-| 04 Simple Bible Reader | 10/10 | Complete; reader and introduction formatting verified | 2026-10-14 |
+| 04 Simple Bible Reader | 11/11 | Complete; red PDF emphasis verified | 2026-10-15 |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 
 ---
-*Last updated: 2026-10-14*
+*Last updated: 2026-10-15*

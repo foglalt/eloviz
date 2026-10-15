@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { extractPdfDocument, extractPdfPages } from "./pdf-extract-core.ts";
 import { detectScriptureReferences } from "./scripture-references.ts";
+import { createColorFixturePdf } from "./fixtures/pdf-color-fixture.ts";
+import { parseStudyArticle } from "./study-article.ts";
 
 test("extracts native PDF text with the production PDF.js runtime dependencies", async () => {
   const fixture = path.join(
@@ -46,4 +48,16 @@ test("derives a semantic HTML article from PDF layout without repeating its titl
   );
   assert.ok(extraction.article.blocks.some((block) => block.type === "heading"));
   assert.ok(extraction.article.blocks.some((block) => block.type === "paragraph"));
+});
+
+test("converts only red painted PDF text into stored bold ranges", async () => {
+  const { article, pages } = await extractPdfDocument(createColorFixturePdf());
+  assert.deepEqual(parseStudyArticle(JSON.stringify(article)), article);
+  const emphasized = article.blocks.flatMap((block) => block.type === "list"
+    ? block.items.flatMap((text, index) => (block.itemBoldRanges?.[index] ?? []).map((range) => text.slice(range.start, range.end)))
+    : (block.boldRanges ?? []).map((range) => block.text.slice(range.start, range.end)));
+  assert.deepEqual(emphasized, ["piros", "Bordo", "szoveg.", "kiemeles", "CMYK", "piros.", "Piros", "kontur.", "János", "3:16", "piros", "elvalasztas"]);
+  assert.ok(article.blocks.some((block) => block.type === "list" && block.items.includes("Lista piros resze.")));
+  assert.ok(article.blocks.some((block) => "text" in block && block.text.includes("Normal piros normal.")));
+  assert.ok(pages[0].includes("Normal kiemeles ismet normal."));
 });

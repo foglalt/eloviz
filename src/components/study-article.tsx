@@ -12,13 +12,13 @@ export function StudyArticle({ article }: Props) {
         const key = `${block.type}-${index}`;
         if (block.type === "heading") {
           return block.level === 2
-            ? <h2 key={key}><ScriptureText text={block.text} /></h2>
-            : <h3 key={key}><ScriptureText text={block.text} /></h3>;
+            ? <h2 key={key}><ScriptureText text={block.text} boldRanges={block.boldRanges} /></h2>
+            : <h3 key={key}><ScriptureText text={block.text} boldRanges={block.boldRanges} /></h3>;
         }
         if (block.type === "scripture") {
           return (
             <blockquote key={key} className="study-article__scripture">
-              <p><ScriptureText text={block.text} /></p>
+              <p><ScriptureText text={block.text} boldRanges={block.boldRanges} /></p>
             </blockquote>
           );
         }
@@ -27,12 +27,12 @@ export function StudyArticle({ article }: Props) {
           return (
             <List key={key}>
               {block.items.map((item, itemIndex) => (
-                <li key={`${key}-${itemIndex}`}><ScriptureText text={item} /></li>
+                <li key={`${key}-${itemIndex}`}><ScriptureText text={item} boldRanges={block.itemBoldRanges?.[itemIndex]} /></li>
               ))}
             </List>
           );
         }
-        return <p key={key}><ScriptureText text={block.text} /></p>;
+        return <p key={key}><ScriptureText text={block.text} boldRanges={block.boldRanges} /></p>;
       })}
     </div>
   );
