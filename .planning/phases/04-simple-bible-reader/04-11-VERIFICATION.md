@@ -46,4 +46,13 @@ Bible links. Original download retains its source bytes and font/color formattin
 
 ## Production
 
-- Release/live verification follows the implementation commit.
+- PASS a073c1092e58bf29405ea176debbba84de575cbb pushed;
+  dpl_HSmxBBC74fagATmaRpcigux9vm58 READY, exact code SHA/www.eloviz.hu alias.
+- PASS live existing study:11447characters,103inline verse links, lists22/15/10/14
+  and zero false blockquotes; Gen3:15 click opens expected canonical selection.
+  Old stored article rendering remains compatible. Browser errors empty.
+- PASS original published PDF200 and SHA-256 identical to original local PDF;
+  temporary preview route404. No production test document uploaded or reprocessed.
+- PASS deployment-scoped error/fatal logs empty. Local source/render/color upload
+  chain verified as above; new-upload production execution was not exercised with
+  a persistent test study. Memory health/whitespace checks passed.

@@ -5,16 +5,16 @@
 **Current Phase Name:** Simple Bible Reader
 **Current Plan:** 04-11
 **Total Plans in Phase:** 11
-**Status:** Plan04-11 verified locally; red PDF emphasis release in progress
+**Status:** Plan04-11 complete; red PDF emphasis deployed and verified
 **Progress:** 100%
 **Last Activity:** 2026-10-15
-**Last Activity Description:** Red PDF text to bold;106tests, build and desktop/mobile checks passed
+**Last Activity Description:** Red-to-bold PDF uploads live;106tests/build, old articles/PDF verified
 **Paused At:** No unfinished plans; edition selection before any translation ingestion
 
 ## Delivered
 
 - Plan04-11: red PDF words become bold on new upload;106tests/build and colored
-  fixture checks passed. Existing articles retained; font family still ignored.
+  fixture passed; a073c10 / dpl_HSmxBBC74fagATmaRpcigux9vm58 live verified.
 
 - Plan04-10: full intro/summary newlines live;6f7b835 verified, text unchanged.
 
@@ -214,6 +214,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-15T11:04:35+02:00
-**Stopped At:** Plan04-11 verified locally; publishing red PDF emphasis
+**Last Date:** 2026-10-15T11:07:51+02:00
+**Stopped At:** Plan04-11 complete; production renderer, verse links and original PDF verified
 **Resume File:** None
