@@ -58,6 +58,13 @@ test("normalizes whitespace and Hungarian accents for matching", () => {
   assert.equal(foldCatalogSearchText("Szentlélek és HÚSVÉT"), "szentlelek es husvet");
 });
 
+test("hides empty and video-only topics from discovery even when their text matches", () => {
+  const empty = { ...topic, id: "empty", slug: "empty", studyCount: 0, videoCount: 0 };
+  const videoOnly = { ...topic, id: "video-only", slug: "video-only", studyCount: 0, videoCount: 5 };
+  const result = searchBundledCatalog("szövetség", [empty, videoOnly, topic], [], []);
+  assert.deepEqual(result.topics.map((item) => item.id), [topic.id]);
+});
+
 test("searches topics, finalized studies, and videos including their topic context", () => {
   const results = searchBundledCatalog(
     "szövetség",

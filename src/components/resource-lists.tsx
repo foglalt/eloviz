@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { StudySummary, TopicSummary, VideoSummary } from "@/lib/content-types";
 
 export function TopicRows({ topics }: { topics: TopicSummary[] }) {
+  if (!topics.length) return <p className="empty-state">Hamarosan új témákhoz is megjelennek tanulmányok.</p>;
   return <div className="editorial-list">{topics.map((topic, index) => (
     <Link className="editorial-row" href={`/temak/${topic.slug}`} key={topic.id}>
       <span className="editorial-row__number">{String(index + 1).padStart(2, "0")}</span>
@@ -25,7 +26,7 @@ export function VideoRows({ videos }: { videos: VideoSummary[] }) {
   if (!videos.length) return <p className="empty-state">A videógyűjtemény szerkesztés alatt áll. Hamarosan itt is megjelennek az ajánlások.</p>;
   return <div className="resource-list">{videos.map((video) => (
     <Link className="resource-item" href={`/videok/${video.slug}`} key={video.id}>
-      <span><h3>{video.title}</h3><span className="tag-list">{video.topics.map((topic) => <span className="tag" key={topic.id}>{topic.title}</span>)}</span></span>
+      <span><h3>{video.title}</h3><span className="tag-list">{video.topics.filter((topic) => (topic.studyCount ?? 0) > 0).map((topic) => <span className="tag" key={topic.id}>{topic.title}</span>)}</span></span>
       <span className="resource-item__summary">
         <span className="preview-description">{video.description}</span>
         {video.speaker ? (

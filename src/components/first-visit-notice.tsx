@@ -24,7 +24,36 @@ export function FirstVisitNotice() {
     const dialog = dialogRef.current;
     if (!dialog) return;
     if (pathname.startsWith("/feliratkozas")) { dialog.close(); return; }
-    if (!hasSeenNotice() && !dialog.open) dialog.showModal();
+    if (hasSeenNotice() || dialog.open) return;
+
+    const { body, documentElement } = document;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const previous = { position: body.style.position, top: body.style.top, left: body.style.left, width: body.style.width, overflow: body.style.overflow, paddingRight: body.style.paddingRight };
+    const rootOverflow = documentElement.style.overflow;
+    const scrollbarWidth = window.innerWidth - documentElement.clientWidth;
+    const paddingRight = Number.parseFloat(getComputedStyle(body).paddingRight) || 0;
+    Object.assign(body.style, { position: "fixed", top: `-${scrollY}px`, left: `-${scrollX}px`, width: "100%", overflow: "hidden", paddingRight: `${paddingRight + scrollbarWidth}px` });
+    documentElement.style.overflow = "hidden";
+    let locked = true;
+    function unlock() {
+      if (!locked) return;
+      locked = false;
+      Object.assign(body.style, previous);
+      documentElement.style.overflow = rootOverflow;
+      const scrollBehavior = documentElement.style.scrollBehavior;
+      documentElement.style.scrollBehavior = "auto";
+      window.scrollTo(scrollX, scrollY);
+      documentElement.style.scrollBehavior = scrollBehavior;
+    }
+    const onClose = () => { if (!dialog.open) unlock(); };
+    dialog.addEventListener("close", onClose);
+    dialog.showModal();
+    return () => {
+      dialog.removeEventListener("close", onClose);
+      dialog.close();
+      unlock();
+    };
   }, [pathname]);
   function closeNotice() { rememberNotice("dismissed"); dialogRef.current?.close(); }
   return <dialog ref={dialogRef} className="first-visit-notice" aria-labelledby="first-visit-title" onCancel={(event) => { event.preventDefault(); closeNotice(); }}>

@@ -59,11 +59,11 @@ const loadSeries = cache(async (publicOnly: boolean): Promise<StudySeries[]> => 
       updatedAt: row.updated_at instanceof Date ? row.updated_at.toISOString() : String(row.updated_at),
       revision: String(row.revision), parts: publicOnly ? publishedSeriesParts(parts) : parts,
     };
-  }).filter((series) => !publicOnly || series.parts.length > 0);
+  });
 });
 
-export async function listPublicSeries() {
-  try { return await loadSeries(true); }
+export async function listPublicSeries({ includeEmpty = false }: { includeEmpty?: boolean } = {}) {
+  try { return (await loadSeries(true)).filter((series) => includeEmpty || series.parts.length > 0); }
   catch (error) {
     console.error('Unable to load public study series.', error);
     return [];
@@ -71,7 +71,7 @@ export async function listPublicSeries() {
 }
 export function listAdminSeries() { return loadSeries(false); }
 export async function getPublicSeries(slug: string) {
-  return (await listPublicSeries()).find((series) => series.slug === slug) ?? null;
+  return (await listPublicSeries({ includeEmpty: true })).find((series) => series.slug === slug) ?? null;
 }
 export async function getAdminSeries(id: string) {
   return (await listAdminSeries()).find((series) => series.id === id) ?? null;

@@ -33,16 +33,22 @@ export default async function SeriesDetailPage({ params }: Props) {
       <JsonLd data={{ "@context": "https://schema.org", "@type": "ItemList", itemListOrder: "https://schema.org/ItemListOrderAscending",
         itemListElement: series.parts.map((part, index) => ({ "@type": "ListItem", position: index + 1, name: `${part.position}. ${part.title}`, url: absoluteSiteUrl(`/tanulmanyok/${part.slug}`) })) }} />
       <Breadcrumbs items={[...crumbs.slice(0, -1), { label: series.title }]} />
-      <header className="page-intro"><p className="eyebrow">Tanulmánysorozat</p><h1>{series.title}</h1><p className="lead">{series.description}</p>
+      <header className="page-intro"><p className="eyebrow">Tanulmánysorozat</p><h1>{series.title}</h1>
         <p className="meta-line">{series.parts.length} olvasható rész{series.author ? ` · Szerző: ${series.author}` : ""}</p>
-        <Link className="button" href={`/tanulmanyok/${series.parts[0].slug}`}>Olvasás elkezdése →</Link>
-        {series.sourceUrl ? <p><a className="text-link" href={series.sourceUrl} target="_blank" rel="noopener noreferrer">Eredeti forrás</a></p> : null}
       </header>
-      <section aria-labelledby="series-contents-title"><h2 id="series-contents-title">Tartalomjegyzék</h2>
-        <ol className="series-chapter-list">{series.parts.map((part) => <li key={part.id}><Link href={`/tanulmanyok/${part.slug}`}>
+      <div className="series-detail__layout">
+      <section className="series-detail__contents" aria-labelledby="series-contents-title"><h2 id="series-contents-title">Tartalomjegyzék</h2>
+        {series.parts.length ? <ol className="series-chapter-list">{series.parts.map((part) => <li key={part.id}><Link href={`/tanulmanyok/${part.slug}`}>
           <span className="series-part-number">{String(part.position).padStart(2, "0")}</span><span><h3>{part.title}</h3><span className="preview-description">{part.summary}</span></span><span aria-hidden="true">→</span>
-        </Link></li>)}</ol>
+        </Link></li>)}</ol> : <p className="empty-state">A sorozat részei előkészítés alatt állnak.</p>}
       </section>
+      <div className="series-detail__introduction"><p className="lead">{series.description}</p>
+        <div className="series-detail__actions">
+        {series.parts.length ? <Link className="button" href={`/tanulmanyok/${series.parts[0].slug}`}>Olvasás elkezdése →</Link> : null}
+        {series.sourceUrl ? <a className="text-link" href={series.sourceUrl} target="_blank" rel="noopener noreferrer">Eredeti forrás</a> : null}
+        </div>
+      </div>
+      </div>
     </div>
   );
 }

@@ -3,13 +3,13 @@
 **Project:** Élő Víz
 **Current Phase:** 04
 **Current Phase Name:** Simple Bible Reader
-**Current Plan:** 04-11
-**Total Plans in Phase:** 11
-**Status:** Plan04-11 complete; red PDF emphasis deployed and verified
-**Progress:** 100%
+**Current Plan:** 04-12
+**Total Plans in Phase:** 12
+**Status:** Verifying implementation
+**Progress:** 92%
 **Last Activity:** 2026-10-15
-**Last Activity Description:** Red-to-bold PDF uploads live;106tests/build, old articles/PDF verified
-**Paused At:** No unfinished plans; edition selection before any translation ingestion
+**Last Activity Description:** Plan04-12 local lint/build/107tests and responsive checks passed; release pending
+**Paused At:** Plan04-12 awaiting exact-SHA production verification
 
 ## Delivered
 
@@ -82,118 +82,13 @@
 
 ## Verification Snapshot
 
-- Plan 03-39: 95 tests, lint/build/TypeScript, source-faithful atomic repair,
-  69 references, live lists/no quotes, summary divider and responsive series index
-  passed. Exact production SHA/alias, unchanged PDF and clean runtime logs verified.
-
-- Plan 03-36: actual original/fresh Gmail Inbox receipt, built-in confirmation,
-  both active local/provider memberships, 18 newsletter tests, lint/build and
-  clean runtime logs passed. No code/configuration fix needed; notes recorded.
-
-- Plan 03-35: 86 tests, lint/build, real read-only export, authenticated download
-  and 320/390/1440px fit passed. Commit e7e3058 / deployment
-  dpl_43CMawMyHbT3n9tf4jYTvZjuJv38 READY; live export 401/no-store, login
-  protection, signup/Bible routes and clean error/fatal logs verified.
-
-- Phase 04: 79 tests, lint/build/TypeScript, source hash/full-text read-back,
-  production import/idempotency, isolated rollback and real rendered publication/
-  range probes, reciprocal browser navigation and 320/390/1440 px checks passed.
-  Evidence: phase 04 verification and source research files.
-- Commit 43f34b5 / deployment dpl_7psPihE7tHYHExGn1WUX7kT4PEHM: READY,
-  www alias and exact SHA confirmed; live 66-book/1189-chapter routes, references,
-  reciprocal study links, 404s, canonicals, mobile fit and clean runtime logs passed.
-- Resume audit (2026-10-13): zero incomplete plans, clean initial working tree,
-  70/70 tests, lint, production build/TypeScript, and memory health passed.
-  Roadmap now includes completed plan 03-34 and reports 34/34; compact confirmed
-  STATE.md is below the 220-line limit. No application or production-data changes.
-
-- Plan 03-34: 70 tests, migration 009, lint/build, real provider and live signup/confirmation/unsubscribe, cron 401/skip, unsigned webhook 400 and clean logs passed. Commit a4d8ef3 / deployment dpl_CNm8kJbn2t2FBuPdD2GhR8mbZp1o READY; Sunday 18:00 UTC cron enabled; test recipients removed.
-
-- Plan 03-33: 64 tests, migration 008, transactional ordering/concurrency/rollback,
-  revision guards, authenticated editor flows, public SEO/publication filters,
-  responsive checks and consecutive confirmations passed; fixtures removed.
-- Commit `de50aab` / production deployment `dpl_DRzEst1fqvPYtV5xG1KpXmDLgNhS`:
-  READY; live series/signup routes, sitemap, admin protection, original PDF
-  checksum and deployment-scoped error/fatal logs passed.
-- Initial 2026-10-13 audit: 58 tests, lint, build/TypeScript and memory health
-  passed; the previously uncommitted plan 03-32 was subsequently released with 03-33.
-- Reference detector tests, lint, strict TypeScript, production build: passed.
-- Chromium route, 404, sitemap, PDF header, responsive overflow, admin protection, and CRUD checks: passed.
-- Complete PDF editorial lifecycle: passed with four detected and published references; test content then safely deleted.
-- Database migrations and idempotent seed: passed.
-- Post-launch hero gutter, mobile-menu close behavior, and combined footer quotation regression: passed.
-- Admin selection, direct record switching, complete field hydration, authenticated PDF viewing/removal, and 390 px responsive checks: passed.
-- Revelation 22 visual redesign, original hero asset, sans-serif identity, all public routes, 320/390 px responsive behavior, and reduced motion: passed.
-- Vercel Blob legacy-token/OIDC configuration tests, lint, strict TypeScript, and production build: passed.
-- Automatic study draft fallback, paginated/searchable admin index, large relation pickers, authenticated desktop/mobile interactions, and production build: passed.
-- Central catalogue search tests, accent-free database matching, grouped public results, empty/noindex states, result navigation, and desktop/mobile responsive checks: passed.
-- Nunito next/font loading, 24 px hero eyebrow/title spacing, first-viewport fit, collection typography, mobile menu, and responsive overflow: passed.
-- Mobile-menu outside dismissal, internal search interaction, Escape/focus behavior, transparent tap feedback, 44 px target, and 320/390 px responsive fit: passed.
-- Mobile navigation link pressed state, transparent tap highlight, keyboard focus, touch navigation, and 320/390 px fit: passed.
-- Site-wide transparent tap highlights, branded selection, teal keyboard focus, logo/footer/menu/hero/search navigation, public route audit, and 320/390/1440 px fit: passed.
-- Direct published topic/study deletion, current-PDF automatic draft fallback, immediate editor refresh, cascade cleanup, five publication tests, and authenticated desktop/mobile UI checks: passed.
-- Shared topic/study/video workspace, common content fields and danger zone, 30-item searchable/paginated indexes, lightweight relation options, real selection/search interaction, and 390/1440 px responsive checks: passed.
-- Automatic Egyéb fallback topic, orphan-study categorization, accented/accent-free search, sitemap/canonical metadata, reserved slug, admin guidance, five focused tests, and 390/1440 px route checks: passed.
-- Production PDF.js/canvas dependency tracing, native-PDF extraction regression, deployed `Teszt.pdf` seven-candidate repair, authenticated PDF response, lint, strict TypeScript, and production build: passed.
-- All-66-book Hungarian reference formatting, alias deduplication, automatic transactional PDF finalization, review-layer removal, six regression suites, lint, strict TypeScript, and production build: passed.
-- Production deployment `dpl_8YCudqoQDCg2mWAFMqP7zAc2CuT1`: READY; 11 stored labels normalized and the repaired `Teszt.pdf` revision finalized with seven accepted canonical references.
-- Compact topic/related-content admin sections, hidden stable slugs, lint, strict TypeScript, and production build: passed.
-- Production deployment `dpl_Hu8c6msEvrNEQJVd4CTaSFtJ1V1V`: READY; authenticated study/video editors passed 1440/390 px layout and overflow checks.
-- Fixed-height relationship panels, authenticated YouTube title/channel derivation, speaker storage/search, migration 003, focused metadata/search tests, lint, migrated-schema build, GTD verification, and repository health: passed.
-- Production deployment `dpl_6Z7y7jiGgpHo88pHif5rnpxP84C3`: READY; authenticated metadata derivation and fixed 240 px relationship panels passed desktop/390 px responsive checks without overflow.
-- Modal save/PDF-processing lock, disabled submit state, explicit success confirmation, React review, lint, production build, GTD verification, and repository health: passed.
-- Production deployment `dpl_3wsRUW6oq8nu9UW2RfA5Jg4gZtEd`: READY; authenticated save redirect, focused success acknowledgement, modal dismissal, and URL cleanup passed.
-- Canonical `www` host, self-referential public canonicals, crawl-visible PDF noindex/canonical headers, sitemap/robots alignment, all focused tests, lint, strict TypeScript, production build, and local HTTP checks: passed.
-- Production deployment `dpl_2exBRBmQCD3rfWw39dGGCZTafRCz`: READY; `www` canonicals, sitemap/robots host alignment, and raw-PDF indexing headers passed live HTTP checks.
-- Redundant list-item type labels removed while section headings and useful metadata remain; lint, strict TypeScript, production build, and local rendered-page checks passed.
-- Production deployment `dpl_2iSZuVKTWo5FD6no5bFH4PDdaQkm`: READY; live study, video, and grouped search results contain no repeated item-level type labels.
-- Route-aware topic/study/video search defaults, accessible multi-select controls, filtered database queries, URL persistence, seven focused tests, production build, and desktop/mobile browser checks: passed.
-- Production deployment `dpl_Ev3WxPrZ9GPVurmvaXpUMQLZtn6S`: READY; live single- and multi-type search URLs retain their checked filters and show only selected result groups.
-- Three-line public preview descriptions, hidden video-channel preview metadata, retained speaker/detail metadata and channel search matching, eight focused tests, production build, and desktop/mobile browser checks: passed.
-- Production deployment `dpl_HfVCERfTUa7LFtDabf4cQqvAYG2d`: READY; live preview clamp, hidden list/search channel metadata, channel-based matching, and selected-video channel display passed.
-- Atomic study/video record-and-relationship saves, rollback probe, publication/YouTube tests, lint, strict TypeScript, production build, and warm round-trip comparison: passed.
-- Ctrl/Cmd+S content-save shortcut, native validation, duplicate suppression, pending modal, exclusion scope, four focused tests, lint, strict TypeScript, production build, and authenticated browser checks: passed.
-- Aligned 240 px relation pickers, accessible topic info control, title-only top-packed rows, correct hidden filtering, lint, strict TypeScript, production build, and authenticated 1440/390 px browser checks: passed.
-- Published new-topic default, preserved existing topic states, unchanged study/video draft defaults, lint, strict TypeScript, production build, and authenticated browser checks: passed.
-- Binary publication switch, exact published/draft form serialization, keyboard operation, 44 px touch target, lint, strict TypeScript, production build, and authenticated desktop/mobile checks: passed.
-- First-party anonymous analytics, all-time/30-day counters, topic/study/video rankings, duplicate/admin/bot/privacy exclusions, migration 004, focused tests, production build, and authenticated desktop/mobile checks: passed.
-- Hidden topic/study/video SEO editors, preserved existing SEO overrides through ordinary saves, retained general metadata fallbacks, lint, strict TypeScript, production build, and authenticated desktop/mobile checks: passed.
-- New-study help now explicitly explains that PDF upload appears after entering the title and summary and completing the first save; lint, strict TypeScript, and production build: passed.
-- Contained, overlapping, and same-chapter adjacent Scripture ranges now finalize as concise continuous ranges while every PDF evidence candidate remains intact; six reference tests, publication tests, lint, strict TypeScript, and production build: passed.
-- Explicit PDF.js worker initialization and route-scoped output tracing now protect Vercel PDF parsing; the originally rejected four-page PDF, focused tests, lint, strict TypeScript, and production build: passed locally.
-- Production deployment `dpl_6ds244CStu7Jb4x4Xc1NvE4JqWd1`: READY; live admin HTTP check and deployment-scoped error/fatal log scan passed.
-- Public study references now render in canonical Bible book, chapter, and verse order without changing stored detection evidence; seven reference tests, lint, strict TypeScript, and production build: passed.
-- Production deployment `dpl_BuB3tdXjNcKfx3SsQS9sgnuXRWB7`: READY; the live 28-reference Páska study rendered in exact canonical order and the deployment error/fatal log scan was clean.
-- Public catalogue search now filters studies by overlapping single-verse or ranged Scripture references, including cross-chapter intervals; focused tests, PostgreSQL-backed route checks, responsive browser checks, lint, strict TypeScript, and production build: passed.
-- Production deployment `dpl_ESeCJpKPutjUbWBCUn5yPRaRriFv`: READY; five live Scripture-search cases passed and the deployment error/fatal log scan was clean.
-- Study pages now present one PDF action under the sidebar document heading, with
-  the bare filename and obsolete PDF/reference explanations removed; lint,
-  strict TypeScript, production build, and local rendered-page checks passed.
-- Production deployment `dpl_5r8TS6tjGwP3AvauYRMqbwjj7u4Z`: READY; the live
-  study page passed placement, link-target, removed-copy, and runtime-log checks.
-- Study document actions now have 14 px of heading separation, matching sidebar
-  list rhythm; lint and the production build passed.
-- Production deployment `dpl_5drA2KM4WkJHSZvKRu5W9Hrq1WAA`: READY; the live
-  scoped spacing rule, document layout, and runtime-log checks passed.
-- Layout-aware PDF-to-article conversion, versioned JSON storage, migration 005,
-  upload/seed/backfill integration, semantic public rendering, retained PDF,
-  and sidebar Bible references passed 48 focused tests, lint, strict TypeScript,
-  production build, local responsive Chromium checks, and production backfill.
-- Production deployment `dpl_8kT5JCQ4Qjerp1Jr7Nt2XUEo5SQ6`: READY; the live
-  Páska study rendered 15 headings, 32 Scripture excerpts, and 28 sidebar
-  references, while the original 75,525-byte PDF response remained intact.
-- Canonical undirected study pairs, the three-picker study editor, symmetric
-  study-video verification, and compact public related-content sidebars passed
-  51 focused tests, migration/transaction probes, lint, strict TypeScript,
-  production build, and authenticated desktop/mobile browser checks.
-- Production deployment `dpl_ALdtMfjpJYoJ8tNLtB23qLn8ekjv`: READY; live
-  study/video pages and admin protection passed with clean error/fatal logs.
-- PDF storage investigation isolated the environment-only credential gate and
-  request-context OIDC mismatch; the pre-fix evidence and credential validation
-  are preserved in the investigation report.
-- Blob credential routing, production fallback prevention, 53 focused tests,
-  real private-Blob probe, connected deployment, guarded migration, cleared
-  database bytes, exact checksum preservation, and live PDF delivery: passed.
+- Earlier baseline and deployment evidence retained in phase03/04 plan verification
+  and summary files; no historical evidence removed from those files.
+- Phase04-11:106tests, lint/build/TypeScript, actual colored PDF/source render,
+  responsive article/Bible-link checks and exact production SHA/PDF verified.
+- Phase04-12:107tests and read-only visibility/empty-series fixtures pass; desktop,
+  tablet and phone layouts/scroll isolation reviewed; lint/build/TypeScript pass.
+  Production verification pending.
 
 ## Next Decision Gate
 
@@ -214,6 +109,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-15T11:07:51+02:00
-**Stopped At:** Plan04-11 complete; production renderer, verse links and original PDF verified
+**Last Date:** 2026-10-15T13:59:41+02:00
+**Stopped At:** Verification completed
 **Resume File:** None

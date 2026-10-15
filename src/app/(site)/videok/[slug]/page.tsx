@@ -23,6 +23,7 @@ export default async function VideoPage({ params }: Props) {
   const { slug } = await params;
   const video = await getVideoBySlug(slug);
   if (!video) notFound();
+  const visibleTopics = video.topics.filter((topic) => (topic.studyCount ?? 0) > 0);
 
   const crumbs = [
     { label: "Kezdőlap", href: "/" },
@@ -56,16 +57,16 @@ export default async function VideoPage({ params }: Props) {
           </p>
         </article>
         <aside className="detail-sidebar">
-          <div className="detail-sidebar__section">
+          {visibleTopics.length ? <div className="detail-sidebar__section">
             <h2>Témák</h2>
             <ul>
-              {video.topics.map((topic) => (
+              {visibleTopics.map((topic) => (
                 <li key={topic.id}>
                   <Link className="text-link" href={`/temak/${topic.slug}`}>{topic.title}</Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </div> : null}
           {video.speaker ? (
             <div className="detail-sidebar__section">
               <h2>Előadó</h2>

@@ -34,7 +34,7 @@ export default async function HomePage() {
     {featuredStudy ? <section className="section section--tint feature-section">
       <div className="feature-study">
         <div className="feature-study__intro"><p className="eyebrow">Kiemelt tanulmány</p><h2>{featuredStudy.title}</h2></div>
-        <div className="feature-study__content"><p>{featuredStudy.summary}</p><ul className="reference-list">{featuredStudy.references.map((reference) => <li key={reference.osisStart}>{reference.label}</li>)}</ul><Link className="button" href={`/tanulmanyok/${featuredStudy.slug}`}>Tanulmány megnyitása</Link></div>
+        <div className="feature-study__content"><p className="feature-study__summary">{featuredStudy.summary}</p><Link className="button" href={`/tanulmanyok/${featuredStudy.slug}`}>Tanulmány megnyitása</Link></div>
       </div>
     </section> : null}
     <section className="section"><div className="section-heading"><div><p className="eyebrow">Gyűjtemény</p><h2>Legfrissebb tanulmányok</h2></div><p>Önálló, letölthető PDF-anyagok megerősített bibliai hivatkozásokkal.</p></div><StudyRows studies={studies.slice(0, 3)} /></section>

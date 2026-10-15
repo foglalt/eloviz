@@ -97,6 +97,7 @@ export function searchBundledCatalog(
   const includedKinds = new Set(selectedKinds);
 
   const topicResults = includedKinds.has("topic") && hasTextQuery ? topics.flatMap<CatalogSearchItem>((topic) => {
+    if ((topic.studyCount ?? 0) === 0) return [];
     const match = matches(foldedQuery, [topic.title, topic.slug, topic.description]);
     if (!match.matches) return [];
     haystacks.set(`topic:${topic.id}`, match.haystack);

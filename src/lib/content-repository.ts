@@ -155,7 +155,9 @@ const videosQuery = `
     COALESCE((
       SELECT jsonb_agg(jsonb_build_object(
         'id', t.id::text, 'slug', t.slug, 'title', t.title, 'description', t.description,
-        'featured', t.featured, 'sort_order', t.sort_order
+        'featured', t.featured, 'sort_order', t.sort_order,
+        'study_count', (SELECT count(*) FROM study_topics st JOIN studies s ON s.id=st.study_id
+          WHERE st.topic_id=t.id AND s.status='published' AND s.published_document_id IS NOT NULL)
       ) ORDER BY vt.sort_order, t.sort_order, t.title)
       FROM video_topics vt JOIN topics t ON t.id = vt.topic_id
       WHERE vt.video_id = v.id AND t.status = 'published'
@@ -176,9 +178,10 @@ const unassignedPublicStudyCountQuery = `
       WHERE st.study_id = s.id
     )`;
 
-export async function listPublicTopics() {
+export async function listPublicTopics({ includeEmpty = false }: { includeEmpty?: boolean } = {}) {
+  const visible = (topics: TopicSummary[]) => includeEmpty ? topics : topics.filter((topic) => (topic.studyCount ?? 0) > 0);
   const sql = getSql();
-  if (!sql) return defaultTopics;
+  if (!sql) return visible(defaultTopics);
 
   try {
     const [rows, countRows] = await Promise.all([
@@ -192,13 +195,13 @@ export async function listPublicTopics() {
         ORDER BY t.sort_order, t.title`),
       sql.query(unassignedPublicStudyCountQuery),
     ]);
-    return includeOtherTopic(
+    return visible(includeOtherTopic(
       (rows as Row[]).map(mapTopic),
       Number(countRows[0]?.count ?? 0),
-    );
+    ));
   } catch (error) {
     console.error("Unable to load topics; using bundled content.", error);
-    return defaultTopics;
+    return visible(defaultTopics);
   }
 }
 
@@ -277,9 +280,10 @@ export async function searchPublicCatalog(
       "concat_ws(' ', v.title, v.slug, v.description, v.channel_name, v.speaker, topic_data.search_topics)",
     );
 
+    // Check the label first; the real readable-study count is loaded below.
     const otherTopicMatches = hasTextQuery && includedKinds.has("topic") && searchBundledCatalog(
       query,
-      [createOtherTopic(0)],
+      [createOtherTopic(1)],
       [],
       [],
     ).topics.length > 0;
@@ -296,6 +300,8 @@ export async function searchPublicCatalog(
           ) AS meta
         FROM topics t
         WHERE t.status = 'published'
+          AND EXISTS (SELECT 1 FROM study_topics st JOIN studies s ON s.id=st.study_id
+            WHERE st.topic_id=t.id AND s.status='published' AND s.published_document_id IS NOT NULL)
           AND position($1 in ${topicSearchText}) > 0
         ORDER BY
           CASE
@@ -423,7 +429,7 @@ export async function searchPublicCatalog(
 }
 
 export async function getTopicBySlug(slug: string): Promise<TopicDetail | null> {
-  const [topics, studies, videos] = await Promise.all([listPublicTopics(), listPublicStudies(), listPublicVideos()]);
+  const [topics, studies, videos] = await Promise.all([listPublicTopics({ includeEmpty: true }), listPublicStudies(), listPublicVideos()]);
   const topic = topics.find((item) => item.slug === slug);
   if (!topic) return null;
   return {
