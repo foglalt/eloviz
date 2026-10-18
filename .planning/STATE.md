@@ -5,13 +5,17 @@
 **Current Phase Name:** Simple Bible Reader
 **Current Plan:** 04-13
 **Total Plans in Phase:** 13
-**Status:** Verifying implementation
-**Progress:** 92%
+**Status:** Complete; deployed and verified live
+**Progress:** 100%
 **Last Activity:** 2026-10-18
-**Last Activity Description:** Plan04-13 native bold extraction,110tests/browser/lint/build passed; releasing
-**Paused At:** Plan04-13 awaiting production verification
+**Last Activity Description:** Plan04-13 native PDF bold preservation deployed and verified live
+**Paused At:** No unfinished plans; edition selection before any translation ingestion
 
 ## Delivered
+
+- Plan04-13: native PDF bold weight now joins red-to-bold on fresh extraction;
+  compatible v4 article, font families ignored.110tests/build/browser passed;
+  60dc865 / dpl_2tfDcZUKCXg7STDwstiG2cj5FKvx READY and live verified.
 
 - Plan04-12: compact public pages/featured study, earlier series chapters, hidden
   empty collections with direct URLs retained; subscription background scroll

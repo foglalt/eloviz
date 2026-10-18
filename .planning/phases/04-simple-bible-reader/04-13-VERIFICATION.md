@@ -24,4 +24,10 @@
   production compile and strict TypeScript; standalone tsc also passed.
   First build caught a stale generated dev validator after removing preview;
   removed that generated validator and reran successfully. No source workaround.
-- Production release verification pending.
+- PASS60dc865c7aefe806b107217bb18ee0150fe6286f pushed; production deployment
+  dpl_2tfDcZUKCXg7STDwstiG2cj5FKvx READY for exact SHA/www.eloviz.hu alias.
+- PASS live stored Mítosz article unchanged:11447characters,103Bible links,
+  lists22/15/10/14, zero false quotes; browser console errors empty. Temporary
+  preview404. Upload parsing verified with actual local production PDF.js;
+  no production test upload or regeneration performed.
+- Deployment-scoped error/fatal logs: no matching logs. Health/whitespace passed.

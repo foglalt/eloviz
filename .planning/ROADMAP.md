@@ -57,7 +57,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 
 12. [x] **04-12: Compact public layouts and collection discovery** — Smaller spacing/headings, title-first featured study, earlier series chapters, hidden empty collections and subscription modal scroll lock; deployed and verified live.
 
-13. [ ] **04-13: Preserve native PDF bold text** — Font weight joins red emphasis, lists and Bible links remain intact; verification underway.
+13. [x] **04-13: Preserve native PDF bold text** — Font weight joins red emphasis, lists and Bible links remain intact; deployed and verified live.
 
 Deferred: **Optional additional translations**, only after separate product
 selection and documented reuse rights; outside this completed one-version scope.
@@ -76,8 +76,8 @@ selection and documented reuse rights; outside this completed one-version scope.
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
 | 03 Evergreen Content Library | 39/39 | Complete; deployed and verified live | 2026-10-14 |
-| 04 Simple Bible Reader | 12/13 | Native PDF bold preservation verifying | — |
+| 04 Simple Bible Reader | 13/13 | Complete; PDF bold verified live | 2026-10-18 |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 
 ---
-*Last updated: 2026-10-15*
+*Last updated: 2026-10-18*

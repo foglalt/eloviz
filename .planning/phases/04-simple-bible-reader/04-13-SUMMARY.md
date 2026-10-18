@@ -1,7 +1,7 @@
 ---
 phase: 04
 plan: 13
-status: verifying
+status: complete
 ---
 
 # 04-13 Summary
@@ -19,3 +19,6 @@ status: verifying
   versus400body, selected John3:16 and no overflow/console errors.
 - No dependency/schema changes or mass regeneration of previously stored studies.
   Lint/build/TypeScript passed; release evidence in04-13-VERIFICATION.md.
+
+- Released60dc865 / dpl_2tfDcZUKCXg7STDwstiG2cj5FKvx READY; exact-SHA
+  canonical deployment and stored-article compatibility verified live.
