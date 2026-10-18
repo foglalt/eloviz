@@ -3,13 +3,13 @@
 **Project:** Élő Víz
 **Current Phase:** 04
 **Current Phase Name:** Simple Bible Reader
-**Current Plan:** 04-12
-**Total Plans in Phase:** 12
-**Status:** Complete; deployed and verified live
-**Progress:** 100%
-**Last Activity:** 2026-10-15
-**Last Activity Description:** Plan04-12 compact layouts/visibility and modal scroll lock deployed; live verification passed
-**Paused At:** No unfinished plans; edition selection before any translation ingestion
+**Current Plan:** 04-13
+**Total Plans in Phase:** 13
+**Status:** Verifying implementation
+**Progress:** 92%
+**Last Activity:** 2026-10-18
+**Last Activity Description:** Plan04-13 native bold extraction,110tests/browser/lint/build passed; releasing
+**Paused At:** Plan04-13 awaiting production verification
 
 ## Delivered
 
@@ -114,6 +114,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-15T13:59:41+02:00
+**Last Date:** 2026-10-18T10:46:19+02:00
 **Stopped At:** Verification completed
 **Resume File:** None

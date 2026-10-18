@@ -15,11 +15,31 @@ export function createColorFixturePdf() {
 0 -30 Td 1 0 0 rg (elva-) Tj 0 g
 0 -15 Td 1 0 0 rg (lasztas) Tj 0 g ( megmarad.) Tj
 ET`;
+  return createTextFixturePdf(content, ["Helvetica"]);
+}
+
+export function createBoldFixturePdf() {
+  return createTextFixturePdf(`BT /F1 12 Tf 72 740 Td
+(Normal ) Tj /F2 12 Tf (bold) Tj /F1 12 Tf ( normal.) Tj
+0 -30 Td /F3 12 Tf (Italic stays normal.) Tj
+0 -30 Td /F4 12 Tf (Bold italic.) Tj
+0 -30 Td /F5 12 Tf (Different family stays normal.) Tj
+0 -30 Td /F1 12 Tf (Red ) Tj 1 0 0 rg (red) Tj /F2 12 Tf ( and bold) Tj 0 g /F1 12 Tf ( normal.) Tj
+0 -30 Td (- List ) Tj /F2 12 Tf (bold) Tj /F1 12 Tf ( part.) Tj
+0 -30 Td (- Second item.) Tj
+0 -30 Td (Read: ) Tj /F2 12 Tf (J\\341nos 3:16) Tj /F1 12 Tf ( today.) Tj
+0 -30 Td /F2 12 Tf (wrap-) Tj
+0 -15 Td (ped) Tj /F1 12 Tf ( remains.) Tj
+ET`, ["Helvetica", "Helvetica-Bold", "Helvetica-Oblique", "Times-BoldItalic", "Courier"]);
+}
+
+function createTextFixturePdf(content: string, fonts: string[]) {
+  const streamId = 4 + fonts.length;
   const objects = [
     '<< /Type /Catalog /Pages 2 0 R >>',
     '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
-    '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>',
-    '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>',
+    `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << ${fonts.map((_, index) => `/F${index + 1} ${index + 4} 0 R`).join(" ")} >> >> /Contents ${streamId} 0 R >>`,
+    ...fonts.map((font) => `<< /Type /Font /Subtype /Type1 /BaseFont /${font} /Encoding /WinAnsiEncoding >>`),
     `<< /Length ${Buffer.byteLength(content)} >>\nstream\n${content}\nendstream`,
   ];
   let pdf = '%PDF-1.4\n';

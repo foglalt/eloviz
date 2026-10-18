@@ -4,6 +4,7 @@ import {
   type StudyArticle,
 } from "./study-article.ts";
 import { attachTextColors, extractTextColors } from "./pdf-text-color.ts";
+import { attachTextFontWeight } from "./pdf-text-font.ts";
 import { cleanEmphasizedText, concatEmphasizedText, sliceEmphasizedText, type BoldRange } from "./text-emphasis.ts";
 
 async function ensurePdfJsNodeGlobals() {
@@ -25,6 +26,7 @@ type PdfTextItem = {
   transform: number[];
   width: number;
   height: number;
+  fontName?: string;
   boldRanges?: BoldRange[];
 };
 
@@ -118,7 +120,10 @@ export async function extractPdfDocument(
     for (let pageNumber = 1; pageNumber <= document.numPages; pageNumber += 1) {
       const page = await document.getPage(pageNumber);
       const [textContent, operators] = await Promise.all([page.getTextContent(), page.getOperatorList()]);
-      const textItems = attachTextColors(textContent.items.filter(isPdfTextItem) as PdfTextItem[], extractTextColors(operators, pdfjs.OPS));
+      const coloredItems = attachTextColors(textContent.items.filter(isPdfTextItem) as PdfTextItem[], extractTextColors(operators, pdfjs.OPS));
+      const fonts = new Map([...new Set(coloredItems.map((item) => item.fontName).filter((name): name is string => Boolean(name)))]
+        .filter((name) => page.commonObjs.has(name)).map((name) => [name, page.commonObjs.get(name)]));
+      const textItems = attachTextFontWeight(coloredItems, fonts);
       const viewport = page.getViewport({ scale: 1 });
       const lines = groupPageLines(textItems, pageNumber, viewport.height);
       const text = lines

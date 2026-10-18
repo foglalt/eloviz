@@ -1,7 +1,7 @@
 import { detectScriptureReferences } from "./scripture-references.ts";
 import { cleanEmphasizedText, concatEmphasizedText, sliceEmphasizedText, validBoldRanges, type BoldRange, type EmphasizedText } from "./text-emphasis.ts";
 
-export const STUDY_ARTICLE_VERSION = "pdf-layout-v3";
+export const STUDY_ARTICLE_VERSION = "pdf-layout-v4";
 
 export type StudyArticleBlock =
   | ({ type: "heading"; level: 2 | 3 } & EmphasizedText)

@@ -4,7 +4,7 @@ import path from "node:path";
 import test from "node:test";
 import { extractPdfDocument, extractPdfPages } from "./pdf-extract-core.ts";
 import { detectScriptureReferences } from "./scripture-references.ts";
-import { createColorFixturePdf } from "./fixtures/pdf-color-fixture.ts";
+import { createBoldFixturePdf, createColorFixturePdf } from "./fixtures/pdf-color-fixture.ts";
 import { parseStudyArticle } from "./study-article.ts";
 
 test("extracts native PDF text with the production PDF.js runtime dependencies", async () => {
@@ -60,4 +60,16 @@ test("converts only red painted PDF text into stored bold ranges", async () => {
   assert.ok(article.blocks.some((block) => block.type === "list" && block.items.includes("Lista piros resze.")));
   assert.ok(article.blocks.some((block) => "text" in block && block.text.includes("Normal piros normal.")));
   assert.ok(pages[0].includes("Normal kiemeles ismet normal."));
+});
+
+test("preserves native bold PDF runs alongside red text, lists, wrapped words and Bible references", async () => {
+  const { article, pages } = await extractPdfDocument(createBoldFixturePdf());
+  assert.deepEqual(parseStudyArticle(JSON.stringify(article)), article);
+  const emphasized = article.blocks.flatMap((block) => block.type === "list"
+    ? block.items.flatMap((text, index) => (block.itemBoldRanges?.[index] ?? []).map((range) => text.slice(range.start, range.end)))
+    : (block.boldRanges ?? []).map((range) => block.text.slice(range.start, range.end)));
+  assert.deepEqual(emphasized, ["bold", "Bold italic.", "red", "and bold", "bold", "János 3:16", "wrapped"]);
+  assert.ok(pages[0].includes("Italic stays normal."));
+  assert.ok(pages[0].includes("Different family stays normal."));
+  assert.deepEqual(detectScriptureReferences(pages).map((ref) => ref.osisStart), ["John.3.16"]);
 });
