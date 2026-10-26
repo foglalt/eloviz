@@ -63,6 +63,8 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 
 15. [x] **04-15: Create studies with their first PDF** — Optional PDF before first save, atomic metadata/document creation, preserved inputs/file on error; deployed and verified.
 
+16. [x] **04-16: Protect newsletter signup from bots** — Managed Turnstile with required server verification, responsive retry UI, scoped pending-list cleanup; deployed and verified live.
+
 Deferred: **Optional additional translations**, only after separate product
 selection and documented reuse rights; outside this completed one-version scope.
 
@@ -80,7 +82,7 @@ selection and documented reuse rights; outside this completed one-version scope.
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
 | 03 Evergreen Content Library | 39/39 | Complete; deployed and verified live | 2026-10-14 |
-| 04 Simple Bible Reader | 15/15 | Complete; initial study PDF workflow deployed and verified | 2026-10-26 |
+| 04 Simple Bible Reader | 16/16 | Complete; newsletter human verification live | 2026-10-26 |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 
 ---

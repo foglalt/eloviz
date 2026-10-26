@@ -50,6 +50,25 @@
   subscription via ResizeObserver; useEffectEvent for latest token callback,
   teardown/remount and shared script callbacks reviewed; server secret stays in
   server-only module, no client import of environment/private configuration.
-- Exact-SHA/live verification pending.
-- Agent tabs: Opera169735281 Cloudflare setup,169735293 local test;
-  IAB3/tab2 local test. Existing owner Opera/admin tabs and IABtab1 preserved.
+- PASS a58df837f7aee5d8c04856cdd197bb80996e4669 pushed to origin/main;
+  dpl_Yns2ND8yoPocJ4x9ocxRSdYNfi8J READY for exact SHA and www.eloviz.hu alias.
+- PASS actual live Opera Managed widget renders Hungarian success, no manual
+  CAPTCHA solving. Owner-authorized already-active test address submitted through
+  actual form; Cloudflare host/action/token check accepted and real signup action
+  returned expected generic success. Existing active record is ignored by service
+  upsert, no additional confirmation email/new subscriber; post-check3active+2pending.
+- PASS owner's signed-in admin tab refreshed: robot-protection configured status,
+  table5rows, exactly named2pending exceptions. Weekly delivery remains enabled.
+- PASS private secret absent from every built browser JS chunk. Deployment-scoped
+  error/fatal runtime logs empty. Prior local chrome-error console entry from
+  stopping dev for build is not a production app error.
+- Screenshot output/newsletter-human-check-live.png shows the blank live form
+  and successful actual widget; no private key or subscriber list in screenshot.
+- PASS Opera agent test169735293 closed and verified absent. Cloudflare169735281
+  not present after owner's setup; no agent closure claimed. Owner169735043
+  remains at admin subscriber URL. IAB pre-existing tab1 unchanged; agenttab2
+  became generated data: error page when local dev stopped for build, explicit
+  close rejected by browser URL guard. No bypass; temporary cleanup pending.
+  Viewport reset, no service stopped for tab cleanup. Provenance recorded in
+  tmp/agent-project-tabs.json. User's digest-intro edit remains unstaged.
+- Final health/whitespace checks passed; planning state and completion updated.

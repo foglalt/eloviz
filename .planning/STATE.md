@@ -5,13 +5,19 @@
 **Current Phase Name:** Simple Bible Reader
 **Current Plan:** 04-16
 **Total Plans in Phase:** 16
-**Status:** Verifying signup robot protection
-**Progress:** 94%
+**Status:** Ready to execute
+**Progress:** 100%
 **Last Activity:** 2026-10-26
-**Last Activity Description:** Verification completed (passed)
-**Paused At:** Plan04-16 final build/release and cleanup
+**Last Activity Description:** Turnstile live signup verified;78pending removed,2exceptions and3active retained
+**Paused At:** No unfinished plans; edition selection before any translation ingestion
 
 ## Delivered
+
+- Plan04-16: Managed Turnstile with server token/action/hostname verification,
+  responsive retry UI and fail-closed behavior;128tests/build/action+live browser
+  pass.78pending removed with private backup,2named pending+3active unchanged.
+  a58df83 / dpl_Yns2ND8yoPocJ4x9ocxRSdYNfi8J READY; real validation/admin/logs
+  verified. Opera test closed; owner tabs preserved; IAB error close guard blocked.
 
 - Plan04-15: optional PDF before first save; atomic study/series/document/article/
   reference creation, inline errors retain entries/File.122tests/build, actual
@@ -130,5 +136,5 @@
 ## Session
 
 **Last Date:** 2026-10-26T14:00:17+01:00
-**Stopped At:** Verification completed
+**Stopped At:** Plan04-16 complete; deployed/live verified
 **Resume File:** None

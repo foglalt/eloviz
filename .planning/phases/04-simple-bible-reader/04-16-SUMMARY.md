@@ -1,7 +1,7 @@
 ---
 phase: 04
 plan: 16
-status: implemented
+status: complete
 ---
 
 # 04-16 Summary
@@ -27,3 +27,12 @@ status: implemented
   layout, repeated validation/token refresh, preserved inputs/consent, first-visit
   modal scrolling/close restoration pass. Full build/release evidence follows
   in04-16-VERIFICATION.md. Pre-existing newsletter digest intro edit left unstaged.
+
+- Released a58df837f7aee5d8c04856cdd197bb80996e4669 /
+  dpl_Yns2ND8yoPocJ4x9ocxRSdYNfi8J READY on www.eloviz.hu. Live Managed widget
+  auto-attested the browser; real signup action accepted proof for already-active
+  authorized test account (no new row/email). Admin shows Turnstile active and5rows.
+  Post-check DB remains3active+2pending; deployment error/fatal logs empty.
+- Agent Opera test tab closed/absence verified; Cloudflare setup tab no longer
+  present after owner's setup. Owner admin remains open/refreshed. IAB error-page
+  close rejected by URL guard, left for temporary cleanup; pre-existing tab retained.
