@@ -61,6 +61,8 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 
 14. [x] **04-14: Reveal red-underlined PDF answers** — Inline hidden answers with accessible reveal/hide controls and intact Bible links; deployed and verified live.
 
+15. [x] **04-15: Create studies with their first PDF** — Optional PDF before first save, atomic metadata/document creation, preserved inputs/file on error; deployed and verified.
+
 Deferred: **Optional additional translations**, only after separate product
 selection and documented reuse rights; outside this completed one-version scope.
 
@@ -78,7 +80,7 @@ selection and documented reuse rights; outside this completed one-version scope.
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
 | 03 Evergreen Content Library | 39/39 | Complete; deployed and verified live | 2026-10-14 |
-| 04 Simple Bible Reader | 14/14 | Complete; hidden PDF answers verified live | 2026-10-26 |
+| 04 Simple Bible Reader | 15/15 | Complete; initial study PDF workflow deployed and verified | 2026-10-26 |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 
 ---

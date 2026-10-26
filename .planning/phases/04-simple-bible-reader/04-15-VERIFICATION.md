@@ -46,4 +46,16 @@
   output/new-study-pdf-form.png (selected file before first save).
 - Dev service stopped for build. Built service remains available on127.0.0.1:3000.
   Agent tabs2/3 recorded; tab1 pre-existing spoiler-preview retained.
-- Exact-SHA deployment and tab cleanup: pending.
+- PASS bf7fe293951197ac2bede314f7bb1e77f4c063e2 pushed to origin/main;
+  dpl_2P8V5tvzb8xU2KkunJauhL7DVdLr READY for exact SHA/www.eloviz.hu alias.
+- PASS live study/series/admin HTTP200 and unauthenticated editor307 -> /admin;
+  actual built-in browser shows normal protected login. Authenticated production
+  upload was not attempted because production admin credentials were unavailable.
+  Deployment-scoped error/fatal runtime logs: no matching logs.
+- PASS tab3 closed/verified absent; pre-existing tab1 spoiler-preview URL preserved.
+  Tab2 became a browser-generated data: connection-error page during the build;
+  its explicit close was rejected by the browser URL policy. No bypass attempted.
+  It remains a temporary agent tab for normal turn-end cleanup; closure is not
+  claimed verified. Provenance/partial cleanup in tmp/agent-project-tabs.json.
+- Viewport reset. No development service stopped for browser cleanup. Local
+  built server remains available. Health/whitespace checks passed; memory updated.

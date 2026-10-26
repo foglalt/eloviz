@@ -1,7 +1,7 @@
 ---
 phase: 04
 plan: 15
-status: implemented
+status: complete
 ---
 
 # 04-15 Summary
@@ -28,3 +28,12 @@ status: implemented
   and browser cleanup are recorded in04-15-VERIFICATION.md.
 - No schema/dependency/production-content changes. Local admin env was missing;
   test server used ephemeral credentials confined to localhost, not .env edits.
+
+- Released bf7fe293951197ac2bede314f7bb1e77f4c063e2 /
+  dpl_2P8V5tvzb8xU2KkunJauhL7DVdLr READY on www.eloviz.hu. Live protected
+  editor redirect/public HTTP checks pass; deployment error/fatal logs empty.
+  Built-browser behavior verified locally; production admin credentials were
+  unavailable, so no authenticated production upload was attempted.
+- Tab3 closed/absence verified; pre-existing tab1 unchanged. Tab2 explicit close
+  was blocked by the browser URL guard on its generated connection-error page;
+  recorded for normal temporary-tab cleanup. No owner tabs/windows closed.
