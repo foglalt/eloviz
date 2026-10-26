@@ -5,13 +5,19 @@
 **Current Phase Name:** Simple Bible Reader
 **Current Plan:** 04-17
 **Total Plans in Phase:** 17
-**Status:** Implemented; release and live verification pending
+**Status:** Complete; deployed and production HTML verified
 **Progress:** 100%
 **Last Activity:** 2026-10-26
 **Last Activity Description:** Verification completed (passed)
-**Paused At:** 04-17 release, targeted current-document repair and live review
+**Paused At:** No unfinished plans; edition selection before any translation ingestion
 
 ## Delivered
+
+- Plan04-17: PDF page-break/list separation and original numbering preserved;
+  affected chapter repaired from original PDF with backup, references unchanged.
+  132tests/lint/build/tsc and live HTML/PDF pass. f0e4733 /
+  dpl_2n9THJhmgPwEwkTNJoTZdRopR6jJ READY. Browser disabled in Work settings;
+  visual/click review unavailable; no tabs changed.
 
 - Plan04-16: Managed Turnstile with server token/action/hostname verification,
   responsive retry UI and fail-closed behavior;128tests/build/action+live browser
@@ -136,5 +142,5 @@
 ## Session
 
 **Last Date:** 2026-10-26T14:36:10+01:00
-**Stopped At:** Verification completed
+**Stopped At:** 04-17 complete; deployed and affected article repaired
 **Resume File:** None
