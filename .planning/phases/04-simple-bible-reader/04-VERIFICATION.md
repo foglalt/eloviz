@@ -1,5 +1,5 @@
 ---
-generated: 2026-10-26T08:31:27+01:00
+generated: 2026-10-26T09:35:24+01:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-10-26T08:31:27+01:00
+- Timestamp: 2026-10-26T09:35:24+01:00
 
 ## Checks
 
@@ -42,15 +42,15 @@ Exit code: 0
   · serverActions
 
   Creating an optimized production build ...
-✓ Compiled successfully in 27.9s
+✓ Compiled successfully in 20.0s
   Running TypeScript ...
-  Finished TypeScript in 19.9s ...
+  Finished TypeScript in 7.4s ...
   Collecting page data using 11 workers ...
   Generating static pages using 11 workers (0/17) ...
   Generating static pages using 11 workers (4/17)
   Generating static pages using 11 workers (8/17)
   Generating static pages using 11 workers (12/17)
-✓ Generating static pages using 11 workers (17/17) in 759ms
+✓ Generating static pages using 11 workers (17/17) in 642ms
   Finalizing page optimization ...
 
 Route (app)

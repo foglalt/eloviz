@@ -34,7 +34,7 @@ export const topicInputSchema = z.object({
 
 export const studyInputSchema = z.object({
   id: z.string().uuid().optional(),
-  title: z.string().trim().min(2).max(160),
+  title: z.string().trim().min(2, "A cím legalább 2 karakter legyen.").max(160, "A cím legfeljebb 160 karakter lehet."),
   slug: z.string().trim().regex(slugPattern).max(120),
   summary: z.string().trim().min(30, "Az összefoglaló legalább 30 karakter legyen.").max(1500),
   seoTitle: z.string().trim().max(70).optional().default(""),

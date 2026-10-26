@@ -8,7 +8,8 @@ import {
   type BlobStorageAuth,
 } from "@/lib/blob-storage-config";
 
-export const MAX_PDF_BYTES = 12 * 1024 * 1024;
+import { MAX_PDF_BYTES } from "./pdf-file-policy";
+export { MAX_PDF_BYTES } from "./pdf-file-policy";
 
 export function validatePdfBuffer(buffer: Buffer) {
   if (buffer.length === 0) throw new Error("Az üres fájl nem tölthető fel.");

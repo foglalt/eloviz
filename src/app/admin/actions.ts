@@ -15,17 +15,14 @@ import {
   verifyAdminPassword,
 } from "@/lib/admin-auth";
 import { requireSql } from "@/lib/db";
-import { deleteBlobPdf, MAX_PDF_BYTES, sha256, storePdf, validatePdfBuffer } from "@/lib/document-storage";
-import { extractPdfDocument } from "@/lib/pdf-extract";
-import {
-  DETECTOR_VERSION,
-  detectScriptureReferences,
-  mergeScriptureReferenceRanges,
-} from "@/lib/scripture-references";
-import { parseYouTubeId, sanitizePdfFilename, slugifyHungarian, studyInputSchema, studySeriesInputSchema, topicInputSchema, videoInputSchema } from "@/lib/content-validation";
-import { COMPACT_SERIES_POSITIONS, SERIES_EDIT_LOCK, seriesMembershipQueries } from "@/lib/study-series-editing";
+import { deleteBlobPdf, storePdf } from "@/lib/document-storage";
+import { prepareStudyPdf } from "@/lib/study-pdf-preparation";
+import { studyMetadataQueries, studyPdfQueries, type PreparedStudyPdf, type StoredStudyPdf } from "@/lib/study-save-queries";
+import { persistWithOptionalPdf } from "@/lib/study-save-workflow";
+import type { StudySaveState } from "@/lib/study-save-state";
+import { parseYouTubeId, slugifyHungarian, studyInputSchema, studySeriesInputSchema, topicInputSchema, videoInputSchema } from "@/lib/content-validation";
+import { COMPACT_SERIES_POSITIONS, SERIES_EDIT_LOCK } from "@/lib/study-series-editing";
 import { resolveStudyDocumentRemoval, resolveStudyPublicationStatus } from "@/lib/study-publication";
-import { canonicalStudyRelationPair } from "@/lib/study-relations";
 import { fetchYouTubeMetadata } from "@/lib/youtube-metadata";
 
 function field(formData: FormData, name: string) {
@@ -105,7 +102,7 @@ export async function saveTopicAction(formData: FormData) {
   }
 }
 
-export async function saveStudyAction(formData: FormData) {
+export async function saveStudyAction(_previous: StudySaveState, formData: FormData): Promise<StudySaveState> {
   await requireAdmin();
   const id = field(formData, "id") || undefined;
   const title = field(formData, "title");
@@ -119,53 +116,53 @@ export async function saveStudyAction(formData: FormData) {
     seriesId: field(formData, "seriesId") || null,
     seriesPosition: Number(field(formData, "seriesPosition") || 1),
   });
-  if (!parsed.success) redirect(destination("/admin/tanulmanyok", "error", validationMessage(parsed.error.issues), id));
-  const sql = requireSql();
+  if (!parsed.success) return { error: validationMessage(parsed.error.issues) };
+  const file = formData.get("pdf");
+  let prepared: PreparedStudyPdf | null = null;
+  if (!id && file instanceof File && file.name) {
+    try { prepared = await prepareStudyPdf(file, parsed.data.title); }
+    catch (error) { return { error: error instanceof Error ? error.message : "A PDF feldolgozása nem sikerült." }; }
+  }
+  const studyId = id ?? randomUUID();
+  let downgraded = false;
   try {
+    const sql = requireSql();
     const readiness = id
       ? await sql.query("SELECT published_document_id IS NOT NULL AS has_published_document FROM studies WHERE id=$1", [id])
       : [];
-    const publication = resolveStudyPublicationStatus(
-      parsed.data.status,
-      Boolean(readiness[0]?.has_published_document),
-    );
-    const status = id ? publication.status : "draft";
-    const studyId = id ?? randomUUID();
-    const relatedStudyPairs = [...new Set(parsed.data.relatedStudyIds)]
-      .map((relatedStudyId) => canonicalStudyRelationPair(studyId, relatedStudyId))
-      .filter((pair) => pair !== null);
-    const [, rows] = await sql.transaction((transaction) => [
-      transaction.query(SERIES_EDIT_LOCK),
-      id
-        ? transaction.query(`UPDATE studies SET slug=$2,title=$3,summary=$4,seo_title=NULLIF($5,''),seo_description=NULLIF($6,''),status=$7,featured=$8,sort_order=$9,updated_at=now(),published_at=CASE WHEN $7='published' THEN COALESCE(published_at,now()) ELSE published_at END WHERE id=$1 RETURNING id::text`, [studyId, parsed.data.slug, parsed.data.title, parsed.data.summary, parsed.data.seoTitle, parsed.data.seoDescription, status, parsed.data.featured, parsed.data.sortOrder])
-        : transaction.query(`INSERT INTO studies(id,slug,title,summary,seo_title,seo_description,status,featured,sort_order) VALUES($1,$2,$3,$4,NULLIF($5,''),NULLIF($6,''),$7,$8,$9) RETURNING id::text`, [studyId, parsed.data.slug, parsed.data.title, parsed.data.summary, parsed.data.seoTitle, parsed.data.seoDescription, status, parsed.data.featured, parsed.data.sortOrder]),
-      transaction.query("DELETE FROM study_topics WHERE study_id=$1", [studyId]),
-      ...parsed.data.topicIds.map((topicId, index) =>
-        transaction.query("INSERT INTO study_topics(study_id,topic_id,sort_order) VALUES($1,$2,$3)", [studyId, topicId, index])),
-      transaction.query("DELETE FROM study_videos WHERE study_id=$1", [studyId]),
-      ...parsed.data.relatedVideoIds.map((videoId, index) =>
-        transaction.query("INSERT INTO study_videos(study_id,video_id,sort_order) VALUES($1,$2,$3)", [studyId, videoId, index])),
-      transaction.query("DELETE FROM study_relations WHERE study_a_id=$1 OR study_b_id=$1", [studyId]),
-      ...relatedStudyPairs.map((pair, index) =>
-        transaction.query(
-          "INSERT INTO study_relations(study_a_id,study_b_id,sort_order) VALUES($1,$2,$3)",
-          [pair.studyAId, pair.studyBId, index],
-        )),
-      ...seriesMembershipQueries(transaction, studyId, parsed.data.seriesId, parsed.data.seriesPosition),
-    ]);
-    if (!rows[0]?.id) throw new Error("A mentendő tanulmány nem található.");
-    refreshPublicContent();
-    const message = !id
-      ? "A tanulmány vázlata létrejött. Most feltöltheted a PDF-et."
-      : publication.downgraded
-        ? "Az adatok mentve. Véglegesített PDF nélkül a tanulmány vázlatként maradt."
-        : "A tanulmány adatai mentve.";
-    redirect(destination("/admin/tanulmanyok", "message", message, studyId));
+    if (id && !readiness[0]) return { error: "A tanulmány nem található. Frissítsd az oldalt." };
+    const publication = resolveStudyPublicationStatus(parsed.data.status, Boolean(prepared || readiness[0]?.has_published_document));
+    downgraded = publication.downgraded;
+    await persistWithOptionalPdf(prepared, {
+      store: (pdf) => storePdf(pdf.buffer, studyId, pdf.filename),
+      commit: (stored) => sql.transaction((transaction) => [
+        ...studyMetadataQueries(transaction, studyId, parsed.data, publication.status),
+        ...(prepared && stored ? studyPdfQueries(transaction, studyId, randomUUID(), 1, prepared, stored) : []),
+      ]),
+      remove: removeUnusedPdf,
+      onCleanupError: logPdfCleanupError,
+    });
   } catch (error) {
-    rethrowFrameworkRedirect(error);
-    const message = error instanceof Error && error.message.includes("unique") ? "Ez a slug már használatban van." : "A tanulmány mentése nem sikerült.";
-    redirect(destination("/admin/tanulmanyok", "error", message, id));
+    console.error("Study save failed", { studyId, error: error instanceof Error ? error.message : String(error) });
+    return { error: error instanceof Error && error.message.includes("unique")
+      ? "Ehhez a címhez már tartozik tanulmány. Adj meg másik címet."
+      : "A tanulmány mentése nem sikerült. Az adatok és a kiválasztott PDF megmaradtak; próbáld újra." };
   }
+  refreshPublicContent();
+  const message = prepared
+    ? `A tanulmány és a PDF mentve. A HTML olvasási nézet elkészült; ${prepared.candidates.length} igehely felismerve.`
+    : downgraded
+      ? "Az adatok mentve. Véglegesített PDF nélkül a tanulmány vázlatként maradt."
+      : !id ? "A tanulmány vázlata létrejött. PDF-et később is feltölthetsz." : "A tanulmány adatai mentve.";
+  redirect(destination("/admin/tanulmanyok", "message", message, studyId));
+}
+
+async function removeUnusedPdf(stored: StoredStudyPdf) {
+  if (stored.storageKind === "blob") await deleteBlobPdf(stored.storageKey);
+}
+
+function logPdfCleanupError(error: unknown) {
+  console.error("Failed to clean up PDF after database transaction failure", { error: error instanceof Error ? error.message : String(error) });
 }
 
 export async function saveStudySeriesAction(formData: FormData) {
@@ -219,101 +216,31 @@ export async function uploadStudyPdfAction(formData: FormData) {
   await requireAdmin();
   const studyId = field(formData, "studyId");
   const file = formData.get("pdf");
-  if (!studyId || !(file instanceof File) || file.size === 0) redirect(destination("/admin/tanulmanyok", "error", "Válassz ki egy PDF-fájlt.", studyId));
-  if (file.size > MAX_PDF_BYTES) redirect(destination("/admin/tanulmanyok", "error", "A PDF legfeljebb 12 MB lehet.", studyId));
-  const buffer = Buffer.from(await file.arrayBuffer());
-  try { validatePdfBuffer(buffer); } catch (error) {
-    redirect(destination("/admin/tanulmanyok", "error", error instanceof Error ? error.message : "Érvénytelen PDF.", studyId));
-  }
-  const filename = sanitizePdfFilename(file.name);
+  if (!studyId || !(file instanceof File) || !file.name) redirect(destination("/admin/tanulmanyok", "error", "Válassz ki egy PDF-fájlt.", studyId));
   const sql = requireSql();
   const studyRows = await sql.query("SELECT title FROM studies WHERE id=$1", [studyId]);
-  if (!studyRows[0]?.title) {
-    redirect(destination("/admin/tanulmanyok", "error", "A tanulmány nem található.", studyId));
-  }
-  let extraction: Awaited<ReturnType<typeof extractPdfDocument>>;
+  if (!studyRows[0]?.title) redirect(destination("/admin/tanulmanyok", "error", "A tanulmány nem található.", studyId));
+  let prepared: PreparedStudyPdf;
+  try { prepared = await prepareStudyPdf(file, String(studyRows[0].title)); }
+  catch (error) { redirect(destination("/admin/tanulmanyok", "error", error instanceof Error ? error.message : "A PDF feldolgozása nem sikerült.", studyId)); }
   try {
-    extraction = await extractPdfDocument(buffer, String(studyRows[0].title));
+    const versions = await sql.query("SELECT COALESCE(max(version_number),0)+1 AS next_version FROM study_documents WHERE study_id=$1", [studyId]);
+    await persistWithOptionalPdf(prepared, {
+      store: (pdf) => storePdf(pdf.buffer, studyId, pdf.filename),
+      commit: (stored) => {
+        if (!stored) throw new Error("Hiányzó PDF.");
+        return sql.transaction((transaction) => studyPdfQueries(transaction, studyId, randomUUID(), Number(versions[0].next_version), prepared, stored));
+      },
+      remove: removeUnusedPdf,
+      onCleanupError: logPdfCleanupError,
+    });
   } catch (error) {
-    console.error(JSON.stringify({
-      level: "error",
-      message: "PDF text extraction failed",
-      studyId,
-      filename,
-      byteSize: buffer.length,
-      error: error instanceof Error ? error.message : String(error),
-    }));
-    redirect(destination(
-      "/admin/tanulmanyok",
-      "error",
-      "A PDF szövege nem olvasható ki automatikusan. Tölts fel géppel olvasható szövegréteget tartalmazó PDF-et.",
-      studyId,
-    ));
-  }
-  const pages = extraction.pages;
-  if (pages.join(" ").trim().length < 40) {
-    redirect(destination(
-      "/admin/tanulmanyok",
-      "error",
-      "A PDF nem tartalmaz elegendő géppel olvasható szöveget. Tölts fel szövegréteget tartalmazó PDF-et.",
-      studyId,
-    ));
-  }
-
-  try {
-    const versionRows = await sql.query("SELECT COALESCE(max(version_number),0)+1 AS next_version FROM study_documents WHERE study_id=$1", [studyId]);
-    const version = Number(versionRows[0].next_version);
-    const stored = await storePdf(buffer, studyId, filename);
-    const documentId = randomUUID();
-    const candidates = detectScriptureReferences(pages);
-    const finalizedReferences = mergeScriptureReferenceRanges(candidates);
-    try {
-      await sql.transaction((transaction) => [
-        transaction.query(`INSERT INTO study_documents(id,study_id,version_number,original_filename,byte_size,sha256,storage_kind,storage_key,file_data,extraction_status,extraction_error,extracted_text,article_content,article_extraction_version) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,'complete',NULL,$10,$11::jsonb,$12)`, [documentId, studyId, version, filename, buffer.length, sha256(buffer), stored.storageKind, stored.storageKey, stored.fileData, pages.join("\n\n"), JSON.stringify(extraction.article), extraction.article.version]),
-        ...candidates.map((candidate, index) => {
-          const referenceValues = [documentId, candidate.rawText, candidate.displayLabel, candidate.bookCode, candidate.startChapter, candidate.startVerse, candidate.endChapter, candidate.endVerse, candidate.osisStart, candidate.osisEnd, candidate.pageNumber, candidate.contextSnippet, DETECTOR_VERSION, index];
-          return transaction.query(`INSERT INTO study_reference_candidates(document_id,raw_text,display_label,book_code,start_chapter,start_verse,end_chapter,end_verse,osis_start,osis_end,page_number,context_snippet,detector_version,review_status,sort_order) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,'accepted',$14)`, referenceValues);
-        }),
-        ...finalizedReferences.map((reference, index) => transaction.query(`INSERT INTO study_scripture_references(study_id,document_id,display_label,book_code,start_chapter,start_verse,end_chapter,end_verse,osis_start,osis_end,sort_order) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`, [studyId, documentId, reference.displayLabel, reference.bookCode, reference.startChapter, reference.startVerse, reference.endChapter, reference.endVerse, reference.osisStart, reference.osisEnd, index])),
-        transaction.query("UPDATE studies SET published_document_id=$2,reference_reviewed=true,updated_at=now() WHERE id=$1", [studyId, documentId]),
-      ]);
-    } catch (error) {
-      if (stored.storageKind === "blob") {
-        try {
-          await deleteBlobPdf(stored.storageKey);
-        } catch (cleanupError) {
-          console.error(JSON.stringify({
-            level: "error",
-            message: "Failed to clean up PDF blob after database transaction failure",
-            studyId,
-            storageKey: stored.storageKey,
-            error: cleanupError instanceof Error ? cleanupError.message : String(cleanupError),
-          }));
-        }
-      }
-      throw error;
-    }
-    refreshPublicContent();
-    redirect(destination(
-      "/admin/tanulmanyok",
-      "message",
-      `${candidates.length} igehely felismerve. A HTML olvasási nézet elkészült, a PDF-verzió automatikusan véglegesítve.`,
-      studyId,
-    ));
-  } catch (error) {
-    rethrowFrameworkRedirect(error);
     const duplicate = error instanceof Error && error.message.includes("sha256");
-    if (!duplicate) {
-      console.error(JSON.stringify({
-        level: "error",
-        message: "PDF storage or finalization failed",
-        studyId,
-        filename,
-        error: error instanceof Error ? error.message : String(error),
-      }));
-    }
+    if (!duplicate) console.error("PDF storage or finalization failed", { studyId, error: error instanceof Error ? error.message : String(error) });
     redirect(destination("/admin/tanulmanyok", "error", duplicate ? "Ugyanez a PDF már fel van töltve ehhez a tanulmányhoz." : "A PDF feldolgozása nem sikerült.", studyId));
   }
+  refreshPublicContent();
+  redirect(destination("/admin/tanulmanyok", "message", `${prepared.candidates.length} igehely felismerve. A HTML olvasási nézet elkészült, a PDF-verzió automatikusan véglegesítve.`, studyId));
 }
 
 export async function deleteStudyDocumentAction(formData: FormData) {

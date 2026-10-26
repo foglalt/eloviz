@@ -5,6 +5,7 @@ import { AdminContentIndex } from "@/components/admin-content-index";
 import { AdminContentWorkspace } from "@/components/admin-content-workspace";
 import { AdminDeletePanel } from "@/components/admin-delete-panel";
 import { AdminEditorPanel } from "@/components/admin-editor-panel";
+import { AdminStudyForm, AdminInitialStudyPdf } from "@/components/admin-study-form";
 import { AdminFormSubmit } from "@/components/admin-form-submit";
 import { AdminRelationPicker } from "@/components/admin-relation-picker";
 import { AdminStudySeriesFields } from "@/components/admin-study-series-fields";
@@ -18,7 +19,6 @@ import {
 } from "@/lib/content-repository";
 import {
   deleteStudyDocumentAction,
-  saveStudyAction,
   uploadStudyPdfAction,
 } from "../actions";
 
@@ -89,12 +89,10 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
     >
       <AdminEditorPanel
         title={selected ? "Tanulmány szerkesztése" : "Új tanulmány"}
-        help="A PDF-feltöltés az első mentés után jelenik meg. Add meg a címet és az összefoglalót, majd mentsd el a tanulmányt; ezután töltheted fel a PDF-et. A feltöltésből automatikusan elkészül a HTML olvasási nézet, az igehelyeket pedig felismerjük és véglegesítjük."
+        help={selected ? "Módosítsd az adatokat, vagy tölts fel új PDF-verziót lentebb." : "Add meg az adatokat és válaszd ki a PDF-et, majd mentsd el együtt. A PDF-ből automatikusan elkészül az olvasási nézet és felismerjük az igehelyeket. PDF nélkül vázlatot menthetsz."}
       >
-        <form
+        <AdminStudyForm
           key={selected ? `${selected.id}:${selected.updatedAt ?? ""}` : `new:${newSeries?.id ?? ""}`}
-          action={saveStudyAction}
-          className="form-grid"
         >
           {selected ? <input type="hidden" name="id" value={selected.id} /> : null}
           <AdminContentFormFields
@@ -104,8 +102,9 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
           >
             <div className="field field--full">
               <label htmlFor="summary">Összefoglaló</label>
-              <textarea id="summary" name="summary" defaultValue={selected?.summary} required />
+              <textarea id="summary" name="summary" defaultValue={selected?.summary} minLength={30} maxLength={1500} required />
             </div>
+            {!selected ? <AdminInitialStudyPdf /> : null}
             <AdminStudySeriesFields
               options={series.map((item) => ({ id: item.id, title: item.title, nextPosition: item.parts.length + 1 }))}
               initialSeriesId={selected?.seriesId ?? newSeries?.id}
@@ -163,16 +162,16 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
             </div>
           </AdminContentFormFields>
           <div className="form-actions field--full">
-            <AdminFormSubmit label="Adatok mentése" enableSaveShortcut />
+            <AdminFormSubmit label={selected ? "Adatok mentése" : "Tanulmány létrehozása"} pendingLabel="Tanulmány mentése és feldolgozása…" enableSaveShortcut />
             {selected?.seriesId ? <Link className="text-link" href={`/admin/tanulmanyok?series=${selected.seriesId}`}>+ Következő rész létrehozása</Link> : null}
           </div>
-        </form>
+        </AdminStudyForm>
       </AdminEditorPanel>
 
       {selected ? (
         <section className="admin-panel">
           <div className="admin-panel__heading">
-            <div><p className="eyebrow">2. lépés</p><h2>PDF feltöltése</h2></div>
+            <div><p className="eyebrow">PDF-verziók</p><h2>PDF feltöltése</h2></div>
             <span>Legfeljebb 12 MB</span>
           </div>
           <form action={uploadStudyPdfAction} className="upload-form">
