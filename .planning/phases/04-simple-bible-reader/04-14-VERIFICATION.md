@@ -39,4 +39,13 @@ small server-rendered content slot/client reveal control -> existing Bible reade
 
 ## Release/cleanup
 
-Pending exact-SHA deployment, live compatibility and tab cleanup confirmation.
+- PASS b04a1bea66e26b9a47d1c09d00edec99fb912d58 pushed; production deployment
+  dpl_2ozugHVNWSnDVCgJYTLmFUh5NG6a READY for exact SHA/www.eloviz.hu alias.
+- PASS live Mítosz:11447characters,103Bible links, lists22/15/10/14, zero
+  false quotes/overflow; Gen3:15 opens expected selection. Browser errors empty.
+  Temporary spoiler-preview404; normal study200. No production fixture upload.
+- Deployment-scoped error/fatal runtime logs: no matching logs.
+- PASS agent-created IAB2/tab3 closed and verified absent; pre-existing tabs1/2
+  preserved with unchanged URLs, ownership not inferred. No whole window closed.
+  Small provenance/closure record in tmp/agent-project-tabs.json. Viewport reset;
+  no active service stopped for browser cleanup. Health/whitespace checks pass.

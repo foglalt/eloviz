@@ -5,13 +5,18 @@
 **Current Phase Name:** Simple Bible Reader
 **Current Plan:** 04-14
 **Total Plans in Phase:** 14
-**Status:** Verifying release
-**Progress:** 93%
+**Status:** Complete; deployed and verified live
+**Progress:** 100%
 **Last Activity:** 2026-10-26
-**Last Activity Description:** Plan04-14 hidden red-underlined answers implemented;116tests/build/browser passed
-**Paused At:** Plan04-14 awaiting production verification and test-tab closure
+**Last Activity Description:** Plan04-14 red-underlined PDF spoilers deployed; live checks and tab cleanup verified
+**Paused At:** No unfinished plans; edition selection before any translation ingestion
 
 ## Delivered
+
+- Plan04-14: red+underlined PDF text becomes optional inline hidden answers on
+  fresh extraction; accessible reveal/hide, intact bold/Bible links.116tests/build
+  and responsive keyboard checks pass; b04a1be /
+  dpl_2ozugHVNWSnDVCgJYTLmFUh5NG6a READY, live/cleanup verified.
 
 - Plan04-13: native PDF bold weight now joins red-to-bold on fresh extraction;
   compatible v4 article, font families ignored.110tests/build/browser passed;

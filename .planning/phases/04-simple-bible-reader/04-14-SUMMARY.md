@@ -1,7 +1,7 @@
 ---
 phase: 04
 plan: 14
-status: verifying
+status: complete
 ---
 
 # 04-14 Summary
@@ -16,7 +16,10 @@ status: verifying
   order until activation. Click/Enter/Space reveal or hide; focus stays on the
   control and Tab reaches a revealed Bible link. Answer text retains bold/links.
 -116tests, real source PDF render, proportional-font probe, desktop/390/320
-  browser checks and full lint/build/TypeScript pass. Release evidence pending
+  browser checks and full lint/build/TypeScript pass. Production evidence
   in04-14-VERIFICATION.md. No new dependencies/schema or saved-document rewrite.
 - Agent-created test tab recorded in tmp/agent-project-tabs.json; reused for
-  release checks and to be closed afterward. Pre-existing tabs preserved.
+  release checks, then closed and verified absent. Pre-existing tabs preserved.
+
+- Released b04a1be / dpl_2ozugHVNWSnDVCgJYTLmFUh5NG6a READY; live study
+  compatibility/Bible-link checks, fixture-route404 and clean runtime logs verified.
