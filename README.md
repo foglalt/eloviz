@@ -76,6 +76,23 @@ Olvasási próba: `node --env-file=.env --experimental-strip-types scripts/verif
 A látogatók a `/feliratkozas` oldalon vagy az első látogatási ablakban kérhetik
 az értesítőt. A 72 órás megerősítő link megnyitása után külön gombbal erősítik meg
 a feliratkozást. Csak megerősített cím kerül a Resend külön Élő Víz-listájára.
+A nyilvános feliratkozás előtt Cloudflare Turnstile ellenőrzést kérünk. A szerver
+minden kérésnél ellenőrzi a tokent, a `newsletter_signup` műveletet és az
+`eloviz.hu` / `www.eloviz.hu` hostnevet, még az adatbázis/Resend előtt. Hiányzó,
+lejárt, újrafelhasznált token vagy szolgáltatói hiba nem indít levelet.
+
+Turnstile beállítása: Managed widget, kizárólag a fenti éles domainekkel.
+A nyilvános `NEXT_PUBLIC_TURNSTILE_SITE_KEY` és szerveroldali
+`TURNSTILE_SECRET_KEY` legyen a figyelmen kívül hagyott `.env` fájlban és a Vercel
+production környezetében. Kulcscsere után új build szükséges. Hiányzó kulcsoknál
+az új feliratkozások szünetelnek; a megerősítés és a meglévő heti kézbesítés
+változatlanul működik. Az admin jelzi a beállítás állapotát. Cloudflare tesztkulcs
+csak helyi fejlesztésben használható; az éles kód elutasítja.
+Próba: `node --experimental-strip-types scripts/verify-newsletter-guard.mjs`
+(külső levélküldés és adatbázis-módosítás nélkül), továbbá a
+`src/lib/newsletter-human-core.test.ts` tesztjei.
+Forrás: https://developers.cloudflare.com/turnstile/get-started/.
+
 A leiratkozási linket a Resend kezeli; aláírt webhook frissíti az adatbázist.
 
 A Vercel vasárnap 18:00 UTC-kor indítja az értesítőt (Budapesten télen 19, nyáron

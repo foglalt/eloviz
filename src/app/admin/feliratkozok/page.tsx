@@ -5,6 +5,7 @@ import { listNewsletterSubscribers } from "@/lib/newsletter";
 import { newsletterOverview } from "@/lib/newsletter-digest";
 import { newsletterConfiguration } from "@/lib/newsletter-provider";
 import { renderDigest } from "@/lib/newsletter-delivery-core";
+import { newsletterHumanCheckConfigured } from "@/lib/newsletter-human";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +22,7 @@ export default async function NewsletterSubscribersPage() {
   if (!(await isAdminAuthenticated())) redirect("/admin");
   const [subscribers, overview] = await Promise.all([listNewsletterSubscribers(), newsletterOverview()]);
   const configuration = newsletterConfiguration();
+  const humanCheckConfigured = newsletterHumanCheckConfigured();
   const active = Number(overview.counts.find((row) => row.status === "subscribed")?.count ?? 0);
   const statusLabels: Record<string, string> = { pending: "Megerősítésre vár", subscribed: "Aktív", unsubscribed: "Leiratkozott", preparing: "Előkészítés", creating: "Levél létrehozása", draft: "Piszkozat", sending: "Küldés", sent: "Küldés elfogadva", skipped: "Kihagyva", failed: "Sikertelen", review: "Ellenőrzést igényel" };
 
@@ -33,6 +35,7 @@ export default async function NewsletterSubscribersPage() {
       <section className="admin-panel newsletter-admin-panel" aria-labelledby="newsletter-delivery-title">
         <h2 id="newsletter-delivery-title">Heti értesítő</h2>
         <p>Az új, közzétett tanulmányokat, sorozatrészeket és videókat gyűjtjük össze. Ha nincs újdonság vagy megerősített feliratkozó, nem küldünk levelet.</p>
+        <p role="status">{humanCheckConfigured ? "Robotvédelem: Cloudflare Turnstile · az új feliratkozásokhoz emberi ellenőrzés és e-mailes megerősítés szükséges." : "Az új feliratkozások szünetelnek, amíg a Cloudflare emberi ellenőrzés nincs beállítva. A meglévő feliratkozók heti értesítője változatlanul működik."}</p>
         <p>Resend Marketing: az ingyenes csomag 1000 névjegyet és korlátlan hírlevélküldést tartalmaz. A megerősítő levelek külön kerete napi 100, havi 3000 levél; az oldal legfeljebb napi 80 megerősítést indít. A keretek a teljes Resend-fiókra vonatkoznak.</p>
         {!configuration.enabled ? <p role="status">A küldéshez teljes hozzáférésű Resend-kulcs, ellenőrzött feladó, külön értesítési lista és leiratkozási kapcsolat szükséges. Beállítás után az automatikus küldést külön kapcsoljuk be.</p> : null}
       </section>

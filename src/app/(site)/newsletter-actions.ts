@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { confirmNewsletterSubscription, requestNewsletterConfirmation } from "@/lib/newsletter";
 import { CONFIRMATION_MESSAGE } from "@/lib/newsletter-delivery-core";
 import { redirect } from "next/navigation";
+import { verifyNewsletterSignupHuman } from "@/lib/newsletter-human";
 
 export type NewsletterActionState = {
   status: "idle" | "error" | "success";
@@ -29,6 +30,8 @@ export async function subscribeToNewsletterAction(
   }
 
   try {
+    const human = await verifyNewsletterSignupHuman(formData.get("cf-turnstile-response"));
+    if (!human.success) return { status: "error", message: human.message };
     const requestHeaders = await headers();
     await requestNewsletterConfirmation(parsed.email, requestHeaders.get("x-vercel-forwarded-for") ?? requestHeaders.get("x-real-ip") ?? "local");
     return {

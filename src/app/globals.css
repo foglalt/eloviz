@@ -378,6 +378,9 @@ html:has(.study-bible-workspace) { scroll-behavior: auto; }
 .first-visit-notice__field input[aria-invalid="true"] { border-color: var(--danger); }
 .first-visit-notice__consent { display: grid; grid-template-columns: 19px minmax(0, 1fr); gap: 10px; align-items: start; color: var(--muted); cursor: pointer; font-size: .78rem; line-height: 1.5; }
 .first-visit-notice__consent input { width: 18px; height: 18px; margin: 1px 0 0; accent-color: var(--teal); cursor: pointer; }
+.newsletter-human-check { min-width: 0; max-width: 100%; }
+.newsletter-human-check > div { min-height: 65px; }
+.newsletter-human-check .text-link { border: 0; background: transparent; padding: 0; cursor: pointer; font: inherit; }
 .newsletter-honeypot { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .first-visit-notice__status { margin: 0; color: var(--danger); font-size: .82rem; font-weight: 750; }
 .first-visit-notice__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 4px; }
