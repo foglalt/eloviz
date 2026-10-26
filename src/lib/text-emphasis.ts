@@ -1,5 +1,5 @@
 export type BoldRange = { start: number; end: number };
-export type EmphasizedText = { text: string; boldRanges?: BoldRange[] };
+export type EmphasizedText = { text: string; boldRanges?: BoldRange[]; spoilerRanges?: BoldRange[] };
 
 export function boldRangesFromFlags(flags: readonly boolean[]): BoldRange[] {
   const ranges: BoldRange[] = [];
@@ -25,18 +25,35 @@ export function textBoldFlags(value: EmphasizedText): boolean[] {
   return flags;
 }
 
+function spoilerFlags(value: EmphasizedText) {
+  return textBoldFlags({ text: value.text, boldRanges: value.spoilerRanges });
+}
+
+export function withSpoilerFlags(text: string, flags: boolean[]): EmphasizedText {
+  // Keep a multi-word answer as one control, including spaces inserted by PDF.js.
+  for (const match of text.matchAll(/\s+/gu)) {
+    if (flags[match.index - 1] && flags[match.index + match[0].length]) flags.fill(true, match.index, match.index + match[0].length);
+  }
+  const spoilerRanges = boldRangesFromFlags(flags);
+  return spoilerRanges.length ? { text, spoilerRanges } : { text };
+}
+
 export function sliceEmphasizedText(value: EmphasizedText, start: number, end = value.text.length): EmphasizedText {
-  if (!value.boldRanges?.length) return { text: value.text.slice(start, end) };
-  return withBoldFlags(value.text.slice(start, end), textBoldFlags(value).slice(start, end));
+  const text = value.text.slice(start, end);
+  if (!value.boldRanges?.length && !value.spoilerRanges?.length) return { text };
+  return { ...withBoldFlags(text, textBoldFlags(value).slice(start, end)),
+    ...withSpoilerFlags(text, spoilerFlags(value).slice(start, end)) };
 }
 
 export function concatEmphasizedText(...values: EmphasizedText[]): EmphasizedText {
-  if (values.every((value) => !value.boldRanges?.length)) return { text: values.map((value) => value.text).join("") };
-  return withBoldFlags(values.map((value) => value.text).join(""), values.flatMap(textBoldFlags));
+  const text = values.map((value) => value.text).join("");
+  if (values.every((value) => !value.boldRanges?.length && !value.spoilerRanges?.length)) return { text };
+  return { ...withBoldFlags(text, values.flatMap(textBoldFlags)),
+    ...withSpoilerFlags(text, values.flatMap(spoilerFlags)) };
 }
 
 // Run the same whitespace/punctuation cleanup on text and its emphasis offsets.
-export function cleanEmphasizedText(value: EmphasizedText, punctuation = true): EmphasizedText {
+function cleanBoldText(value: EmphasizedText, punctuation = true): EmphasizedText {
   if (!punctuation && !value.boldRanges?.length) return { text: value.text.replace(/\s+/g, " ").trim() };
   if (!value.boldRanges?.length) return { text: value.text
     .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "")
@@ -70,6 +87,13 @@ export function cleanEmphasizedText(value: EmphasizedText, punctuation = true): 
   const start = text.length - text.trimStart().length;
   const end = text.trimEnd().length;
   return withBoldFlags(text.slice(start, end), flags.slice(start, end));
+}
+
+export function cleanEmphasizedText(value: EmphasizedText, punctuation = true): EmphasizedText {
+  const cleaned = cleanBoldText(value, punctuation);
+  if (!value.spoilerRanges?.length) return cleaned;
+  const spoilers = cleanBoldText({ text: value.text, boldRanges: value.spoilerRanges }, punctuation);
+  return { ...cleaned, ...withSpoilerFlags(cleaned.text, textBoldFlags(spoilers)) };
 }
 
 export function validBoldRanges(value: unknown, text: string): value is BoldRange[] {

@@ -33,6 +33,26 @@ export function createBoldFixturePdf() {
 ET`, ["Helvetica", "Helvetica-Bold", "Helvetica-Oblique", "Times-BoldItalic", "Courier"]);
 }
 
+export function createSpoilerFixturePdf() {
+  return createTextFixturePdf(`BT /F1 12 Tf 72 740 Td
+0 g (Lathato ) Tj 1 0 0 rg (titkos valasz) Tj 0 g ( marad.) Tj
+0 -30 Td (Csak alahuzott.) Tj
+0 -30 Td 1 0 0 rg (Csak piros.) Tj
+0 -30 Td 0 g (Keresd: ) Tj 1 0 0 rg (J\\341nos 3:16) Tj 0 g ( verset.) Tj
+0 -30 Td (- Elso ) Tj 1 0 0 rg (titok) Tj 0 g ( resz.) Tj
+0 -30 Td (- Masodik pont.) Tj
+0 -30 Td 1 0 0 rg (R\\351szleges titok szoveg.) Tj
+0 -30 Td (Nem athuzas.) Tj
+ET
+0 G 0.5 w 129.6 738 m 223.2 738 l S
+72 708 m 180 708 l S
+129.6 648 m 201.6 648 l S
+122.4 618 m 158.4 618 l S
+144 558 m 180 558 l S
+72 534 m 158.4 534 l S
+`, ["Courier"]);
+}
+
 function createTextFixturePdf(content: string, fonts: string[]) {
   const streamId = 4 + fonts.length;
   const objects = [

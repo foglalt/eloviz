@@ -5,7 +5,8 @@ import {
 } from "./study-article.ts";
 import { attachTextColors, extractTextColors } from "./pdf-text-color.ts";
 import { attachTextFontWeight } from "./pdf-text-font.ts";
-import { cleanEmphasizedText, concatEmphasizedText, sliceEmphasizedText, type BoldRange } from "./text-emphasis.ts";
+import { attachTextSpoilers, extractPdfUnderlines } from "./pdf-text-underline.ts";
+import { cleanEmphasizedText, concatEmphasizedText, sliceEmphasizedText, type BoldRange, type EmphasizedText } from "./text-emphasis.ts";
 
 async function ensurePdfJsNodeGlobals() {
   const canvas = await import("@napi-rs/canvas");
@@ -28,6 +29,7 @@ type PdfTextItem = {
   height: number;
   fontName?: string;
   boldRanges?: BoldRange[];
+  spoilerRanges?: BoldRange[];
 };
 
 function isPdfTextItem(value: unknown): value is PdfTextItem {
@@ -44,7 +46,7 @@ function joinLineItems(items: PdfTextItem[]) {
   return items.toSorted((left, right) => left.transform[4] - right.transform[4]).reduce(
     (result, item, index, sorted) => {
       const start = item.str.length - item.str.trimStart().length;
-      const value = sliceEmphasizedText({ text: item.str, boldRanges: item.boldRanges }, start, item.str.trimEnd().length);
+      const value = sliceEmphasizedText({ text: item.str, boldRanges: item.boldRanges, spoilerRanges: item.spoilerRanges }, start, item.str.trimEnd().length);
       if (!result.text) return value;
       const previous = sorted[index - 1];
       const previousEnd = previous.transform[4] + previous.width;
@@ -53,7 +55,7 @@ function joinLineItems(items: PdfTextItem[]) {
         && !/^[,.;:!?)]/u.test(item.str.trimStart());
       return concatEmphasizedText(result, { text: needsSpace ? " " : "" }, value);
     },
-    { text: "" } as { text: string; boldRanges?: BoldRange[] },
+    { text: "" } as EmphasizedText,
   );
 }
 
@@ -119,11 +121,11 @@ export async function extractPdfDocument(
   try {
     for (let pageNumber = 1; pageNumber <= document.numPages; pageNumber += 1) {
       const page = await document.getPage(pageNumber);
-      const [textContent, operators] = await Promise.all([page.getTextContent(), page.getOperatorList()]);
+      const [textContent, operators, annotations] = await Promise.all([page.getTextContent(), page.getOperatorList(), page.getAnnotations()]);
       const coloredItems = attachTextColors(textContent.items.filter(isPdfTextItem) as PdfTextItem[], extractTextColors(operators, pdfjs.OPS));
       const fonts = new Map([...new Set(coloredItems.map((item) => item.fontName).filter((name): name is string => Boolean(name)))]
         .filter((name) => page.commonObjs.has(name)).map((name) => [name, page.commonObjs.get(name)]));
-      const textItems = attachTextFontWeight(coloredItems, fonts);
+      const textItems = attachTextFontWeight(attachTextSpoilers(coloredItems, extractPdfUnderlines(operators, pdfjs.OPS, annotations)), fonts);
       const viewport = page.getViewport({ scale: 1 });
       const lines = groupPageLines(textItems, pageNumber, viewport.height);
       const text = lines

@@ -20,6 +20,8 @@ export function extractTextColors(operators: OperatorList, ops: Record<string, n
   const stack: PaintState[] = [];
   const glyphText: string[] = [];
   const flags: boolean[] = [];
+  const widths: number[] = [];
+  const spaces: number[] = [];
   for (let index = 0; index < operators.fnArray.length; index += 1) {
     const op = operators.fnArray[index];
     const args = operators.argsArray[index];
@@ -36,15 +38,18 @@ export function extractTextColors(operators: OperatorList, ops: Record<string, n
       for (const glyph of Array.isArray(args[0]) ? args[0] : []) {
         if (!glyph || typeof glyph !== "object" || typeof glyph.unicode !== "string") continue;
         const text = normalizedCharacters(glyph.unicode);
+        if (!text && /\s/u.test(glyph.unicode) && Number(glyph.width) > 0) spaces.push(Number(glyph.width));
         glyphText.push(text);
         flags.push(...Array<boolean>(text.length).fill(red));
+        widths.push(...Array<number>(text.length).fill(Number(glyph.width) > 0 ? Number(glyph.width) / text.length : 1));
       }
     }
   }
-  return { text: glyphText.join(""), flags };
+  const sortedSpaces = spaces.toSorted((a, b) => a - b);
+  return { text: glyphText.join(""), flags, widths, spaceWidth: sortedSpaces[Math.floor(sortedSpaces.length / 2)] ?? 0 };
 }
 
-export function attachTextColors<T extends { str: string }>(items: readonly T[], colors: ReturnType<typeof extractTextColors>): (T & EmphasizedText)[] {
+export function attachTextColors<T extends { str: string }>(items: readonly T[], colors: ReturnType<typeof extractTextColors>): (T & EmphasizedText & { pdfCharacterWidths?: number[] })[] {
   // PDF.js may normalize/omit glyphs or reorder unusual scripts. Require an exact
   // normalized page match rather than moving emphasis onto the wrong words.
   const matches = items.map((item) => normalizedCharacters(item.str)).join("") === colors.text;
@@ -52,12 +57,14 @@ export function attachTextColors<T extends { str: string }>(items: readonly T[],
   const graphemes = new Intl.Segmenter("hu", { granularity: "grapheme" });
   return items.map((item) => {
     const flags: boolean[] = [];
+    const widths: number[] = [];
     for (const { segment: character } of graphemes.segment(item.str)) {
       const length = normalizedCharacters(character).length;
       const red = matches && length > 0 && colors.flags.slice(cursor, cursor + length).some(Boolean);
       flags.push(...Array<boolean>(character.length).fill(red));
+      widths.push(...Array<number>(character.length).fill(length ? colors.widths.slice(cursor, cursor + length).reduce((a, b) => a + b, 0) / character.length : colors.spaceWidth));
       cursor += length;
     }
-    return { ...item, ...withBoldFlags(item.str, flags) };
+    return { ...item, ...withBoldFlags(item.str, flags), ...(matches ? { pdfCharacterWidths: widths } : {}) };
   });
 }

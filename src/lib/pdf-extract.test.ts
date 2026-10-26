@@ -4,7 +4,7 @@ import path from "node:path";
 import test from "node:test";
 import { extractPdfDocument, extractPdfPages } from "./pdf-extract-core.ts";
 import { detectScriptureReferences } from "./scripture-references.ts";
-import { createBoldFixturePdf, createColorFixturePdf } from "./fixtures/pdf-color-fixture.ts";
+import { createBoldFixturePdf, createColorFixturePdf, createSpoilerFixturePdf } from "./fixtures/pdf-color-fixture.ts";
 import { parseStudyArticle } from "./study-article.ts";
 
 test("extracts native PDF text with the production PDF.js runtime dependencies", async () => {
@@ -72,4 +72,15 @@ test("preserves native bold PDF runs alongside red text, lists, wrapped words an
   assert.ok(pages[0].includes("Italic stays normal."));
   assert.ok(pages[0].includes("Different family stays normal."));
   assert.deepEqual(detectScriptureReferences(pages).map((ref) => ref.osisStart), ["John.3.16"]);
+});
+
+test("hides only intersecting red and underlined PDF words, preserving lists and Bible references", async () => {
+  const { article, pages } = await extractPdfDocument(createSpoilerFixturePdf());
+  const hidden = article.blocks.flatMap((block) => block.type === "list"
+    ? block.items.flatMap((text, index) => (block.itemSpoilerRanges?.[index] ?? []).map((range) => text.slice(range.start, range.end)))
+    : (block.spoilerRanges ?? []).map((range) => block.text.slice(range.start, range.end)));
+  assert.deepEqual(hidden, ["titkos valasz", "János 3:16", "titok", "titok"]);
+  assert.ok(pages[0].includes("Részleges titok szoveg."));
+  assert.deepEqual(parseStudyArticle(JSON.stringify(article)), article);
+  assert.deepEqual(detectScriptureReferences(pages).map((r) => r.osisStart), ["John.3.16"]);
 });

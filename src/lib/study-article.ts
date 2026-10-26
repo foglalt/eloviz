@@ -1,13 +1,13 @@
 import { detectScriptureReferences } from "./scripture-references.ts";
 import { cleanEmphasizedText, concatEmphasizedText, sliceEmphasizedText, validBoldRanges, type BoldRange, type EmphasizedText } from "./text-emphasis.ts";
 
-export const STUDY_ARTICLE_VERSION = "pdf-layout-v4";
+export const STUDY_ARTICLE_VERSION = "pdf-layout-v5";
 
 export type StudyArticleBlock =
   | ({ type: "heading"; level: 2 | 3 } & EmphasizedText)
   | ({ type: "paragraph" } & EmphasizedText)
   | ({ type: "scripture" } & EmphasizedText)
-  | { type: "list"; ordered: boolean; items: string[]; itemBoldRanges?: BoldRange[][] };
+  | { type: "list"; ordered: boolean; items: string[]; itemBoldRanges?: BoldRange[][]; itemSpoilerRanges?: BoldRange[][] };
 
 export type StudyArticle = {
   version: string;
@@ -22,6 +22,7 @@ export type PdfArticleLine = {
   fontSize: number;
   text: string;
   boldRanges?: BoldRange[];
+  spoilerRanges?: BoldRange[];
 };
 
 type RawBlock = {
@@ -243,11 +244,14 @@ function combineLists(blocks: StudyArticleBlock[]) {
     const itemFormatting = cleanEmphasizedText(sliceEmphasizedText(block, block.text.length - item.text.length));
     if (previous?.type === "list" && previous.ordered === item.ordered) {
       if (itemFormatting.boldRanges && !previous.itemBoldRanges) previous.itemBoldRanges = previous.items.map(() => []);
+      if (itemFormatting.spoilerRanges && !previous.itemSpoilerRanges) previous.itemSpoilerRanges = previous.items.map(() => []);
       previous.items.push(item.text);
       previous.itemBoldRanges?.push(itemFormatting.boldRanges ?? []);
+      previous.itemSpoilerRanges?.push(itemFormatting.spoilerRanges ?? []);
     } else {
       combined.push({ type: "list", ordered: item.ordered, items: [item.text],
-        ...(itemFormatting.boldRanges ? { itemBoldRanges: [itemFormatting.boldRanges] } : {}) });
+        ...(itemFormatting.boldRanges ? { itemBoldRanges: [itemFormatting.boldRanges] } : {}),
+        ...(itemFormatting.spoilerRanges ? { itemSpoilerRanges: [itemFormatting.spoilerRanges] } : {}) });
     }
   }
 
@@ -309,7 +313,9 @@ export function parseStudyArticle(value: unknown): StudyArticle | null {
     if (!blockValue || typeof blockValue !== "object") return null;
     const block = blockValue as Record<string, unknown>;
     if (block.boldRanges !== undefined && (typeof block.text !== "string" || !validBoldRanges(block.boldRanges, block.text))) return null;
-    const emphasis = block.boldRanges ? { boldRanges: block.boldRanges as BoldRange[] } : {};
+    if (block.spoilerRanges !== undefined && (typeof block.text !== "string" || !validBoldRanges(block.spoilerRanges, block.text))) return null;
+    const emphasis = { ...(block.boldRanges ? { boldRanges: block.boldRanges as BoldRange[] } : {}),
+      ...(block.spoilerRanges ? { spoilerRanges: block.spoilerRanges as BoldRange[] } : {}) };
     if (block.type === "heading" && (block.level === 2 || block.level === 3) && validText(block.text)) {
       blocks.push({ type: "heading", level: block.level, text: block.text as string, ...emphasis });
     } else if ((block.type === "paragraph" || block.type === "scripture") && validText(block.text)) {
@@ -325,8 +331,12 @@ export function parseStudyArticle(value: unknown): StudyArticle | null {
       if (block.itemBoldRanges !== undefined && (!Array.isArray(block.itemBoldRanges)
         || block.itemBoldRanges.length !== block.items.length
         || !block.itemBoldRanges.every((ranges, index) => validBoldRanges(ranges, (block.items as string[])[index])))) return null;
+      if (block.itemSpoilerRanges !== undefined && (!Array.isArray(block.itemSpoilerRanges)
+        || block.itemSpoilerRanges.length !== block.items.length
+        || !block.itemSpoilerRanges.every((ranges, index) => validBoldRanges(ranges, (block.items as string[])[index])))) return null;
       blocks.push({ type: "list", ordered: block.ordered, items: block.items as string[],
-        ...(block.itemBoldRanges ? { itemBoldRanges: block.itemBoldRanges as BoldRange[][] } : {}) });
+        ...(block.itemBoldRanges ? { itemBoldRanges: block.itemBoldRanges as BoldRange[][] } : {}),
+        ...(block.itemSpoilerRanges ? { itemSpoilerRanges: block.itemSpoilerRanges as BoldRange[][] } : {}) });
     } else {
       return null;
     }

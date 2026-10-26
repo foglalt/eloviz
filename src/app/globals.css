@@ -676,3 +676,11 @@ html:has(.study-bible-workspace) { scroll-behavior: auto; }
 .newsletter-run-list { list-style: none; padding: 0; }
 .newsletter-run-list li { border-top: 1px solid #cddbd5; padding: 20px 0; }
 .newsletter-run-list p { margin: 8px 0; }
+
+.study-spoiler { padding-inline: .1em; }
+.study-spoiler__toggle { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 36px; padding: 3px 10px; vertical-align: baseline; border: 1px dashed var(--teal); border-radius: 5px; background: var(--limestone); color: var(--teal); font-family: var(--font-body), sans-serif; font-size: .8rem; font-weight: 600; line-height: 1.4; cursor: pointer; transition: background 150ms ease; }
+.study-spoiler__toggle svg { flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.study-spoiler__toggle:hover { background: var(--spring-soft); }
+.study-spoiler[data-revealed="true"] .study-spoiler__toggle { min-width: 36px; padding: 3px 7px; margin-right: 5px; border-color: transparent; background: transparent; }
+.study-spoiler[data-revealed="true"] .study-spoiler__answer { background: var(--spring-soft); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+@media (pointer: coarse) { .study-spoiler__toggle { min-height: 44px; } }
