@@ -157,3 +157,49 @@ test("validates stored emphasis offsets while still accepting older articles", (
   assert.equal(parseStudyArticle({ version: "pdf-layout-v3", blocks: [{ type: "list", ordered: false, items: ["Első"], itemBoldRanges: [] }] }), null);
   assert.ok(parseStudyArticle({ version: "pdf-layout-v2", blocks: [{ type: "paragraph", text: "Korábbi szöveg." }] }));
 });
+
+test("keeps a new question on the next page out of an unpunctuated hidden answer", () => {
+  const answer = "3) Az örök életet";
+  const article = buildStudyArticle([
+    [line(1, 200, "6. Gondolatébresztő kérdés: Milyen három áldást kaptunk?"),
+      line(1, 185, "1) Az uralkodást"), line(1, 170, "2) A fiúságot"),
+      { ...line(1, 155, answer), boldRanges: [{ start: 3, end: answer.length }], spoilerRanges: [{ start: 3, end: answer.length }] }],
+    [line(2, 720, "7. Mi az egyetlen lehetőségünk, hogy az Atyát elérjük?"),
+      line(2, 705, "Én vagyok az út. (János 14:6)")],
+  ]);
+  assert.deepEqual(article.blocks.map((block) => block.type === "list" ? { start: block.start ?? 1, items: block.items } : block), [
+    { start: 6, items: ["Gondolatébresztő kérdés: Milyen három áldást kaptunk?"] },
+    { start: 1, items: ["Az uralkodást", "A fiúságot", "Az örök életet"] },
+    { start: 7, items: ["Mi az egyetlen lehetőségünk, hogy az Atyát elérjük? Én vagyok az út. (János 14:6)"] },
+  ]);
+  const answers = article.blocks[1];
+  assert.equal(answers.type, "list");
+  if (answers.type !== "list") return;
+  assert.deepEqual(answers.itemSpoilerRanges, [[], [], [{ start: 0, end: "Az örök életet".length }]]);
+  assert.deepEqual(answers.itemBoldRanges, [[], [], [{ start: 0, end: "Az örök életet".length }]]);
+  assert.deepEqual(parseStudyArticle(article), article);
+});
+
+test("never merges a newly marked bullet into prose across a page break", () => {
+  const article = buildStudyArticle([[line(1, 100, "Egy bevezető mondat írásjel nélkül")], [line(2, 720, "- Új felsorolás")]]);
+  assert.equal(article.blocks.length, 2);
+  assert.deepEqual(article.blocks[1], { type: "list", ordered: false, items: ["Új felsorolás"] });
+});
+
+test("retains source numbering after a note and separates restarted or changed lists", () => {
+  const article = buildStudyArticle([[
+    line(1, 700, "Megjegyzés: külön bekezdés."),
+    line(1, 670, "6. Kérdés."), line(1, 655, "1) Első válasz"), line(1, 640, "2) Második válasz"),
+    line(1, 625, "7. Következő kérdés."), line(1, 610, "8. Még egy kérdés."),
+    line(1, 595, "1. Újrakezdett lista."), line(1, 580, "3. Kimaradó szám után."),
+  ]]);
+  assert.deepEqual(article.blocks.filter((b) => b.type === "list").map((b) => [b.start ?? 1, b.items.length]), [[6, 1], [1, 2], [7, 2], [1, 1], [3, 1]]);
+});
+
+test("validates optional list starts while retaining legacy articles", () => {
+  const list = { type: "list", ordered: true, start: 7, items: ["Hetedik kérdés."] };
+  assert.deepEqual(parseStudyArticle({ version: "pdf-layout-v6", blocks: [list] })?.blocks, [list]);
+  for (const start of [-1, 1.5, "7", null, 1_000_000_001]) assert.equal(parseStudyArticle({ version: "pdf-layout-v6", blocks: [{ ...list, start }] }), null);
+  assert.equal(parseStudyArticle({ version: "pdf-layout-v6", blocks: [{ ...list, ordered: false }] }), null);
+  assert.ok(parseStudyArticle({ version: "pdf-layout-v5", blocks: [{ type: "list", ordered: true, items: ["Régi pont."] }] }));
+});

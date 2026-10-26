@@ -3,13 +3,13 @@
 **Project:** Élő Víz
 **Current Phase:** 04
 **Current Phase Name:** Simple Bible Reader
-**Current Plan:** 04-16
-**Total Plans in Phase:** 16
-**Status:** Ready to execute
+**Current Plan:** 04-17
+**Total Plans in Phase:** 17
+**Status:** Implemented; release and live verification pending
 **Progress:** 100%
 **Last Activity:** 2026-10-26
-**Last Activity Description:** Turnstile live signup verified;78pending removed,2exceptions and3active retained
-**Paused At:** No unfinished plans; edition selection before any translation ingestion
+**Last Activity Description:** Verification completed (passed)
+**Paused At:** 04-17 release, targeted current-document repair and live review
 
 ## Delivered
 
@@ -135,6 +135,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-26T14:00:17+01:00
-**Stopped At:** Plan04-16 complete; deployed/live verified
+**Last Date:** 2026-10-26T14:36:10+01:00
+**Stopped At:** Verification completed
 **Resume File:** None

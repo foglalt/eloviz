@@ -1,13 +1,13 @@
 import { detectScriptureReferences } from "./scripture-references.ts";
 import { cleanEmphasizedText, concatEmphasizedText, sliceEmphasizedText, validBoldRanges, type BoldRange, type EmphasizedText } from "./text-emphasis.ts";
 
-export const STUDY_ARTICLE_VERSION = "pdf-layout-v5";
+export const STUDY_ARTICLE_VERSION = "pdf-layout-v6";
 
 export type StudyArticleBlock =
   | ({ type: "heading"; level: 2 | 3 } & EmphasizedText)
   | ({ type: "paragraph" } & EmphasizedText)
   | ({ type: "scripture" } & EmphasizedText)
-  | { type: "list"; ordered: boolean; items: string[]; itemBoldRanges?: BoldRange[][]; itemSpoilerRanges?: BoldRange[][] };
+  | { type: "list"; ordered: boolean; start?: number; items: string[]; itemBoldRanges?: BoldRange[][]; itemSpoilerRanges?: BoldRange[][] };
 
 export type StudyArticle = {
   version: string;
@@ -77,8 +77,9 @@ function looksLikeScriptureExcerpt(value: string) {
 function listItem(value: string) {
   const unordered = value.match(/^[•●▪◦*–-]\s+(.+)$/u);
   if (unordered) return { ordered: false, text: cleanText(unordered[1]) };
-  const ordered = value.match(/^\d+[.)]\s+(.+)$/u);
-  return ordered ? { ordered: true, text: cleanText(ordered[1]) } : null;
+  const ordered = value.match(/^(\d+)([.)])\s+(.+)$/u);
+  if (!ordered || !Number.isSafeInteger(Number(ordered[1])) || Number(ordered[1]) > 1_000_000_000) return null;
+  return { ordered: true, number: Number(ordered[1]), delimiter: ordered[2], text: cleanText(ordered[3]) };
 }
 
 function joinLines(lines: readonly PdfArticleLine[]) {
@@ -211,6 +212,9 @@ function mergePageContinuations(blocks: RawBlock[]) {
       && !block.largeHeading
       && !block.likelySubheading
       && !block.reference
+      // A new list item on the next page is never a continuation of an
+      // unfinished sentence/answer, even when that answer has no punctuation.
+      && !listItem(block.text)
       && !endsSentence(previous.text);
 
     if (continuesPreviousPage) {
@@ -227,6 +231,8 @@ function mergePageContinuations(blocks: RawBlock[]) {
 
 function combineLists(blocks: StudyArticleBlock[]) {
   const combined: StudyArticleBlock[] = [];
+  let lastNumber: number | undefined;
+  let lastDelimiter: string | undefined;
 
   for (const block of blocks) {
     if (block.type !== "paragraph") {
@@ -242,7 +248,8 @@ function combineLists(blocks: StudyArticleBlock[]) {
 
     const previous = combined.at(-1);
     const itemFormatting = cleanEmphasizedText(sliceEmphasizedText(block, block.text.length - item.text.length));
-    if (previous?.type === "list" && previous.ordered === item.ordered) {
+    const continuesNumbering = !item.ordered || (item.number === (lastNumber ?? -1) + 1 && item.delimiter === lastDelimiter);
+    if (previous?.type === "list" && previous.ordered === item.ordered && continuesNumbering) {
       if (itemFormatting.boldRanges && !previous.itemBoldRanges) previous.itemBoldRanges = previous.items.map(() => []);
       if (itemFormatting.spoilerRanges && !previous.itemSpoilerRanges) previous.itemSpoilerRanges = previous.items.map(() => []);
       previous.items.push(item.text);
@@ -250,9 +257,12 @@ function combineLists(blocks: StudyArticleBlock[]) {
       previous.itemSpoilerRanges?.push(itemFormatting.spoilerRanges ?? []);
     } else {
       combined.push({ type: "list", ordered: item.ordered, items: [item.text],
+        ...(item.ordered && item.number !== 1 ? { start: item.number } : {}),
         ...(itemFormatting.boldRanges ? { itemBoldRanges: [itemFormatting.boldRanges] } : {}),
         ...(itemFormatting.spoilerRanges ? { itemSpoilerRanges: [itemFormatting.spoilerRanges] } : {}) });
     }
+    lastNumber = item.number;
+    lastDelimiter = item.delimiter;
   }
 
   return combined;
@@ -328,6 +338,8 @@ export function parseStudyArticle(value: unknown): StudyArticle | null {
       && block.items.length <= MAX_LIST_ITEMS
       && block.items.every(validText)
     ) {
+      if (block.start !== undefined && (!block.ordered || typeof block.start !== "number"
+        || !Number.isSafeInteger(block.start) || block.start < 0 || block.start > 1_000_000_000)) return null;
       if (block.itemBoldRanges !== undefined && (!Array.isArray(block.itemBoldRanges)
         || block.itemBoldRanges.length !== block.items.length
         || !block.itemBoldRanges.every((ranges, index) => validBoldRanges(ranges, (block.items as string[])[index])))) return null;
@@ -335,6 +347,7 @@ export function parseStudyArticle(value: unknown): StudyArticle | null {
         || block.itemSpoilerRanges.length !== block.items.length
         || !block.itemSpoilerRanges.every((ranges, index) => validBoldRanges(ranges, (block.items as string[])[index])))) return null;
       blocks.push({ type: "list", ordered: block.ordered, items: block.items as string[],
+        ...(block.start !== undefined ? { start: block.start as number } : {}),
         ...(block.itemBoldRanges ? { itemBoldRanges: block.itemBoldRanges as BoldRange[][] } : {}),
         ...(block.itemSpoilerRanges ? { itemSpoilerRanges: block.itemSpoilerRanges as BoldRange[][] } : {}) });
     } else {

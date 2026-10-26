@@ -25,7 +25,7 @@ export function StudyArticle({ article }: Props) {
         if (block.type === "list") {
           const List = block.ordered ? "ol" : "ul";
           return (
-            <List key={key}>
+            <List key={key} start={block.ordered ? block.start : undefined}>
               {block.items.map((item, itemIndex) => (
                 <li key={`${key}-${itemIndex}`}><ScriptureText text={item} boldRanges={block.itemBoldRanges?.[itemIndex]} spoilerRanges={block.itemSpoilerRanges?.[itemIndex]} /></li>
               ))}
