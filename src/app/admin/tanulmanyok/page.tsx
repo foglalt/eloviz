@@ -206,7 +206,7 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        PDF megnyitása ↗
+                        Nyomtatás ↗
                       </Link>
                       {isPublishedDocument && selected.status === "published" ? (
                         <small className="document-protected">

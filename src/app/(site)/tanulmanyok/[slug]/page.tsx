@@ -92,7 +92,7 @@ export default async function StudyPage({ params }: Props) {
                 target="_blank"
                 rel="noopener"
               >
-                PDF megnyitása
+                Nyomtatás
               </a>
             </div>
           ) : null}
