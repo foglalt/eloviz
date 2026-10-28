@@ -5,13 +5,17 @@
 **Current Phase Name:** Simple Bible Reader
 **Current Plan:** 04-18
 **Total Plans in Phase:** 18
-**Status:** Text edits verified; release pending
+**Status:** Complete; owner copy edits published
 **Progress:** 100%
 **Last Activity:** 2026-10-28
-**Last Activity Description:** Verification completed (passed)
-**Paused At:** 04-18 production publication and live copy verification
+**Last Activity Description:** Three owner copy edits published and live label verified
+**Paused At:** No unfinished plans; edition selection before any translation ingestion
 
 ## Delivered
+
+- Plan04-18: three exact owner copy edits published (Nyomtatás in public/admin,
+  shorter newsletter intro).6newsletter tests/lint/build and live label pass.
+  cd4f7d8 / dpl_GcmTmqGTDCW9ZyTRpfrkBd1T1GM8 READY. No email sent.
 
 - Plan04-17: PDF page-break/list separation and original numbering preserved;
   affected chapter repaired from original PDF with backup, references unchanged.
@@ -142,5 +146,5 @@
 ## Session
 
 **Last Date:** 2026-10-28T11:09:38+01:00
-**Stopped At:** Verification completed
+**Stopped At:** 04-18 deployed; live copy verified
 **Resume File:** None

@@ -67,6 +67,8 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 
 17. [x] **04-17: Separate PDF questions and answer lists** — Page-break boundaries and source numbering preserved; current chapter repaired with reference records unchanged, deployed and production HTML verified. Browser visual review unavailable in current Work settings.
 
+18. [x] **04-18: Publish owner copy edits** — Nyomtatás labels on public/admin study pages and shorter newsletter introduction; lint/build and six existing newsletter tests passed.
+
 Deferred: **Optional additional translations**, only after separate product
 selection and documented reuse rights; outside this completed one-version scope.
 
@@ -84,8 +86,8 @@ selection and documented reuse rights; outside this completed one-version scope.
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
 | 03 Evergreen Content Library | 39/39 | Complete; deployed and verified live | 2026-10-14 |
-| 04 Simple Bible Reader | 17/17 | Complete; PDF question/list separation live | 2026-10-26 |
+| 04 Simple Bible Reader | 18/18 | Complete; owner copy edits published | 2026-10-28 |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 
 ---
-*Last updated: 2026-10-26*
+*Last updated: 2026-10-28*
