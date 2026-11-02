@@ -26,3 +26,9 @@ status: complete
   dpl_BZXh5DfMq4frfcvieNgdW5wkmrvj READY with exact SHA and www alias.
   Live asset byte/dimension/metadata checks, rendered palette/logo and 390px fit
   passed; deployment error/fatal logs empty. No data/provider mutation.
+
+## Large profile export (2026-11-02)
+
+- User requested a larger PNG for the newsletter sender Google profile. The current favicon.svg embeds a128px raster and is not a vector master; exported from the original approved1254px f-full-orbits.png instead, without redrawing or upscaling.
+- Saved assets/brand/living-water-profile-1024.png at1024×1024,881728bytes, using the existing high-quality rounded/transparent-corner export treatment. Actual file loaded and visually inspected: three gold stars/orbits and aqua droplet retained, sharp edges, transparent corners and opaque centre verified.
+- No application, email template, sender account or DNS changes. User reports receiving is now configured; Google profile setup/actual recipient avatar verification is still an external unfinished task.

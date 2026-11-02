@@ -7,11 +7,15 @@
 **Total Plans in Phase:** 18
 **Status:** Complete; owner copy edits published
 **Progress:** 100%
-**Last Activity:** 2026-10-28
-**Last Activity Description:** Three owner copy edits published and live label verified
+**Last Activity:** 2026-11-02
+**Last Activity Description:** 1024px sender-profile PNG exported from original approved artwork
 **Paused At:** No unfinished plans; edition selection before any translation ingestion
 
 ## Delivered
+
+- Sender-profile follow-up: assets/brand/living-water-profile-1024.png exported
+  directly from1254px original and visually/dimension/alpha verified (03-38 notes).
+  No account/DNS/runtime changes; Google profile setup and avatar trial pending.
 
 - Plan04-18: three exact owner copy edits published (Nyomtatás in public/admin,
   shorter newsletter intro).6newsletter tests/lint/build and live label pass.

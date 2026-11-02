@@ -40,3 +40,9 @@ browser/touch icon metadata → readable desktop/mobile site → production roll
 
 Ignored screenshots: output/icon-theme-local-desktop.png, local-footer.png,
 local-mobile.png, local-reading.png (prefix icon-theme- on each).
+
+## 2026-11-02 profile PNG export
+
+- Original approved asset dimensions1254×1254 verified with @napi-rs/canvas. PNG exported directly at1024×1024,881728bytes; no upscale from the small SVG-embedded PNG.
+- Reopened output file and asserted1024px width/height. Pixel alpha0 at corner and255 at centre. Viewed actual output and confirmed preserved three-star/full-orbit artwork and clean edges.
+- Existing public icons and runtime code unchanged; no browser tabs opened or provider actions. No application build required for this standalone asset export. Memory health and git diff check passed.
