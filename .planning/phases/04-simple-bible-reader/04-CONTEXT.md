@@ -45,13 +45,14 @@ Import one permitted Hungarian Bible, provide book/chapter navigation and verse 
 ---
 *Phase: 04-simple-bible-reader*
 
-## Következő sorozatbővítés — 2026-11-18
+## Elkészült sorozatbővítés — 2026-11-18
 
 A felhasználó a mellékletkezelést jelölte meg következő implementációként (04-19).
 A sorozatban külön Leckék és Mellékletek csoport, saját sorrend/számozás és admin
 típusválasztó szükséges. Mindkettő a meglévő tanulmány/HTML/PDF olvasót használja;
 a lecke előző/következő navigációja csak leckék között vezet. Az oldalsávban és a
 sorozatoldalon a mellékletek külön listából érhetők el. Az egy adott leckéhez
-ajánlott mellékletek hozzárendelése későbbi bővítés. A terv rögzítve; kódolás még
-nem történt. Ez a feladat megelőzi a további bibliafordítások és konkordanciák
-integrációját. Részletek: `04-19-PLAN.md` és REQ-34.
+ajánlott mellékletek hozzárendelése későbbi bővítés. A funkció elkészült és élesítve,
+137 teszttel, elkülönített migrációs és mobil/asztali böngészős ellenőrzéssel.
+Ez a feladat megelőzte a további bibliafordítások és konkordanciák integrációját.
+Részletek: `04-19-SUMMARY.md`, `04-19-VERIFICATION.md` és REQ-34.

@@ -5,22 +5,30 @@
 **Current Phase Name:** Simple Bible Reader
 **Current Plan:** 04-19
 **Total Plans in Phase:** 19
-**Status:** Executing 04-19; implementation and isolated database checks complete, final verification/release pending
-**Progress:** 95% (18/19 plans complete; 04-19 in verification)
+**Status:** Complete; 04-19 deployed and verified live
+**Progress:** 100% (19/19 plans complete)
 **Last Activity:** 2026-11-18
-**Last Activity Description:** Verification completed (passed)
-**Paused At:** Continue browser admin checks, lint/build, production migration and release
+**Last Activity Description:** Released independently ordered series supplements; 137 tests, lint/build, isolated migration and live checks passed
+**Paused At:** None; await next product priority
 
-## Next Implementation
+## Latest Implementation
 
 - **04-19: Tanulmánysorozatok mellékleteinek kezelése** — separate Leckék /
   Mellékletek groups with independent ordering, admin type selection, full existing
-  study/PDF reader support and lesson-only previous/next navigation. Owner selected
-  this on 2026-11-18 ahead of concordances/additional Bible editions. Plan recorded;
-  implementation complete locally; browser verification and release in progress. Per-lesson recommended-supplement links are deferred.
+  study/PDF reader support and lesson-only previous/next navigation. Completed and
+  deployed on 2026-11-18; per-lesson recommended-supplement links remain deferred.
 - Plan: `phases/04-simple-bible-reader/04-19-PLAN.md`; requirement REQ-34.
 
 ## Delivered
+
+- Plan04-19: separate lesson/supplement groups, independent ordering, admin type
+  selection/defaults, public filtering/counts/SEO and lesson-only navigation.
+  137tests/tsc/lint/build, isolated transactional probes and desktop/mobile browser
+  pass. Production migration preserved all existing row checksums; d4aa693 /
+  dpl_CDrqV5ybaJZ8Mk853C8QFA8pCAbh READY with www.eloviz.hu alias; live checks pass.
+  Own test tab closed/verified, synthetic fixtures removed; dev service retained.
+  Isolated Neon branch retained with 300s autosuspend (management connector no
+  longer exposed after reconnect; no expiry/deletion configured).
 
 - Sender-profile follow-up: assets/brand/living-water-profile-1024.png exported
   directly from1254px original and visually/dimension/alpha verified (03-38 notes).
@@ -141,8 +149,8 @@
 
 ## Next Decision Gate
 
-- The next implementation is 04-19 above. Additional Bible editions and Phase 05
-  remain later work and do not block study-series supplement support.
+- 04-19 is complete. Additional Bible editions, per-lesson recommended supplements
+  and Phase 05 remain later work awaiting product prioritization.
 
 - Additional-edition shortlist ready; select editions before implementation.
   Biblica open NT recommended for modern wording; historical full/NT candidates
@@ -162,5 +170,5 @@
 ## Session
 
 **Last Date:** 2026-11-18T12:45:05+01:00
-**Stopped At:** Verification completed
+**Stopped At:** 04-19 deployed and verified live
 **Resume File:** None

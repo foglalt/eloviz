@@ -9,7 +9,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 - [x] **Phase 01: Foundation** — Establish the original project baseline and memory workflow.
 - [x] **Phase 02: Deliver V1** — Deliver and refine the Hungarian Easter microsite, quiz, studies, contact, and admin features.
 - [x] **Phase 03: Evergreen Content Library** — Rebuilt Élő Víz around topics, PDF studies, videos, confirmed Scripture references, relations, SEO, and a simple editorial admin.
-- [ ] **Phase 04: Simple Bible Reader and study refinements** — Reader and plans 04-01–18 complete; next follow-up 04-19 adds study-series supplements.
+- [x] **Phase 04: Simple Bible Reader and study refinements** — Reader and plans 04-01–19 complete, including study-series supplements.
 - [ ] **Phase 05: Greek and Hebrew Concordances** — Add original-language text, lemmas, morphology, and occurrence search after the reader is stable.
 
 ## Phase 03 Plans
@@ -42,7 +42,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 
 ## Phase 04 Plans
 
-**Next implementation priority (owner decision, 2026-11-18): 04-19 — Tanulmánysorozatok mellékleteinek kezelése.** This precedes Phase 05 and optional Bible-edition ingestion. The task is planned, not implemented.
+**Completed priority (owner decision, 2026-11-18): 04-19 — Tanulmánysorozatok mellékleteinek kezelése.** Implemented, verified and deployed before Phase 05 and optional Bible-edition ingestion.
 
 1. [x] **04-01: Confirm one translation and ingest canonical text** — Reviewed Public Domain declarations; pinned source/checksums, three verified omission supplements, complete 66-book/1189-chapter/31171-verse transactional import.
 2. [x] **04-02: Build the simple Bible reader** — Hungarian book/chapter navigation, verse anchors, canonical URLs, reference lookup, attribution and responsive reading.
@@ -71,7 +71,7 @@ The completed Easter V1 remains the baseline. Phase 03 rebuilds the main site as
 
 18. [x] **04-18: Publish owner copy edits** — Nyomtatás labels on public/admin study pages and shorter newsletter introduction; lint/build and six existing newsletter tests passed.
 
-19. [ ] **04-19: Tanulmánysorozatok mellékleteinek kezelése** — Separate lesson/supplement groups and numbering, admin type selection and independent ordering, existing HTML/PDF reader features, and lesson-only previous/next navigation. Per-lesson recommended supplements are a later extension. See `phases/04-simple-bible-reader/04-19-PLAN.md`.
+19. [x] **04-19: Tanulmánysorozatok mellékleteinek kezelése** — Separate lesson/supplement groups and numbering, admin type selection and independent ordering, existing HTML/PDF reader features, and lesson-only previous/next navigation. 137 tests, isolated/production migration, lint/build and desktop/mobile browser checks passed; deployed d4aa693. Per-lesson recommended supplements are a later extension. See `phases/04-simple-bible-reader/04-19-SUMMARY.md`.
 
 Deferred: **Optional additional translations**, only after separate product
 selection and documented reuse rights; outside this completed one-version scope.
@@ -90,7 +90,7 @@ selection and documented reuse rights; outside this completed one-version scope.
 | 01 Foundation | 1/1 | Completed | 2026-03-24 |
 | 02 Deliver V1 | 20/20 | Completed | 2026-04-03 |
 | 03 Evergreen Content Library | 39/39 | Complete; deployed and verified live | 2026-10-14 |
-| 04 Simple Bible Reader | 18/19 | Baseline complete; 04-19 planned as next implementation | — |
+| 04 Simple Bible Reader | 19/19 | Complete; deployed and verified live | 2026-11-18 |
 | 05 Greek and Hebrew Concordances | 0/4 proposed | Future | — |
 
 ---

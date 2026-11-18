@@ -34,7 +34,7 @@
 
 ## Next Post-launch Requirement
 
-- [ ] **REQ-34**: A tanulmánysorozatokon belül a leckék és mellékletek külön csoportban, külön sorrenddel és számozással kezelhetők. Az adminban választható a típus; a melléklet a meglévő önálló HTML/PDF tanulmányolvasót használja Biblia-hivatkozásokkal és felfedhető válaszokkal. A sorozat és az oldalsáv mindkét csoportot mutatja, a lecke előző/következő navigációja csak a leckék között vezet. A meglévő tartalom, URL-ek és publikálási szabályok megmaradnak. Következő implementáció: **04-19** (2026-11-18). Konkrét leckéhez ajánlott mellékletek hozzárendelése későbbi bővítés.
+- [x] **REQ-34**: A tanulmánysorozatokon belül a leckék és mellékletek külön csoportban, külön sorrenddel és számozással kezelhetők. Az adminban választható a típus; a melléklet a meglévő önálló HTML/PDF tanulmányolvasót használja Biblia-hivatkozásokkal és felfedhető válaszokkal. A sorozat és az oldalsáv mindkét csoportot mutatja, a lecke előző/következő navigációja csak a leckék között vezet. A meglévő tartalom, URL-ek és publikálási szabályok megmaradnak. Elkészült és élesítve: **04-19** (2026-11-18). Konkrét leckéhez ajánlott mellékletek hozzárendelése későbbi bővítés.
 
 ## Explicitly Out of Scope for V1
 
@@ -62,7 +62,7 @@
 | REQ-32 | Phase 03 post-launch refinement | Completed |
 | REQ-33 | Phase 03 post-launch refinement | Completed |
 | REQ-31 | Phase 04 plans 04-01 through 04-03 | Implemented and verified |
-| REQ-34 | 04-19 — study-series supplements | Planned; next implementation |
+| REQ-34 | 04-19 — study-series supplements | Implemented, verified and deployed |
 
 ---
 *Last updated: 2026-11-18*
