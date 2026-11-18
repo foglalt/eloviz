@@ -1,7 +1,7 @@
 import 'server-only';
 import { cache } from 'react';
 import { getSql } from './db';
-import { publishedSeriesParts } from './study-series-core';
+import { publishedSeriesParts, type SeriesPartKind } from './study-series-core';
 
 export type SeriesPart = {
   id: string;
@@ -9,6 +9,7 @@ export type SeriesPart = {
   title: string;
   summary: string;
   position: number;
+  kind: SeriesPartKind;
   status: 'draft' | 'published';
   hasPublishedDocument: boolean;
 };
@@ -31,6 +32,7 @@ function mapPart(row: Row): SeriesPart {
   return {
     id: String(row.id), slug: String(row.slug), title: String(row.title),
     summary: String(row.summary ?? ''), position: Number(row.position ?? 0),
+    kind: row.kind === 'supplement' ? 'supplement' : 'lesson',
     status: row.status === 'published' ? 'published' : 'draft',
     hasPublishedDocument: Boolean(row.has_published_document),
   };
@@ -43,12 +45,13 @@ const loadSeries = cache(async (publicOnly: boolean): Promise<StudySeries[]> => 
     sql.query(`SELECT id::text, slug, title, description, author, source_url, status, updated_at, updated_at::text AS revision
       FROM study_series WHERE NOT $1::boolean OR status='published' ORDER BY title`, [publicOnly]),
     sql.query(`SELECT s.id::text, s.slug, s.title, s.summary, s.status,
-      (s.published_document_id IS NOT NULL) AS has_published_document,
-      p.series_id::text, p.position
+      (d.id IS NOT NULL) AS has_published_document,
+      p.series_id::text, p.position, p.kind
       FROM study_series_parts p JOIN studies s ON s.id=p.study_id
+      LEFT JOIN study_documents d ON d.id=s.published_document_id AND d.study_id=s.id AND d.extraction_status='complete'
       JOIN study_series series ON series.id=p.series_id
-      WHERE NOT $1::boolean OR (series.status='published' AND s.status='published' AND s.published_document_id IS NOT NULL)
-      ORDER BY p.position`, [publicOnly]),
+      WHERE NOT $1::boolean OR (series.status='published' AND s.status='published' AND d.id IS NOT NULL)
+      ORDER BY p.kind, p.position`, [publicOnly]),
   ]);
   return (seriesRows as Row[]).map((row) => {
     const parts = (partRows as Row[]).filter((part) => part.series_id === row.id).map(mapPart);
@@ -83,9 +86,10 @@ export async function listSeriesStudyOptions(): Promise<SeriesStudyOption[]> {
   const sql = getSql();
   if (!sql) return [];
   const rows = await sql.query(`SELECT s.id::text, s.slug, s.title, s.summary, s.status,
-    (s.published_document_id IS NOT NULL) AS has_published_document,
-    p.position, p.series_id::text, series.title AS series_title
+    (d.id IS NOT NULL) AS has_published_document,
+    p.position, p.kind, p.series_id::text, series.title AS series_title
     FROM studies s LEFT JOIN study_series_parts p ON p.study_id=s.id
+    LEFT JOIN study_documents d ON d.id=s.published_document_id AND d.study_id=s.id AND d.extraction_status='complete'
     LEFT JOIN study_series series ON series.id=p.series_id ORDER BY s.title`);
   return (rows as Row[]).map((row) => ({
     ...mapPart(row), seriesId: row.series_id ? String(row.series_id) : null,
@@ -93,11 +97,11 @@ export async function listSeriesStudyOptions(): Promise<SeriesStudyOption[]> {
   }));
 }
 
-export async function getSeriesDefaultTopicIds(seriesId: string) {
+export async function getSeriesDefaultTopicIds(seriesId: string, kind: SeriesPartKind = 'lesson') {
   const sql = getSql();
   if (!sql) return [];
   const rows = await sql.query(`SELECT topic_id::text FROM study_topics WHERE study_id=(
-    SELECT study_id FROM study_series_parts WHERE series_id=$1 ORDER BY position DESC LIMIT 1
-  ) ORDER BY sort_order`, [seriesId]);
+    SELECT study_id FROM study_series_parts WHERE series_id=$1 AND kind=$2 ORDER BY position DESC LIMIT 1
+  ) ORDER BY sort_order`, [seriesId, kind]);
   return rows.map((row) => String(row.topic_id));
 }

@@ -1,3 +1,5 @@
+import { seriesPartLabel, type SeriesPartKind } from './study-series-core.ts';
+
 export type DigestItem = {
   id: string;
   kind: "study" | "video";
@@ -8,6 +10,7 @@ export type DigestItem = {
   seriesTitle?: string;
   seriesId?: string;
   position?: number;
+  seriesKind?: SeriesPartKind;
 };
 
 export const CONFIRMATION_MESSAGE = "Ha a cím még nincs feliratkozva, elküldtük a megerősítő levelet. A feliratkozás befejezéséhez nyisd meg a levelet, és erősítsd meg a kérésedet. Ellenőrizd a levélszemét mappát is.";
@@ -40,7 +43,7 @@ export function orderDigestItems(items: DigestItem[]) {
     if (item.seriesId) groups.set(item.seriesId, Math.min(groups.get(item.seriesId) ?? Infinity, new Date(item.publishedAt).getTime()));
   }
   return [...items].sort((a, b) => {
-    if (a.seriesId && a.seriesId === b.seriesId) return (a.position ?? 0) - (b.position ?? 0);
+    if (a.seriesId && a.seriesId === b.seriesId) return Number(a.seriesKind === 'supplement') - Number(b.seriesKind === 'supplement') || (a.position ?? 0) - (b.position ?? 0);
     const aTime = a.seriesId ? groups.get(a.seriesId)! : new Date(a.publishedAt).getTime();
     const bTime = b.seriesId ? groups.get(b.seriesId)! : new Date(b.publishedAt).getTime();
     return aTime - bTime || (a.seriesId ?? a.id).localeCompare(b.seriesId ?? b.id);
@@ -51,7 +54,9 @@ export function renderDigest(items: DigestItem[], end: Date) {
   const date = new Intl.DateTimeFormat("hu-HU", { timeZone: "Europe/Budapest", month: "long", day: "numeric" }).format(end);
   const subject = `Élő Víz · Heti újdonságok · ${date}`;
   const intro = "Az elmúlt hét új tanulmányai és videói";
-  const context = (item: DigestItem) => item.seriesTitle ? `${item.seriesTitle} · ${item.position}. rész` : item.kind === "study" ? "Tanulmány" : "Videó";
+  const context = (item: DigestItem) => item.seriesTitle
+    ? `${item.seriesTitle} · ${item.seriesKind ? seriesPartLabel({ position: item.position ?? 1, kind: item.seriesKind }) : `${item.position}. rész`}`
+    : item.kind === "study" ? "Tanulmány" : "Videó";
   const text = `${subject}\n\n${intro}\n\n${items.map((item) => `${context(item)}\n${item.title}\n${item.summary}\n${itemUrl(item)}`).join("\n\n")}\n\nÉlő Víz · https://www.eloviz.hu\nLeiratkozás: ${UNSUBSCRIBE_PLACEHOLDER}`;
   const html = `<!doctype html><html lang="hu"><body style="margin:0;background:#f7f5ee;color:#193f3d;font-family:Arial,sans-serif"><table role="presentation" width="100%"><tr><td style="padding:32px 16px"><table role="presentation" style="max-width:600px;margin:auto;width:100%"><tr><td><a href="https://www.eloviz.hu" style="color:#164e49;font-size:26px;font-weight:bold;text-decoration:none">Élő Víz</a><h1 style="font-size:24px;margin:32px 0 16px">Heti újdonságok</h1><p style="line-height:1.7">${intro}</p>${items.map((item) => `<div style="border-top:1px solid #cddbd5;padding:24px 0"><p style="font-size:13px">${escapeEmailHtml(context(item))}</p><h2 style="font-size:20px"><a href="${itemUrl(item)}" style="color:#164e49">${escapeEmailHtml(item.title)}</a></h2><p style="line-height:1.7">${escapeEmailHtml(item.summary)}</p><a href="${itemUrl(item)}" style="color:#164e49">${item.kind === "study" ? "Elolvasom a tanulmányt" : "Megnézem a videót"} →</a></div>`).join("")}<p style="border-top:1px solid #cddbd5;padding-top:24px;font-size:13px;line-height:1.7">Ezt a levelet az Élő Víz heti értesítőjére való feliratkozásod miatt kapod.<br><a href="${UNSUBSCRIBE_PLACEHOLDER}" style="color:#164e49">Leiratkozom az értesítőről</a></p></td></tr></table></td></tr></table></body></html>`;
   return { subject, text, html };

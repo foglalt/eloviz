@@ -47,6 +47,7 @@ export const studyInputSchema = z.object({
   relatedVideoIds: z.array(z.string().uuid()).max(30),
   seriesId: z.string().uuid().nullable().optional().default(null),
   seriesPosition: z.number().int().min(1).max(10000).optional().default(1),
+  seriesKind: z.enum(['lesson', 'supplement']).optional().default('lesson'),
 });
 
 export const studySeriesInputSchema = z.object({
@@ -58,7 +59,11 @@ export const studySeriesInputSchema = z.object({
   sourceUrl: z.union([z.literal(""), z.string().url().refine((url) => /^https?:\/\//i.test(url), "A forrás HTTP vagy HTTPS hivatkozás legyen.")]).default(""),
   status: z.enum(["draft", "published"]),
   partIds: z.array(z.string().uuid()).max(1000).refine((ids) => new Set(ids).size === ids.length, "Egy tanulmány csak egyszer szerepelhet a sorozatban."),
-});
+  supplementIds: z.array(z.string().uuid()).max(1000).default([]),
+}).refine(({ partIds, supplementIds }) => {
+  const allIds = [...partIds, ...supplementIds];
+  return allIds.length <= 1000 && new Set(allIds).size === allIds.length;
+}, "Egy tanulmány csak egyszer szerepelhet a sorozatban, legfeljebb 1000 elemmel.");
 
 export const videoInputSchema = z.object({
   id: z.string().uuid().optional(),

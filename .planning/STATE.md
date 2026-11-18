@@ -3,13 +3,22 @@
 **Project:** Élő Víz
 **Current Phase:** 04
 **Current Phase Name:** Simple Bible Reader
-**Current Plan:** 04-18
-**Total Plans in Phase:** 18
-**Status:** Complete; owner copy edits published
-**Progress:** 100%
-**Last Activity:** 2026-11-02
-**Last Activity Description:** 1024px sender-profile PNG exported from original approved artwork
-**Paused At:** No unfinished plans; edition selection before any translation ingestion
+**Current Plan:** 04-19
+**Total Plans in Phase:** 19
+**Status:** Executing 04-19; implementation and isolated database checks complete, final verification/release pending
+**Progress:** 95% (18/19 plans complete; 04-19 in verification)
+**Last Activity:** 2026-11-18
+**Last Activity Description:** Verification completed (passed)
+**Paused At:** Continue browser admin checks, lint/build, production migration and release
+
+## Next Implementation
+
+- **04-19: Tanulmánysorozatok mellékleteinek kezelése** — separate Leckék /
+  Mellékletek groups with independent ordering, admin type selection, full existing
+  study/PDF reader support and lesson-only previous/next navigation. Owner selected
+  this on 2026-11-18 ahead of concordances/additional Bible editions. Plan recorded;
+  implementation complete locally; browser verification and release in progress. Per-lesson recommended-supplement links are deferred.
+- Plan: `phases/04-simple-bible-reader/04-19-PLAN.md`; requirement REQ-34.
 
 ## Delivered
 
@@ -132,6 +141,9 @@
 
 ## Next Decision Gate
 
+- The next implementation is 04-19 above. Additional Bible editions and Phase 05
+  remain later work and do not block study-series supplement support.
+
 - Additional-edition shortlist ready; select editions before implementation.
   Biblica open NT recommended for modern wording; historical full/NT candidates
   have separate corpus/canon/numbering audit needs. Current reader correction live.
@@ -149,6 +161,6 @@
 
 ## Session
 
-**Last Date:** 2026-10-28T11:09:38+01:00
-**Stopped At:** 04-18 deployed; live copy verified
+**Last Date:** 2026-11-18T12:45:05+01:00
+**Stopped At:** Verification completed
 **Resume File:** None

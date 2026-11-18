@@ -7,18 +7,18 @@ import { newsletterProvider, providerRequest, requireProviderData } from "./news
 
 export async function listDigestItems(start: Date, end: Date): Promise<DigestItem[]> {
   const rows = await requireSql().query(`SELECT s.id::text,'study' AS kind,s.slug,s.title,s.summary,s.published_at,
-      series.title AS series_title,parts.position,series.id::text AS series_id
+      series.title AS series_title,parts.position,series.id::text AS series_id,parts.kind AS series_kind
     FROM studies s JOIN study_documents d ON d.id=s.published_document_id AND d.study_id=s.id
     LEFT JOIN study_series_parts parts ON parts.study_id=s.id
     LEFT JOIN study_series series ON series.id=parts.series_id AND series.status='published'
     WHERE s.status='published' AND s.published_at>$1 AND s.published_at<=$2
-    UNION ALL SELECT v.id::text,'video',v.slug,v.title,v.description,v.published_at,NULL,NULL,NULL
+    UNION ALL SELECT v.id::text,'video',v.slug,v.title,v.description,v.published_at,NULL,NULL,NULL,NULL
     FROM videos v WHERE v.status='published' AND v.published_at>$1 AND v.published_at<=$2
     ORDER BY published_at,position NULLS LAST,id`, [start.toISOString(), end.toISOString()]);
   return orderDigestItems(rows.map((row) => ({ id: String(row.id), kind: row.kind === "study" ? "study" as const : "video" as const,
     slug: String(row.slug), title: String(row.title), summary: String(row.summary),
     publishedAt: new Date(String(row.published_at)).toISOString(),
-    ...(row.series_title ? { seriesTitle: String(row.series_title), seriesId: String(row.series_id), position: Number(row.position) } : {}) })));
+    ...(row.series_title ? { seriesTitle: String(row.series_title), seriesId: String(row.series_id), position: Number(row.position), seriesKind: row.series_kind === 'supplement' ? 'supplement' as const : 'lesson' as const } : {}) })));
 }
 
 export async function newsletterOverview() {

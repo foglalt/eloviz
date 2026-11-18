@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { persistWithOptionalPdf } from "./study-save-workflow.ts";
-import { MAX_PDF_BYTES, pdfFileIssue } from "./pdf-file-policy.ts";
+import { MAX_PDF_BYTES, pdfFileIssue, hasSelectedPdf } from "./pdf-file-policy.ts";
 
 function harness(failure?: "store" | "commit" | "cleanup") {
   const events: string[] = [];
@@ -51,4 +51,13 @@ test("optional PDF policy accepts no selection and enforces empty/12 MB boundari
   assert.ok(pdfFileIssue({ size: 0 }));
   assert.equal(pdfFileIssue({ size: MAX_PDF_BYTES }), "");
   assert.ok(pdfFileIssue({ size: MAX_PDF_BYTES + 1 }));
+});
+
+test("unselected multipart file stays optional while a named empty PDF is rejected", () => {
+  assert.equal(hasSelectedPdf({ name: "", size: 0, type: "application/octet-stream" }), false);
+  assert.equal(hasSelectedPdf({ name: "blob", size: 0, type: "application/octet-stream" }), false);
+  const emptyPdf = { name: "melleklet.pdf", size: 0, type: "application/pdf" };
+  assert.equal(hasSelectedPdf(emptyPdf), true);
+  assert.ok(pdfFileIssue(emptyPdf));
+  assert.equal(hasSelectedPdf({ ...emptyPdf, size: 1024 }), true);
 });

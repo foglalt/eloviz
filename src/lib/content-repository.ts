@@ -39,6 +39,7 @@ import {
 } from "./scripture-references";
 import { parseStudyArticle } from "./study-article";
 import { getStudySeries } from "./study-series-repository";
+import type { SeriesPartKind } from './study-series-core';
 
 type Row = Record<string, unknown>;
 
@@ -524,6 +525,7 @@ export type AdminStudy = Omit<StudySummary, "pdfUrl"> & {
   relatedVideoIds: string[];
   seriesId: string | null;
   seriesPosition: number;
+  seriesKind: SeriesPartKind;
 };
 export type AdminStudyIndexItem = {
   id: string;
@@ -677,6 +679,7 @@ export async function getAdminStudy(id: string): Promise<AdminStudy | null> {
       s.updated_at, s.published_document_id::text, s.reference_reviewed,
       (SELECT series_id::text FROM study_series_parts WHERE study_id=s.id) AS series_id,
       (SELECT position FROM study_series_parts WHERE study_id=s.id) AS series_position,
+      (SELECT kind FROM study_series_parts WHERE study_id=s.id) AS series_kind,
       COALESCE(s.seo_title, '') AS seo_title, COALESCE(s.seo_description, '') AS seo_description,
       COALESCE((SELECT jsonb_agg(jsonb_build_object('id', t.id::text, 'slug', t.slug, 'title', t.title, 'description', t.description, 'featured', t.featured, 'sort_order', t.sort_order) ORDER BY t.sort_order) FROM study_topics st JOIN topics t ON t.id = st.topic_id WHERE st.study_id = s.id), '[]'::jsonb) AS topics,
       COALESCE((SELECT jsonb_agg(jsonb_build_object('id', r.id::text, 'label', r.display_label, 'osis_start', r.osis_start, 'osis_end', r.osis_end) ORDER BY r.sort_order) FROM study_scripture_references r WHERE r.study_id = s.id AND r.document_id = s.published_document_id), '[]'::jsonb) AS references,
@@ -731,6 +734,7 @@ export async function getAdminStudy(id: string): Promise<AdminStudy | null> {
     relatedVideoIds: jsonArray<string>(row.related_video_ids),
     seriesId: row.series_id ? String(row.series_id) : null,
     seriesPosition: Number(row.series_position ?? 1),
+    seriesKind: row.series_kind === 'supplement' ? 'supplement' : 'lesson',
   };
 }
 

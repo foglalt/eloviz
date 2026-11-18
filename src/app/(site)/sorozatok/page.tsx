@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { listPublicSeries } from "@/lib/study-series-repository";
+import { seriesCountLabel } from '@/lib/study-series-core';
 
 export const metadata: Metadata = {
   title: "Tanulmánysorozatok",
@@ -17,7 +18,7 @@ export default async function SeriesPage() {
       {series.length ? <ul className="series-index-list">{series.map((item) => (
         <li key={item.id}>
           <Link className="series-index-item" href={`/sorozatok/${item.slug}`}>
-            <div><h2>{item.title}</h2><p className="meta-line">{item.parts.length} olvasható rész{item.author ? ` · ${item.author}` : ""}</p></div>
+            <div><h2>{item.title}</h2><p className="meta-line">{seriesCountLabel(item.parts)}{item.author ? ` · ${item.author}` : ""}</p></div>
             <div className="series-index-item__summary"><p className="preview-description">{item.description}</p><span className="text-link">Tartalomjegyzék</span></div>
           </Link>
         </li>

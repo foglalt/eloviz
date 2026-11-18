@@ -9,6 +9,7 @@ import { StudyBibleReader, StudyBibleWorkspace } from "@/components/study-bible-
 import { StudySeriesContents, StudySeriesNavigation } from "@/components/study-series-navigation";
 import { getStudyBySlug } from "@/lib/content-repository";
 import { absoluteSiteUrl } from "@/lib/site-config";
+import { seriesPartLabel } from '@/lib/study-series-core';
 
 type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -34,6 +35,7 @@ export default async function StudyPage({ params }: Props) {
   const study = await getStudyBySlug(slug);
 
   if (!study) notFound();
+  const seriesPart = study.series?.parts.find((part) => part.id === study.id);
 
   const crumbs = [
     { label: "Kezdőlap", href: "/" },
@@ -64,7 +66,7 @@ export default async function StudyPage({ params }: Props) {
       <StudyBibleWorkspace key={study.id}>
       <div className="detail-grid study-detail-grid">
         <div className="detail-copy study-detail__intro">
-          <p className="eyebrow">{study.series ? `${study.series.parts.find((part) => part.id === study.id)?.position}. rész` : "Bibliatanulmány"}</p>
+          <p className="eyebrow">{seriesPart ? seriesPartLabel(seriesPart) : "Bibliatanulmány"}</p>
           {study.series ? <Link className="text-link study-series-link" href={`/sorozatok/${study.series.slug}`}>{study.series.title}</Link> : null}
           <h1 id="study-title">{study.title}</h1>
           <div className="study-summary"><p className="study-summary__label">Összefoglaló</p><p className="lead"><ScriptureText text={study.summary} /></p></div>

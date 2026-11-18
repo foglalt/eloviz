@@ -45,3 +45,12 @@ test("new chapters remain together in series order despite publication order", (
   assert.deepEqual(orderDigestItems(items).map((item) => item.id), ["1", "3", "video"]);
   assert.equal(items[0].id, "3");
 });
+
+test('supplements retain their own label and follow lessons within a digest', () => {
+  const base: DigestItem = { id: 'lesson', kind: 'study', slug: 'lesson', title: 'Lecke', summary: '', publishedAt: '2026-11-18T10:00:00Z', seriesId: 'series', seriesTitle: 'Sorozat', position: 3, seriesKind: 'lesson' };
+  const supplement: DigestItem = { ...base, id: 'supplement', position: 1, seriesKind: 'supplement' };
+  assert.deepEqual(orderDigestItems([supplement, base]).map((item) => item.id), ['lesson', 'supplement']);
+  const email = renderDigest([supplement], new Date('2026-11-22T18:00:00Z'));
+  assert.ok(email.text.includes('Sorozat · 1. melléklet'));
+  assert.ok(email.html.includes('Sorozat · 1. melléklet'));
+});

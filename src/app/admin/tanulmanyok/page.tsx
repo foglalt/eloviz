@@ -10,6 +10,7 @@ import { AdminFormSubmit } from "@/components/admin-form-submit";
 import { AdminRelationPicker } from "@/components/admin-relation-picker";
 import { AdminStudySeriesFields } from "@/components/admin-study-series-fields";
 import { getSeriesDefaultTopicIds, listAdminSeries } from "@/lib/study-series-repository";
+import { nextSeriesPosition } from '@/lib/study-series-core';
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import {
   getAdminStudy,
@@ -30,6 +31,7 @@ type Props = {
     q?: string;
     page?: string;
     series?: string;
+    kind?: string;
   }>;
 };
 
@@ -48,7 +50,8 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
     listAdminVideoOptions(),
   ]);
   const newSeries = !selected ? series.find((item) => item.id === query.series) : undefined;
-  const defaultTopicIds = newSeries ? await getSeriesDefaultTopicIds(newSeries.id) : [];
+  const newKind = query.kind === 'supplement' ? 'supplement' : 'lesson';
+  const defaultTopicIds = newSeries ? await getSeriesDefaultTopicIds(newSeries.id, newKind) : [];
   const indexItems = studyIndex.items.map((study) => {
     const documentState = study.documentCount === 0
       ? "nincs PDF"
@@ -92,7 +95,7 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
         help={selected ? "Módosítsd az adatokat, vagy tölts fel új PDF-verziót lentebb." : "Add meg az adatokat és válaszd ki a PDF-et, majd mentsd el együtt. A PDF-ből automatikusan elkészül az olvasási nézet és felismerjük az igehelyeket. PDF nélkül vázlatot menthetsz."}
       >
         <AdminStudyForm
-          key={selected ? `${selected.id}:${selected.updatedAt ?? ""}` : `new:${newSeries?.id ?? ""}`}
+          key={selected ? `${selected.id}:${selected.updatedAt ?? ""}:${selected.seriesKind}:${selected.seriesPosition}` : `new:${newSeries?.id ?? ""}:${newKind}`}
         >
           {selected ? <input type="hidden" name="id" value={selected.id} /> : null}
           <AdminContentFormFields
@@ -106,9 +109,10 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
             </div>
             {!selected ? <AdminInitialStudyPdf /> : null}
             <AdminStudySeriesFields
-              options={series.map((item) => ({ id: item.id, title: item.title, nextPosition: item.parts.length + 1 }))}
+              options={series.map((item) => ({ id: item.id, title: item.title, nextLessonPosition: nextSeriesPosition(item.parts, 'lesson'), nextSupplementPosition: nextSeriesPosition(item.parts, 'supplement') }))}
               initialSeriesId={selected?.seriesId ?? newSeries?.id}
-              initialPosition={selected?.seriesPosition ?? (newSeries ? newSeries.parts.length + 1 : 1)}
+              initialPosition={selected?.seriesPosition ?? (newSeries ? nextSeriesPosition(newSeries.parts, newKind) : 1)}
+              initialKind={selected?.seriesKind ?? newKind}
             />
             {(selected?.relatedStudyIds ?? []).map((id) => <input key={id} type="hidden" name="relatedStudyIds" value={id} />)}
             <div className="relation-fields field--full">
@@ -163,7 +167,7 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
           </AdminContentFormFields>
           <div className="form-actions field--full">
             <AdminFormSubmit label={selected ? "Adatok mentése" : "Tanulmány létrehozása"} pendingLabel="Tanulmány mentése és feldolgozása…" enableSaveShortcut />
-            {selected?.seriesId ? <Link className="text-link" href={`/admin/tanulmanyok?series=${selected.seriesId}`}>+ Következő rész létrehozása</Link> : null}
+            {selected?.seriesId ? <Link className="text-link" href={`/admin/tanulmanyok?series=${selected.seriesId}&kind=${selected.seriesKind}`}>{selected.seriesKind === 'supplement' ? '+ Következő melléklet létrehozása' : '+ Következő lecke létrehozása'}</Link> : null}
           </div>
         </AdminStudyForm>
       </AdminEditorPanel>

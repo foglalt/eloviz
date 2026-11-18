@@ -1,5 +1,8 @@
+export type SeriesPartKind = 'lesson' | 'supplement';
+
 export type OrderedStudyPart = {
   id: string;
+  kind?: SeriesPartKind;
   position: number;
   status: 'draft' | 'published';
   hasPublishedDocument: boolean;
@@ -9,14 +12,36 @@ export type OrderedStudyPart = {
 export function publishedSeriesParts<T extends OrderedStudyPart>(parts: readonly T[]): T[] {
   return parts
     .filter((part) => part.status === 'published' && part.hasPublishedDocument)
-    .toSorted((a, b) => a.position - b.position);
+    .toSorted((a, b) => Number(a.kind === 'supplement') - Number(b.kind === 'supplement') || a.position - b.position);
 }
 
-export function seriesNeighbours<T extends { id: string }>(parts: readonly T[], studyId: string) {
-  const index = parts.findIndex((part) => part.id === studyId);
+export function seriesPartGroups<T extends { id: string; kind?: SeriesPartKind }>(parts: readonly T[]) {
   return {
-    previous: index > 0 ? parts[index - 1] : null,
-    next: index >= 0 ? parts[index + 1] ?? null : null,
+    lessons: parts.filter((part) => part.kind !== 'supplement'),
+    supplements: parts.filter((part) => part.kind === 'supplement'),
+  };
+}
+
+export function seriesPartLabel(part: { position: number; kind?: SeriesPartKind }) {
+  return `${part.position}. ${part.kind === 'supplement' ? 'melléklet' : 'lecke'}`;
+}
+
+export function seriesCountLabel(parts: readonly { id: string; kind?: SeriesPartKind }[]) {
+  const { lessons, supplements } = seriesPartGroups(parts);
+  return [lessons.length ? `${lessons.length} lecke` : '', supplements.length ? `${supplements.length} melléklet` : '']
+    .filter(Boolean).join(' · ') || '0 lecke';
+}
+
+export function nextSeriesPosition(parts: readonly { position: number; kind?: SeriesPartKind }[], kind: SeriesPartKind) {
+  return parts.filter((part) => (part.kind ?? 'lesson') === kind).reduce((last, part) => Math.max(last, part.position), 0) + 1;
+}
+
+export function seriesNeighbours<T extends { id: string; kind?: SeriesPartKind }>(parts: readonly T[], studyId: string) {
+  const lessons = seriesPartGroups(parts).lessons;
+  const index = lessons.findIndex((part) => part.id === studyId);
+  return {
+    previous: index > 0 ? lessons[index - 1] : null,
+    next: index >= 0 ? lessons[index + 1] ?? null : null,
   };
 }
 

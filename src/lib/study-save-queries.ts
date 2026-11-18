@@ -38,7 +38,7 @@ export function studyMetadataQueries(transaction: NeonQueryFunctionInTransaction
         "INSERT INTO study_relations(study_a_id,study_b_id,sort_order) VALUES($1,$2,$3)",
         [pair.studyAId, pair.studyBId, index],
       )),
-    ...seriesMembershipQueries(transaction, studyId, data.seriesId, data.seriesPosition),
+    ...seriesMembershipQueries(transaction, studyId, data.seriesId, data.seriesPosition, data.seriesKind),
   ];
 }
 

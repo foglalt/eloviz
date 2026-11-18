@@ -19,10 +19,10 @@ const stored={storageKind:'database' as const,storageKey:'rollback-only.pdf',fil
 const topic=String((await sql.query('SELECT id::text FROM topics ORDER BY id LIMIT 1'))[0].id);
 const video=String((await sql.query('SELECT id::text FROM videos ORDER BY id LIMIT 1'))[0].id);
 const related=String((await sql.query('SELECT id::text FROM studies ORDER BY id LIMIT 1'))[0].id);
-for (const scenario of ['published-pdf','draft-pdf','draft-only','missing-topic','duplicate-slug','duplicate-revision']) {
+for (const scenario of ['published-pdf','supplement-pdf','draft-pdf','draft-only','missing-topic','duplicate-slug','duplicate-revision']) {
  const id=randomUUID(),documentId=randomUUID(),seriesId=randomUUID();
  const slug=`creation-probe-${randomUUID()}`;
- const data:StudyInput={title:'Elkülönített mentési ellenőrzés',slug,summary:'Ellenőrzési szöveg, amelyet minden esetben visszagörgetünk.',status:scenario==='draft-pdf'?'draft':'published',featured:false,sortOrder:0,topicIds:[scenario==='missing-topic'?randomUUID():topic],relatedVideoIds:[video],relatedStudyIds:[related],seriesId,seriesPosition:1,seoTitle:'',seoDescription:''};
+ const data:StudyInput={title:'Elkülönített mentési ellenőrzés',slug,summary:'Ellenőrzési szöveg, amelyet minden esetben visszagörgetünk.',status:scenario==='draft-pdf'?'draft':'published',featured:false,sortOrder:0,topicIds:[scenario==='missing-topic'?randomUUID():topic],relatedVideoIds:[video],relatedStudyIds:[related],seriesId,seriesPosition:1,seriesKind:scenario==='supplement-pdf'?'supplement':'lesson',seoTitle:'',seoDescription:''};
  const hasPdf=scenario!=='draft-only';
  const status=resolveStudyPublicationStatus(data.status,hasPdf).status;
  let reachedEnd=false;
@@ -37,11 +37,11 @@ for (const scenario of ['published-pdf','draft-pdf','draft-only','missing-topic'
     AND EXISTS(SELECT 1 FROM study_topics WHERE study_id=$1 AND topic_id=$4)
     AND EXISTS(SELECT 1 FROM study_videos WHERE study_id=$1 AND video_id=$5)
     AND EXISTS(SELECT 1 FROM study_relations WHERE study_a_id=$1 OR study_b_id=$1)
-    AND EXISTS(SELECT 1 FROM study_series_parts WHERE study_id=$1 AND series_id=$6 AND position=1)
+    AND EXISTS(SELECT 1 FROM study_series_parts WHERE study_id=$1 AND series_id=$6 AND position=1 AND kind=$11)
     AND (NOT $3::boolean OR EXISTS(SELECT 1 FROM study_documents WHERE id=$7 AND extraction_status='complete' AND article_content=$8::jsonb))
     AND (SELECT count(*) FROM study_scripture_references WHERE study_id=$1)=$9
     AND (SELECT count(*) FROM study_reference_candidates WHERE document_id=$7 AND review_status='accepted')=$10
-    THEN 1 ELSE 0 END AS verification_guard`,[id,status,hasPdf,topic,video,seriesId,documentId,JSON.stringify(extraction.article),hasPdf?prepared.finalizedReferences.length:0,hasPdf?candidates.length:0]),
+    THEN 1 ELSE 0 END AS verification_guard`,[id,status,hasPdf,topic,video,seriesId,documentId,JSON.stringify(extraction.article),hasPdf?prepared.finalizedReferences.length:0,hasPdf?candidates.length:0,data.seriesKind]),
    tx.query("DO $$ BEGIN RAISE EXCEPTION 'study_creation_probe_passed'; END $$"),
   ]);
   throw new Error('Probe unexpectedly committed');

@@ -17,11 +17,12 @@ import {
 import { requireSql } from "@/lib/db";
 import { deleteBlobPdf, storePdf } from "@/lib/document-storage";
 import { prepareStudyPdf } from "@/lib/study-pdf-preparation";
+import { hasSelectedPdf } from "@/lib/pdf-file-policy";
 import { studyMetadataQueries, studyPdfQueries, type PreparedStudyPdf, type StoredStudyPdf } from "@/lib/study-save-queries";
 import { persistWithOptionalPdf } from "@/lib/study-save-workflow";
 import type { StudySaveState } from "@/lib/study-save-state";
 import { parseYouTubeId, slugifyHungarian, studyInputSchema, studySeriesInputSchema, topicInputSchema, videoInputSchema } from "@/lib/content-validation";
-import { COMPACT_SERIES_POSITIONS, SERIES_EDIT_LOCK } from "@/lib/study-series-editing";
+import { COMPACT_SERIES_POSITIONS, SERIES_EDIT_LOCK, seriesPartsReplacementQueries } from "@/lib/study-series-editing";
 import { resolveStudyDocumentRemoval, resolveStudyPublicationStatus } from "@/lib/study-publication";
 import { fetchYouTubeMetadata } from "@/lib/youtube-metadata";
 
@@ -115,11 +116,12 @@ export async function saveStudyAction(_previous: StudySaveState, formData: FormD
     relatedVideoIds: ids(formData, "relatedVideoIds"),
     seriesId: field(formData, "seriesId") || null,
     seriesPosition: Number(field(formData, "seriesPosition") || 1),
+    seriesKind: field(formData, "seriesKind") || 'lesson',
   });
   if (!parsed.success) return { error: validationMessage(parsed.error.issues) };
   const file = formData.get("pdf");
   let prepared: PreparedStudyPdf | null = null;
-  if (!id && file instanceof File && file.name) {
+  if (!id && file instanceof File && hasSelectedPdf(file)) {
     try { prepared = await prepareStudyPdf(file, parsed.data.title); }
     catch (error) { return { error: error instanceof Error ? error.message : "A PDF feldolgozása nem sikerült." }; }
   }
@@ -174,6 +176,7 @@ export async function saveStudySeriesAction(formData: FormData) {
     description: field(formData, "description"), author: field(formData, "author"),
     sourceUrl: field(formData, "sourceUrl"), status: field(formData, "status"),
     partIds: ids(formData, "partIds"),
+    supplementIds: ids(formData, "supplementIds"),
   });
   if (!parsed.success) redirect(destination("/admin/sorozatok", "error", validationMessage(parsed.error.issues), id));
   const sql = requireSql();
@@ -192,10 +195,7 @@ export async function saveStudySeriesAction(formData: FormData) {
         : transaction.query(`INSERT INTO study_series(id,title,slug,description,author,source_url,status)
           VALUES($1,$2,$3,$4,NULLIF($5,''),NULLIF($6,''),$7)`,
           [seriesId, parsed.data.title, parsed.data.slug, parsed.data.description, parsed.data.author, parsed.data.sourceUrl, parsed.data.status]),
-      transaction.query("DELETE FROM study_series_parts WHERE series_id=$1", [seriesId]),
-      ...parsed.data.partIds.map((studyId, index) => transaction.query(
-        "INSERT INTO study_series_parts(study_id,series_id,position) VALUES($1,$2,$3)", [studyId, seriesId, index + 1],
-      )),
+      ...seriesPartsReplacementQueries(transaction, seriesId, parsed.data.partIds, parsed.data.supplementIds),
     ]);
     refreshPublicContent();
     redirect(destination("/admin/sorozatok", "message", "A sorozat és a részek sorrendje mentve.", seriesId));
