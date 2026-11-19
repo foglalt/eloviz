@@ -2,10 +2,16 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
-import { extractPdfDocument, extractPdfPages } from "./pdf-extract-core.ts";
+import { extractPdfDocument, extractPdfPages, extractPdfTitle } from "./pdf-extract-core.ts";
 import { detectScriptureReferences } from "./scripture-references.ts";
 import { createBoldFixturePdf, createColorFixturePdf, createSpoilerFixturePdf } from "./fixtures/pdf-color-fixture.ts";
 import { parseStudyArticle } from "./study-article.ts";
+
+test("reads a real PDF heading for the title suggestion without requiring a full upload", async () => {
+  const buffer = await readFile(path.join(process.cwd(), "public", "studies", "a-paszka-tipologiaja.pdf"));
+  assert.equal(await extractPdfTitle(buffer), "A páska tipológiája");
+  assert.equal(await extractPdfTitle(createColorFixturePdf()), null);
+});
 
 test("extracts native PDF text with the production PDF.js runtime dependencies", async () => {
   const fixture = path.join(

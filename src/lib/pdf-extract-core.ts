@@ -7,6 +7,7 @@ import { attachTextColors, extractTextColors } from "./pdf-text-color.ts";
 import { attachTextFontWeight } from "./pdf-text-font.ts";
 import { attachTextSpoilers, extractPdfUnderlines } from "./pdf-text-underline.ts";
 import { cleanEmphasizedText, concatEmphasizedText, sliceEmphasizedText, type BoldRange, type EmphasizedText } from "./text-emphasis.ts";
+import { titleFromPdfLines } from "./pdf-title.ts";
 
 async function ensurePdfJsNodeGlobals() {
   const canvas = await import("@napi-rs/canvas");
@@ -99,6 +100,21 @@ export type ExtractedPdfDocument = {
   pages: string[];
   article: StudyArticle;
 };
+
+export async function extractPdfTitle(buffer: Buffer): Promise<string | null> {
+  await ensurePdfJsNodeGlobals();
+  const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
+  const loadingTask = pdfjs.getDocument({ data: new Uint8Array(buffer), disableFontFace: true, useSystemFonts: true });
+  try {
+    const document = await loadingTask.promise;
+    const page = await document.getPage(1);
+    const content = await page.getTextContent();
+    const lines = groupPageLines(content.items.filter(isPdfTextItem) as PdfTextItem[], 1, page.getViewport({ scale: 1 }).height);
+    return titleFromPdfLines(lines);
+  } finally {
+    await loadingTask.destroy();
+  }
+}
 
 export async function extractPdfDocument(
   buffer: Buffer,

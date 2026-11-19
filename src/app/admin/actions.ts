@@ -15,9 +15,10 @@ import {
   verifyAdminPassword,
 } from "@/lib/admin-auth";
 import { requireSql } from "@/lib/db";
-import { deleteBlobPdf, storePdf } from "@/lib/document-storage";
+import { deleteBlobPdf, storePdf, validatePdfBuffer } from "@/lib/document-storage";
 import { prepareStudyPdf } from "@/lib/study-pdf-preparation";
-import { hasSelectedPdf } from "@/lib/pdf-file-policy";
+import { hasSelectedPdf, pdfFileIssue } from "@/lib/pdf-file-policy";
+import { extractPdfTitle } from "@/lib/pdf-extract-core";
 import { studyMetadataQueries, studyPdfQueries, type PreparedStudyPdf, type StoredStudyPdf } from "@/lib/study-save-queries";
 import { persistWithOptionalPdf } from "@/lib/study-save-workflow";
 import type { StudySaveState } from "@/lib/study-save-state";
@@ -100,6 +101,21 @@ export async function saveTopicAction(formData: FormData) {
     rethrowFrameworkRedirect(error);
     const message = error instanceof Error && error.message.includes("unique") ? "Ez a slug már használatban van." : "A téma mentése nem sikerült.";
     redirect(destination("/admin/temak", "error", message, id));
+  }
+}
+
+export async function suggestStudyPdfTitleAction(formData: FormData): Promise<{ title: string | null; error?: string }> {
+  await requireAdmin();
+  const file = formData.get("pdf");
+  if (!(file instanceof File) || !hasSelectedPdf(file)) return { title: null };
+  const issue = pdfFileIssue(file);
+  if (issue) return { title: null, error: issue };
+  try {
+    const buffer = Buffer.from(await file.arrayBuffer());
+    validatePdfBuffer(buffer);
+    return { title: await extractPdfTitle(buffer) };
+  } catch {
+    return { title: null, error: "A cím nem olvasható ki ebből a PDF-ből. Add meg kézzel." };
   }
 }
 

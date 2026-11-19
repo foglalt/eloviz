@@ -5,7 +5,7 @@ import { AdminContentIndex } from "@/components/admin-content-index";
 import { AdminContentWorkspace } from "@/components/admin-content-workspace";
 import { AdminDeletePanel } from "@/components/admin-delete-panel";
 import { AdminEditorPanel } from "@/components/admin-editor-panel";
-import { AdminStudyForm, AdminInitialStudyPdf } from "@/components/admin-study-form";
+import { AdminStudyForm, AdminStudyTitleAndPdf } from "@/components/admin-study-form";
 import { AdminFormSubmit } from "@/components/admin-form-submit";
 import { AdminRelationPicker } from "@/components/admin-relation-picker";
 import { AdminStudySeriesFields } from "@/components/admin-study-series-fields";
@@ -100,14 +100,15 @@ export default async function AdminStudiesPage({ searchParams }: Props) {
           {selected ? <input type="hidden" name="id" value={selected.id} /> : null}
           <AdminContentFormFields
             record={selected}
+            showTitle={Boolean(selected)}
             featuredLabel="Kiemelt tanulmány"
             statusHelp="Véglegesített PDF nélkül a tanulmány mentéskor automatikusan vázlat marad."
           >
+            {!selected ? <AdminStudyTitleAndPdf /> : null}
             <div className="field field--full">
               <label htmlFor="summary">Összefoglaló</label>
               <textarea id="summary" name="summary" defaultValue={selected?.summary} minLength={30} maxLength={1500} required />
             </div>
-            {!selected ? <AdminInitialStudyPdf /> : null}
             <AdminStudySeriesFields
               options={series.map((item) => ({ id: item.id, title: item.title, nextLessonPosition: nextSeriesPosition(item.parts, 'lesson'), nextSupplementPosition: nextSeriesPosition(item.parts, 'supplement') }))}
               initialSeriesId={selected?.seriesId ?? newSeries?.id}

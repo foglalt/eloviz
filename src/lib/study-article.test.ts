@@ -15,6 +15,21 @@ function line(
   return { pageNumber, pageHeight: 800, x: 72, y, fontSize, text };
 }
 
+test("omits printed answer rules while keeping questions, inline blanks and emphasis", () => {
+  const article = buildStudyArticle([[
+    line(1, 750, "Fontos kérdések", 24),
+    line(1, 700, "1. Miért van rossz?"),
+    line(1, 680, "____________________________"),
+    line(1, 660, "____________________________"),
+    { ...line(1, 620, "2. Ki a Megváltó?"), boldRanges: [{ start: 8, end: 16 }] },
+    line(1, 600, "_ _ _ _ _ _ _ _"),
+    line(1, 560, "Egészítsd ki: ____ a válasz."),
+  ]]);
+  assert.deepEqual(article.blocks[0], { type: "list", ordered: true, items: ["Miért van rossz?", "Ki a Megváltó?"], itemBoldRanges: [[], [{ start: 5, end: 13 }]] });
+  assert.equal(article.blocks[1].type, "paragraph");
+  assert.ok("text" in article.blocks[1] && article.blocks[1].text.includes("____"));
+});
+
 test("builds semantic study content and merges a paragraph across pages", () => {
   const article = buildStudyArticle([
     [

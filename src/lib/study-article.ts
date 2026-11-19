@@ -1,7 +1,7 @@
 import { detectScriptureReferences } from "./scripture-references.ts";
 import { cleanEmphasizedText, concatEmphasizedText, sliceEmphasizedText, validBoldRanges, type BoldRange, type EmphasizedText } from "./text-emphasis.ts";
 
-export const STUDY_ARTICLE_VERSION = "pdf-layout-v6";
+export const STUDY_ARTICLE_VERSION = "pdf-layout-v7";
 
 export type StudyArticleBlock =
   | ({ type: "heading"; level: 2 | 3 } & EmphasizedText)
@@ -273,7 +273,9 @@ export function buildStudyArticle(
   documentTitle?: string,
 ): StudyArticle {
   const pages = removeRepeatedPageFurniture(inputPages).map((lines) =>
-    lines.filter((line) => cleanText(line.text)).toSorted((left, right) => (
+    // Printed answer rules have no reading content. Remove whole rule lines
+    // before paragraph/list grouping; preserve blanks embedded in actual text.
+    lines.filter((line) => cleanText(line.text) && !/^[\s_＿]{3,}$/u.test(line.text)).toSorted((left, right) => (
       right.y - left.y || left.x - right.x
     )),
   );
