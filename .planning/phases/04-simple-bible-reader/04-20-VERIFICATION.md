@@ -2,7 +2,7 @@
 phase: 04
 plan: 20
 date: 2026-11-19
-status: passed_local_and_content
+status: passed
 ---
 
 # PDF-cím és válaszvonalak ellenőrzése
@@ -33,8 +33,13 @@ status: passed_local_and_content
 - Beépített IAB 2 / tab 1, saját lap, localhost:3020. Valódi 6. PDF kiválasztása kitölti a címet. Kézzel „Saját szerkesztett cím” beírva, majd a korábbi Páska PDF kiválasztva: a kézi cím megmaradt. Ürítés és új PDF után helyes automatikus cím.
 - Címkitöltés képi bizonyítéka: `tmp/pdfs/title-autofill.jpg`. Nem készült új teszttanulmány vagy Blob-feltöltés.
 - Olvasóoldal: az új összefoglaló megjelenik, a záró négy kérdés teljes egészében olvasható, hivatkozás link maradt, vonalak nincsenek. Asztali bizonyíték `tmp/pdfs/lesson6-clean-questions.jpg`; 390×844 mobilon képi ellenőrzés és túlcsordulásmérés sikeres (375 px oldalszélesség). Viewport visszaállítva.
-- A saját lap az élő ellenőrzés végéig nyitva; utána bezárandó.
+- Éles adminban a felhasználói 6. PDF kiválasztása szintén kitöltötte a címet: „Felismert cím: A jó és rossz paradoxona”; bizonyíték `tmp/pdfs/title-autofill-live.jpg`. Ez a címellenőrzés sem ment új tanulmányt vagy fájlt.
+- Éles lecke: az összefoglaló új szövege jelen van, a záró lista 4 elemes, aláhúzásjelek nincsenek a HTML-ben. Kép: `tmp/pdfs/lesson6-clean-live.jpg`.
+- Eredeti PDF éles HTTP 200 letöltése SHA256 alapján byteazonos a forrással (128141 bájt).
+- Saját IAB 2 / tab 1 bezárva, üres laplista ellenőrizve; más lapot nem módosítottam, viewport visszaállítva. Éles tesztbelépés végén kijelentkeztem; ideiglenes hitelesítő fájl eltávolítva. A helyi dev szolgáltatás megmaradt.
 
 ## Kiadás
 
-Commit/push és éles build ellenőrzése folyamatban.
+- Commit/push `f91dc554a01b4547eb4293c013285f05ea7585aa`; Vercel `dpl_HA4btB8jzG4Fx9AKDsgJz6A6gU6C` READY, egyező SHA és www.eloviz.hu/eloviz.hu aliasok.
+- Kiadásra szűrt error/fatal runtime napló, utolsó 10 perc: nincs találat. Teljes címfelismerési folyamat az éles adminfelületen sikeres.
+- Lezáró követő commit csak a projektmemóriát változtatja; alkalmazáskód változatlan.
