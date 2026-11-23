@@ -1,5 +1,5 @@
 ---
-generated: 2026-11-19T20:03:38+01:00
+generated: 2026-11-23T13:21:27+01:00
 status: passed
 ---
 
@@ -8,7 +8,7 @@ status: passed
 ## Summary
 
 - Status: **passed**
-- Timestamp: 2026-11-19T20:03:38+01:00
+- Timestamp: 2026-11-23T13:21:27+01:00
 
 ## Checks
 
@@ -36,21 +36,27 @@ Exit code: 0
 > eloviz@0.1.0 build
 > next build
 
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\jkorm\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles:
+   * C:\Users\jkorm\.codex\worktrees\study-footnotes\eloviz\package-lock.json
+
 ▲ Next.js 16.2.1 (Turbopack)
-- Environments: .env
 - Experiments (use with caution):
   · serverActions
 
   Creating an optimized production build ...
-✓ Compiled successfully in 5.4s
+✓ Compiled successfully in 4.8s
   Running TypeScript ...
-  Finished TypeScript in 7.2s ...
+  Finished TypeScript in 5.9s ...
   Collecting page data using 11 workers ...
   Generating static pages using 11 workers (0/17) ...
   Generating static pages using 11 workers (4/17)
   Generating static pages using 11 workers (8/17)
   Generating static pages using 11 workers (12/17)
-✓ Generating static pages using 11 workers (17/17) in 737ms
+✓ Generating static pages using 11 workers (17/17) in 775ms
   Finalizing page optimization ...
 
 Route (app)

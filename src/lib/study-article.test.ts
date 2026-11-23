@@ -5,6 +5,7 @@ import {
   parseStudyArticle,
   type PdfArticleLine,
 } from "./study-article.ts";
+import { findStudyFootnoteMarkers } from "./study-footnotes.ts";
 
 function line(
   pageNumber: number,
@@ -21,13 +22,55 @@ test("omits printed answer rules while keeping questions, inline blanks and emph
     line(1, 700, "1. Miért van rossz?"),
     line(1, 680, "____________________________"),
     line(1, 660, "____________________________"),
-    { ...line(1, 620, "2. Ki a Megváltó?"), boldRanges: [{ start: 8, end: 16 }] },
+    { ...line(1, 620, "2. Ki a Megváltó? __________________"), boldRanges: [{ start: 8, end: 16 }, { start: 19, end: 30 }] },
     line(1, 600, "_ _ _ _ _ _ _ _"),
     line(1, 560, "Egészítsd ki: ____ a válasz."),
   ]]);
   assert.deepEqual(article.blocks[0], { type: "list", ordered: true, items: ["Miért van rossz?", "Ki a Megváltó?"], itemBoldRanges: [[], [{ start: 5, end: 13 }]] });
   assert.equal(article.blocks[1].type, "paragraph");
   assert.ok("text" in article.blocks[1] && article.blocks[1].text.includes("____"));
+});
+
+test("pairs starred endnotes with their inline marks and preserves the next-page commentary", () => {
+  const article = buildStudyArticle([
+    [line(1, 160, "3. Mit mond Salamon? (Péld 23:7)*")],
+    [
+      line(2, 730, "Megjegyzés: Ez a lecke része."),
+      line(2, 680, "4. A következő kérdés? ** A harmadik kérdés?*** És a továbbié? *****"),
+      line(2, 640, "Megjegyzések", 15),
+      line(2, 610, "* Az első megjegyzés"),
+      line(2, 596, "folytatása."),
+    ],
+    [
+      line(3, 720, "** A második megjegyzés."),
+      line(3, 704, "***A harmadik megjegyzés."),
+      line(3, 690, "***** Az ötödik megjegyzés."),
+    ],
+  ]);
+
+  assert.deepEqual(article.footnotes, [
+    { marker: "*", text: "Az első megjegyzés folytatása." },
+    { marker: "**", text: "A második megjegyzés." },
+    { marker: "***", text: "A harmadik megjegyzés." },
+    { marker: "*****", text: "Az ötödik megjegyzés." },
+  ]);
+  assert.deepEqual(article.blocks, [
+    { type: "list", ordered: true, start: 3, items: ["Mit mond Salamon? (Péld 23:7)*"] },
+    { type: "paragraph", text: "Megjegyzés: Ez a lecke része." },
+    { type: "list", ordered: true, start: 4, items: ["A következő kérdés? ** A harmadik kérdés?*** És a továbbié? *****"] },
+  ]);
+  assert.deepEqual(parseStudyArticle(article), article);
+  assert.equal(parseStudyArticle({ ...article, footnotes: [article.footnotes?.[0], article.footnotes?.[0]] }), null);
+  assert.deepEqual(findStudyFootnoteMarkers("(* előtag) 2*3 János 3:16 *, és (Péld 23:7)**.").map(({ marker }) => marker), ["*", "**"]);
+});
+
+test("preserves ordinary notes sections and definitions without a matching inline mark", () => {
+  const base = [line(1, 720, "Kérdés a leckéhez."), line(1, 660, "Megjegyzések", 15)];
+  for (const text of ["Szempontok a feldolgozáshoz.", "* Még hiányzik a jelölése."]) {
+    const article = buildStudyArticle([[...base, line(1, 622, text)]]);
+    assert.equal(article.footnotes, undefined);
+    assert.ok(article.blocks.some((block) => "text" in block && block.text === "Megjegyzések"));
+  }
 });
 
 test("builds semantic study content and merges a paragraph across pages", () => {

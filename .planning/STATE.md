@@ -3,15 +3,22 @@
 **Project:** Élő Víz
 **Current Phase:** 04
 **Current Phase Name:** Simple Bible Reader
-**Current Plan:** 04-20
-**Total Plans in Phase:** 20
-**Status:** Executing 04-20; title autofill and answer-rule cleanup implemented, verification/release in progress
-**Progress:** 95% (19/20 plans complete)
-**Last Activity:** 2026-11-19
-**Last Activity Description:** Verification completed (passed)
-**Paused At:** Complete browser reader checks, targeted production update and release
+**Current Plan:** 04-22
+**Total Plans in Phase:** 21
+**Status:** A lábjegyzetek helyi ellenőrzése sikeres
+**Progress:** 100% (21/21 plans complete)
+**Last Activity:** 2026-11-23
+**Last Activity Description:** A 7. lecke v8 kivonata ellenőrizve
+**Paused At:** Éles kiadás és a 7. lecke célzott átvezetése
 
 ## Latest Implementation
+
+- **04-22 · PDF-lábjegyzetek** — egy vagy több csillaggal jelölt végjegyzetek az
+  olvasóban információs gombon. Kérdésvégi válaszvonalak kihagyása, a 7. lecke
+  pontos PDF-azonossága és nyers kivonata ellenőrizve. 144 teszt, lint és build.
+  Lásd `phases/04-simple-bible-reader/04-22-SUMMARY.md`.
+- **04-20 · PDF-cím és üres válaszvonalak** — éles kiadás `f91dc55`.
+  Lásd `phases/04-simple-bible-reader/04-20-VERIFICATION.md`.
 
 - **04-19: Tanulmánysorozatok mellékleteinek kezelése** — separate Leckék /
   Mellékletek groups with independent ordering, admin type selection, full existing
@@ -169,6 +176,6 @@
 
 ## Session
 
-**Last Date:** 2026-11-19T20:03:38+01:00
+**Last Date:** 2026-11-23T13:21:27+01:00
 **Stopped At:** Verification completed
 **Resume File:** None

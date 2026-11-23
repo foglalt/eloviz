@@ -692,3 +692,38 @@ html:has(.study-bible-workspace) { scroll-behavior: auto; }
 .study-spoiler[data-revealed="true"] .study-spoiler__toggle { min-width: 36px; padding: 3px 7px; margin-right: 5px; border-color: transparent; background: transparent; }
 .study-spoiler[data-revealed="true"] .study-spoiler__answer { background: var(--spring-soft); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 @media (pointer: coarse) { .study-spoiler__toggle { min-height: 44px; } }
+.study-footnote__toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--teal);
+  font: 800 .75rem/1 var(--font-body), sans-serif;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.study-footnote__toggle span {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+.study-footnote__toggle:hover span, .study-footnote__toggle[aria-expanded="true"] span { background: var(--teal); color: #fff; }
+.study-footnote__text:not([hidden]) {
+  display: block;
+  margin: .4rem 0 .6rem;
+  padding: .55rem .8rem;
+  border-inline-start: 2px solid var(--teal);
+  background: var(--limestone);
+  color: var(--ink);
+  font-size: .9rem;
+  font-weight: 500;
+  line-height: 1.55;
+}
+@media (pointer: coarse) { .study-footnote__toggle { width: 44px; height: 44px; } }

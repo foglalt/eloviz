@@ -1,7 +1,8 @@
 import { detectScriptureReferences } from "./scripture-references.ts";
+import { findStudyFootnoteMarkers, studyFootnoteMarker, type StudyFootnote } from "./study-footnotes.ts";
 import { cleanEmphasizedText, concatEmphasizedText, sliceEmphasizedText, validBoldRanges, type BoldRange, type EmphasizedText } from "./text-emphasis.ts";
 
-export const STUDY_ARTICLE_VERSION = "pdf-layout-v7";
+export const STUDY_ARTICLE_VERSION = "pdf-layout-v8";
 
 export type StudyArticleBlock =
   | ({ type: "heading"; level: 2 | 3 } & EmphasizedText)
@@ -12,6 +13,7 @@ export type StudyArticleBlock =
 export type StudyArticle = {
   version: string;
   blocks: StudyArticleBlock[];
+  footnotes?: StudyFootnote[];
 };
 
 export type PdfArticleLine = {
@@ -55,7 +57,7 @@ function normalizeComparable(value: string) {
 }
 
 function endsSentence(value: string) {
-  return /[.!?…:;”"')\]]$/u.test(value.trim());
+  return /[.!?…:;”"')\]](?:\s*\*+)?$/u.test(value.trim());
 }
 
 export function looksLikeScriptureReferenceStart(value: string) {
@@ -93,6 +95,45 @@ function joinFormattedLines(lines: readonly PdfArticleLine[]): EmphasizedText {
     if (/[-‐]$/u.test(result.text) && /^\p{Ll}/u.test(value.text)) return concatEmphasizedText(sliceEmphasizedText(result, 0, result.text.length - 1), value);
     return concatEmphasizedText(result, { text: " " }, value);
   }, { text: "" }));
+}
+
+function removePrintedAnswerRule(line: PdfArticleLine) {
+  if (!cleanText(line.text) || /^[\s_＿]{3,}$/u.test(line.text)) return [];
+  const rule = /\?[ \t]*(?:[_＿][ \t]*){3,}$/u.exec(line.text);
+  if (!rule) return [line];
+  const { text, boldRanges, spoilerRanges } = sliceEmphasizedText(line, 0, rule.index + 1);
+  return [{ ...line, text, boldRanges, spoilerRanges }];
+}
+
+function collectFootnotes(pages: PdfArticleLine[][]) {
+  const lines = pages.flat();
+  const heading = lines.findLastIndex((line) => /^megjegyzések\s*:?$/u.test(normalizeComparable(line.text)));
+  if (heading < 1) return { pages };
+
+  const definitions = new Map<string, PdfArticleLine[]>();
+  let current: PdfArticleLine[] | undefined;
+  for (const line of lines.slice(heading + 1)) {
+    const text = cleanText(line.text);
+    const definition = /^(\*+)\s*([^\s*].*)$/u.exec(text);
+    if (definition) {
+      if (definitions.has(definition[1])) return { pages };
+      current = [{ ...line, text: definition[2], boldRanges: undefined, spoilerRanges: undefined }];
+      definitions.set(definition[1], current);
+    } else {
+      if (!current) return { pages };
+      current.push(line);
+    }
+  }
+  if (definitions.size === 0) return { pages };
+
+  const bodyMarkers = new Set(lines.slice(0, heading).flatMap((line) => findStudyFootnoteMarkers(line.text).map(({ marker }) => marker)));
+  const footnotes = [...definitions].map(([marker, noteLines]) => ({ marker, text: joinLines(noteLines) }));
+  // Ordinary sections called "Megjegyzések", including unpaired or ambiguous
+  // definitions, should remain readable in the article.
+  if (!footnotes.every(({ marker, text }) => bodyMarkers.has(marker) && validText(text))) return { pages };
+
+  const notesSection = new Set(lines.slice(heading));
+  return { pages: pages.map((page) => page.filter((line) => !notesSection.has(line))), footnotes };
 }
 
 function removeRepeatedPageFurniture(pages: readonly PdfArticleLine[][]) {
@@ -272,13 +313,13 @@ export function buildStudyArticle(
   inputPages: readonly PdfArticleLine[][],
   documentTitle?: string,
 ): StudyArticle {
-  const pages = removeRepeatedPageFurniture(inputPages).map((lines) =>
-    // Printed answer rules have no reading content. Remove whole rule lines
-    // before paragraph/list grouping; preserve blanks embedded in actual text.
-    lines.filter((line) => cleanText(line.text) && !/^[\s_＿]{3,}$/u.test(line.text)).toSorted((left, right) => (
+  const sortedPages = removeRepeatedPageFurniture(inputPages).map((lines) =>
+    // Keep cloze blanks inside sentences while omitting printed answer rules.
+    lines.flatMap(removePrintedAnswerRule).toSorted((left, right) => (
       right.y - left.y || left.x - right.x
     )),
   );
+  const { pages, footnotes } = collectFootnotes(sortedPages);
   const bodyFontSize = median(pages.flat().map((line) => line.fontSize));
   const rawBlocks = pages.flatMap((lines) => buildPageBlocks(lines, bodyFontSize));
   const markedBlocks = markSubheadings(rawBlocks, bodyFontSize);
@@ -299,7 +340,7 @@ export function buildStudyArticle(
     return [{ type: "paragraph", ...value }];
   });
 
-  return { version: STUDY_ARTICLE_VERSION, blocks: combineLists(blocks) };
+  return { version: STUDY_ARTICLE_VERSION, blocks: combineLists(blocks), ...(footnotes ? { footnotes } : {}) };
 }
 
 function validText(value: unknown) {
@@ -316,9 +357,19 @@ export function parseStudyArticle(value: unknown): StudyArticle | null {
   }
   if (!value || typeof value !== "object") return null;
 
-  const candidate = value as { version?: unknown; blocks?: unknown };
+  const candidate = value as { version?: unknown; blocks?: unknown; footnotes?: unknown };
   if (typeof candidate.version !== "string" || !Array.isArray(candidate.blocks)) return null;
   if (candidate.blocks.length === 0 || candidate.blocks.length > MAX_BLOCKS) return null;
+  let footnotes: StudyFootnote[] | undefined;
+  if (candidate.footnotes !== undefined) {
+    if (!Array.isArray(candidate.footnotes) || candidate.footnotes.length > MAX_BLOCKS) return null;
+    footnotes = [];
+    for (const note of candidate.footnotes) {
+      if (!note || !validText(note.marker) || !studyFootnoteMarker.test(note.marker) || !validText(note.text)
+        || footnotes.some(({ marker }) => marker === note.marker)) return null;
+      footnotes.push({ marker: note.marker, text: note.text });
+    }
+  }
 
   const blocks: StudyArticleBlock[] = [];
   for (const blockValue of candidate.blocks) {
@@ -357,5 +408,5 @@ export function parseStudyArticle(value: unknown): StudyArticle | null {
     }
   }
 
-  return { version: candidate.version, blocks };
+  return { version: candidate.version, blocks, ...(footnotes?.length ? { footnotes } : {}) };
 }
